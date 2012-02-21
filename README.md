@@ -1,0 +1,10 @@
+Adresář
+=======
+
+Vytvořte aplikaci pro správu kontaktů – jmen, email/IM, adres, narozenin, …
+
+* Seznam všech kontaktů s polem pro filtrování dle libovolné vlastnosti, volba řazení dle jména, emailu, …
+* Zobrazení detailních informací o kontaktu včetně fotografie
+* Upozornění na nadcházející narozeniny/výročí.
+* Uložení kontaktů do standardního formátu (např. XML, SQL databáze, nebo RDF)
+* Import kontaktů z nějaké webové/internetové služby (např. Facebook, Gmail, XMPP vCard, …)
