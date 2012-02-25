@@ -10,5 +10,5 @@ Vytvořte aplikaci pro správu kontaktů – jmen, email/IM, adres, narozenin, �
 
 Autoři
 ------
-Bc. Jan Kaláb <xkalab00@stud.fit.vutbr.cz>
-Bc. Radek Gajdušek <xgajdu07@stud.fit.vutbr.cz>
+* Bc. Jan Kaláb <xkalab00@stud.fit.vutbr.cz>
+* Bc. Radek Gajdušek <xgajdu07@stud.fit.vutbr.cz>
