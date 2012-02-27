@@ -12,3 +12,4 @@ Autoři
 ------
 * Bc. Jan Kaláb <xkalab00@stud.fit.vutbr.cz>
 * Bc. Radek Gajdušek <xgajdu07@stud.fit.vutbr.cz>
+* Bc. Drahomira Herrmannova <xherrm01@stud.fit.vutbr.cz>
