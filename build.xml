@@ -1,11 +1,14 @@
 <?xml version="1.0"?>
 <project name="GJAddr" default="run">
+	<property name="package">cz.vutbr.fit.gja.gjaddr</property>
+
 	<target name="init" description="create initial dirs and files">
 		<mkdir dir="bin/classes" />
 	</target>
 
 	<target name="clean" description="clean compiled files">
 		<delete dir="bin" />
+		<delete dir="doc/javadoc" />
 	</target>
 
 	<target name="compile" depends="init" description="compile the Java source code to class files">
@@ -17,12 +20,17 @@
 			<fileset dir="bin/classes" includes="**/*.class" />
 			<fileset dir="." includes="res/**" />
 			<manifest>
-				<attribute name="Main-Class" value="cz.vutbr.fit.gja.gjaddr.GJAddr" />
+				<attribute name="Main-Class" value="${package}.GJAddr" />
 			</manifest>
 		</jar>
 	</target>
 
 	<target name="run" depends="jar" description="run program">
 		<java jar="bin/GJAddr.jar" fork="true" />
+	</target>
+
+	<target name="doc" depends="jar" description="generates javadoc">
+		<mkdir dir="doc/javadoc" />
+		<javadoc sourcepath="src" destdir="doc/javadoc" packagenames="${package}.*" />
 	</target>
 </project>
