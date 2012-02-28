@@ -1,3 +1,7 @@
 *.zip
 bin
 doc/javadoc
+lib/CopyLibs
+lib/nblibraries.properties
+manifest.mf
+nbproject
