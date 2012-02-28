@@ -5,3 +5,4 @@ lib/CopyLibs
 lib/nblibraries.properties
 manifest.mf
 nbproject
+nbbuild.xml
