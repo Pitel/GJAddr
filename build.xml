@@ -2,7 +2,7 @@
 <project name="GJAddr" default="run">
 	<property name="package">cz.vutbr.fit.gja.gjaddr</property>
 
-	<target name="init" description="create initial dirs and files">
+	<target name="init">
 		<mkdir dir="bin/classes" />
 	</target>
 
@@ -11,11 +11,11 @@
 		<delete dir="doc/javadoc" />
 	</target>
 
-	<target name="compile" depends="init" description="compile the Java source code to class files">
+	<target name="compile" depends="init">
 		<javac srcdir="src" destdir="bin/classes" encoding="UTF-8" />
 	</target>
 
-	<target name="jar" depends="compile" description="create a Jar file for the application">
+	<target name="jar" depends="compile">
 		<jar destfile="bin/GJAddr.jar">
 			<fileset dir="bin/classes" includes="**/*.class" />
 			<fileset dir="." includes="res/**" />
