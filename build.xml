@@ -1,21 +1,28 @@
 <?xml version="1.0"?>
-<project name="Hello" default="compile">
-	<target name="clean" description="remove intermediate files">
-		<delete dir="classes"/>
+<project name="GJAddr" default="run">
+	<target name="init" description="create initial dirs and files">
+		<mkdir dir="bin/classes" />
 	</target>
-	<target name="clobber" depends="clean" description="remove all artifact files">
-		<delete file="hello.jar"/>
+
+	<target name="clean" description="clean compiled files">
+		<delete dir="bin" />
 	</target>
-	<target name="compile" description="compile the Java source code to class files">
-		<mkdir dir="classes"/>
-		<javac srcdir="." destdir="classes"/>
+
+	<target name="compile" depends="init" description="compile the Java source code to class files">
+		<javac srcdir="src" destdir="bin/classes" encoding="UTF-8" />
 	</target>
+
 	<target name="jar" depends="compile" description="create a Jar file for the application">
-		<jar destfile="hello.jar">
-			<fileset dir="classes" includes="**/*.class"/>
+		<jar destfile="bin/GJAddr.jar">
+			<fileset dir="bin/classes" includes="**/*.class" />
+			<fileset dir="." includes="res/**" />
 			<manifest>
-				<attribute name="Main-Class" value="HelloProgram"/>
+				<attribute name="Main-Class" value="cz.vutbr.fit.gja.gjaddr.GJAddr" />
 			</manifest>
 		</jar>
+	</target>
+
+	<target name="run" depends="jar" description="run program">
+		<java jar="bin/GJAddr.jar" fork="true" />
 	</target>
 </project>
