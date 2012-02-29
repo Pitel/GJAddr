@@ -36,11 +36,11 @@
 				<attribute name="Class-Path" value="${manifestclasspath}" />
 			</manifest>
 		</jar>
-		<chmod file="bin/GJAddr.jar" perm="+x" />
+		<chmod file="${jar}" perm="+x" />
 	</target>
 
 	<target name="run" depends="jar" description="run program">
-		<java jar="bin/GJAddr.jar" fork="true" />
+		<java jar="${jar}" fork="true" />
 	</target>
 
 	<target name="doc" depends="jar" description="generates javadoc">
