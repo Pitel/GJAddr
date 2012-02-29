@@ -1,7 +1,8 @@
 *.zip
 bin
 doc/javadoc
-nbproject/private
+
+# NetBeans
 build
 lib/CopyLibs
 lib/nblibraries.properties
