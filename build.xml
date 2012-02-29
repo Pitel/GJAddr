@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
 <project name="GJAddr" default="run">
 	<property name="package">cz.vutbr.fit.gja.gjaddr</property>
+	<property name="jar">bin/GJAddr.jar</property>
+	<fileset id="libs" dir="." includes="lib/*.jar" />
 
 	<target name="init">
 		<mkdir dir="bin/classes" />
@@ -12,15 +14,26 @@
 	</target>
 
 	<target name="compile" depends="init">
-		<javac srcdir="src" destdir="bin/classes" encoding="UTF-8" />
+		<javac srcdir="src" destdir="bin/classes" encoding="UTF-8">
+			<classpath>
+				<fileset refid="libs" />
+			</classpath>
+		</javac>
 	</target>
 
 	<target name="jar" depends="compile">
-		<jar destfile="bin/GJAddr.jar">
+		<manifestclasspath property="manifestclasspath" jarfile="${jar}">
+			<classpath>
+				<fileset refid="libs" />
+			</classpath>
+		</manifestclasspath>
+		<jar destfile="${jar}">
 			<fileset dir="bin/classes" includes="**/*.class" />
 			<fileset dir="." includes="res/**" />
+			<fileset refid="libs" />
 			<manifest>
 				<attribute name="Main-Class" value="${package}.Main" />
+				<attribute name="Class-Path" value="${manifestclasspath}" />
 			</manifest>
 		</jar>
 		<chmod file="bin/GJAddr.jar" perm="+x" />
