@@ -43,8 +43,12 @@
 		<java jar="${jar}" fork="true" />
 	</target>
 
-	<target name="doc" depends="jar" description="generates javadoc">
+	<target name="doc" description="generates javadoc">
 		<mkdir dir="doc/javadoc" />
-		<javadoc sourcepath="src" destdir="doc/javadoc" packagenames="${package}.*" />
+		<javadoc sourcepath="src" destdir="doc/javadoc" packagenames="${package}.*" windowtitle="GJAddr">
+			<classpath>
+				<fileset refid="libs" />
+			</classpath>
+		</javadoc>
 	</target>
 </project>
