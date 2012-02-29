@@ -1,9 +1,8 @@
 *.zip
-bin
+build
 doc/javadoc
 
 # NetBeans
-build
 lib/CopyLibs
 lib/nblibraries.properties
 manifest.mf
