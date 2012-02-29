@@ -23,6 +23,7 @@
 				<attribute name="Main-Class" value="${package}.Main" />
 			</manifest>
 		</jar>
+		<chmod file="bin/GJAddr.jar" perm="+x" />
 	</target>
 
 	<target name="run" depends="jar" description="run program">
