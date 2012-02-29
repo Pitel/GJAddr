@@ -20,7 +20,7 @@
 			<fileset dir="bin/classes" includes="**/*.class" />
 			<fileset dir="." includes="res/**" />
 			<manifest>
-				<attribute name="Main-Class" value="${package}.GJAddr" />
+				<attribute name="Main-Class" value="${package}.Main" />
 			</manifest>
 		</jar>
 	</target>
