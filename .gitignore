@@ -1,5 +1,10 @@
 *.zip
 bin
 doc/javadoc
-/nbproject/private/
-/build/
+nbproject/private
+build
+lib/CopyLibs
+lib/nblibraries.properties
+manifest.mf
+nbproject
+nbbuild.xml
