@@ -1,36 +1,54 @@
 <?xml version="1.0"?>
 <project name="GJAddr" default="run">
 	<property name="package">cz.vutbr.fit.gja.gjaddr</property>
+	<property name="jar">build/GJAddr.jar</property>
+	<fileset id="libs" dir="." includes="lib/*.jar" />
 
 	<target name="init">
-		<mkdir dir="bin/classes" />
+		<mkdir dir="build/classes" />
 	</target>
 
 	<target name="clean" description="clean compiled files">
-		<delete dir="bin" />
+		<delete dir="build" />
 		<delete dir="doc/javadoc" />
 	</target>
 
 	<target name="compile" depends="init">
-		<javac srcdir="src" destdir="bin/classes" encoding="UTF-8" />
+		<javac srcdir="src" destdir="build/classes" encoding="UTF-8">
+			<classpath>
+				<fileset refid="libs" />
+			</classpath>
+		</javac>
 	</target>
 
 	<target name="jar" depends="compile">
-		<jar destfile="bin/GJAddr.jar">
-			<fileset dir="bin/classes" includes="**/*.class" />
+		<manifestclasspath property="manifestclasspath" jarfile="${jar}">
+			<classpath>
+				<fileset refid="libs" />
+			</classpath>
+		</manifestclasspath>
+		<jar destfile="${jar}">
+			<fileset dir="build/classes" includes="**/*.class" />
 			<fileset dir="." includes="res/**" />
+			<fileset refid="libs" />
 			<manifest>
-				<attribute name="Main-Class" value="${package}.GJAddr" />
+				<attribute name="Main-Class" value="${package}.Main" />
+				<attribute name="Class-Path" value="${manifestclasspath}" />
 			</manifest>
 		</jar>
+		<chmod file="${jar}" perm="+x" />
 	</target>
 
 	<target name="run" depends="jar" description="run program">
-		<java jar="bin/GJAddr.jar" fork="true" />
+		<java jar="${jar}" fork="true" />
 	</target>
 
-	<target name="doc" depends="jar" description="generates javadoc">
+	<target name="doc" description="generates javadoc">
 		<mkdir dir="doc/javadoc" />
-		<javadoc sourcepath="src" destdir="doc/javadoc" packagenames="${package}.*" />
+		<javadoc sourcepath="src" destdir="doc/javadoc" packagenames="${package}.*" windowtitle="GJAddr">
+			<classpath>
+				<fileset refid="libs" />
+			</classpath>
+		</javadoc>
 	</target>
 </project>

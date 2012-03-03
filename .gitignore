@@ -1,8 +1,8 @@
 *.zip
-bin
-doc/javadoc
-nbproject/private
 build
+doc/javadoc
+
+# NetBeans
 lib/CopyLibs
 lib/nblibraries.properties
 manifest.mf
