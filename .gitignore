@@ -1,4 +1,5 @@
 *.zip
+*.7z
 build
 doc/javadoc
 
