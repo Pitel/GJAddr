@@ -7,9 +7,8 @@ import a_vcard.android.syncml.pim.vcard.VCardParser;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.InputStreamReader;
+import java.io.FileReader;
 
 /**
  * Class for importing and exporting vCards
@@ -29,7 +28,7 @@ public class VCard {
 		final VCardParser parser = new VCardParser();
 		final VDataBuilder builder = new VDataBuilder();
 
-		final BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
+		final BufferedReader reader = new BufferedReader(new FileReader(file));
 		final StringBuilder vcardStringBuilder = new StringBuilder();
 		String line;
 		while ((line = reader.readLine()) != null) {	//Maybe there is some method to read the whole file
