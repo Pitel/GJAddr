@@ -9,3 +9,4 @@ manifest.mf
 nbproject
 nbbuild.xml
 log
+/dist/
