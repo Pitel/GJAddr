@@ -46,7 +46,7 @@ public class MainWindow extends JFrame implements ActionListener {
 	GridBagConstraints constraintsMain, constraintsNested;
 
 	/**
-	 * Class constructor. Will initialize the window.
+	 * Class constructor. Will create the window.
 	 */
 	public MainWindow() {
 		super("GJAddr");
@@ -64,14 +64,20 @@ public class MainWindow extends JFrame implements ActionListener {
 		toolbar.add(new JTextField("Search"));
 		mainPanel.add(toolbar, BorderLayout.PAGE_START);
 		Split model = new Split();
-		model.setChildren(Arrays.asList(new Leaf("groups"), new Divider(), new Leaf("contacts"), 	new Divider(), new Leaf("detail")));
+		Leaf groupsLeaf = new Leaf("groups");
+		Leaf contactsLeaf = new Leaf("contacts");
+		Leaf detailLeaf = new Leaf("detail");
+		groupsLeaf.setWeight(1.0 / 3);
+		contactsLeaf.setWeight(1.0 / 3);
+		detailLeaf.setWeight(1.0 / 3);
+		model.setChildren(Arrays.asList(groupsLeaf, new Divider(), contactsLeaf, new Divider(), detailLeaf));
 		MultiSplitPane multiSplitPane = new MultiSplitPane();
 		multiSplitPane.getMultiSplitLayout().setModel(model);
 		multiSplitPane.add(new JButton("Groups"), "groups");
 		multiSplitPane.add(new JButton("Contacts"), "contacts");
 		multiSplitPane.add(new JButton("Detail"), "detail");
 		mainPanel.add(multiSplitPane, BorderLayout.CENTER);
-		mainPanel.add(new JLabel("Status"), BorderLayout.PAGE_END);
+		//mainPanel.add(new JLabel("Status"), BorderLayout.PAGE_END);
 		this.setContentPane(mainPanel);
 		this.pack();
 		this.setLocationRelativeTo(null);
