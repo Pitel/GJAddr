@@ -1,5 +1,7 @@
 package cz.vutbr.fit.gja.gjaddr.gui;
 
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.Group;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,7 +26,7 @@ import org.slf4j.LoggerFactory;
  * @author Bc. Jan Kaláb <xkalab00@stud.fit,vutbr.cz>
  */
 public class MainWindow extends JFrame implements ActionListener {
-
+	private Database db = Database.getInstance();
 	/**
 	 * Items of menu "File".
 	 */
@@ -50,6 +52,7 @@ public class MainWindow extends JFrame implements ActionListener {
 	 */
 	public MainWindow() {
 		super("GJAddr");
+		cz.vutbr.fit.gja.gjaddr.persistancelayer.TestDatabase.fillTestingData(db);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -120,13 +123,9 @@ public class MainWindow extends JFrame implements ActionListener {
 		panel.add(label);
 		DefaultListModel listModel = new DefaultListModel();
 		listModel.addElement("All");
-		listModel.addElement("Work");
-		listModel.addElement("Family");
-		listModel.addElement("Friends");
-		listModel.addElement("Acquaintances");
-		listModel.addElement("School");
-		listModel.addElement("Tennis class");
-		listModel.addElement("Others");
+		for (Group g : db.getAllGroups()) {
+			listModel.addElement(g.getName());
+		}
 		JList list = new JList(listModel);
 		list.setSelectedIndex(0);
 		JScrollPane listScrollPane = new JScrollPane(list);
