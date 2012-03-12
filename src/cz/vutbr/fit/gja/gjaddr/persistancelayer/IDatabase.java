@@ -1,5 +1,7 @@
 package cz.vutbr.fit.gja.gjaddr.persistancelayer;
 
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.tables.Contact;
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.tables.Group;
 import java.util.List;
 
 /**
@@ -9,12 +11,10 @@ import java.util.List;
  */
 public interface IDatabase {
 	// CONTACTS
-	List<Contact> getAllContacts();  	
-	
-	//List<Contact> getAllContactsFromGroup(int id);
-	//List<Contact> getSpecificContacts(List<Integer> id);	
-	//void saveContacts(List<Contact> contacts);	
+	List<Contact> getAllContacts(); 
+	List<Group> getAllGroups();
+	List<Contact> getSpecificContacts(List<Integer> id);		
+	List<Contact> getAllContactsFromGroup(int groupId);
 
-	// GROUPS
-	List<Group> getAllGroups();   
+	//void saveContacts(List<Contact> contacts);	
 }
