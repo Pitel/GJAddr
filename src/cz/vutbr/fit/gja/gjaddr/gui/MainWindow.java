@@ -1,4 +1,3 @@
-
 package cz.vutbr.fit.gja.gjaddr.gui;
 
 import java.awt.*;
@@ -9,62 +8,87 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
+import org.jdesktop.swingx.MultiSplitLayout;
+import org.jdesktop.swingx.MultiSplitLayout.*;
+import org.jdesktop.swingx.MultiSplitPane;
 import org.slf4j.LoggerFactory;
 
 /**
  * Main application window.
  *
  * @author xherrm01
+ * @author Bc. Jan Kaláb <xkalab00@stud.fit,vutbr.cz>
  */
 public class MainWindow extends JFrame implements ActionListener {
-	
+
 	/**
 	 * Items of menu "File".
 	 */
 	private JMenuItem menuItemClose;
-	
+
 	/**
 	 * Items of menu help.
 	 */
 	private JMenuItem menuItemHelp, menuItemAbout;
-	
+
 	/**
 	 * Layouts.
 	 */
 	GridBagLayout layoutMain, layoutNested;
-	
+
 	/**
 	 * Constraints for gridBagLayout.
 	 */
 	GridBagConstraints constraintsMain, constraintsNested;
-  
+
 	/**
 	 * Class constructor. Will initialize the window.
 	 */
 	public MainWindow() {
-		super();
-		init();
+		super("GJAddr");
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (Exception e) {
+			LoggerFactory.getLogger(MainWindow.class).error("Error setting native LAF: {}", e);
+		}
+		this.setJMenuBar(this.createMenu());
+		JPanel mainPanel = new JPanel(new BorderLayout());
+		JToolBar toolbar = new JToolBar();
+		toolbar.setFloatable(false);
+		toolbar.add(new JButton("+"));
+		toolbar.add(new JTextField("Search"));
+		mainPanel.add(toolbar, BorderLayout.PAGE_START);
+		Split model = new Split();
+		model.setChildren(Arrays.asList(new Leaf("groups"), new Divider(), new Leaf("contacts"), 	new Divider(), new Leaf("detail")));
+		MultiSplitPane multiSplitPane = new MultiSplitPane();
+		multiSplitPane.getMultiSplitLayout().setModel(model);
+		multiSplitPane.add(new JButton("Groups"), "groups");
+		multiSplitPane.add(new JButton("Contacts"), "contacts");
+		multiSplitPane.add(new JButton("Detail"), "detail");
+		mainPanel.add(multiSplitPane, BorderLayout.CENTER);
+		mainPanel.add(new JLabel("Status"), BorderLayout.PAGE_END);
+		this.setContentPane(mainPanel);
+		this.pack();
+		this.setLocationRelativeTo(null);
 	}
-  
+
 	/**
 	 * Initialize the application window -- set layout and place components inside it.
 	 */
 	private void init() {
-		
-		try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch(Exception e) {
-			LoggerFactory.getLogger(MainWindow.class).error("Error setting native LAF: {}", e);
-        }
-		
+
+
+
 		this.setSize(900, 400);
 		this.setLocationRelativeTo(getRootPane());
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setTitle("GJAddr");
-		this.setJMenuBar(this.createMenu());
+
 
 		Container container = this.getContentPane();
 		this.layoutMain = new GridBagLayout();
@@ -75,46 +99,46 @@ public class MainWindow extends JFrame implements ActionListener {
 		this.constraintsNested.fill = GridBagConstraints.BOTH;
 		this.constraintsNested.weightx = this.constraintsNested.weighty = 1.0;
 		container.setLayout(this.layoutMain);
-		
+
 		container.add(this.createGroupsLabel());
 		container.add(this.createGroupsColumn());
 		container.add(this.createContactsSearchField());
 		container.add(this.createContactsTable());
 		container.add(this.createDetailsPanel());
 	}
-	
+
 	/**
 	 * Create and return application menu.
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	private JMenuBar createMenu() {
 		JMenuBar menuBar = new JMenuBar();
-		
+
 		JMenu fileMenu = new JMenu("File");
 		menuBar.add(fileMenu);
 		JMenu helpMenu = new JMenu("Help");
 		menuBar.add(helpMenu);
-		
+
 		this.menuItemClose = new JMenuItem("Quit", KeyEvent.VK_Q);
 		this.menuItemClose.addActionListener(this);
 		fileMenu.add(this.menuItemClose);
-		
+
 		this.menuItemHelp = new JMenuItem("Help", KeyEvent.VK_H);
 		this.menuItemHelp.addActionListener(this);
 		helpMenu.add(this.menuItemHelp);
-		
+
 		this.menuItemAbout = new JMenuItem("About", KeyEvent.VK_A);
 		this.menuItemAbout.addActionListener(this);
 		helpMenu.add(this.menuItemAbout);
-		
+
 		return menuBar;
 	}
-	
+
 	/**
 	 * Create label above groups column.
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	private JPanel createGroupsLabel() {
 		this.constraintsMain.ipady = 3;
@@ -139,10 +163,10 @@ public class MainWindow extends JFrame implements ActionListener {
 		this.layoutMain.setConstraints(panel, constraintsMain);
 		return panel;
 	}
-	
+
 	/**
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	private JPanel createGroupsColumn() {
 		this.constraintsMain.gridx = 0;
@@ -169,10 +193,10 @@ public class MainWindow extends JFrame implements ActionListener {
 		panel.add(list);
 		return panel;
 	}
-	
+
 	/**
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	private JPanel createContactsSearchField() {
 		this.constraintsMain.gridx = 1;
@@ -202,10 +226,10 @@ public class MainWindow extends JFrame implements ActionListener {
 		this.layoutMain.setConstraints(panel, constraintsMain);
 		return panel;
 	}
-	
+
 	/**
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	private JPanel createContactsTable() {
 		constraintsMain.gridx = 1;
@@ -216,13 +240,13 @@ public class MainWindow extends JFrame implements ActionListener {
 		JPanel panel = new JPanel();
 		panel.setLayout(this.layoutNested);
 		layoutMain.setConstraints(panel, constraintsMain);
-		
+
 		String[] columnNames = {"First Name",
 								"Last Name",
 								"Email",
 								"Phone",
 								"Address"};
-		
+
 		Object[][] data = {
 			{"Kathy", "Smith", "k.smith@gmail.com", "00447239437009", "Milton Keynes"},
 			{"Sonia", "Newman", "s.newman@gmail.com", "00447847205234", "London"},
@@ -235,7 +259,7 @@ public class MainWindow extends JFrame implements ActionListener {
 			{"Robbie", "Bayes", "r.a.b@gmail.com", "00447987654535", "Bletchley"},
 			{"Harriet", "Cornish", "h.cornish@gmail.com", "00447887776665", "Milton Keynes"}
 		};
-		
+
 		JTable table = new JTable(data, columnNames);
 		JScrollPane scrollPane = new JScrollPane(table);
 		table.setFillsViewportHeight(true);
@@ -243,10 +267,10 @@ public class MainWindow extends JFrame implements ActionListener {
 		panel.add(scrollPane);
 		return panel;
 	}
-	
+
 	/**
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	private JScrollPane createDetailsPanel() {
 		constraintsMain.gridx = 2;
@@ -259,8 +283,8 @@ public class MainWindow extends JFrame implements ActionListener {
 		this.constraintsNested.weightx = this.constraintsNested.weighty = 1.0;
 		panel.setLayout(this.layoutNested);
 		panel.revalidate();
-		
-		this.constraintsNested.gridx = 0;	
+
+		this.constraintsNested.gridx = 0;
 		this.constraintsNested.gridheight = 2;
 		this.constraintsNested.weighty = 0.0;
 		this.constraintsNested.anchor = GridBagConstraints.NORTHEAST;
@@ -271,8 +295,8 @@ public class MainWindow extends JFrame implements ActionListener {
 		this.layoutNested.setConstraints(portraitPanel, this.constraintsNested);
 		panel.add(portraitPanel);
 		panel.revalidate();
-		
-		this.constraintsNested.gridx = 1;	
+
+		this.constraintsNested.gridx = 1;
 		this.constraintsNested.gridheight = 1;
 		this.constraintsNested.anchor = GridBagConstraints.NORTHWEST;
 		JPanel namePanel = new JPanel();
@@ -281,9 +305,9 @@ public class MainWindow extends JFrame implements ActionListener {
 		this.layoutNested.setConstraints(namePanel, this.constraintsNested);
 		panel.add(namePanel);
 		panel.revalidate();
-		
+
 		this.constraintsNested.gridy = 1;
-		this.constraintsNested.gridx = 1;	
+		this.constraintsNested.gridx = 1;
 		this.constraintsNested.gridheight = 1;
 		JLabel nameNote = new JLabel("Study Saturday ... :(");
 		JPanel nameNotePanel = new JPanel();
@@ -291,7 +315,7 @@ public class MainWindow extends JFrame implements ActionListener {
 		this.layoutNested.setConstraints(nameNotePanel, this.constraintsNested);
 		panel.add(nameNotePanel);
 		panel.revalidate();
-		
+
 		this.constraintsNested.gridy = 3;
 		this.constraintsNested.gridx = 0;
 		this.constraintsNested.anchor = GridBagConstraints.EAST;
@@ -301,7 +325,7 @@ public class MainWindow extends JFrame implements ActionListener {
 		this.layoutNested.setConstraints(emailLabelPanel, this.constraintsNested);
 		panel.add(emailLabelPanel);
 		panel.revalidate();
-		
+
 		this.constraintsNested.gridy = 3;
 		this.constraintsNested.gridx = 1;
 		this.constraintsNested.anchor = GridBagConstraints.WEST;
@@ -311,7 +335,7 @@ public class MainWindow extends JFrame implements ActionListener {
 		this.layoutNested.setConstraints(emailPanel, this.constraintsNested);
 		panel.add(emailPanel);
 		panel.revalidate();
-		
+
 		this.constraintsNested.gridy = 4;
 		this.constraintsNested.gridx = 0;
 		this.constraintsNested.anchor = GridBagConstraints.EAST;
@@ -321,7 +345,7 @@ public class MainWindow extends JFrame implements ActionListener {
 		this.layoutNested.setConstraints(chatLabelPanel, this.constraintsNested);
 		panel.add(chatLabelPanel);
 		panel.revalidate();
-		
+
 		this.constraintsNested.gridy = 4;
 		this.constraintsNested.gridx = 1;
 		this.constraintsNested.anchor = GridBagConstraints.WEST;
@@ -331,7 +355,7 @@ public class MainWindow extends JFrame implements ActionListener {
 		this.layoutNested.setConstraints(chatPanel, this.constraintsNested);
 		panel.add(chatPanel);
 		panel.revalidate();
-		
+
 		this.constraintsNested.gridy = 5;
 		this.constraintsNested.gridx = 0;
 		this.constraintsNested.anchor = GridBagConstraints.EAST;
@@ -341,7 +365,7 @@ public class MainWindow extends JFrame implements ActionListener {
 		this.layoutNested.setConstraints(workLabelPanel, this.constraintsNested);
 		panel.add(workLabelPanel);
 		panel.revalidate();
-		
+
 		this.constraintsNested.gridy = 5;
 		this.constraintsNested.gridx = 1;
 		this.constraintsNested.anchor = GridBagConstraints.WEST;
@@ -351,7 +375,7 @@ public class MainWindow extends JFrame implements ActionListener {
 		this.layoutNested.setConstraints(workPanel, this.constraintsNested);
 		panel.add(workPanel);
 		panel.revalidate();
-		
+
 		this.constraintsNested.gridy = 6;
 		this.constraintsNested.gridx = 0;
 		this.constraintsNested.anchor = GridBagConstraints.EAST;
@@ -361,7 +385,7 @@ public class MainWindow extends JFrame implements ActionListener {
 		this.layoutNested.setConstraints(homeLabelPanel, this.constraintsNested);
 		panel.add(homeLabelPanel);
 		panel.revalidate();
-		
+
 		this.constraintsNested.gridy = 6;
 		this.constraintsNested.gridx = 1;
 		this.constraintsNested.anchor = GridBagConstraints.WEST;
@@ -371,7 +395,7 @@ public class MainWindow extends JFrame implements ActionListener {
 		this.layoutNested.setConstraints(homePanel, this.constraintsNested);
 		panel.add(homePanel);
 		panel.revalidate();
-		
+
 		this.constraintsNested.gridy = 7;
 		this.constraintsNested.gridx = 0;
 		this.constraintsNested.anchor = GridBagConstraints.EAST;
@@ -381,7 +405,7 @@ public class MainWindow extends JFrame implements ActionListener {
 		this.layoutNested.setConstraints(bdayLabelPanel, this.constraintsNested);
 		panel.add(bdayLabelPanel);
 		panel.revalidate();
-		
+
 		this.constraintsNested.gridy = 7;
 		this.constraintsNested.gridx = 1;
 		this.constraintsNested.anchor = GridBagConstraints.WEST;
@@ -391,7 +415,7 @@ public class MainWindow extends JFrame implements ActionListener {
 		this.layoutNested.setConstraints(bdayPanel, this.constraintsNested);
 		panel.add(bdayPanel);
 		panel.revalidate();
-		
+
 		this.constraintsNested.gridy = 8;
 		this.constraintsNested.gridx = 0;
 		this.constraintsNested.anchor = GridBagConstraints.EAST;
@@ -401,7 +425,7 @@ public class MainWindow extends JFrame implements ActionListener {
 		this.layoutNested.setConstraints(addressLabelPanel, this.constraintsNested);
 		panel.add(addressLabelPanel);
 		panel.revalidate();
-		
+
 		this.constraintsNested.gridy = 8;
 		this.constraintsNested.gridx = 1;
 		this.constraintsNested.anchor = GridBagConstraints.WEST;
@@ -417,7 +441,7 @@ public class MainWindow extends JFrame implements ActionListener {
 		this.layoutNested.setConstraints(addressPanel, this.constraintsNested);
 		panel.add(addressPanel);
 		panel.revalidate();
-		
+
 		this.constraintsNested.gridy = 9;
 		this.constraintsNested.gridx = 0;
 		this.constraintsNested.anchor = GridBagConstraints.EAST;
@@ -427,7 +451,7 @@ public class MainWindow extends JFrame implements ActionListener {
 		this.layoutNested.setConstraints(noteLabelPanel, this.constraintsNested);
 		panel.add(noteLabelPanel);
 		panel.revalidate();
-		
+
 		this.constraintsNested.gridy = 9;
 		this.constraintsNested.gridx = 1;
 		this.constraintsNested.anchor = GridBagConstraints.WEST;
@@ -442,13 +466,13 @@ public class MainWindow extends JFrame implements ActionListener {
 		this.layoutNested.setConstraints(notePanel, this.constraintsNested);
 		panel.add(notePanel);
 		panel.revalidate();
-		
+
 		JScrollPane panelScroll = new JScrollPane(panel);
 		this.constraintsMain.anchor = GridBagConstraints.NORTH;
 		layoutMain.setConstraints(panelScroll, constraintsMain);
 		return panelScroll;
 	}
-	
+
 	/** Returns an ImageIcon, or null if the path was invalid. */
     protected static ImageIcon createImageIcon(String path) {
 		try {
@@ -467,12 +491,12 @@ public class MainWindow extends JFrame implements ActionListener {
 		}
 		return null;
     }
-	
+
 	/**
-	 * Method binding functionality to difference actions performed (e.g. if button 
+	 * Method binding functionality to difference actions performed (e.g. if button
 	 * was pressed etc.).
-	 * 
-	 * @param e 
+	 *
+	 * @param e
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -484,11 +508,11 @@ public class MainWindow extends JFrame implements ActionListener {
 			System.exit(0);
 		}
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param title
-	 * @return 
+	 * @return
 	 */
 	private JPanel createColumn(String title) {
 		JPanel panel = new JPanel();
