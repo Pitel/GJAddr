@@ -75,7 +75,7 @@ public class MainWindow extends JFrame implements ActionListener {
 		MultiSplitPane multiSplitPane = new MultiSplitPane();
 		multiSplitPane.getMultiSplitLayout().setModel(model);
 		multiSplitPane.add(groupPanel(), "groups");
-		multiSplitPane.add(new JButton("Contacts"), "contacts");
+		multiSplitPane.add(contactsPanel(), "contacts");
 		multiSplitPane.add(new JButton("Detail"), "detail");
 		container.add(multiSplitPane, BorderLayout.CENTER);
 		this.pack();
@@ -134,6 +134,37 @@ public class MainWindow extends JFrame implements ActionListener {
 		return panel;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
+	private JPanel contactsPanel() {
+		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
+		JLabel label = new JLabel("Contacts");
+		label.setAlignmentX(Component.CENTER_ALIGNMENT);
+		panel.add(label);
+		String[] columnNames = {"First Name", "Last Name", "Email", "Phone", "Address"};
+		Object[][] data = {
+			{"Kathy", "Smith", "k.smith@gmail.com", "00447239437009", "Milton Keynes"},
+			{"Sonia", "Newman", "s.newman@gmail.com", "00447847205234", "London"},
+			{"Anthony", "Davenport", "a.davenport@gmail.com", "00447037482354", "Birmingham"},
+			{"Isabella", "Distinto", "i.distinto@gmail.com", "00447019283775", "Milton Keynes"},
+			{"Gioele", "Barabucci", "g.barabucci@gmail.com", "00447019283937", "Northampton"},
+			{"Miriam", "Fernandez", "m.fernandez@gmail.com", "00447847563245", "Leighton Buzzard"},
+			{"Hassan", "Saif", "h.saif@gmail.com", "00447039485736", "Bletchley"},
+			{"Bogdan", "Kostov", "b.kostov@gmail.com", "00447958575646", "Milton Keynes"},
+			{"Robbie", "Bayes", "r.a.b@gmail.com", "00447987654535", "Bletchley"},
+			{"Harriet", "Cornish", "h.cornish@gmail.com", "00447887776665", "Milton Keynes"}
+		};
+		JTable table = new JTable(data, columnNames);
+		table.setAutoCreateRowSorter(true);
+		JScrollPane scrollPane = new JScrollPane(table);
+		//table.setFillsViewportHeight(true);
+		panel.add(scrollPane);
+		return panel;
+	}
+
 	//
 	// Stuff below is old!
 	//
@@ -164,7 +195,7 @@ public class MainWindow extends JFrame implements ActionListener {
 		container.add(this.createGroupsLabel());
 		container.add(this.createGroupsColumn());
 		container.add(this.createContactsSearchField());
-		container.add(this.createContactsTable());
+		//container.add(this.createContactsTable());
 		container.add(this.createDetailsPanel());
 	}
 
@@ -257,47 +288,6 @@ public class MainWindow extends JFrame implements ActionListener {
 		panel.add(add);
 		panel.add(search);
 		this.layoutMain.setConstraints(panel, constraintsMain);
-		return panel;
-	}
-
-	/**
-	 *
-	 * @return
-	 */
-	private JPanel createContactsTable() {
-		constraintsMain.gridx = 1;
-		constraintsMain.gridy = 1;
-		constraintsMain.ipady = 0;
-		constraintsMain.weightx = 1.0;
-		constraintsMain.weighty = 1.0;
-		JPanel panel = new JPanel();
-		panel.setLayout(this.layoutNested);
-		layoutMain.setConstraints(panel, constraintsMain);
-
-		String[] columnNames = {"First Name",
-								"Last Name",
-								"Email",
-								"Phone",
-								"Address"};
-
-		Object[][] data = {
-			{"Kathy", "Smith", "k.smith@gmail.com", "00447239437009", "Milton Keynes"},
-			{"Sonia", "Newman", "s.newman@gmail.com", "00447847205234", "London"},
-			{"Anthony", "Davenport", "a.davenport@gmail.com", "00447037482354", "Birmingham"},
-			{"Isabella", "Distinto", "i.distinto@gmail.com", "00447019283775", "Milton Keynes"},
-			{"Gioele", "Barabucci", "g.barabucci@gmail.com", "00447019283937", "Northampton"},
-			{"Miriam", "Fernandez", "m.fernandez@gmail.com", "00447847563245", "Leighton Buzzard"},
-			{"Hassan", "Saif", "h.saif@gmail.com", "00447039485736", "Bletchley"},
-			{"Bogdan", "Kostov", "b.kostov@gmail.com", "00447958575646", "Milton Keynes"},
-			{"Robbie", "Bayes", "r.a.b@gmail.com", "00447987654535", "Bletchley"},
-			{"Harriet", "Cornish", "h.cornish@gmail.com", "00447887776665", "Milton Keynes"}
-		};
-
-		JTable table = new JTable(data, columnNames);
-		JScrollPane scrollPane = new JScrollPane(table);
-		table.setFillsViewportHeight(true);
-		this.layoutNested.setConstraints(scrollPane, this.constraintsNested);
-		panel.add(scrollPane);
 		return panel;
 	}
 
