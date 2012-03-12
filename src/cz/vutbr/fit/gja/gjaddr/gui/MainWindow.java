@@ -57,12 +57,12 @@ public class MainWindow extends JFrame implements ActionListener {
 			LoggerFactory.getLogger(MainWindow.class).error("Error setting native LAF: {}", e);
 		}
 		this.setJMenuBar(this.createMenu());
-		JPanel mainPanel = new JPanel(new BorderLayout());
+		Container container = this.getContentPane();
 		JToolBar toolbar = new JToolBar();
 		toolbar.setFloatable(false);
 		toolbar.add(new JButton("+"));
 		toolbar.add(new JTextField("Search"));
-		mainPanel.add(toolbar, BorderLayout.PAGE_START);
+		container.add(toolbar, BorderLayout.NORTH);
 		Split model = new Split();
 		Leaf groupsLeaf = new Leaf("groups");
 		Leaf contactsLeaf = new Leaf("contacts");
@@ -76,9 +76,7 @@ public class MainWindow extends JFrame implements ActionListener {
 		multiSplitPane.add(new JButton("Groups"), "groups");
 		multiSplitPane.add(new JButton("Contacts"), "contacts");
 		multiSplitPane.add(new JButton("Detail"), "detail");
-		mainPanel.add(multiSplitPane, BorderLayout.CENTER);
-		//mainPanel.add(new JLabel("Status"), BorderLayout.PAGE_END);
-		this.setContentPane(mainPanel);
+		container.add(multiSplitPane, BorderLayout.CENTER);
 		this.pack();
 		this.setLocationRelativeTo(null);
 	}
