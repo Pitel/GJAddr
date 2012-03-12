@@ -1,5 +1,7 @@
 package cz.vutbr.fit.gja.gjaddr.gui;
 
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.Group;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,7 +26,7 @@ import org.slf4j.LoggerFactory;
  * @author Bc. Jan Kaláb <xkalab00@stud.fit,vutbr.cz>
  */
 public class MainWindow extends JFrame implements ActionListener {
-
+	private Database db = Database.getInstance();
 	/**
 	 * Items of menu "File".
 	 */
@@ -50,17 +52,19 @@ public class MainWindow extends JFrame implements ActionListener {
 	 */
 	public MainWindow() {
 		super("GJAddr");
+		cz.vutbr.fit.gja.gjaddr.persistancelayer.TestDatabase.fillTestingData(db);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
 			LoggerFactory.getLogger(MainWindow.class).error("Error setting native LAF: {}", e);
 		}
+		this.setIconImage(new ImageIcon(getClass().getResource("/res/icon.png")).getImage());
 		this.setJMenuBar(this.createMenu());
 		Container container = this.getContentPane();
 		JToolBar toolbar = new JToolBar();
 		toolbar.setFloatable(false);
-		toolbar.add(new JButton("+"));
+		toolbar.add(new JButton(new ImageIcon(getClass().getResource("/res/plus.png"), "+")));
 		toolbar.add(new JTextField("Search"));
 		container.add(toolbar, BorderLayout.NORTH);
 		Split model = new Split();
@@ -73,13 +77,96 @@ public class MainWindow extends JFrame implements ActionListener {
 		model.setChildren(Arrays.asList(groupsLeaf, new Divider(), contactsLeaf, new Divider(), detailLeaf));
 		MultiSplitPane multiSplitPane = new MultiSplitPane();
 		multiSplitPane.getMultiSplitLayout().setModel(model);
-		multiSplitPane.add(new JButton("Groups"), "groups");
-		multiSplitPane.add(new JButton("Contacts"), "contacts");
+		multiSplitPane.add(groupPanel(), "groups");
+		multiSplitPane.add(contactsPanel(), "contacts");
 		multiSplitPane.add(new JButton("Detail"), "detail");
 		container.add(multiSplitPane, BorderLayout.CENTER);
 		this.pack();
 		this.setLocationRelativeTo(null);
 	}
+
+	/**
+	 * Create and return application menu.
+	 *
+	 * @return MenuBar
+	 */
+	private JMenuBar createMenu() {
+		JMenuBar menuBar = new JMenuBar();
+		JMenu fileMenu = new JMenu("File");
+		menuBar.add(fileMenu);
+		JMenu helpMenu = new JMenu("Help");
+		menuBar.add(helpMenu);
+
+		this.menuItemClose = new JMenuItem("Quit", KeyEvent.VK_Q);
+		this.menuItemClose.addActionListener(this);
+		fileMenu.add(this.menuItemClose);
+
+		this.menuItemHelp = new JMenuItem("Help", KeyEvent.VK_H);
+		this.menuItemHelp.addActionListener(this);
+		helpMenu.add(this.menuItemHelp);
+
+		this.menuItemAbout = new JMenuItem("About", KeyEvent.VK_A);
+		this.menuItemAbout.addActionListener(this);
+		helpMenu.add(this.menuItemAbout);
+
+		return menuBar;
+	}
+
+	/**
+	 * Panel with groups
+	 */
+	private JPanel groupPanel() {
+		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
+		JLabel label = new JLabel("Groups");
+		label.setAlignmentX(Component.CENTER_ALIGNMENT);
+		panel.add(label);
+		DefaultListModel listModel = new DefaultListModel();
+		listModel.addElement("All");
+		for (Group g : db.getAllGroups()) {
+			listModel.addElement(g.getName());
+		}
+		JList list = new JList(listModel);
+		list.setSelectedIndex(0);
+		JScrollPane listScrollPane = new JScrollPane(list);
+		panel.add(listScrollPane);
+		return panel;
+	}
+
+	/**
+	 *
+	 * @return
+	 */
+	private JPanel contactsPanel() {
+		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
+		JLabel label = new JLabel("Contacts");
+		label.setAlignmentX(Component.CENTER_ALIGNMENT);
+		panel.add(label);
+		String[] columnNames = {"First Name", "Last Name", "Email", "Phone", "Address"};
+		Object[][] data = {
+			{"Kathy", "Smith", "k.smith@gmail.com", "00447239437009", "Milton Keynes"},
+			{"Sonia", "Newman", "s.newman@gmail.com", "00447847205234", "London"},
+			{"Anthony", "Davenport", "a.davenport@gmail.com", "00447037482354", "Birmingham"},
+			{"Isabella", "Distinto", "i.distinto@gmail.com", "00447019283775", "Milton Keynes"},
+			{"Gioele", "Barabucci", "g.barabucci@gmail.com", "00447019283937", "Northampton"},
+			{"Miriam", "Fernandez", "m.fernandez@gmail.com", "00447847563245", "Leighton Buzzard"},
+			{"Hassan", "Saif", "h.saif@gmail.com", "00447039485736", "Bletchley"},
+			{"Bogdan", "Kostov", "b.kostov@gmail.com", "00447958575646", "Milton Keynes"},
+			{"Robbie", "Bayes", "r.a.b@gmail.com", "00447987654535", "Bletchley"},
+			{"Harriet", "Cornish", "h.cornish@gmail.com", "00447887776665", "Milton Keynes"}
+		};
+		JTable table = new JTable(data, columnNames);
+		table.setAutoCreateRowSorter(true);
+		JScrollPane scrollPane = new JScrollPane(table);
+		//table.setFillsViewportHeight(true);
+		panel.add(scrollPane);
+		return panel;
+	}
+
+	//
+	// Stuff below is old!
+	//
 
 	/**
 	 * Initialize the application window -- set layout and place components inside it.
@@ -107,36 +194,8 @@ public class MainWindow extends JFrame implements ActionListener {
 		container.add(this.createGroupsLabel());
 		container.add(this.createGroupsColumn());
 		container.add(this.createContactsSearchField());
-		container.add(this.createContactsTable());
+		//container.add(this.createContactsTable());
 		container.add(this.createDetailsPanel());
-	}
-
-	/**
-	 * Create and return application menu.
-	 *
-	 * @return
-	 */
-	private JMenuBar createMenu() {
-		JMenuBar menuBar = new JMenuBar();
-
-		JMenu fileMenu = new JMenu("File");
-		menuBar.add(fileMenu);
-		JMenu helpMenu = new JMenu("Help");
-		menuBar.add(helpMenu);
-
-		this.menuItemClose = new JMenuItem("Quit", KeyEvent.VK_Q);
-		this.menuItemClose.addActionListener(this);
-		fileMenu.add(this.menuItemClose);
-
-		this.menuItemHelp = new JMenuItem("Help", KeyEvent.VK_H);
-		this.menuItemHelp.addActionListener(this);
-		helpMenu.add(this.menuItemHelp);
-
-		this.menuItemAbout = new JMenuItem("About", KeyEvent.VK_A);
-		this.menuItemAbout.addActionListener(this);
-		helpMenu.add(this.menuItemAbout);
-
-		return menuBar;
 	}
 
 	/**
@@ -228,47 +287,6 @@ public class MainWindow extends JFrame implements ActionListener {
 		panel.add(add);
 		panel.add(search);
 		this.layoutMain.setConstraints(panel, constraintsMain);
-		return panel;
-	}
-
-	/**
-	 *
-	 * @return
-	 */
-	private JPanel createContactsTable() {
-		constraintsMain.gridx = 1;
-		constraintsMain.gridy = 1;
-		constraintsMain.ipady = 0;
-		constraintsMain.weightx = 1.0;
-		constraintsMain.weighty = 1.0;
-		JPanel panel = new JPanel();
-		panel.setLayout(this.layoutNested);
-		layoutMain.setConstraints(panel, constraintsMain);
-
-		String[] columnNames = {"First Name",
-								"Last Name",
-								"Email",
-								"Phone",
-								"Address"};
-
-		Object[][] data = {
-			{"Kathy", "Smith", "k.smith@gmail.com", "00447239437009", "Milton Keynes"},
-			{"Sonia", "Newman", "s.newman@gmail.com", "00447847205234", "London"},
-			{"Anthony", "Davenport", "a.davenport@gmail.com", "00447037482354", "Birmingham"},
-			{"Isabella", "Distinto", "i.distinto@gmail.com", "00447019283775", "Milton Keynes"},
-			{"Gioele", "Barabucci", "g.barabucci@gmail.com", "00447019283937", "Northampton"},
-			{"Miriam", "Fernandez", "m.fernandez@gmail.com", "00447847563245", "Leighton Buzzard"},
-			{"Hassan", "Saif", "h.saif@gmail.com", "00447039485736", "Bletchley"},
-			{"Bogdan", "Kostov", "b.kostov@gmail.com", "00447958575646", "Milton Keynes"},
-			{"Robbie", "Bayes", "r.a.b@gmail.com", "00447987654535", "Bletchley"},
-			{"Harriet", "Cornish", "h.cornish@gmail.com", "00447887776665", "Milton Keynes"}
-		};
-
-		JTable table = new JTable(data, columnNames);
-		JScrollPane scrollPane = new JScrollPane(table);
-		table.setFillsViewportHeight(true);
-		this.layoutNested.setConstraints(scrollPane, this.constraintsNested);
-		panel.add(scrollPane);
 		return panel;
 	}
 
