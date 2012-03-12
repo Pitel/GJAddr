@@ -56,11 +56,12 @@ public class MainWindow extends JFrame implements ActionListener {
 		} catch (Exception e) {
 			LoggerFactory.getLogger(MainWindow.class).error("Error setting native LAF: {}", e);
 		}
+		this.setIconImage(new ImageIcon(getClass().getResource("/res/icon.png")).getImage());
 		this.setJMenuBar(this.createMenu());
 		Container container = this.getContentPane();
 		JToolBar toolbar = new JToolBar();
 		toolbar.setFloatable(false);
-		toolbar.add(new JButton("+"));
+		toolbar.add(new JButton(new ImageIcon(getClass().getResource("/res/plus.png"), "+")));
 		toolbar.add(new JTextField("Search"));
 		container.add(toolbar, BorderLayout.NORTH);
 		Split model = new Split();
