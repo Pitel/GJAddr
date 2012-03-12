@@ -74,13 +74,69 @@ public class MainWindow extends JFrame implements ActionListener {
 		model.setChildren(Arrays.asList(groupsLeaf, new Divider(), contactsLeaf, new Divider(), detailLeaf));
 		MultiSplitPane multiSplitPane = new MultiSplitPane();
 		multiSplitPane.getMultiSplitLayout().setModel(model);
-		multiSplitPane.add(new JButton("Groups"), "groups");
+		multiSplitPane.add(groupPanel(), "groups");
 		multiSplitPane.add(new JButton("Contacts"), "contacts");
 		multiSplitPane.add(new JButton("Detail"), "detail");
 		container.add(multiSplitPane, BorderLayout.CENTER);
 		this.pack();
 		this.setLocationRelativeTo(null);
 	}
+
+	/**
+	 * Create and return application menu.
+	 *
+	 * @return MenuBar
+	 */
+	private JMenuBar createMenu() {
+		JMenuBar menuBar = new JMenuBar();
+		JMenu fileMenu = new JMenu("File");
+		menuBar.add(fileMenu);
+		JMenu helpMenu = new JMenu("Help");
+		menuBar.add(helpMenu);
+
+		this.menuItemClose = new JMenuItem("Quit", KeyEvent.VK_Q);
+		this.menuItemClose.addActionListener(this);
+		fileMenu.add(this.menuItemClose);
+
+		this.menuItemHelp = new JMenuItem("Help", KeyEvent.VK_H);
+		this.menuItemHelp.addActionListener(this);
+		helpMenu.add(this.menuItemHelp);
+
+		this.menuItemAbout = new JMenuItem("About", KeyEvent.VK_A);
+		this.menuItemAbout.addActionListener(this);
+		helpMenu.add(this.menuItemAbout);
+
+		return menuBar;
+	}
+
+	/**
+	 * Panel with groups
+	 */
+	private JPanel groupPanel() {
+		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
+		JLabel label = new JLabel("Groups");
+		label.setAlignmentX(Component.CENTER_ALIGNMENT);
+		panel.add(label);
+		DefaultListModel listModel = new DefaultListModel();
+		listModel.addElement("All");
+		listModel.addElement("Work");
+		listModel.addElement("Family");
+		listModel.addElement("Friends");
+		listModel.addElement("Acquaintances");
+		listModel.addElement("School");
+		listModel.addElement("Tennis class");
+		listModel.addElement("Others");
+		JList list = new JList(listModel);
+		list.setSelectedIndex(0);
+		JScrollPane listScrollPane = new JScrollPane(list);
+		panel.add(listScrollPane);
+		return panel;
+	}
+
+	//
+	// Stuff below is old!
+	//
 
 	/**
 	 * Initialize the application window -- set layout and place components inside it.
@@ -110,34 +166,6 @@ public class MainWindow extends JFrame implements ActionListener {
 		container.add(this.createContactsSearchField());
 		container.add(this.createContactsTable());
 		container.add(this.createDetailsPanel());
-	}
-
-	/**
-	 * Create and return application menu.
-	 *
-	 * @return
-	 */
-	private JMenuBar createMenu() {
-		JMenuBar menuBar = new JMenuBar();
-
-		JMenu fileMenu = new JMenu("File");
-		menuBar.add(fileMenu);
-		JMenu helpMenu = new JMenu("Help");
-		menuBar.add(helpMenu);
-
-		this.menuItemClose = new JMenuItem("Quit", KeyEvent.VK_Q);
-		this.menuItemClose.addActionListener(this);
-		fileMenu.add(this.menuItemClose);
-
-		this.menuItemHelp = new JMenuItem("Help", KeyEvent.VK_H);
-		this.menuItemHelp.addActionListener(this);
-		helpMenu.add(this.menuItemHelp);
-
-		this.menuItemAbout = new JMenuItem("About", KeyEvent.VK_A);
-		this.menuItemAbout.addActionListener(this);
-		helpMenu.add(this.menuItemAbout);
-
-		return menuBar;
 	}
 
 	/**
