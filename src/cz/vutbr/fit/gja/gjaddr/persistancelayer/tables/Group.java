@@ -7,6 +7,10 @@ package cz.vutbr.fit.gja.gjaddr.persistancelayer.tables;
  */
 public class Group {
 	private int id;
+
+	public int getId() {
+		return id;
+	}
 	private String name;
 
 	public String getName() {

@@ -18,6 +18,8 @@ public class TestDatabase {
 		fillAdresses(db);
 		fillCustom(db);
 		assignContactsToGroup(db);
+		
+		db.loadDataFromDb();
 	}
 
 	private static void fillContacts(Database db) {

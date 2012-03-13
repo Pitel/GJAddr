@@ -7,8 +7,6 @@ gja.db
 # NetBeans
 lib/CopyLibs
 lib/nblibraries.properties
-manifest.mf
-nbproject
 nbbuild.xml
 log
 /dist/

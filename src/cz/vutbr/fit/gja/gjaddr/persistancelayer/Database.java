@@ -267,6 +267,57 @@ public class Database implements IDatabase {
 		return this.filterContacts(groupId);		
 	}
 	
+	@Override
+	public List<Group> addNewGroup(String name) {
+		System.out.println("addNewGroup");
+		System.out.println("------------------");			
+		
+		this.executeUpdate("INSERT INTO category(name) VALUES ('" + name + "');");
+		
+		return this.groups = this.loadGroups();
+	}		
+	
+	@Override
+	public List<Group> updateGroup(Group group) {
+		System.out.println("updateGroup");
+		System.out.println("------------------");			
+		
+		this.executeUpdate("UPDATE category SET Name='" + group.getName() 
+						          + "' WHERE id='" + group.getId() + "';");
+		
+		return this.groups = this.loadGroups();
+	}			
+	
+	@Override
+	public List<Group> removeGroups(List<Integer> ids) {
+		System.out.println("removeGroups");
+		System.out.println("------------------");			
+		
+		for (int id : ids) {
+			this.executeUpdate("DELETE FROM category WHERE id = " + id + ";");
+		}
+		
+		for (Group g : this.filterGroups(ids)) {
+			this.groups.remove(g);
+		}
+		
+		return this.groups;
+	}	
+	
+	private List<Group> filterGroups(List<Integer> ids) {
+		List<Group> specificGroups = new ArrayList<Group>();
+		
+		for (Group group : this.groups)
+		{
+			if (ids.contains(group.getId()))
+			{
+				specificGroups.add(group);
+			}
+		}		
+		
+		return specificGroups;
+	}
+	
 	private List<Contact> filterContacts (List<Integer> ids) {
 		List<Contact> specificContacts = new ArrayList<Contact>();
 		
@@ -304,7 +355,7 @@ public class Database implements IDatabase {
 		return specificContacts;
 	}	
 			
-	private void loadDataFromDb()	{
+	void loadDataFromDb()	{
 		List<Contact> contacts  = this.loadContacts();
 		this.groups = this.loadGroups();
 		this.groupContacts = this.loadGroupContacts();
