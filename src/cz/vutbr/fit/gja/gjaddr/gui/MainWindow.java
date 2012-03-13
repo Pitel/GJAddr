@@ -1,7 +1,7 @@
 package cz.vutbr.fit.gja.gjaddr.gui;
 
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
-import cz.vutbr.fit.gja.gjaddr.persistancelayer.Group;
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.tables.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -52,7 +52,7 @@ public class MainWindow extends JFrame implements ActionListener {
 	 */
 	public MainWindow() {
 		super("GJAddr");
-		cz.vutbr.fit.gja.gjaddr.persistancelayer.TestDatabase.fillTestingData(db);
+		cz.vutbr.fit.gja.gjaddr.persistancelayer.TestDatabase.fillTestingData(db);	//DEBUG
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
