@@ -2,6 +2,7 @@
 *.7z
 build
 doc/javadoc
+gja.db
 
 # NetBeans
 lib/CopyLibs
