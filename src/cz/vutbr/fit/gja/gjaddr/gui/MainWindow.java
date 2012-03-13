@@ -14,10 +14,11 @@ import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import org.jdesktop.swingx.MultiSplitLayout;
 import org.jdesktop.swingx.MultiSplitLayout.*;
 import org.jdesktop.swingx.MultiSplitPane;
-import org.slf4j.LoggerFactory;
 
 /**
  * Main application window.
@@ -25,39 +26,25 @@ import org.slf4j.LoggerFactory;
  * @author xherrm01
  * @author Bc. Jan Kaláb <xkalab00@stud.fit,vutbr.cz>
  */
-public class MainWindow extends JFrame implements ActionListener {
-	private Database db = Database.getInstance();
-	/**
-	 * Items of menu "File".
-	 */
-	private JMenuItem menuItemClose;
+public class MainWindow extends JFrame implements ActionListener, DocumentListener {
+	private final Database db = Database.getInstance();
+	private JMenuItem menuItemClose, menuItemHelp, menuItemAbout;
+	private final JTextField searchField = new JTextField();
+
+	GridBagLayout layoutMain, layoutNested;	//Delete
+	GridBagConstraints constraintsMain, constraintsNested;	//Delete
 
 	/**
-	 * Items of menu help.
-	 */
-	private JMenuItem menuItemHelp, menuItemAbout;
-
-	/**
-	 * Layouts.
-	 */
-	GridBagLayout layoutMain, layoutNested;
-
-	/**
-	 * Constraints for gridBagLayout.
-	 */
-	GridBagConstraints constraintsMain, constraintsNested;
-
-	/**
-	 * Class constructor. Will create the window.
+	 * Creates the main window.
 	 */
 	public MainWindow() {
 		super("GJAddr");
-		cz.vutbr.fit.gja.gjaddr.persistancelayer.TestDatabase.fillTestingData(db);	//DEBUG
+		//cz.vutbr.fit.gja.gjaddr.persistancelayer.TestDatabase.fillTestingData(db);	//DEBUG
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
-			LoggerFactory.getLogger(MainWindow.class).error("Error setting native LAF: {}", e);
+			System.err.println(e.toString());
 		}
 		this.setIconImage(new ImageIcon(getClass().getResource("/res/icon.png")).getImage());
 		this.setJMenuBar(this.createMenu());
@@ -65,7 +52,8 @@ public class MainWindow extends JFrame implements ActionListener {
 		JToolBar toolbar = new JToolBar();
 		toolbar.setFloatable(false);
 		toolbar.add(new JButton(new ImageIcon(getClass().getResource("/res/plus.png"), "+")));
-		toolbar.add(new JTextField("Search"));
+		searchField.getDocument().addDocumentListener(this);
+		toolbar.add(searchField);
 		container.add(toolbar, BorderLayout.NORTH);
 		Split model = new Split();
 		Leaf groupsLeaf = new Leaf("groups");
@@ -93,11 +81,14 @@ public class MainWindow extends JFrame implements ActionListener {
 	private JMenuBar createMenu() {
 		JMenuBar menuBar = new JMenuBar();
 		JMenu fileMenu = new JMenu("File");
+		fileMenu.setMnemonic(KeyEvent.VK_F);
 		menuBar.add(fileMenu);
 		JMenu helpMenu = new JMenu("Help");
+		helpMenu.setMnemonic(KeyEvent.VK_H);
 		menuBar.add(helpMenu);
 
 		this.menuItemClose = new JMenuItem("Quit", KeyEvent.VK_Q);
+		this.menuItemClose.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK));
 		this.menuItemClose.addActionListener(this);
 		fileMenu.add(this.menuItemClose);
 
@@ -114,6 +105,8 @@ public class MainWindow extends JFrame implements ActionListener {
 
 	/**
 	 * Panel with groups
+	 *
+	 * @return Panel
 	 */
 	private JPanel groupPanel() {
 		JPanel panel = new JPanel();
@@ -134,8 +127,9 @@ public class MainWindow extends JFrame implements ActionListener {
 	}
 
 	/**
+	 * Panel with contasts table
 	 *
-	 * @return
+	 * @return Panel
 	 */
 	private JPanel contactsPanel() {
 		JPanel panel = new JPanel();
@@ -162,6 +156,30 @@ public class MainWindow extends JFrame implements ActionListener {
 		//table.setFillsViewportHeight(true);
 		panel.add(scrollPane);
 		return panel;
+	}
+
+	@Override
+	public void changedUpdate(DocumentEvent e) {
+		System.out.println(e.toString());
+	}
+
+	@Override
+	public void removeUpdate(DocumentEvent e) {
+		filterContacts(searchField.getText());
+	}
+
+	@Override
+	public void insertUpdate(DocumentEvent e) {
+		filterContacts(searchField.getText());
+	}
+
+	/**
+	 * Filter contacts
+	 *
+	 * @param filter Text to filer
+	 */
+	public void filterContacts(String filter) {
+		System.out.println("Filtering: " + filter);
 	}
 
 	//
@@ -505,7 +523,7 @@ public class MainWindow extends JFrame implements ActionListener {
 			if (imgURL != null) {
 				return new ImageIcon(imgURL);
 			} else {
-				LoggerFactory.getLogger(MainWindow.class).error("Couldn't find file: " + path);
+				//LoggerFactory.getLogger(MainWindow.class).error("Couldn't find file: " + path);
 				return null;
 			}
 		} catch (MalformedURLException ex) {
@@ -526,7 +544,7 @@ public class MainWindow extends JFrame implements ActionListener {
 		 * Menu item that will close the application.
 		 */
 		if (e.getSource() == this.menuItemClose) {
-			LoggerFactory.getLogger(MainWindow.class).info("Closing application.");
+			//LoggerFactory.getLogger(MainWindow.class).info("Closing application.");
 			System.exit(0);
 		}
 	}
