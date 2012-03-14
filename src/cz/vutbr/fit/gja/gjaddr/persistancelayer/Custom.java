@@ -1,10 +1,15 @@
-package cz.vutbr.fit.gja.gjaddr.persistancelayer.tables;
+package cz.vutbr.fit.gja.gjaddr.persistancelayer;
+
+import java.io.Serializable;
 
 /**
  *
  * @author Ragaj
  */
-public class Custom {
+public class Custom implements Serializable {
+	
+	static private final long serialVersionUID = 6L;
+	
 	private int id;
 	
 	private String name;
@@ -25,17 +30,10 @@ public class Custom {
 	public void setValue(String value) {
 		this.value = value;
 	}
-	
-	private int contactId;
 
-	public int getContactId() {
-		return contactId;
-	}
-
-	public Custom(int id, String name, String value, int contactId) {
+	public Custom(int id, String name, String value) {
 		this.id = id;
 		this.name = name;
 		this.value = value;
-		this.contactId = contactId;
 	}	
 }

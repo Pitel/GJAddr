@@ -1,5 +1,6 @@
-package cz.vutbr.fit.gja.gjaddr.persistancelayer.tables;
+package cz.vutbr.fit.gja.gjaddr.persistancelayer;
 
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -8,17 +9,14 @@ import java.net.URL;
  *
  * @author Bc. Radek Gajdušek <xgajdu07@stud.fit.vutbr.cz>
  */
-public class Url {
+public class Url implements Serializable {
+	
+	static private final long serialVersionUID = 6L;	
+	
 	private int id;
 
 	private int type;
 	private URL value; 
-	
-	private int contactId;
-
-	public int getContactId() {
-		return contactId;
-	}
 
 	public int getType() {
 		return type;
@@ -36,10 +34,15 @@ public class Url {
 		this.value = value;
 	}
 
-	public Url (int id, int type, String value, int contactId) throws MalformedURLException {
+	public Url (int id, int type, String value) {
 		this.id = id;
 		this.type = type;
-		this.value = new URL(value);
-		this.contactId = contactId;
+		
+		try {
+			this.value = new URL(value);
+		}
+		catch (MalformedURLException e) {
+			// TODO
+		}
 	}
 }

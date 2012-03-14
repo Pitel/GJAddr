@@ -1,7 +1,7 @@
 package cz.vutbr.fit.gja.gjaddr.gui;
 
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
-import cz.vutbr.fit.gja.gjaddr.persistancelayer.tables.*;
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.Group;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,8 +16,9 @@ import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import org.jdesktop.swingx.MultiSplitLayout;
-import org.jdesktop.swingx.MultiSplitLayout.*;
+import org.jdesktop.swingx.MultiSplitLayout.Divider;
+import org.jdesktop.swingx.MultiSplitLayout.Leaf;
+import org.jdesktop.swingx.MultiSplitLayout.Split;
 import org.jdesktop.swingx.MultiSplitPane;
 
 /**
@@ -27,7 +28,7 @@ import org.jdesktop.swingx.MultiSplitPane;
  * @author Bc. Jan Kaláb <xkalab00@stud.fit,vutbr.cz>
  */
 public class MainWindow extends JFrame implements ActionListener, DocumentListener {
-	private final Database db = Database.getInstance();
+	private final Database db = new Database();
 	private JMenuItem menuItemClose, menuItemHelp, menuItemAbout;
 	private final JTextField searchField = new JTextField();
 

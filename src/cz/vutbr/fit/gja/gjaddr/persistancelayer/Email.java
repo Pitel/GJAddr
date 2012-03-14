@@ -1,23 +1,21 @@
-package cz.vutbr.fit.gja.gjaddr.persistancelayer.tables;
+package cz.vutbr.fit.gja.gjaddr.persistancelayer;
+
+import java.io.Serializable;
 
 /**
  * One email from database representation.
  *
  * @author Bc. Radek Gajdušek <xgajdu07@stud.fit.vutbr.cz>
  */
-public class Email {
+public class Email implements Serializable {
+	
+	static private final long serialVersionUID = 6L;	
 	
 	private int id;
 	
 	private int type;
 	private String email;
 	
-	private int contactId;
-
-	public int getContactId() {
-		return contactId;
-	}
-
 	public String getEmail() {
 		return email;
 	}
@@ -34,11 +32,10 @@ public class Email {
 		this.type = type;
 	}	
 		
-	public Email(int id, int type, String email, int contactId)					
+	public Email(int id, int type, String email)					
 	{
 		this.id = id;
 		this.type = type;
 		this.email = email;
-		this.contactId = contactId;
 	}
 }

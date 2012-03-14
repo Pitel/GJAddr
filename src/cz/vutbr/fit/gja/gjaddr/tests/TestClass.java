@@ -1,10 +1,10 @@
 package cz.vutbr.fit.gja.gjaddr.tests;
 
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.Contact;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.Group;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.TestDatabase;
-import cz.vutbr.fit.gja.gjaddr.persistancelayer.tables.Contact;
-import cz.vutbr.fit.gja.gjaddr.persistancelayer.tables.Group;
-import java.io.File;
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,148 +17,89 @@ public class TestClass {
    * @param args the command line arguments
    */
   public static void main(String[] args) {
-		
-		boolean dbFileExists = (new File("gja.db")).exists();		
-			
-		// get database instance
-		Database db = Database.getInstance();
+				
+		Database db = new Database();
 
-		// fill the testing data
-		if (!dbFileExists) {
-			TestDatabase.fillTestingData(db);
-		}
+		//TestDatabase.fillTestingData(db);
+		
+		//printGroups(db.getAllGroups());
+		//printContacts(db.getAllContacts());		
+		
+//		List<Integer> spec = new ArrayList<Integer>();
+//		spec.add(2);
+//		spec.add(12);		
+//		spec.add(3);		
+//		spec.add(55);		
+//		printContacts(db.getSpecificContacts(spec));
 		
 		testAddNewGroup(db);
-		testRemoveGroup(db);		
 		testUpdateGroup(db);
-
-//		// get all contacts
-//		List<Contact> contacts = db.getAllContacts();
-//		
-//		for (Contact c: contacts) {
-//			System.out.println(c.getFirstName() + ", " + c.getSurName() + ", " + c.getNickName());	
-//		}		
-//
-//		
-//		// getAllContactsFromGroup
-//		List<Contact> contacts2 = db.getAllContactsFromGroup(2);
-//
-//		for (Contact c: contacts2) {
-//			System.out.println(c.getFirstName() + ", " + c.getSurName() + ", " + c.getNickName());
-//		}
-//
-//		System.out.println();
-//		
-//		// get specific contacts
-//		List<Integer> ids = new ArrayList<Integer>();
-//		ids.add(1);
-//		ids.add(2);
-//		
-//		List<Contact> specContact = db.getSpecificContacts(ids);		
-//		
-//		for (Contact c: specContact) {
-//			System.out.println(c.getFirstName() + ", " + c.getSurName() + ", " + c.getNickName());		
-//		}
-//		
-//		System.out.println();		
-//		
+		testRemoveGroup(db);		
 		
-// get all groups    
-////		List<Group> groups = db.getAllGroups(); 
-////		
-////		for (Group g: groups) {
-////			System.out.println(g.getName());	
-////		}		
-		
+		db.commitChanges();
   }
+	
+	private static void printGroups(List<Group> groups) {		
+		for (Group group: groups) {
+			System.out.println(group.getId() + ", " + group.getName());	
+		}		
+	}
+	
+	private static void printContacts(List<Contact> contacts) {		
+		for (Contact contact: contacts) {
+			System.out.println(contact.getId() + ", " + contact.getFirstName() + ", " + contact.getSurName() + ", " + contact.getNickName());	
+		}		
+	}	
 	
 	private static void testRemoveGroup(Database db) { 
 		
+		List<Integer> groupsToDelete = new ArrayList<Integer>();
+		groupsToDelete.add(4);			
+		groupsToDelete.add(6);			
+		groupsToDelete.add(120);			
+		
 		System.out.println();			
-		System.out.print("BEFORE: ");		
+		System.out.println("CURRENT STATE: ");		
+		
 		List<Group> groupsBefore = db.getAllGroups(); 		
-
-		for (Group g: groupsBefore) {
-			System.out.println(g.getName());	
-		}		
+		printGroups(groupsBefore);
 		
 		System.out.println();	
-		System.out.print("AFTER REMOVE: ");		
-		
-		List<Integer> groupsToDelete = new ArrayList<Integer>();
-		groupsToDelete.add(3);	
+		System.out.println("AFTER REMOVE GROUP id=4,6");		
 	
-		List<Group> newGroups = db.removeGroups(groupsToDelete);
-		
-		for (Group g: newGroups) {
-			System.out.println(g.getName());	
-		}			
-		
-		System.out.println();			
-		System.out.print("NEW QUERY: ");				
-		
-		List<Group> groupsAfter = db.getAllGroups(); 
-		
-		for (Group g: groupsAfter) {
-			System.out.println(g.getName());	
-		}				
+		List<Group> groupsAfter = db.removeGroups(groupsToDelete);		
+		printGroups(groupsAfter);	
 	}
 	
 	private static void testAddNewGroup(Database db) { 
 		
 		System.out.println();			
-		System.out.print("BEFORE: ");		
+		System.out.println("CURRENT STATE: ");		
+		
 		List<Group> groupsBefore = db.getAllGroups(); 		
-
-		for (Group g: groupsBefore) {
-			System.out.println(g.getName());	
-		}		
+		printGroups(groupsBefore);
 		
 		System.out.println();			
-		System.out.print("AFTER ADDED: ");	
+		System.out.println("AFTER ADDED GROUP name=nova skupina");		
 		
-		List<Group> newGroups = db.addNewGroup("nova skupina");
-		
-		for (Group g: newGroups) {
-			System.out.println(g.getName());	
-		}			
-		
-		System.out.println();			
-		System.out.print("NEW QUERY: ");
-		
-		List<Group> groupsAfter = db.getAllGroups(); 
-		
-		for (Group g: groupsAfter) {
-			System.out.println(g.getName());	
-		}				
+		List<Group> groupsAfter = db.addNewGroup("nova skupina");		
+		printGroups(groupsAfter);		
 	}	
 
 	private static void testUpdateGroup(Database db) { 
 		
+		Group group = new Group(6, "XXX");
+		
 		System.out.println();			
-		System.out.print("BEFORE: ");		
+		System.out.println("CURRENT STATE: ");		
+		
 		List<Group> groupsBefore = db.getAllGroups(); 		
-
-		for (Group g: groupsBefore) {
-			System.out.println(g.getName());	
-		}		
+		printGroups(groupsBefore);
 		
 		System.out.println();	
-		System.out.print("AFTER UPDATE: ");		
-		
-		Group group = new Group(1, "XXX");
-		List<Group> newGroups = db.updateGroup(group);
-		
-		for (Group g: newGroups) {
-			System.out.println(g.getName());	
-		}			
-		
-		System.out.println();	
-		System.out.print("NEW QUERY: ");				
-		List<Group> groupsAfter = db.getAllGroups(); 
-		
-		for (Group g: groupsAfter) {
-			System.out.println(g.getName());	
-		}				
+		System.out.println("AFTER UPDATE GROUP id=" + group.getId());		
+			
+		List<Group> groupsAfter = db.updateGroup(group);
+		printGroups(groupsAfter);				
 	}	
 }

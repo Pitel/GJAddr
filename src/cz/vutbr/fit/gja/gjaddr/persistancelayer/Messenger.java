@@ -1,10 +1,14 @@
-package cz.vutbr.fit.gja.gjaddr.persistancelayer.tables;
+package cz.vutbr.fit.gja.gjaddr.persistancelayer;
+
+import java.io.Serializable;
 
 /**
  *
  * @author Ragaj
  */
-public class Messenger {
+public class Messenger implements Serializable {
+	
+	static private final long serialVersionUID = 6L;	
 	
 	private int id;
 	
@@ -27,17 +31,10 @@ public class Messenger {
 	public void setValue(String value) {
 		this.value = value;
 	}
-	
-	private int contactId;
 
-	public int getContactId() {
-		return contactId;
-	}
-
-	public Messenger(int id, int type, String value, int contactId) {
+	public Messenger(int id, int type, String value) {
 		this.id = id;
 		this.type = type;
 		this.value = value;
-		this.contactId = contactId;
 	}
 }

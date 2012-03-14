@@ -1,5 +1,9 @@
 package cz.vutbr.fit.gja.gjaddr.persistancelayer;
 
+import java.net.MalformedURLException;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Class with testing data.
  *
@@ -7,77 +11,117 @@ package cz.vutbr.fit.gja.gjaddr.persistancelayer;
  */
 public class TestDatabase {
 	public static void fillTestingData(Database db)	{ 
-		System.out.println("Fill db ...");
-
 		fillContacts(db);
 		fillGroups(db);		
-		fillUrls(db);
-		fillEmails(db);
-		fillPhoneNumbers(db);
-		fillMessengers(db);
-		fillAdresses(db);
-		fillCustom(db);
-		assignContactsToGroup(db);
-		
-		db.loadDataFromDb();
 	}
 
 	private static void fillContacts(Database db) {
-		db.executeUpdate("INSERT INTO contact (firstName, surName, nickName) VALUES ('Radek', 'Gajdusek', 'Speedy');");	
-		db.executeUpdate("INSERT INTO contact (firstName, surName, nickName, note) VALUES ('Jan', 'Kaláb', 'Pitel', 'pokusná poznámka');");			
-		db.executeUpdate("INSERT INTO contact (firstName, nickName) VALUES ('Petr', 'Macháček');");			
+		
+		List<Email> emails = new ArrayList<Email>();
+		List<PhoneNumber> phones = new ArrayList<PhoneNumber>();		
+		List<Url> urls = new ArrayList<Url>();			
+		List<Messenger> messengers = new ArrayList<Messenger>();		
+		List<Adress> adresses = new ArrayList<Adress>();			
+		List<Custom> customs = new ArrayList<Custom>();			
+				
+		
+		Contact contact1 = new Contact(0, "Radek", "Gajdusek", "Speedy", null);
+		
+		Email email1 = new Email(0, 1, "test@gmail.com");
+		Email email2 = new Email(0, 1, "pokus@gmail.com");
+		emails.add(email1);
+		emails.add(email2);
+		contact1.setEmails(emails);
+		
+		PhoneNumber phone1 = new PhoneNumber(0, 1, "420582978653");
+		PhoneNumber phone2 = new PhoneNumber(0, 2, "420654789369");		
+		phones.add(phone1);
+		phones.add(phone2);		
+		contact1.setPhoneNumbers(phones);
+		
+		Url url1 = new Url(0, 1, "http://www.lahvators.cz");		
+		urls.add(url1);
+		contact1.setUrls(urls);
+		
+		Messenger mess1 = new Messenger(0, 1, "ragaj@jabber.org");
+		Messenger mess2 = new Messenger(0, 2, "278456123");		
+		messengers.add(mess1);
+		messengers.add(mess2);
+		contact1.setMessenger(messengers);
+		
+		Custom custom = new Custom(0, "test", "123");
+		customs.add(custom);
+		contact1.setCustoms(customs);
+		
+		Adress adress1 = new Adress(0, 1, "Osvoboditelů", 44, "Kopřivnice", 74221, "Czech republic");
+		adresses.add(adress1);
+		contact1.setAdresses(adresses);
+		
+		emails.clear();
+		phones.clear();
+		urls.clear();
+		messengers.clear();
+		adresses.clear();
+		customs.clear();
+		
+		Contact contact2 = new Contact(0, "Jan", "Kaláb", "Pitel", "pokusná poznámka");
+		
+		Email email3 = new Email(0, 2, "pokus@centrum.cz");		
+		emails.add(email3);
+		contact2.setEmails(emails);		
+		
+		PhoneNumber phone3 = new PhoneNumber(0, 1, "420658987562");
+		PhoneNumber phone4 = new PhoneNumber(0, 2, "420587978652");			
+		phones.add(phone3);
+		phones.add(phone4);		
+		contact2.setPhoneNumbers(phones);		
+		
+		Adress adress2 = new Adress(0, 1, "Masarykova", 133, "Brno", 61200, null);	
+		adresses.add(adress2);
+		contact2.setAdresses(adresses);
+		
+		emails.clear();
+		phones.clear();
+		urls.clear();
+		messengers.clear();
+		adresses.clear();
+		customs.clear();		
+		
+		Contact contact3 = new Contact(0, "Petr", "Macháček", null, null);
+		
+		Url url2 = new Url(0, 2, "http://www.seznam.cz");
+		Url url3 = new Url(0, 2, "http://www.idos.cz");
+		urls.add(url2);
+		urls.add(url3);		
+		contact3.setUrls(urls);		
+		
+		Messenger mess3 = new Messenger(0, 1, "test@jabbim.cz");
+		Messenger mess4 = new Messenger(0, 2, "147896321");			
+		messengers.add(mess3);
+		messengers.add(mess4);
+		contact3.setMessenger(messengers);		
+
+		Email email4 = new Email(0, 2, "pokus@seznam.cz");	
+		emails.add(email4);
+		contact3.setEmails(emails);
+		
+		Adress adress3 = new Adress(0, 2, "Sportovní", 1207, "Nové Město na Moravě", 45879, "Slovensko");	
+		adresses.add(adress3);
+		contact3.setAdresses(adresses);
+				
+		
+		List<Contact> contactsToAdd = new ArrayList<Contact>();
+		contactsToAdd.add(contact1);
+		contactsToAdd.add(contact2);
+		contactsToAdd.add(contact3);	
+		
+		db.addNewContacts(contactsToAdd);
 	}
 	
 	private static void fillGroups(Database db)  {
-		db.executeUpdate("INSERT INTO category (name) VALUES ('Lahvators');"); 
-		db.executeUpdate("INSERT INTO category (name) VALUES ('Fit');");     
-		db.executeUpdate("INSERT INTO category (name) VALUES ('DPMB');");   
-		db.executeUpdate("INSERT INTO category (name) VALUES ('Test');");   
-	}
-
-	private static void fillUrls(Database db) {
-		db.executeUpdate("INSERT INTO url (type, value, contactId) VALUES (1, 'http://www.lahvators.cz', 1);");
-		db.executeUpdate("INSERT INTO url (type, value, contactId) VALUES (2, 'http://www.seznam.cz', 3);");
-		db.executeUpdate("INSERT INTO url (type, value, contactId) VALUES (2, 'http://www.idos.cz', 3);");		
-	}
-	
-	private static void fillEmails(Database db)  {
-		db.executeUpdate("INSERT INTO email (type, email, contactId) VALUES (1, 'test@gmail.com', 1);"); 
-		db.executeUpdate("INSERT INTO email (type, email, contactId) VALUES (1, 'pokus@gmail.com', 1);");   
-		db.executeUpdate("INSERT INTO email (type, email, contactId) VALUES (2, 'pokus@centrum.cz', 2);");		
-		db.executeUpdate("INSERT INTO email (type, email, contactId) VALUES (2, 'pokus@seznam.cz', 3);"); 
-	}
-	
-	private static void fillPhoneNumbers(Database db) {
-		db.executeUpdate("INSERT INTO phoneNumber (type, number, contactId) VALUES (1, '420582978653', 1);"); 
-		db.executeUpdate("INSERT INTO phoneNumber (type, number, contactId) VALUES (2, '420658987562', 2);"); 
-		db.executeUpdate("INSERT INTO phoneNumber (type, number, contactId) VALUES (1, '420654789369', 1);"); 
-		db.executeUpdate("INSERT INTO phoneNumber (type, number, contactId) VALUES (2, '420587978652', 2);"); 		
-	}
-	
-	private static void fillMessengers(Database db) {
-		db.executeUpdate("INSERT INTO messenger (type, value, contactId) VALUES (1, 'ragaj@jabber.org', 1);"); 
-		db.executeUpdate("INSERT INTO messenger (type, value, contactId) VALUES (2, '278456123', 1);"); 
-		db.executeUpdate("INSERT INTO messenger (type, value, contactId) VALUES (1, 'test@jabbim.cz', 2);"); 
-		db.executeUpdate("INSERT INTO messenger (type, value, contactId) VALUES (2, '147896321', 2);"); 		
-	}	
-
-	private static void fillAdresses(Database db) {
-		db.executeUpdate("INSERT INTO adress (type, street, number, city, postCode, contactId) "
-						        + "VALUES (1, 'Osvoboditelů', 44, 'Kopřivnice', 74221, 1);"); 
-		db.executeUpdate("INSERT INTO adress (type, street, number, city, postCode, contactId) "
-						        + "VALUES (1, 'Masarykova', 133, 'Brno', 61200, 2);"); 
-		db.executeUpdate("INSERT INTO adress (type, street, number, city, postCode, contactId) "
-						        + "VALUES (2, 'Sportovní', 1207, 'Nové Město na Moravě', 45879, 2);"); 
-	}	
-
-	private static void fillCustom(Database db) {
-		db.executeUpdate("INSERT INTO custom (name, value, contactId) VALUES ('Hokejista', 'ano', 1);"); 
-	}		
-	
-	private static void assignContactsToGroup(Database db) {
-		db.executeUpdate("INSERT INTO groupContact (contactId, groupId) VALUES (1, 1);"); 
-		db.executeUpdate("INSERT INTO groupContact (contactId, groupId) VALUES (2, 1);"); 
-		db.executeUpdate("INSERT INTO groupContact (contactId, groupId) VALUES (2, 3);"); 		
+		db.addNewGroup("Lahvators");
+		db.addNewGroup("Fit");
+		db.addNewGroup("DPMB");
+		db.addNewGroup("Test");		
 	}			
 }

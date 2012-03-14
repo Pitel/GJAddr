@@ -1,10 +1,14 @@
 package cz.vutbr.fit.gja.gjaddr.persistancelayer.tables;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Ragaj
  */
-public class GroupContact {
+public class GroupContact implements Serializable {
+	
+	static private final long serialVersionUID = 6L;	
 	
 	private int contactId;
 	private int groupId;

@@ -1,14 +1,22 @@
-package cz.vutbr.fit.gja.gjaddr.persistancelayer.tables;
+package cz.vutbr.fit.gja.gjaddr.persistancelayer;
+
+import java.io.Serializable;
 
 /**
  *
  * @author Ragaj
  */
-public class Adress {
+public class Adress implements Serializable {
+		
+	static private final long serialVersionUID = 6L;
 	
-	private int id;
-	
+	private int id;	
 	private int type;
+	private String street;	
+	private int number;	
+	private String city;	
+	private int postCode;	
+	private String country;	
 
 	public int getType() {
 		return type;
@@ -17,8 +25,6 @@ public class Adress {
 	public void setType(int type) {
 		this.type = type;
 	}
-	
-	private String street;
 
 	public String getStreet() {
 		return street;
@@ -28,8 +34,6 @@ public class Adress {
 		this.street = street;
 	}
 	
-	private int number;
-
 	public int getNumber() {
 		return number;
 	}
@@ -37,8 +41,6 @@ public class Adress {
 	public void setNumber(int number) {
 		this.number = number;
 	}
-	
-	private String city;
 
 	public String getCity() {
 		return city;
@@ -48,8 +50,6 @@ public class Adress {
 		this.city = city;
 	}
 	
-	private int postCode;
-
 	public int getPostCode() {
 		return postCode;
 	}
@@ -58,8 +58,6 @@ public class Adress {
 		this.postCode = postCode;
 	}
 	
-	private String country;
-
 	public String getCountry() {
 		return country;
 	}
@@ -67,14 +65,8 @@ public class Adress {
 	public void setCountry(String country) {
 		this.country = country;
 	}
-	
-	private int contactId;
 
-	public int getContactId() {
-		return contactId;
-	}
-
-	public Adress(int id, int type, String street, int number, String city, int postCode, String country, int contactId) {
+	public Adress(int id, int type, String street, int number, String city, int postCode, String country) {
 		this.id = id;
 		this.type = type;
 		this.street = street;
@@ -82,6 +74,5 @@ public class Adress {
 		this.city = city;
 		this.postCode = postCode;
 		this.country = country;
-		this.contactId = contactId;
 	}
 }

@@ -1,17 +1,22 @@
-package cz.vutbr.fit.gja.gjaddr.persistancelayer.tables;
+package cz.vutbr.fit.gja.gjaddr.persistancelayer;
+
+import java.io.Serializable;
 
 /**
  * One group from database representation.
  *
  * @author Bc. Radek Gajdušek <xgajdu07@stud.fit.vutbr.cz>
  */
-public class Group {
+public class Group implements Serializable {
+
+	static private final long serialVersionUID = 6L;
+	
 	private int id;
+	private String name;	
 
 	public int getId() {
 		return id;
 	}
-	private String name;
 
 	public String getName() {
 		return this.name;
