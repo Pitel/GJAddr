@@ -29,7 +29,7 @@ import org.jdesktop.swingx.MultiSplitPane;
  */
 public class MainWindow extends JFrame implements ActionListener, DocumentListener {
 	private final Database db = new Database();
-	private JMenuItem menuItemClose, menuItemHelp, menuItemAbout;
+	private JMenuItem menuItemClose, menuItemHelp, menuItemAbout, menuItemImport, menuItemExport;
 	private final JTextField searchField = new JTextField();
 
 	GridBagLayout layoutMain, layoutNested;	//Delete
@@ -88,6 +88,15 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		helpMenu.setMnemonic(KeyEvent.VK_H);
 		menuBar.add(helpMenu);
 
+		this.menuItemImport = new JMenuItem("Import", KeyEvent.VK_I);
+		this.menuItemImport.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, ActionEvent.CTRL_MASK));
+		this.menuItemImport.addActionListener(this);
+		fileMenu.add(this.menuItemImport);
+		this.menuItemExport = new JMenuItem("Export", KeyEvent.VK_E);
+		this.menuItemExport.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.CTRL_MASK));
+		this.menuItemExport.addActionListener(this);
+		fileMenu.add(this.menuItemExport);
+		fileMenu.addSeparator();
 		this.menuItemClose = new JMenuItem("Quit", KeyEvent.VK_Q);
 		this.menuItemClose.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK));
 		this.menuItemClose.addActionListener(this);
