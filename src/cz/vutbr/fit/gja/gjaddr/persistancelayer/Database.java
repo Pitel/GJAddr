@@ -25,45 +25,46 @@ public class Database implements IDatabase {
 		this.groupsContacts.save();
 	}
 	
-	@Override // DONE tested
+	@Override // DONE 
 	public List<Contact> getAllContacts() {
 		return this.contacts.getAllContacts();
 	}
 
-	@Override // DONE tested
+	@Override // DONE 
 	public List<Contact> getSpecificContacts(List<Integer> requiredIds) {
 		return this.contacts.filter(requiredIds);
 	}
 
-	@Override // TODO not implemented
+	@Override // DONE
 	public List<Contact> getAllContactsFromGroup(int groupId) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		List<Integer> contactsId = this.groupsContacts.filterByGroupId(groupId);
+		return this.getSpecificContacts(contactsId);		
 	}
 	
-	@Override // DONE tested
+	@Override // DONE
 	public List<Group> getAllGroups() {
 		return this.groups.getAllGroups();
 	}
 
-	@Override // DONE tested
+	@Override // DONE
 	public List<Group> addNewGroup(String name) {
 		this.groups.addNew(name);
 		return this.getAllGroups();
 	}
 
-	@Override // DONE tested
+	@Override // DONE
 	public List<Group> updateGroup(Group group) {
 		this.groups.updateGroup(group);
 		return this.groups.getAllGroups();
 	}
 
-	@Override // DONE tested
+	@Override // DONE
 	public List<Group> removeGroups(List<Integer> groupIds) {
 		this.groups.removeGroup(groupIds);
 		return this.groups.getAllGroups();
 	}
 
-	@Override // DONE tested
+	@Override // DONE
 	public List<Contact> addNewContacts(List<Contact> contacts) {
 		this.contacts.addNew(contacts);
 		return this.contacts.getAllContacts();
@@ -79,5 +80,22 @@ public class Database implements IDatabase {
 	public List<Contact> removeContacts(List<Integer> contacts) {
 		this.contacts.remove(contacts);
 		return this.contacts.getAllContacts();
+	}
+
+	@Override // DONE
+	public List<Contact> addContactsToGroup(int groupId, List<Integer> contactsIdToAdd) {
+		this.groupsContacts.addContactsToGroup(groupId, contactsIdToAdd);
+		return this.getAllContactsFromGroup(groupId);
+	}
+
+	@Override // NOT IMPLEMENTED
+	public List<Contact> removeContactsFromGroup(int groupId, List<Integer> contactsIdToRemove) {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
+
+	@Override // DONE
+	public List<Group> getAllGroupsForContact(int contactId) {
+		List<Integer> groupsId = this.groupsContacts.filterByContactId(contactId);
+		return this.groups.filter(groupsId);
 	}
 }

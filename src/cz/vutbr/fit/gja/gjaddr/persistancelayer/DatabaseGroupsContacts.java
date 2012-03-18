@@ -1,6 +1,5 @@
 package cz.vutbr.fit.gja.gjaddr.persistancelayer;
 
-import cz.vutbr.fit.gja.gjaddr.persistancelayer.tables.GroupContact;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,9 +18,17 @@ public class DatabaseGroupsContacts {
 		this.load();
 	}	
 	
-	public List<GroupContact> getAllRelationships() {
-		return groupsContacts;
+	// TODO check if is the number currently not in the list
+	void addContactsToGroup(int groupId, List<Integer> contactsIds) {		
+		for (int contactId : contactsIds) {
+			GroupContact gc = new GroupContact(groupId, contactId);
+			this.groupsContacts.add(gc);
+		}
 	}
+	
+	void removeContactsFromGroup(int groupId, List<Integer> contactsIds) {
+		
+	}		
 	
 	private void load()	{
 		
@@ -83,18 +90,36 @@ public class DatabaseGroupsContacts {
 		catch(IOException ioe) {
 			ioe.printStackTrace();
 		}		
+	}	
+
+	List<Integer> filterByGroupId(int id) {
+		return this.filter(true, id);
 	}
 	
-//	List<Contact> filter(List<Integer> reguiredIdList) {
-//		
-//		List<Contact> filteredContacts = new ArrayList<Contact>();
-//		
-//		for (Contact contact : this.contacts) {
-//			
-//			if (reguiredIdList.contains(contact.getId()))
-//				filteredContacts.add(contact);
-//			}
-//
-//		return filteredContacts;
-//	}	
+	List<Integer> filterByContactId(int id) {
+		return this.filter(false, id);
+	}	
+	
+	private List<Integer> filter(boolean filterGroups, int id) {
+
+		List<Integer> filteredRecords = new ArrayList<Integer>();
+
+		for (GroupContact groupContact : this.groupsContacts) {
+			int groupId = groupContact.getGroupId();
+			int contactId = groupContact.getContactId();			
+			
+			if (filterGroups) {
+				if (groupId == id) {
+					filteredRecords.add(contactId);
+				}
+			}
+			else {
+				if (contactId == id) {
+					filteredRecords.add(groupId);
+				}				
+			}			
+		}	
+
+		return filteredRecords;
+	}	
 }

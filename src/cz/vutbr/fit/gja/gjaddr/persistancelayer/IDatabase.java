@@ -16,11 +16,15 @@ public interface IDatabase {
 	List<Contact> updateContact(Contact contact);
 	List<Contact> removeContacts(List<Integer> contactsId);
 	
+	// GROUP <=> CONTACTS
+	List<Contact> getAllContactsFromGroup(int groupId);
+	List<Group> getAllGroupsForContact(int contactId);		
+	List<Contact> addContactsToGroup(int groupId, List<Integer> contactsIdToAdd);
+	List<Contact> removeContactsFromGroup(int groupId, List<Integer> contactsIdToRemove);	
+					
 	// GROUPS
 	List<Group> getAllGroups();	
 	List<Group> addNewGroup(String name);	
 	List<Group> updateGroup(Group group);	
 	List<Group> removeGroups(List<Integer> groupId);
-	
-	List<Contact> getAllContactsFromGroup(int groupId);	
 }

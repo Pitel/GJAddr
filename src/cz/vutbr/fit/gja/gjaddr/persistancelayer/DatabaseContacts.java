@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class DatabaseContacts {
 
-	private int idCounter = 1;
+	private int idCounter = 0;
 	
 	private final String FILENAME = "contacts.gja";
 	private List<Contact> contacts = null;
@@ -85,7 +85,7 @@ public class DatabaseContacts {
 	
 	private void setLastIdNumber() {
 		
-		int counter = 1;
+		int counter = 0;
 		
 		for (Contact contact: this.contacts) {
 			int id = contact.getId();

@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class DatabaseGroups {
 	
-	private int idCounter = 1;
+	private int idCounter = 0;
 	
 	private final String FILENAME = "groups.gja";
 	private List<Group> groups = null;
@@ -58,7 +58,7 @@ public class DatabaseGroups {
 	
 	private void setLastIdNumber() {
 		
-		int counter = 1;
+		int counter = 0;
 		
 		for (Group group: this.groups) {
 			int id = group.getId();

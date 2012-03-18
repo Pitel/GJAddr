@@ -1,6 +1,5 @@
 package cz.vutbr.fit.gja.gjaddr.persistancelayer;
 
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +12,7 @@ public class TestDatabase {
 	public static void fillTestingData(Database db)	{ 
 		fillContacts(db);
 		fillGroups(db);		
+		fillGroupContacts(db);
 	}
 
 	private static void fillContacts(Database db) {
@@ -23,8 +23,7 @@ public class TestDatabase {
 		List<Messenger> messengers = new ArrayList<Messenger>();		
 		List<Adress> adresses = new ArrayList<Adress>();			
 		List<Custom> customs = new ArrayList<Custom>();			
-				
-		
+						
 		Contact contact1 = new Contact(0, "Radek", "Gajdusek", "Speedy", null);
 		
 		Email email1 = new Email(0, 1, "test@gmail.com");
@@ -123,5 +122,22 @@ public class TestDatabase {
 		db.addNewGroup("Fit");
 		db.addNewGroup("DPMB");
 		db.addNewGroup("Test");		
-	}			
+	}		
+	
+	private static void fillGroupContacts(Database db) {
+		List<Integer> contactsId = new ArrayList<Integer>();
+		
+		contactsId.add(1);
+		contactsId.add(2);		
+		db.addContactsToGroup(1, contactsId);
+		
+		contactsId.clear();
+		contactsId.add(2);
+		contactsId.add(3);
+		db.addContactsToGroup(2, contactsId);		
+		
+		contactsId.clear();
+		contactsId.add(3);
+		db.addContactsToGroup(4, contactsId);				
+	}
 }

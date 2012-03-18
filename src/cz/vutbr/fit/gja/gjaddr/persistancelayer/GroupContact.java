@@ -1,4 +1,4 @@
-package cz.vutbr.fit.gja.gjaddr.persistancelayer.tables;
+package cz.vutbr.fit.gja.gjaddr.persistancelayer;
 
 import java.io.Serializable;
 
@@ -21,8 +21,8 @@ public class GroupContact implements Serializable {
 		return groupId;
 	}
 
-	public GroupContact(int contactId, int groupId) {
+	public GroupContact(int groupId, int contactId) {
+		this.groupId = groupId;		
 		this.contactId = contactId;
-		this.groupId = groupId;
 	}
 }
