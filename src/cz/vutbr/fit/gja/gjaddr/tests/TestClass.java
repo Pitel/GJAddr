@@ -3,7 +3,6 @@ package cz.vutbr.fit.gja.gjaddr.tests;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Contact;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Group;
-import cz.vutbr.fit.gja.gjaddr.persistancelayer.TestDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +18,7 @@ public class TestClass {
 				
 		Database db = new Database();
 
-		TestDatabase.fillTestingData(db);
+		//TestDatabase.fillTestingData(db);
 		
 		printGroups("All groups", db.getAllGroups());
 		printContacts("All contacts", db.getAllContacts());		

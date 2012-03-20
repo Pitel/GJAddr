@@ -22,6 +22,10 @@ public class Group  implements Serializable {
 		return this.name;
 	}
 
+	public void setName(String name) {
+		this.name = name;
+	}		
+
 	public Group (int id, String name) {
 		this.id = id;
 		this.name = name;

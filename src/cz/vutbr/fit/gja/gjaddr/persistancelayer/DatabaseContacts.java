@@ -14,7 +14,7 @@ public class DatabaseContacts {
 	private int idCounter = 0;
 	
 	private final String FILENAME = "contacts.gja";
-	private List<Contact> contacts = null;
+	private ArrayList<Contact> contacts = null;
 
 	public DatabaseContacts() {		
 		this.load();
@@ -45,7 +45,7 @@ public class DatabaseContacts {
 	}	
 	
 	public List<Contact> getAllContacts() {
-		return contacts;
+		return (List<Contact>) this.contacts.clone();
 	}
 	
 	private void load()	{
@@ -58,7 +58,7 @@ public class DatabaseContacts {
 				ObjectInputStream objinstr= new ObjectInputStream(flinpstr);
 
 				try {	
-					this.contacts = (List<Contact>) objinstr.readObject(); 
+					this.contacts = (ArrayList<Contact>) objinstr.readObject(); 
 				} 
 				finally {
 					try {

@@ -72,7 +72,7 @@ public class Database implements IDatabase {
 
 	@Override // TOTEST
 	public List<Contact> updateContact(Contact contact) {
-		this.contacts.update(contact);
+		//this.contacts.update(contact);
 		return this.getAllContacts();
 	}
 

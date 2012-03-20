@@ -14,7 +14,7 @@ public class DatabaseGroups {
 	private int idCounter = 0;
 	
 	private final String FILENAME = "groups.gja";
-	private List<Group> groups = null;
+	private ArrayList<Group> groups = null;
 
 	public DatabaseGroups() {		
 		this.load();
@@ -31,7 +31,7 @@ public class DatabaseGroups {
 				ObjectInputStream objinstr= new ObjectInputStream(flinpstr);
 
 				try {	
-					this.groups = (List<Group>) objinstr.readObject(); 
+					this.groups = (ArrayList<Group>) objinstr.readObject(); 
 				} 
 				finally {
 					try {
@@ -103,7 +103,7 @@ public class DatabaseGroups {
 	}	
 	
 	public List<Group> getAllGroups() {
-		return this.groups;
+		return (List<Group>) this.groups.clone();
 	}
 	
 	void addNew(String name) {
