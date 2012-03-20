@@ -10,9 +10,9 @@ import java.io.Serializable;
 public class Group implements Serializable {
 
 	static private final long serialVersionUID = 6L;
-	
+
 	private int id;
-	private String name;	
+	private String name;
 
 	public int getId() {
 		return id;
@@ -25,5 +25,10 @@ public class Group implements Serializable {
 	public Group (int id, String name) {
 		this.id = id;
 		this.name = name;
+	}
+
+	@Override
+	public String toString() {
+		return this.name;
 	}
 }

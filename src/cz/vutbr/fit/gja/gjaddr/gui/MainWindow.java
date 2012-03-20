@@ -127,9 +127,9 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		label.setAlignmentX(Component.CENTER_ALIGNMENT);
 		panel.add(label);
 		DefaultListModel listModel = new DefaultListModel();
-		listModel.addElement("All");
+		listModel.addElement(new Group(-1, "All"));
 		for (Group g : db.getAllGroups()) {
-			listModel.addElement(g.getName());
+			listModel.addElement(g);
 		}
 		JList list = new JList(listModel);
 		list.setSelectedIndex(0);
@@ -146,7 +146,7 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		public void valueChanged(ListSelectionEvent e) {
 			if (!e.getValueIsAdjusting()) {	//React only on final choice
 				JList list = (JList) e.getSource();
-				String[] groups = Arrays.copyOf(list.getSelectedValues(), list.getSelectedValues().length, String[].class);
+				Group[] groups = Arrays.copyOf(list.getSelectedValues(), list.getSelectedValues().length, Group[].class);
 				System.out.println("Groups: " + Arrays.toString(groups));
 			}
 		}
