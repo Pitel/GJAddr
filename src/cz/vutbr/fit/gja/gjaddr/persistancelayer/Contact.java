@@ -1,6 +1,5 @@
 package cz.vutbr.fit.gja.gjaddr.persistancelayer;
 
-import cz.vutbr.fit.gja.gjaddr.persistancelayer.Adress;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -140,6 +139,58 @@ public class Contact implements Serializable {
 		this.emails = emails;
 		this.customs = customs;
 	}
-	
-	
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final Contact other = (Contact) obj;
+		if (this.id != other.id) {
+			return false;
+		}
+		if ((this.surName == null) ? (other.surName != null) : !this.surName.equals(other.surName)) {
+			return false;
+		}
+		if ((this.nickName == null) ? (other.nickName != null) : !this.nickName.equals(other.nickName)) {
+			return false;
+		}
+		if (this.dateOfBirth != other.dateOfBirth && (this.dateOfBirth == null || !this.dateOfBirth.equals(other.dateOfBirth))) {
+			return false;
+		}
+		if ((this.note == null) ? (other.note != null) : !this.note.equals(other.note)) {
+			return false;
+		}
+		if (this.messenger != other.messenger && (this.messenger == null || !this.messenger.equals(other.messenger))) {
+			return false;
+		}
+		if (this.urls != other.urls && (this.urls == null || !this.urls.equals(other.urls))) {
+			return false;
+		}
+		if (this.adresses != other.adresses && (this.adresses == null || !this.adresses.equals(other.adresses))) {
+			return false;
+		}
+		if (this.phoneNumbers != other.phoneNumbers && (this.phoneNumbers == null || !this.phoneNumbers.equals(other.phoneNumbers))) {
+			return false;
+		}
+		if (this.emails != other.emails && (this.emails == null || !this.emails.equals(other.emails))) {
+			return false;
+		}
+		if (this.customs != other.customs && (this.customs == null || !this.customs.equals(other.customs))) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Contact{" + "id=" + id + ", firstName=" + firstName + ", surName=" + surName 
+						          + ", nickName=" + nickName + ", dateOfBirth=" + dateOfBirth + ", note=" 
+						          + note + ", messenger=" + messenger + ", urls=" + urls + ", adresses=" 
+						          + adresses + ", phoneNumbers=" + phoneNumbers + ", emails=" + emails + ", customs=" 
+						          + customs + '}';
+	}
 }

@@ -91,6 +91,10 @@ public class DatabaseGroupsContacts {
 			ioe.printStackTrace();
 		}		
 	}	
+	
+	void clear() {
+		this.groupsContacts.clear();
+	}	
 
 	List<Integer> filterByGroupId(int id) {
 		return this.filter(true, id);

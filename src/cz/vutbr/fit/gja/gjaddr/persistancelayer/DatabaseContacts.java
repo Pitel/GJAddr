@@ -132,7 +132,11 @@ public class DatabaseContacts {
 			}
 
 		return null;
-	}		
+	}	
+	
+	void clear() {
+		this.contacts.clear();
+	}
 	
 	List<Contact> filter(List<Integer> reguiredIdList) {
 		

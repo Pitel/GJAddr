@@ -75,4 +75,43 @@ public class Adress implements Serializable {
 		this.postCode = postCode;
 		this.country = country;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final Adress other = (Adress) obj;
+		if (this.id != other.id) {
+			return false;
+		}
+		if (this.type != other.type) {
+			return false;
+		}
+		if ((this.street == null) ? (other.street != null) : !this.street.equals(other.street)) {
+			return false;
+		}
+		if (this.number != other.number) {
+			return false;
+		}
+		if ((this.city == null) ? (other.city != null) : !this.city.equals(other.city)) {
+			return false;
+		}
+		if (this.postCode != other.postCode) {
+			return false;
+		}
+		if ((this.country == null) ? (other.country != null) : !this.country.equals(other.country)) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Adress{" + "id=" + id + ", type=" + type + ", street=" + street + ", number=" 
+						         + number + ", city=" + city + ", postCode=" + postCode + ", country=" + country + '}';
+	}
 }

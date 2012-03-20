@@ -98,6 +98,10 @@ public class DatabaseGroups {
 		}		
 	}
 	
+	void clear() {
+		this.groups.clear();
+	}	
+	
 	public List<Group> getAllGroups() {
 		return this.groups;
 	}

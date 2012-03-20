@@ -7,7 +7,7 @@ import java.io.Serializable;
  *
  * @author Bc. Radek Gajdušek <xgajdu07@stud.fit.vutbr.cz>
  */
-public class Group implements Serializable {
+public class Group  implements Serializable {
 
 	static private final long serialVersionUID = 6L;
 	
@@ -25,5 +25,28 @@ public class Group implements Serializable {
 	public Group (int id, String name) {
 		this.id = id;
 		this.name = name;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final Group other = (Group) obj;
+		if (this.id != other.id) {
+			return false;
+		}
+		if ((this.name == null) ? (other.name != null) : !this.name.equals(other.name)) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Group{" + "id=" + id + ", name=" + name + '}';
 	}
 }

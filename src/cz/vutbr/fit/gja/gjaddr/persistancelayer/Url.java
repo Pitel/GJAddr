@@ -45,4 +45,30 @@ public class Url implements Serializable {
 			// TODO
 		}
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final Url other = (Url) obj;
+		if (this.id != other.id) {
+			return false;
+		}
+		if (this.type != other.type) {
+			return false;
+		}
+		if (this.value != other.value && (this.value == null || !this.value.equals(other.value))) {
+			return false;
+		}
+		return true;
+	}
+	
+	@Override
+	public String toString() {
+		return "Url{" + "id=" + id + ", type=" + type + ", value=" + value + '}';
+	}
 }

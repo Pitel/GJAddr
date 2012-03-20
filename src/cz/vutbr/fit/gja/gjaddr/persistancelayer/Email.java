@@ -38,4 +38,30 @@ public class Email implements Serializable {
 		this.type = type;
 		this.email = email;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final Email other = (Email) obj;
+		if (this.id != other.id) {
+			return false;
+		}
+		if (this.type != other.type) {
+			return false;
+		}
+		if ((this.email == null) ? (other.email != null) : !this.email.equals(other.email)) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Email{" + "id=" + id + ", type=" + type + ", email=" + email + '}';
+	}
 }

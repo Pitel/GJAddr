@@ -98,4 +98,12 @@ public class Database implements IDatabase {
 		List<Integer> groupsId = this.groupsContacts.filterByContactId(contactId);
 		return this.groups.filter(groupsId);
 	}
+	
+	public void clearAllData() {
+		this.contacts.clear();
+		this.groups.clear();
+		this.groupsContacts.clear();
+
+		this.commitChanges();
+	} 
 }
