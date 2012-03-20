@@ -10,9 +10,9 @@ import java.io.Serializable;
 public class Group  implements Serializable {
 
 	static private final long serialVersionUID = 6L;
-	
+
 	private int id;
-	private String name;	
+	private String name;
 
 	public int getId() {
 		return id;
@@ -27,7 +27,6 @@ public class Group  implements Serializable {
 		this.name = name;
 	}
 
-	@Override
 	public boolean equals(Object obj) {
 		if (obj == null) {
 			return false;
