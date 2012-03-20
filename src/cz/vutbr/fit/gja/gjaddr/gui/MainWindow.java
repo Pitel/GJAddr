@@ -16,6 +16,8 @@ import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import org.jdesktop.swingx.MultiSplitLayout.Divider;
 import org.jdesktop.swingx.MultiSplitLayout.Leaf;
 import org.jdesktop.swingx.MultiSplitLayout.Split;
@@ -40,7 +42,7 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 	 */
 	public MainWindow() {
 		super("GJAddr");
-		//cz.vutbr.fit.gja.gjaddr.persistancelayer.TestDatabase.fillTestingData(db);	//DEBUG
+		cz.vutbr.fit.gja.gjaddr.persistancelayer.TestDatabase.fillTestingData(db);	//DEBUG
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -131,9 +133,23 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		}
 		JList list = new JList(listModel);
 		list.setSelectedIndex(0);
+		list.addListSelectionListener(new GroupSelectionListener());
 		JScrollPane listScrollPane = new JScrollPane(list);
 		panel.add(listScrollPane);
 		return panel;
+	}
+
+	/**
+	 * Listener class for groups list
+	 */
+	private class GroupSelectionListener implements ListSelectionListener {
+		public void valueChanged(ListSelectionEvent e) {
+			if (!e.getValueIsAdjusting()) {	//React only on final choice
+				JList list = (JList) e.getSource();
+				String[] groups = Arrays.copyOf(list.getSelectedValues(), list.getSelectedValues().length, String[].class);
+				System.out.println("Groups: " + Arrays.toString(groups));
+			}
+		}
 	}
 
 	/**
