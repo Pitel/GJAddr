@@ -83,6 +83,7 @@ class GroupsPanel extends JPanel implements ActionListener {
 	 * Listener class for groups list selection
 	 */
 	private class GroupSelectionListener implements ListSelectionListener {
+		@Override
 		public void valueChanged(ListSelectionEvent e) {
 			if (!e.getValueIsAdjusting()) {	//React only on final choice
 				JList list = (JList) e.getSource();

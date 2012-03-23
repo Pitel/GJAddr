@@ -50,14 +50,14 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 	public MainWindow() {
 		super("GJAddr");
 		//cz.vutbr.fit.gja.gjaddr.persistancelayer.TestData.fillTestingData(db);	//DEBUG
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
-			System.err.println(e.toString());
+			System.err.println(e);
 		}
-		this.setIconImage(new ImageIcon(getClass().getResource("/res/icon.png")).getImage());
-		this.setJMenuBar(this.createMenu());
+		setIconImage(new ImageIcon(getClass().getResource("/res/icon.png")).getImage());
+		setJMenuBar(this.createMenu());
 		Container container = this.getContentPane();
 		JToolBar toolbar = new JToolBar();
 		toolbar.setFloatable(false);
@@ -79,8 +79,8 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		multiSplitPane.add(contactsPanel(), "contacts");
 		multiSplitPane.add(new JButton("Detail"), "detail");
 		container.add(multiSplitPane, BorderLayout.CENTER);
-		this.pack();
-		this.setLocationRelativeTo(null);
+		pack();
+		setLocationRelativeTo(null);
 	}
 
 	/**
@@ -188,9 +188,11 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		//System.out.println(e.toString());
-		if (e.getSource() == this.menuItemClose) {
+		System.out.println(e);
+		if (e.getSource() == menuItemClose) {
 			dispose();
+		} else if (e.getSource() == menuItemAbout) {
+			new AboutWindow();
 		}
 	}
 }
