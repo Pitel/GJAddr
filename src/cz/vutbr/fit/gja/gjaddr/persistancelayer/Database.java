@@ -13,17 +13,51 @@ public class Database implements IDatabase {
 	private DatabaseGroups groups;
 	private DatabaseGroupsContacts groupsContacts;	
 	
+	private enum TableType {
+		CONTACTS, GROUPS, GROUPSCONTACTS, SETTINGS, ALL
+	}	
+	
+	private boolean autoCommit = true;
+	
 	public Database() {		
 		this.contacts = new DatabaseContacts();
 		this.groups = new DatabaseGroups();
 		this.groupsContacts = new DatabaseGroupsContacts();
 	}
 	
-	public void commitChanges() {
-		this.contacts.save();
-		this.groups.save();
-		this.groupsContacts.save();
+	private void commitChanges(TableType day) {
+		if (this.autoCommit) {
+			switch(day) {
+				case CONTACTS:
+					this.contacts.save();
+					break;
+				case GROUPS:
+					this.groups.save();
+					break;				
+				case GROUPSCONTACTS:
+					this.groupsContacts.save();
+					break;	
+				case SETTINGS:
+					// TODO
+					break;							
+				case ALL:
+					this.contacts.save();
+					this.groups.save();					
+					this.groupsContacts.save();
+					break;
+				default:
+					// TODO
+			}
+		}
 	}
+	
+	public void clearAllData() {
+		this.contacts.clear();
+		this.groups.clear();
+		this.groupsContacts.clear();
+
+		this.commitChanges(TableType.ALL);
+	} 	
 	
 	@Override // DONE 
 	public List<Contact> getAllContacts() {
@@ -49,42 +83,49 @@ public class Database implements IDatabase {
 	@Override // DONE
 	public List<Group> addNewGroup(String name) {
 		this.groups.addNew(name);
+		this.commitChanges(TableType.GROUPS);
 		return this.getAllGroups();
 	}
 
 	@Override // DONE
 	public List<Group> updateGroup(Group group) {
 		this.groups.updateGroup(group);
+		this.commitChanges(TableType.GROUPS);
 		return this.groups.getAllGroups();
 	}
 
 	@Override // DONE
 	public List<Group> removeGroups(List<Integer> groupIds) {
 		this.groups.removeGroup(groupIds);
+		this.commitChanges(TableType.GROUPS);
 		return this.groups.getAllGroups();
 	}
 
 	@Override // DONE
 	public List<Contact> addNewContacts(List<Contact> contacts) {
 		this.contacts.addNew(contacts);
+		this.commitChanges(TableType.CONTACTS);		
 		return this.contacts.getAllContacts();
 	}
 
 	@Override // TOTEST
 	public List<Contact> updateContact(Contact contact) {
-		//this.contacts.update(contact);
+		this.contacts.update(contact);
+		this.commitChanges(TableType.CONTACTS);					
 		return this.getAllContacts();
 	}
 
 	@Override // TOTEST
 	public List<Contact> removeContacts(List<Integer> contacts) {
 		this.contacts.remove(contacts);
+		this.commitChanges(TableType.CONTACTS);		
 		return this.contacts.getAllContacts();
 	}
 
 	@Override // DONE
 	public List<Contact> addContactsToGroup(int groupId, List<Integer> contactsIdToAdd) {
 		this.groupsContacts.addContactsToGroup(groupId, contactsIdToAdd);
+		this.commitChanges(TableType.GROUPSCONTACTS);
 		return this.getAllContactsFromGroup(groupId);
 	}
 
@@ -97,13 +138,5 @@ public class Database implements IDatabase {
 	public List<Group> getAllGroupsForContact(int contactId) {
 		List<Integer> groupsId = this.groupsContacts.filterByContactId(contactId);
 		return this.groups.filter(groupsId);
-	}
-	
-	public void clearAllData() {
-		this.contacts.clear();
-		this.groups.clear();
-		this.groupsContacts.clear();
-
-		this.commitChanges();
-	} 
+	}	
 }
