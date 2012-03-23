@@ -138,8 +138,14 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		panel.add(listScrollPane);
 		JPanel buttons = new JPanel();
 		buttons.setLayout(new BoxLayout(buttons, BoxLayout.LINE_AXIS));
-		buttons.add(new JButton(new ImageIcon(getClass().getResource("/res/plus.png"), "+")));
-		buttons.add(new JButton(new ImageIcon(getClass().getResource("/res/minus.png"), "-")));
+		JButton add = new JButton(new ImageIcon(getClass().getResource("/res/plus.png"), "+"));
+		add.setActionCommand("addGroup");
+		add.addActionListener(this);
+		buttons.add(add);
+		JButton remove = new JButton(new ImageIcon(getClass().getResource("/res/minus.png"), "-"));
+		remove.setActionCommand("removeGroup");
+		remove.addActionListener(this);
+		buttons.add(remove);
 		panel.add(buttons);
 		return panel;
 	}
@@ -221,13 +227,16 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		/**
-		 * Menu item that will close the application.
-		 */
+		//System.out.println(e.toString());
 		if (e.getSource() == this.menuItemClose) {
 			dispose();
+		} else if ("addGroup".equals(e.getActionCommand())) {
+			System.out.println("Add group");
+		} else if ("removeGroup".equals(e.getActionCommand())) {
+			System.out.println("Remove group");
 		}
 	}
+
 	//
 	// Stuff below is old!
 	//
