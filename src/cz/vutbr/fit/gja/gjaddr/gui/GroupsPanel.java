@@ -5,7 +5,6 @@ import cz.vutbr.fit.gja.gjaddr.persistancelayer.Group;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
-import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -28,6 +27,9 @@ class GroupsPanel extends JPanel implements ActionListener {
 	private final Database db = new Database();
 	private final DefaultListModel listModel = new DefaultListModel();
 
+	/**
+	 * Constructor
+	 */
 	public GroupsPanel() {
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		JLabel label = new JLabel("Groups");
@@ -106,7 +108,7 @@ class GroupsPanel extends JPanel implements ActionListener {
 		);
 		if (!name.isEmpty()) {
 			System.out.println(name);
-			List<Group> group = db.addNewGroup(name);
+			db.addNewGroup(name);
 			fillList();
 		}
 	}
