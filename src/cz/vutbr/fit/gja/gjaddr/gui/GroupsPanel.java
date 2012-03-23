@@ -24,6 +24,7 @@ import javax.swing.event.ListSelectionListener;
  * @author Bc. Jan Kaláb <xkalab00@stud.fit,vutbr.cz>
  */
 class GroupsPanel extends JPanel implements ActionListener {
+	static final long serialVersionUID = 0;
 	private final Database db = new Database();
 	private final DefaultListModel listModel = new DefaultListModel();
 

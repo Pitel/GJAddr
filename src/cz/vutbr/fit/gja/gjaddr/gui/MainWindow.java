@@ -38,6 +38,7 @@ import org.jdesktop.swingx.MultiSplitPane;
  * @author Bc. Jan Kaláb <xkalab00@stud.fit,vutbr.cz>
  */
 public class MainWindow extends JFrame implements ActionListener, DocumentListener {
+	static final long serialVersionUID = 0;
 	private final Database db = new Database();
 	private JMenuItem menuItemClose, menuItemHelp, menuItemAbout, menuItemImport, menuItemExport;
 	private final JTextField searchField = new JTextField();
