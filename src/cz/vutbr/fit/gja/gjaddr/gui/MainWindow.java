@@ -113,6 +113,7 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		fileMenu.add(this.menuItemClose);
 
 		this.menuItemHelp = new JMenuItem("Help", KeyEvent.VK_H);
+		this.menuItemHelp.setAccelerator(KeyStroke.getKeyStroke("F1"));
 		this.menuItemHelp.addActionListener(this);
 		helpMenu.add(this.menuItemHelp);
 
