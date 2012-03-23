@@ -5,9 +5,13 @@ import cz.vutbr.fit.gja.gjaddr.persistancelayer.Group;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Component;
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -193,6 +197,14 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 			dispose();
 		} else if (e.getSource() == menuItemAbout) {
 			new AboutWindow();
+		} else if (e.getSource() == menuItemHelp) {
+			try{
+				Desktop.getDesktop().browse(new URI("http://pitel.github.com/GJAddr"));
+			} catch (URISyntaxException ex) {
+				System.err.println(ex);
+			} catch (IOException ex) {
+				System.err.println(ex);
+			}
 		}
 	}
 }
