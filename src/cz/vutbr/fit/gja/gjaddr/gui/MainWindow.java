@@ -213,6 +213,21 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		System.out.println("Filtering: " + filter);
 	}
 
+	/**
+	 * Method binding functionality to difference actions performed (e.g. if button
+	 * was pressed etc.).
+	 *
+	 * @param e
+	 */
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		/**
+		 * Menu item that will close the application.
+		 */
+		if (e.getSource() == this.menuItemClose) {
+			dispose();
+		}
+	}
 	//
 	// Stuff below is old!
 	//
@@ -562,23 +577,6 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		}
 		return null;
     }
-
-	/**
-	 * Method binding functionality to difference actions performed (e.g. if button
-	 * was pressed etc.).
-	 *
-	 * @param e
-	 */
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		/**
-		 * Menu item that will close the application.
-		 */
-		if (e.getSource() == this.menuItemClose) {
-			//LoggerFactory.getLogger(MainWindow.class).info("Closing application.");
-			System.exit(0);
-		}
-	}
 
 	/**
 	 *
