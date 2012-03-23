@@ -13,7 +13,7 @@ public class DatabaseGroups {
 	
 	private int idCounter = 0;
 	
-	private final String FILENAME = "groups.gja";
+	private final String FILENAME = new File(Settings.getDataDir(), "groups.gja").toString();
 	private ArrayList<Group> groups = null;
 
 	public DatabaseGroups() {		

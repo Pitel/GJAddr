@@ -12,8 +12,9 @@ import java.util.List;
 public class DatabaseContacts {
 
 	private int idCounter = 0;
-	
-	private final String FILENAME = "contacts.gja";
+		
+	private final String FILENAME = new File(Settings.getDataDir(), "contacts.gja").toString();
+				
 	private ArrayList<Contact> contacts = null;
 
 	public DatabaseContacts() {		
