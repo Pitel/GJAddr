@@ -19,9 +19,9 @@ public class DatabaseGroupsContacts {
 	}	
 	
 	// TODO check if is the number currently not in the list
-	void addContactsToGroup(int groupId, List<Integer> contactsIds) {		
-		for (int contactId : contactsIds) {
-			GroupContact gc = new GroupContact(groupId, contactId);
+	void addContactsToGroup(Group group, List<Contact> contactsToAdd) {		
+		for (Contact contact : contactsToAdd) {
+			GroupContact gc = new GroupContact(group.getId(), contact.id);
 			this.groupsContacts.add(gc);
 		}
 	}

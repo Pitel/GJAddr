@@ -2,6 +2,7 @@ package cz.vutbr.fit.gja.gjaddr.persistancelayer;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -39,14 +40,12 @@ public class DatabaseContacts {
 		}			
 	}
 	
-	void remove(List<Integer> contactsId) {
-		
-		List<Contact> contactsToRemove = this.filter(contactsId);		
+	void remove(List<Contact> contactsToRemove) {		
 		this.contacts.removeAll(contactsToRemove);
 	}	
 	
 	public List<Contact> getAllContacts() {
-		return (List<Contact>) this.contacts.clone();
+		return new ArrayList<Contact>(this.contacts);
 	}
 	
 	private void load()	{
@@ -137,18 +136,32 @@ public class DatabaseContacts {
 	
 	void clear() {
 		this.contacts.clear();
+		this.idCounter = 0;
 	}
 	
-	List<Contact> filter(List<Integer> reguiredIdList) {
+	List<Contact> filter(List<Contact> requiredContacts) {
 		
 		List<Contact> filteredContacts = new ArrayList<Contact>();
 		
 		for (Contact contact : this.contacts) {
 			
-			if (reguiredIdList.contains(contact.getId()))
+			if (requiredContacts.contains(contact))
 				filteredContacts.add(contact);
 			}
 
 		return filteredContacts;
 	}		
+	
+	List<Contact> filterByIds(List<Integer> requiredContactsId) {
+		
+		List<Contact> filteredContacts = new ArrayList<Contact>();
+		
+		for (Contact contact : this.contacts) {
+			
+			if (requiredContactsId.contains(contact.id))
+				filteredContacts.add(contact);
+			}
+
+		return filteredContacts;
+	}			
 }

@@ -128,17 +128,22 @@ public class TestData {
 	private static void fillGroupContacts(Database db) {
 		List<Integer> contactsId = new ArrayList<Integer>();
 		
-		contactsId.add(1);
-		contactsId.add(2);		
-		db.addContactsToGroup(1, contactsId);
+		List<Contact> contacts = db.getAllContacts();
+		List<Group> groups = db.getAllGroups();
+	
+		List<Contact> contactsToAdd = new ArrayList<Contact>();
+		contactsToAdd.add(contacts.get(0));
+		contactsToAdd.add(contacts.get(1));		
 		
-		contactsId.clear();
-		contactsId.add(2);
-		contactsId.add(3);
-		db.addContactsToGroup(2, contactsId);		
+		db.addContactsToGroup(groups.get(0), contactsToAdd);
 		
-		contactsId.clear();
-		contactsId.add(3);
-		db.addContactsToGroup(4, contactsId);				
+		contactsToAdd.clear();
+		contactsToAdd.add(contacts.get(1));
+		contactsToAdd.add(contacts.get(2));	
+		db.addContactsToGroup(groups.get(1), contactsToAdd);		
+		
+		contactsToAdd.clear();
+		contactsToAdd.add(contacts.get(2));
+		db.addContactsToGroup(groups.get(3), contactsToAdd);				
 	}
 }

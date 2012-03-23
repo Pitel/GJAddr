@@ -100,10 +100,11 @@ public class DatabaseGroups {
 	
 	void clear() {
 		this.groups.clear();
+		this.idCounter = 0;		
 	}	
 	
 	public List<Group> getAllGroups() {
-		return (List<Group>) this.groups.clone();
+		return new ArrayList<Group>(this.groups);
 	}
 	
 	void addNew(String name) {
@@ -119,8 +120,7 @@ public class DatabaseGroups {
 		}
 	}
 	
-	void removeGroup(List<Integer> groupsId) {
-		List<Group> groupsToRemove = this.filter(groupsId);		
+	void removeGroup(List<Group> groupsToRemove) {
 		this.groups.removeAll(groupsToRemove);
 	}
 	

@@ -3,7 +3,7 @@ package cz.vutbr.fit.gja.gjaddr.persistancelayer;
 import java.io.File;
 
 /**
- * Class whit user settings configuration.
+ * Class with user settings configuration.
  * 
  * @author Bc. Radek Gajdušek <xgajdu07@stud.fit.vutbr.cz>
  */

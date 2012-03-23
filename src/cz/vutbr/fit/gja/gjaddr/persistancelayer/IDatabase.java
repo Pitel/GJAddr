@@ -11,20 +11,20 @@ public interface IDatabase {
 	
 	// CONTACTS
 	List<Contact> getAllContacts(); 
-	List<Contact> getSpecificContacts(List<Integer> id);		
-	List<Contact> addNewContacts(List<Contact> contacts);
+	List<Contact> getSpecificContacts(List<Contact> requiredContacts);		
+	List<Contact> addNewContacts(List<Contact> newContacts);
 	List<Contact> updateContact(Contact contact);
-	List<Contact> removeContacts(List<Integer> contactsId);
+	List<Contact> removeContacts(List<Contact> contactsToRemove);
 	
 	// GROUP <=> CONTACTS
-	List<Contact> getAllContactsFromGroup(int groupId);
-	List<Group> getAllGroupsForContact(int contactId);		
-	List<Contact> addContactsToGroup(int groupId, List<Integer> contactsIdToAdd);
-	List<Contact> removeContactsFromGroup(int groupId, List<Integer> contactsIdToRemove);	
+	List<Contact> getAllContactsFromGroup(Group group);
+	List<Group> getAllGroupsForContact(Contact contact);		
+	List<Contact> addContactsToGroup(Group group, List<Contact> contactsToAdd);
+	List<Contact> removeContactsFromGroup(Group group, List<Contact> contactsToRemove);	
 					
 	// GROUPS
 	List<Group> getAllGroups();	
 	List<Group> addNewGroup(String name);	
 	List<Group> updateGroup(Group group);	
-	List<Group> removeGroups(List<Integer> groupId);
+	List<Group> removeGroups(List<Group> groupsToRemove);
 }
