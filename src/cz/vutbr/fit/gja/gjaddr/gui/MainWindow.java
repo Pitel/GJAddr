@@ -136,6 +136,11 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		list.addListSelectionListener(new GroupSelectionListener());
 		JScrollPane listScrollPane = new JScrollPane(list);
 		panel.add(listScrollPane);
+		JPanel buttons = new JPanel();
+		buttons.setLayout(new BoxLayout(buttons, BoxLayout.LINE_AXIS));
+		buttons.add(new JButton(new ImageIcon(getClass().getResource("/res/plus.png"), "+")));
+		buttons.add(new JButton(new ImageIcon(getClass().getResource("/res/minus.png"), "-")));
+		panel.add(buttons);
 		return panel;
 	}
 
