@@ -722,6 +722,7 @@ public class MultiSplitLayout implements LayoutManager {
      * incorrectly.
      */
     public static class InvalidLayoutException extends RuntimeException {
+	static final long serialVersionUID = 0;
 	private final Node node;
 	public InvalidLayoutException (String msg, Node node) {
 	    super(msg);

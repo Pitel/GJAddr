@@ -45,6 +45,7 @@ import org.jdesktop.swingx.MultiSplitLayout.Node;
  * @author Hans Muller
  */
 public class MultiSplitPane extends JPanel {
+    static final long serialVersionUID = 0;
     private AccessibleContext accessibleContext = null;
     private boolean continuousLayout = true;
     private DividerPainter dividerPainter = new DefaultDividerPainter();
@@ -389,6 +390,7 @@ public class MultiSplitPane extends JPanel {
     }
     
     protected class AccessibleMultiSplitPane extends AccessibleJPanel {
+        static final long serialVersionUID = 0;
         public AccessibleRole getAccessibleRole() {
             return AccessibleRole.SPLIT_PANE;
         }
