@@ -25,7 +25,7 @@ public class TestData {
 		List<Adress> adresses = new ArrayList<Adress>();			
 		List<Custom> customs = new ArrayList<Custom>();			
 						
-		Contact contact1 = new Contact(0, "Radek", "Gajdusek", "Speedy", null);
+		Contact contact1 = new Contact("Radek", "Gajdusek", "Speedy", null);
 		
 		Email email1 = new Email(0, 1, "test@gmail.com");
 		Email email2 = new Email(0, 1, "pokus@gmail.com");
@@ -64,7 +64,7 @@ public class TestData {
 		adresses.clear();
 		customs.clear();
 		
-		Contact contact2 = new Contact(0, "Jan", "Kaláb", "Pitel", "pokusná poznámka");
+		Contact contact2 = new Contact("Jan", "Kaláb", "Pitel", "pokusná poznámka");
 		
 		Email email3 = new Email(0, 2, "pokus@centrum.cz");		
 		emails.add(email3);
@@ -87,7 +87,7 @@ public class TestData {
 		adresses.clear();
 		customs.clear();		
 		
-		Contact contact3 = new Contact(0, "Petr", "Macháček", null, null);
+		Contact contact3 = new Contact("Petr", "Macháček", null, null);
 		
 		Url url2 = new Url(0, 2, "http://www.seznam.cz");
 		Url url3 = new Url(0, 2, "http://www.idos.cz");

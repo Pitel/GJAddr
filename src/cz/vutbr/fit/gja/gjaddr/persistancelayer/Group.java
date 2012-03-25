@@ -11,7 +11,7 @@ public class Group  implements Serializable {
 
 	static private final long serialVersionUID = 6L;
 
-	private int id;
+	private int id = -1;
 	private String name;
 
 	public int getId() {
@@ -26,11 +26,17 @@ public class Group  implements Serializable {
 		this.name = name;
 	}
 
-	public Group (int id, String name) {
-		this.id = id;
+	public Group (String name) {
 		this.name = name;
 	}
 
+	// Database constructor
+	Group (int id, String name) {
+		this.id = id;		
+		this.name = name;
+	}	
+
+	@Override
 	public boolean equals(Object obj) {
 		if (obj == null) {
 			return false;

@@ -21,14 +21,47 @@ public class DatabaseGroupsContacts {
 	// TODO check if is the number currently not in the list
 	void addContactsToGroup(Group group, List<Contact> contactsToAdd) {		
 		for (Contact contact : contactsToAdd) {
-			GroupContact gc = new GroupContact(group.getId(), contact.id);
+			GroupContact gc = new GroupContact(group.getId(), contact.getId());
 			this.groupsContacts.add(gc);
 		}
 	}
 	
-	void removeContactsFromGroup(int groupId, List<Integer> contactsIds) {
+	void removeContactsFromGroup(Group group, List<Contact> contactsToRemove) {
+		List<GroupContact> entriesToRemove = new ArrayList<GroupContact>();		
+		List<Integer> contactsToRemoveIds = new ArrayList<Integer>();
 		
-	}		
+		for (Contact contact: contactsToRemove) {
+			contactsToRemoveIds.add(contact.getId());
+		}
+		
+		List<Integer> contactsFromGroup = this.filterByGroupId(group.getId());
+		
+		for (GroupContact gc: this.groupsContacts) {
+			int contactId = gc.getContactId();
+			
+			// remove all entries, that are:
+			// 1. assign to the required group
+			// 2. delete is required as a second parameter
+			if (contactsFromGroup.contains(contactId) && contactsToRemoveIds.contains(contactId)) {
+				entriesToRemove.add(gc);
+			}
+		}
+		
+		this.groupsContacts.removeAll(entriesToRemove);
+	}
+	
+	void removeContactsEntries(List<Contact> contactsToRemove) {
+		List<GroupContact> entriesToRemove = new ArrayList<GroupContact>();
+		for (Contact contact: contactsToRemove) {
+			for (GroupContact gc: this.groupsContacts) {
+				if (gc.getContactId() == contact.getId()) {
+					entriesToRemove.add(gc);
+				}
+			}
+		}
+		
+		this.groupsContacts.removeAll(entriesToRemove);
+	}
 	
 	private void load()	{
 		

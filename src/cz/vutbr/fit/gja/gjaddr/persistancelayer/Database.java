@@ -108,17 +108,19 @@ public class Database implements IDatabase {
 		return this.contacts.getAllContacts();
 	}
 
-	@Override // TOTEST
+	@Override // DONE
 	public List<Contact> updateContact(Contact contact) {
 		this.contacts.update(contact);
 		this.commitChanges(TableType.CONTACTS);					
 		return this.getAllContacts();
 	}
 
-	@Override // TOTEST
+	@Override // DONE
 	public List<Contact> removeContacts(List<Contact> contactsToRemove) {
-		this.contacts.remove(contactsToRemove);
+		this.contacts.remove(contactsToRemove);		
+		this.groupsContacts.removeContactsEntries(contactsToRemove);
 		this.commitChanges(TableType.CONTACTS);		
+		this.commitChanges(TableType.GROUPSCONTACTS);				
 		return this.contacts.getAllContacts();
 	}
 
@@ -129,14 +131,16 @@ public class Database implements IDatabase {
 		return this.getAllContactsFromGroup(group);
 	}
 
-	@Override // NOT IMPLEMENTED
+	@Override // DONE
 	public List<Contact> removeContactsFromGroup(Group group, List<Contact> contactsToRemove) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		this.groupsContacts.removeContactsFromGroup(group, contactsToRemove);
+		this.commitChanges(TableType.GROUPSCONTACTS);
+		return this.getAllContactsFromGroup(group);
 	}
 
 	@Override // DONE
 	public List<Group> getAllGroupsForContact(Contact contact) {
-		List<Integer> groupsId = this.groupsContacts.filterByContactId(contact.id);
+		List<Integer> groupsId = this.groupsContacts.filterByContactId(contact.getId());
 		return this.groups.filter(groupsId);
 	}	
 }

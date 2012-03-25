@@ -2,7 +2,6 @@ package cz.vutbr.fit.gja.gjaddr.persistancelayer;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -158,7 +157,7 @@ public class DatabaseContacts {
 		
 		for (Contact contact : this.contacts) {
 			
-			if (requiredContactsId.contains(contact.id))
+			if (requiredContactsId.contains(contact.getId()))
 				filteredContacts.add(contact);
 			}
 

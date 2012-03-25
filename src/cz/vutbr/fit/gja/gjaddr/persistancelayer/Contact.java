@@ -115,7 +115,7 @@ public class Contact implements Serializable {
 	}
 		
 	
-	public Contact(int id, String firstName, String surName, String nickName, String note) {
+	public Contact(String firstName, String surName, String nickName, String note) {
 		this.id = id;
 		this.firstName = firstName;
 		this.surName = surName;
@@ -123,7 +123,7 @@ public class Contact implements Serializable {
 		this.note = nickName;		
 	}
 
-	public Contact(int id, String firstName, String surName, String nickName, Date dateOfBirth, 
+	public Contact(String firstName, String surName, String nickName, Date dateOfBirth, 
 					       String note, List<Messenger> messenger, List<Url> urls, List<Adress> adresses, 
 								 List<PhoneNumber> phoneNumbers, List<Email> emails, List<Custom> customs) {
 		this.id = id;

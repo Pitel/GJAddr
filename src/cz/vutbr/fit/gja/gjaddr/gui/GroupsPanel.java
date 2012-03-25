@@ -59,7 +59,7 @@ class GroupsPanel extends JPanel implements ActionListener {
 	 */
 	private void fillList() {
 		listModel.clear();
-		listModel.addElement(new Group(-1, "All"));
+		listModel.addElement(new Group("All"));
 		for (Group g : db.getAllGroups()) {
 			listModel.addElement(g);
 		}
