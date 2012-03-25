@@ -83,7 +83,7 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		MultiSplitPane multiSplitPane = new MultiSplitPane();
 		multiSplitPane.getMultiSplitLayout().setModel(model);
 		multiSplitPane.add(new GroupsPanel(new GroupSelectionListener()), "groups");
-		multiSplitPane.add(contactsPanel(), "contacts");
+		multiSplitPane.add(new ContactsPanel(), "contacts");
 		multiSplitPane.add(new JButton("Detail"), "detail");
 		container.add(multiSplitPane, BorderLayout.CENTER);
 		pack();
@@ -129,38 +129,6 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		helpMenu.add(this.menuItemAbout);
 
 		return menuBar;
-	}
-
-	/**
-	 * Panel with contasts table
-	 *
-	 * @return Panel
-	 */
-	private JPanel contactsPanel() {
-		JPanel panel = new JPanel();
-		panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
-		JLabel label = new JLabel("Contacts");
-		label.setAlignmentX(Component.CENTER_ALIGNMENT);
-		panel.add(label);
-		String[] columnNames = {"First Name", "Last Name", "Email", "Phone", "Address"};
-		Object[][] data = {
-			{"Kathy", "Smith", "k.smith@gmail.com", "00447239437009", "Milton Keynes"},
-			{"Sonia", "Newman", "s.newman@gmail.com", "00447847205234", "London"},
-			{"Anthony", "Davenport", "a.davenport@gmail.com", "00447037482354", "Birmingham"},
-			{"Isabella", "Distinto", "i.distinto@gmail.com", "00447019283775", "Milton Keynes"},
-			{"Gioele", "Barabucci", "g.barabucci@gmail.com", "00447019283937", "Northampton"},
-			{"Miriam", "Fernandez", "m.fernandez@gmail.com", "00447847563245", "Leighton Buzzard"},
-			{"Hassan", "Saif", "h.saif@gmail.com", "00447039485736", "Bletchley"},
-			{"Bogdan", "Kostov", "b.kostov@gmail.com", "00447958575646", "Milton Keynes"},
-			{"Robbie", "Bayes", "r.a.b@gmail.com", "00447987654535", "Bletchley"},
-			{"Harriet", "Cornish", "h.cornish@gmail.com", "00447887776665", "Milton Keynes"}
-		};
-		JTable table = new JTable(data, columnNames);
-		table.setAutoCreateRowSorter(true);
-		JScrollPane scrollPane = new JScrollPane(table);
-		//table.setFillsViewportHeight(true);
-		panel.add(scrollPane);
-		return panel;
 	}
 
 	@Override
