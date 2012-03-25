@@ -25,6 +25,7 @@ class GroupsPanel extends JPanel implements ActionListener {
 	static final long serialVersionUID = 0;
 	private final Database db = new Database();
 	private final DefaultListModel listModel = new DefaultListModel();
+	private final JList list = new JList(listModel);
 
 	/**
 	 * Constructor
@@ -37,7 +38,6 @@ class GroupsPanel extends JPanel implements ActionListener {
 		label.setAlignmentX(CENTER_ALIGNMENT);
 		add(label);
 		fillList();
-		JList list = new JList(listModel);
 		list.setSelectedIndex(0);
 		list.addListSelectionListener(listSelectionListener);
 		JScrollPane listScrollPane = new JScrollPane(list);
@@ -64,6 +64,7 @@ class GroupsPanel extends JPanel implements ActionListener {
 		for (Group g : db.getAllGroups()) {
 			listModel.addElement(g);
 		}
+		list.setSelectedIndex(0);
 	}
 
 	/**
@@ -76,8 +77,9 @@ class GroupsPanel extends JPanel implements ActionListener {
 		if ("addGroup".equals(e.getActionCommand())) {
 			addGroup();
 		} else if ("removeGroup".equals(e.getActionCommand())) {
-			removeGroup();
+			removeGroups();
 		}
+		fillList();
 	}
 
 	/**
@@ -95,16 +97,17 @@ class GroupsPanel extends JPanel implements ActionListener {
 			""
 		);
 		if (!name.isEmpty()) {
-			System.out.println(name);
+			//System.out.println(name);
 			db.addNewGroup(name);
-			fillList();
 		}
 	}
 
 	/**
 	 * Function for removing group
 	 */
-	private void removeGroup() {
-		System.out.println("removeGroup");
+	private void removeGroups() {
+		Group[] groups = Arrays.copyOf(list.getSelectedValues(), list.getSelectedValues().length, Group[].class);
+		//System.out.println("Remove groups: " + Arrays.toString(groups));
+		db.removeGroups(Arrays.asList(groups));
 	}
 }
