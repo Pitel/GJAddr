@@ -46,6 +46,9 @@ class ContactsPanel extends JPanel {
 		add(scrollPane);
 	}
 
+	/**
+	 * Fill table with data from list
+	 */
 	private void fillTable(List<Contact> contacts) {
 		for (Contact c : contacts) {
 			System.out.println(c);
