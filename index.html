@@ -1,88 +1,72 @@
+
 <!DOCTYPE html>
-<html>
-<head>
-  <meta charset='utf-8'>
-
-  <title>Pitel/GJAddr @ GitHub</title>
-
-  <style type="text/css">
-    body {
-      margin-top: 1.0em;
-      background-color: #b1c6b5;
-      font-family: Helvetica, Arial, FreeSans, san-serif;
-      color: #000000;
-    }
-    #container {
-      margin: 0 auto;
-      width: 700px;
-    }
-    h1 { font-size: 3.8em; color: #4e394a; margin-bottom: 3px; }
-    h1 .small { font-size: 0.4em; }
-    h1 a { text-decoration: none }
-    h2 { font-size: 1.5em; color: #4e394a; }
-    h3 { text-align: center; color: #4e394a; }
-    a { color: #4e394a; }
-    .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
-    .download { float: right; }
-    pre { background: #000; color: #fff; padding: 15px;}
-    hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
-    .footer { text-align:center; padding-top:30px; font-style: italic; }
-  </style>
-</head>
-
-<body>
-  <a href="https://github.com/Pitel/GJAddr"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
-
-  <div id="container">
-
-    <div class="download">
-      <a href="https://github.com/Pitel/GJAddr/zipball/master">
-        <img border="0" width="90" src="https://github.com/images/modules/download/zip.png"></a>
-      <a href="https://github.com/Pitel/GJAddr/tarball/master">
-        <img border="0" width="90" src="https://github.com/images/modules/download/tar.png"></a>
-    </div>
-
-    <h1><a href="https://github.com/Pitel/GJAddr">GJAddr</a>
-      <span class="small">by <a href="https://github.com/Pitel">Pitel</a></span></h1>
-
-    <div class="description">
-      Vytvořte aplikaci pro správu kontaktů – jmen, email/IM, adres, narozenin, …
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-      <h2>Authors</h2>
-      <p>Drahomira Herrmannova (d.herrmannova@gmail.com)<br/>Bc. Jan Kaláb (pitlicek@gmail.com)<br/>Radek Gajdušek (xgajdu07@stud.fit.vutbr.cz)<br/>      </p>
-    
-
-    
-      <h2>Contact</h2>
-      <p>Bc. Jan Kaláb (pitlicek@gmail.com)<br/>      </p>
-    
-
-    <h2>Download</h2>
-    <p>
-      You can download this project in either
-      <a href="https://github.com/Pitel/GJAddr/zipball/master">zip</a> or
-      <a href="https://github.com/Pitel/GJAddr/tarball/master">tar formats.
-    </p>
-    <p>You can also clone the project with <a href="http://git-scm.com">Git</a>
-      by running:
-      <pre>$ git clone git://github.com/Pitel/GJAddr</pre>
-    </p>
-
-    <div class="footer">
-      get the source code on GitHub : <a href="https://github.com/Pitel/GJAddr">Pitel/GJAddr</a>
-    </div>
-
-  </div>
-
-</body>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>GJAddr</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="GJAddr">
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<!--[if lt IE 9]>
+			<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+	</head>
+	<body style="padding-top: 60px">
+		<div class="navbar navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container">
+					<a class="brand" href="#">GJAddr</a>
+					<ul class="nav">
+						<li><a href="#">Download</a></li>
+						<li><a href="javadoc">Javadoc</a></li>
+						<li><a href="#usage">Usage</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="container">
+			<div class="hero-unit">
+				<h1>GJAddr</h1>
+				<p>Nejlepší adresář všech dob napsaný v Javě!</p>
+				<p><a href="https://github.com/Pitel/GJAddr/zipball/master" class="btn btn-primary btn-large">Stáhnout!</a></p>
+			</div>
+			<div class="row">
+				<div class="span4">
+					<h2>Přednosti</h2>
+					<ul>
+						<li>Přehledné UI</li>
+						<li>Import a export do mnoha formátů a služeb</li>
+						<li>Upozornění na narozeniny</li>
+					</ul>
+				</div>
+				<div class="span4">
+					<h2>Javadoc</h2>
+					<p>Programátorská dokumentace o vniřnostech GJAddr.</p>
+					<p><a class="btn" href="#">Javadoc</a></p>
+				</div>
+				<div class="span4">
+					<h2>Autoři</h2>
+					<ul>
+						<li><a href="mailto:xkalab00@stud.fit.vutbr.cz">Bc. Jan Kaláb </a></li>
+						<li><a href="mailto:xgajdu07@stud.fit.vutbr.cz">Bc. Radek Gajdušek</a></li>
+						<li><a href="mailto:xherrm01@stud.fit.vutbr.cz">Bc. Drahomira Herrmannova</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="row">
+				<div class="span12">
+					<h2 id="usage">Použití</h2>
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut quis leo orci, vel imperdiet erat. Integer fermentum molestie tortor, eu consectetur augue bibendum consectetur. Phasellus tristique dolor at massa lobortis rhoncus. Aenean feugiat dui quis arcu pellentesque ut dignissim tellus posuere. Duis imperdiet iaculis nibh, eu vulputate metus sollicitudin non. Aliquam tincidunt varius mi, vitae rutrum enim scelerisque ut. Morbi vitae elit lectus, a malesuada quam. Suspendisse potenti. Donec imperdiet odio nisl. Donec ac odio velit.</p>
+					<p>Nulla turpis leo, elementum ut adipiscing vel, egestas eu enim. Aenean dictum, libero sed ultrices varius, leo est luctus nisl, et lobortis neque erat sed diam. Fusce interdum, sapien adipiscing vestibulum pretium, orci elit dapibus ante, in pretium justo massa dictum purus. Donec eleifend nulla nec nulla mollis dapibus varius orci facilisis. Nullam mattis ipsum sit amet dolor pellentesque scelerisque non nec ante. Mauris mauris turpis, pretium quis aliquet in, tempus vitae dolor. Aenean tincidunt egestas tortor, eget auctor ipsum volutpat eu. In hac habitasse platea dictumst. Vivamus quis diam nec diam elementum sagittis. Donec volutpat consectetur ultricies. Nam consectetur interdum eros in ullamcorper. Pellentesque adipiscing, nisl eu feugiat accumsan, mauris nisl pellentesque eros, eget hendrerit risus urna ut leo. Vivamus rutrum arcu metus.</p>
+					<p>Etiam laoreet augue vitae sem pretium tristique. Duis dapibus tellus luctus odio pellentesque a imperdiet nunc consectetur. Ut tincidunt felis vel diam facilisis a aliquet elit tristique. Praesent iaculis vulputate ipsum bibendum eleifend. Cras dictum consequat mi in tempor. Phasellus vehicula pulvinar leo nec tincidunt. Sed bibendum, libero at facilisis viverra, nulla odio semper purus, non tempor tortor elit at justo. Donec interdum nisi sit amet erat luctus eget ornare nisl interdum. Vivamus facilisis posuere lorem quis euismod. Proin lobortis, arcu id cursus malesuada, leo velit vehicula diam, vel dictum orci odio at magna. Nulla quis augue in quam aliquam malesuada quis at lacus. Maecenas in erat hendrerit justo facilisis molestie. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;</p>
+					<p>Nam porta neque quis urna lacinia placerat. Nunc quis sapien quam. Etiam sed viverra risus. Nunc ut turpis turpis. In nec accumsan odio. In sed velit sit amet magna aliquet sagittis et a nunc. Suspendisse dapibus blandit eros non condimentum. Maecenas pharetra ultrices lorem eget iaculis. Integer dapibus euismod bibendum. Maecenas a diam lorem, vel tincidunt augue. Cras facilisis sem at ligula fermentum sagittis.</p>
+					<p>Praesent semper neque venenatis magna cursus ac eleifend nulla auctor. Mauris vitae eleifend diam. Vivamus vitae purus tortor, vitae convallis turpis. Donec tincidunt ullamcorper nunc vel ultrices. Vivamus quam libero, cursus et ornare vitae, rutrum nec enim. Curabitur faucibus justo eu odio mattis quis facilisis dolor lobortis. In mollis magna sit amet urna facilisis lacinia malesuada dui lobortis.</p>
+				</div>
+			</div>
+			<hr>
+			<footer>
+				<p><a href="http://www.fit.vutbr.cz">FIT VUTBR</a> 2012</p>
+			</footer>
+		</div>
+	</body>
 </html>
