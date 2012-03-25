@@ -1,11 +1,17 @@
 package cz.vutbr.fit.gja.gjaddr.gui;
 
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.Adress;
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.Contact;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.Email;
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.PhoneNumber;
+import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /**
  * Panel with contacts
@@ -15,6 +21,13 @@ import javax.swing.JTable;
 class ContactsPanel extends JPanel {
 	static final long serialVersionUID = 0;
 	private final Database db = new Database();
+	private final DefaultTableModel model = new DefaultTableModel(new String[] {"First Name", "Last Name", "Email", "Phone", "Address"}, 0) {
+		static final long serialVersionUID = 0;
+		@Override
+		public boolean isCellEditable(int row, int column) {
+			return false;
+		}
+	};
 
 	/**
 	 * Constructor
@@ -26,22 +39,64 @@ class ContactsPanel extends JPanel {
 		JLabel label = new JLabel("Contacts");
 		label.setAlignmentX(CENTER_ALIGNMENT);
 		add(label);
-		String[] columnNames = {"First Name", "Last Name", "Email", "Phone", "Address"};
-		Object[][] data = {
-			{"Kathy", "Smith", "k.smith@gmail.com", "00447239437009", "Milton Keynes"},
-			{"Sonia", "Newman", "s.newman@gmail.com", "00447847205234", "London"},
-			{"Anthony", "Davenport", "a.davenport@gmail.com", "00447037482354", "Birmingham"},
-			{"Isabella", "Distinto", "i.distinto@gmail.com", "00447019283775", "Milton Keynes"},
-			{"Gioele", "Barabucci", "g.barabucci@gmail.com", "00447019283937", "Northampton"},
-			{"Miriam", "Fernandez", "m.fernandez@gmail.com", "00447847563245", "Leighton Buzzard"},
-			{"Hassan", "Saif", "h.saif@gmail.com", "00447039485736", "Bletchley"},
-			{"Bogdan", "Kostov", "b.kostov@gmail.com", "00447958575646", "Milton Keynes"},
-			{"Robbie", "Bayes", "r.a.b@gmail.com", "00447987654535", "Bletchley"},
-			{"Harriet", "Cornish", "h.cornish@gmail.com", "00447887776665", "Milton Keynes"}
-		};
-		JTable table = new JTable(data, columnNames);
+		fillTable(db.getAllContacts());
+		JTable table = new JTable(model);
 		table.setAutoCreateRowSorter(true);
 		JScrollPane scrollPane = new JScrollPane(table);
 		add(scrollPane);
+	}
+
+	private void fillTable(List<Contact> contacts) {
+		for (Contact c : contacts) {
+			System.out.println(c);
+
+			String separator = "";
+			final StringBuilder emails = new StringBuilder();
+			try {
+				for (Email email : c.getEmails()) {
+					emails.append(separator);
+					emails.append(email.getEmail());
+					separator = ", ";
+				}
+			} catch (NullPointerException e) {
+				//Ignore it, probably just no emails
+			}
+
+			separator = "";
+			final StringBuilder phones = new StringBuilder();
+			try {
+				for (PhoneNumber phone : c.getPhoneNumbers()) {
+					phones.append(separator);
+					phones.append(phone.getEmail());	//WTFLOL
+					separator = ", ";
+				}
+			} catch (NullPointerException e) {
+				//Ignore it, probably just no phone numbers
+			}
+
+			separator = "";
+			final StringBuilder addresses = new StringBuilder();
+			try {
+				for (Adress address : c.getAdresses()) {
+					addresses.append(separator);
+					addresses.append(address.getStreet());
+					addresses.append(" ");
+					addresses.append(address.getNumber());
+					addresses.append(", ");
+					addresses.append(address.getCity());
+					separator = "; ";
+				}
+			} catch (NullPointerException e) {
+				//Ignore it, probably just homeless
+			}
+
+			model.addRow(new String[] {
+				c.getFirstName(),
+				c.getSurName(),
+				emails.toString(),
+				phones.toString(),
+				addresses.toString()
+			});
+		}
 	}
 }
