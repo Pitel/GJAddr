@@ -14,7 +14,6 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 /**
@@ -29,8 +28,10 @@ class GroupsPanel extends JPanel implements ActionListener {
 
 	/**
 	 * Constructor
+	 *
+	 * @param listener Listener to handle actions outside goups panel
 	 */
-	public GroupsPanel() {
+	public GroupsPanel(ListSelectionListener listSelectionListener) {
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		JLabel label = new JLabel("Groups");
 		label.setAlignmentX(CENTER_ALIGNMENT);
@@ -38,7 +39,7 @@ class GroupsPanel extends JPanel implements ActionListener {
 		fillList();
 		JList list = new JList(listModel);
 		list.setSelectedIndex(0);
-		list.addListSelectionListener(new GroupSelectionListener());
+		list.addListSelectionListener(listSelectionListener);
 		JScrollPane listScrollPane = new JScrollPane(list);
 		add(listScrollPane);
 		JPanel buttons = new JPanel();
@@ -76,20 +77,6 @@ class GroupsPanel extends JPanel implements ActionListener {
 			addGroup();
 		} else if ("removeGroup".equals(e.getActionCommand())) {
 			removeGroup();
-		}
-	}
-
-	/**
-	 * Listener class for groups list selection
-	 */
-	private class GroupSelectionListener implements ListSelectionListener {
-		@Override
-		public void valueChanged(ListSelectionEvent e) {
-			if (!e.getValueIsAdjusting()) {	//React only on final choice
-				JList list = (JList) e.getSource();
-				Group[] groups = Arrays.copyOf(list.getSelectedValues(), list.getSelectedValues().length, Group[].class);
-				System.out.println("Groups: " + Arrays.toString(groups));
-			}
 		}
 	}
 

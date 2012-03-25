@@ -19,6 +19,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -31,6 +32,8 @@ import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import org.jdesktop.swingx.MultiSplitLayout.Divider;
 import org.jdesktop.swingx.MultiSplitLayout.Leaf;
 import org.jdesktop.swingx.MultiSplitLayout.Split;
@@ -79,7 +82,7 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		model.setChildren(Arrays.asList(groupsLeaf, new Divider(), contactsLeaf, new Divider(), detailLeaf));
 		MultiSplitPane multiSplitPane = new MultiSplitPane();
 		multiSplitPane.getMultiSplitLayout().setModel(model);
-		multiSplitPane.add(new GroupsPanel(), "groups");
+		multiSplitPane.add(new GroupsPanel(new GroupSelectionListener()), "groups");
 		multiSplitPane.add(contactsPanel(), "contacts");
 		multiSplitPane.add(new JButton("Detail"), "detail");
 		container.add(multiSplitPane, BorderLayout.CENTER);
@@ -204,6 +207,20 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 				System.err.println(ex);
 			} catch (IOException ex) {
 				System.err.println(ex);
+			}
+		}
+	}
+
+	/**
+	 * Listener class for groups list selection
+	 */
+	private class GroupSelectionListener implements ListSelectionListener {
+		@Override
+		public void valueChanged(ListSelectionEvent e) {
+			if (!e.getValueIsAdjusting()) {	//React only on final choice
+				JList list = (JList) e.getSource();
+				Group[] groups = Arrays.copyOf(list.getSelectedValues(), list.getSelectedValues().length, Group[].class);
+				System.out.println("Groups: " + Arrays.toString(groups));
 			}
 		}
 	}
