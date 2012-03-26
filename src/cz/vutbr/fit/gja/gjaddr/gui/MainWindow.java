@@ -15,6 +15,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -55,7 +58,7 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 	 */
 	public MainWindow() {
 		super("GJAddr");
-		//cz.vutbr.fit.gja.gjaddr.persistancelayer.TestData.fillTestingData(db);	//DEBUG
+		// cz.vutbr.fit.gja.gjaddr.persistancelayer.TestData.fillTestingData(db);	//DEBUG
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -177,12 +180,11 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		public void valueChanged(ListSelectionEvent e) {
 			if (!e.getValueIsAdjusting()) {	//React only on final choice
 				JList list = (JList) e.getSource();
-				Group[] groups = Arrays.copyOf(list.getSelectedValues(), list.getSelectedValues().length, Group[].class);
 				//System.out.println("Groups: " + Arrays.toString(groups));
-				ArrayList<Contact> contacts = new ArrayList<Contact>();
-				for (Group g : groups) {
-					contacts.addAll(db.getAllContactsFromGroup(g));
-				}
+				
+				List requiredGroupList = Arrays.asList(list.getSelectedValues());				
+				List<Contact> contacts = db.getAllContactsFromGroup(requiredGroupList);
+				
 				contactsPanel.fillTable(contacts);
 			}
 		}

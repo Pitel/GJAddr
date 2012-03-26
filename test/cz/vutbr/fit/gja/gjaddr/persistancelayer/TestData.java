@@ -16,6 +16,8 @@ public class TestData {
 	}
 
 	private static void fillContacts(Database db) {
+			
+		List<Contact> contactsToAdd = new ArrayList<Contact>();		
 		
 		List<Email> emails = new ArrayList<Email>();
 		List<PhoneNumber> phones = new ArrayList<PhoneNumber>();		
@@ -25,36 +27,22 @@ public class TestData {
 		List<Custom> customs = new ArrayList<Custom>();			
 						
 		Contact contact1 = new Contact("Radek", "Gajdusek", "Speedy", null);
-		
-		Email email1 = new Email(1, "test@gmail.com");
-		Email email2 = new Email(1, "pokus@gmail.com");
-		emails.add(email1);
-		emails.add(email2);
-		contact1.setEmails(emails);
-		
-		PhoneNumber phone1 = new PhoneNumber(1, "420582978653");
-		PhoneNumber phone2 = new PhoneNumber(2, "420654789369");		
-		phones.add(phone1);
-		phones.add(phone2);		
-		contact1.setPhoneNumbers(phones);
-		
-		Url url1 = new Url(1, "http://www.lahvators.cz");		
-		urls.add(url1);
-		contact1.setUrls(urls);
-		
-		Messenger mess1 = new Messenger(1, "ragaj@jabber.org");
-		Messenger mess2 = new Messenger(2, "278456123");		
-		messengers.add(mess1);
-		messengers.add(mess2);
-		contact1.setMessenger(messengers);
-		
-		Custom custom = new Custom("test", "123");
-		customs.add(custom);
-		contact1.setCustoms(customs);
-		
-		Address adress1 = new Address(1, "Osvoboditelů", 44, "Kopřivnice", 74221, "Czech republic");
-		adresses.add(adress1);
-		contact1.setAdresses(adresses);
+		emails.add(new Email(1, "test@gmail.com"));
+		emails.add(new Email(1, "pokus@gmail.com"));
+		contact1.setEmails(new ArrayList<Email>(emails));
+		phones.add(new PhoneNumber(1, "420582978653"));
+		phones.add(new PhoneNumber(2, "420654789369"));		
+		contact1.setPhoneNumbers(new ArrayList<PhoneNumber>(phones));
+		urls.add(new Url(1, "http://www.lahvators.cz"));
+		contact1.setUrls(new ArrayList<Url>(urls));
+		messengers.add(new Messenger(1, "ragaj@jabber.org"));
+		messengers.add(new Messenger(2, "278456123"));
+		contact1.setMessenger(new ArrayList<Messenger>(messengers));
+		customs.add(new Custom("test", "123"));
+		contact1.setCustoms(new ArrayList<Custom>(customs));
+		adresses.add(new Address(1, "Osvoboditelů", 44, "Kopřivnice", 74221, "Czech republic"));
+		contact1.setAdresses(new ArrayList<Address>(adresses));		
+		contactsToAdd.add(contact1);
 		
 		emails.clear();
 		phones.clear();
@@ -64,20 +52,14 @@ public class TestData {
 		customs.clear();
 		
 		Contact contact2 = new Contact("Jan", "Kaláb", "Pitel", "pokusná poznámka");
-		
-		Email email3 = new Email(2, "pokus@centrum.cz");		
-		emails.add(email3);
-		contact2.setEmails(emails);		
-		
-		PhoneNumber phone3 = new PhoneNumber(1, "420658987562");
-		PhoneNumber phone4 = new PhoneNumber(2, "420587978652");			
-		phones.add(phone3);
-		phones.add(phone4);		
-		contact2.setPhoneNumbers(phones);		
-		
-		Address adress2 = new Address(1, "Masarykova", 133, "Brno", 61200, null);	
-		adresses.add(adress2);
-		contact2.setAdresses(adresses);
+		emails.add(new Email(2, "pokus@centrum.cz"));
+		contact2.setEmails(new ArrayList<Email>(emails));						
+		phones.add(new PhoneNumber(1, "420658987562"));
+		phones.add(new PhoneNumber(2, "420587978652"));		
+		contact2.setPhoneNumbers(new ArrayList<PhoneNumber>(phones));		
+		adresses.add( new Address(1, "Masarykova", 133, "Brno", 61200, null));
+		contact2.setAdresses(new ArrayList<Address>(adresses));
+		contactsToAdd.add(contact2);
 		
 		emails.clear();
 		phones.clear();
@@ -87,32 +69,18 @@ public class TestData {
 		customs.clear();		
 		
 		Contact contact3 = new Contact("Petr", "Macháček", null, null);
-		
-		Url url2 = new Url(2, "http://www.seznam.cz");
-		Url url3 = new Url(2, "http://www.idos.cz");
-		urls.add(url2);
-		urls.add(url3);		
-		contact3.setUrls(urls);		
-		
-		Messenger mess3 = new Messenger(1, "test@jabbim.cz");
-		Messenger mess4 = new Messenger(2, "147896321");			
-		messengers.add(mess3);
-		messengers.add(mess4);
-		contact3.setMessenger(messengers);		
-
+		urls.add(new Url(2, "http://www.seznam.cz"));
+		urls.add(new Url(2, "http://www.idos.cz"));		
+		contact3.setUrls(new ArrayList<Url>(urls));		
+		messengers.add(new Messenger(1, "test@jabbim.cz"));
+		messengers.add(new Messenger(2, "147896321"));
+		contact3.setMessenger(new ArrayList<Messenger>(messengers));		
 		Email email4 = new Email(2, "pokus@seznam.cz");	
-		emails.add(email4);
-		contact3.setEmails(emails);
-		
-		Address adress3 = new Address(2, "Sportovní", 1207, "Nové Město na Moravě", 45879, "Slovensko");	
-		adresses.add(adress3);
-		contact3.setAdresses(adresses);
-				
-		
-		List<Contact> contactsToAdd = new ArrayList<Contact>();
-		contactsToAdd.add(contact1);
-		contactsToAdd.add(contact2);
-		contactsToAdd.add(contact3);	
+		emails.add(new Email(2, "pokus@seznam.cz"));
+		contact3.setEmails(new ArrayList<Email>(emails));
+		adresses.add(new Address(2, "Sportovní", 1207, "Nové Město na Moravě", 45879, "Slovensko"));
+		contact3.setAdresses(new ArrayList<Address>(adresses));			
+		contactsToAdd.add(contact3);
 		
 		db.addNewContacts(contactsToAdd);
 	}

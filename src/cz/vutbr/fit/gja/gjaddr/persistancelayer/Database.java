@@ -1,5 +1,7 @@
 package cz.vutbr.fit.gja.gjaddr.persistancelayer;
 
+import java.util.AbstractList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -69,9 +71,17 @@ public class Database implements IDatabase {
 		return this.contacts.filter(requiredContacts);
 	}
 
-	@Override // DONE
-	public List<Contact> getAllContactsFromGroup(Group group) {
-		List<Integer> contactsId = this.groupsContacts.filterByGroupId(group.getId());
+	@Override // TOTEST
+	public List<Contact> getAllContactsFromGroup(List<Group> requiredGroups) {
+		
+		// groupId == -1 indicate all contacts
+		for (Group group : requiredGroups) {
+			if (group.getId() == -1) {
+				return this.contacts.getAllContacts();
+			}
+		}
+		
+		List<Integer> contactsId = this.groupsContacts.getContactsIdAssignToGroups(requiredGroups);				
 		return this.contacts.filterByIds(contactsId);
 	}
 	
@@ -146,5 +156,12 @@ public class Database implements IDatabase {
 	public List<Group> getAllGroupsForContact(Contact contact) {
 		List<Integer> groupsId = this.groupsContacts.filterByContactId(contact.getId());
 		return this.groups.filter(groupsId);
-	}	
+	}
+	
+	private List<Contact> getAllContactsFromGroup(Group group) {
+		List<Group> requiredGroups = new ArrayList<Group>();
+		requiredGroups.add(group);
+		
+		return this.getAllContactsFromGroup(requiredGroups);
+	}
 }

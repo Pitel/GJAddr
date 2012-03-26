@@ -89,32 +89,57 @@ public class DatabaseTest {
 		
 		List<Contact> contacts = this.database.getAllContacts();
 		
-		List<Contact> contactsGroup1 = new ArrayList<Contact>();
-		List<Contact> contactsGroup2 = new ArrayList<Contact>();
-		List<Contact> contactsGroup3 = new ArrayList<Contact>();
-		List<Contact> contactsGroup4 = new ArrayList<Contact>();		
+		List<Contact> contactsGroup = new ArrayList<Contact>();
 		
-		contactsGroup1.add(contacts.get(0));
-		contactsGroup1.add(contacts.get(1));			
-		contactsGroup2.add(contacts.get(1));
-		contactsGroup2.add(contacts.get(2));			
-		contactsGroup4.add(contacts.get(2));
+		contactsGroup.add(contacts.get(0));
+		contactsGroup.add(contacts.get(1));					
 		
 		List<Group> groups = this.database.getAllGroups();
 		
-		List<Contact> result = this.database.getAllContactsFromGroup(groups.get(0));
-		assertEquals(contactsGroup1, result);		
-		
-		result = this.database.getAllContactsFromGroup(groups.get(1));
-		assertEquals(contactsGroup2, result);		
-		
-		result = this.database.getAllContactsFromGroup(groups.get(2));
-		assertEquals(contactsGroup3, result);		
-		
-		result = this.database.getAllContactsFromGroup(groups.get(3));
-		assertEquals(contactsGroup4, result);	
+		List<Contact> expectedResult = new ArrayList<Contact>();
+		List<Group> requiredGroups = new ArrayList<Group>();
 
-		result = this.database.getAllContactsFromGroup(new Group(10000, "test"));
+		// empty required groups list
+		List<Contact> result = this.database.getAllContactsFromGroup(requiredGroups);	
+		assertEquals(expectedResult, result);		
+		
+		// get all groups - ony one group with id = -1
+		expectedResult = this.database.getAllContacts();		
+		requiredGroups.add(new Group(-1, "aaaa"));
+		result = this.database.getAllContactsFromGroup(requiredGroups);		
+		assertEquals(expectedResult, result);	
+		
+		// more groups with one group id = -1
+		requiredGroups.add(groups.get(0));
+		requiredGroups.add(groups.get(1));		
+		result = this.database.getAllContactsFromGroup(requiredGroups);		
+		assertEquals(expectedResult, result);	
+
+		// get contacts from all groups
+		expectedResult = this.database.getAllContacts();	
+		result = this.database.getAllContactsFromGroup(groups);				
+		assertEquals(expectedResult, result);		
+		
+		requiredGroups.clear();
+		
+		// get contact from one group
+		expectedResult = contactsGroup;
+		requiredGroups.add(groups.get(0));
+		result = this.database.getAllContactsFromGroup(requiredGroups);				
+		assertEquals(expectedResult, result);		
+		
+		// get contacts from more groups
+		requiredGroups.add(groups.get(3));				
+		expectedResult.add(contacts.get(2));
+		result = this.database.getAllContactsFromGroup(requiredGroups);				
+		assertEquals(expectedResult, result);			
+		
+		expectedResult.clear();
+		requiredGroups.clear();
+		
+		// get contacts from non-existing group
+		requiredGroups.add(new Group(10000, "test"));
+		result = this.database.getAllContactsFromGroup(requiredGroups);
 		assertEquals(new ArrayList<Contact>(), result);			
 	}
 
@@ -350,6 +375,7 @@ public class DatabaseTest {
 
 		List<Contact> contactsToRemove = new ArrayList<Contact>();		
 		List<Contact> expectedResult = new ArrayList<Contact>();
+		List<Group> requiredGroups = new ArrayList<Group>();		
 		
 		// remove existing contact from non-existing group
 		Contact contact = this.database.getAllContacts().get(1);
@@ -362,38 +388,39 @@ public class DatabaseTest {
 		// remove non-existing contact from existing group						
 		Group group = this.database.getAllGroups().get(0);
 		contactsToRemove.add(new Contact("aa", "bb", "cc", "ddd"));		
-		expectedResult = this.database.getAllContactsFromGroup(group);
+		requiredGroups.add(group);
+		expectedResult = this.database.getAllContactsFromGroup(requiredGroups);
 		result = this.database.removeContactsFromGroup(group, contactsToRemove);
 		assertEquals(expectedResult, result);
 		
 		contactsToRemove.clear();
 		
 		// remove one contact from group - Group Lahvators
-		expectedResult = this.database.getAllContactsFromGroup(group);
+		expectedResult = this.database.getAllContactsFromGroup(requiredGroups);
 		contact = expectedResult.remove(0);
 		contactsToRemove.add(contact);			
 		result = this.database.removeContactsFromGroup(group, contactsToRemove);
 		assertEquals(expectedResult, result);		
 		
-		contactsToRemove.clear();	
+		contactsToRemove.clear();
 		
-		// remove one existing and one non-existing contact from group		
-		contactsToRemove = this.database.getAllContactsFromGroup(group);
+		// remove one existing and one non-existing contact from group
+		contactsToRemove = this.database.getAllContactsFromGroup(requiredGroups);
 		contactsToRemove.add(new Contact("aa", "bb", "cc", "ddd"));
 		result = this.database.removeContactsFromGroup(group, contactsToRemove);	
 		expectedResult.clear();
 		assertEquals(expectedResult, result);				
 		
-		contactsToRemove.clear();			
+		contactsToRemove.clear();	
+		requiredGroups.clear();				
 		
 		// remove all contact from group - Group Fit
-		Group group2 = this.database.getAllGroups().get(1);		
-		contactsToRemove = this.database.getAllContactsFromGroup(group2);			
+		Group group2 = this.database.getAllGroups().get(1);	
+		requiredGroups.add(group2);				
+		contactsToRemove = this.database.getAllContactsFromGroup(requiredGroups);			
 		result = this.database.removeContactsFromGroup(group, contactsToRemove);
 		expectedResult.clear();
 		assertEquals(expectedResult, result);		
-		
-
 	}
 
 	/**

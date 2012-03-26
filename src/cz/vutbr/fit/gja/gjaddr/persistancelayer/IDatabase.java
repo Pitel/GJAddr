@@ -17,7 +17,7 @@ public interface IDatabase {
 	List<Contact> removeContacts(List<Contact> contactsToRemove);
 	
 	// GROUP <=> CONTACTS
-	List<Contact> getAllContactsFromGroup(Group group);
+	List<Contact> getAllContactsFromGroup(List<Group> requiredGroups);
 	List<Group> getAllGroupsForContact(Contact contact);		
 	List<Contact> addContactsToGroup(Group group, List<Contact> contactsToAdd);
 	List<Contact> removeContactsFromGroup(Group group, List<Contact> contactsToRemove);	

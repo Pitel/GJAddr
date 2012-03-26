@@ -137,8 +137,28 @@ public class DatabaseGroupsContacts {
 		return this.filter(false, id);
 	}	
 	
+	List<Integer> getContactsIdAssignToGroups(List<Group> groups) {
+		
+		List<Integer> contactsId = new ArrayList<Integer>();
+		List<Integer> tempList = null;
+		
+		for (Group group: groups) {
+			tempList = this.filterByGroupId(group.getId());
+			
+			for (int contactId: tempList) {
+				
+				// add id only in case, that is not already in the list
+				if (!contactsId.contains(contactId)) {
+					contactsId.add(contactId);
+				}
+			}
+		}
+		
+		return contactsId;
+	}
+	
 	private List<Integer> filter(boolean filterGroups, int id) {
-
+		
 		List<Integer> filteredRecords = new ArrayList<Integer>();
 
 		for (GroupContact groupContact : this.groupsContacts) {
