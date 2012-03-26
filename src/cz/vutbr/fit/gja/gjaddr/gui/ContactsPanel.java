@@ -103,6 +103,6 @@ class ContactsPanel extends JPanel {
 	 */
 	void filter(String f) {
 		//System.out.println("Filtering: " + f);
-		sorter.setRowFilter(RowFilter.regexFilter(f));
+		sorter.setRowFilter(RowFilter.regexFilter("(?i)" + f));
 	}
 }
