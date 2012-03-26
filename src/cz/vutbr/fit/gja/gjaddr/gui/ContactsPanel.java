@@ -49,7 +49,7 @@ class ContactsPanel extends JPanel {
 	/**
 	 * Fill table with data from list
 	 */
-	private void fillTable(List<Contact> contacts) {
+	void fillTable(List<Contact> contacts) {
 		model.setRowCount(0);
 		for (Contact c : contacts) {
 			System.out.println(c);

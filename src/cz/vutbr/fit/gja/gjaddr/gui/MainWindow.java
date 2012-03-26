@@ -1,5 +1,6 @@
 package cz.vutbr.fit.gja.gjaddr.gui;
 
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.Contact;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Group;
 import java.awt.BorderLayout;
@@ -13,6 +14,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
+import java.util.ArrayList;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -46,6 +48,7 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 	private final Database db = new Database();
 	private JMenuItem menuItemClose, menuItemHelp, menuItemAbout, menuItemImport, menuItemExport;
 	private final JTextField searchField = new JTextField();
+	private final ContactsPanel contactsPanel = new ContactsPanel();
 
 	/**
 	 * Creates the main window.
@@ -79,7 +82,7 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		MultiSplitPane multiSplitPane = new MultiSplitPane();
 		multiSplitPane.getMultiSplitLayout().setModel(model);
 		multiSplitPane.add(new GroupsPanel(new GroupSelectionListener()), "groups");
-		multiSplitPane.add(new ContactsPanel(), "contacts");
+		multiSplitPane.add(contactsPanel, "contacts");
 		multiSplitPane.add(new JButton("Detail"), "detail");
 		container.add(multiSplitPane, BorderLayout.CENTER);
 		pack();
@@ -184,7 +187,12 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 			if (!e.getValueIsAdjusting()) {	//React only on final choice
 				JList list = (JList) e.getSource();
 				Group[] groups = Arrays.copyOf(list.getSelectedValues(), list.getSelectedValues().length, Group[].class);
-				System.out.println("Groups: " + Arrays.toString(groups));
+				//System.out.println("Groups: " + Arrays.toString(groups));
+				ArrayList<Contact> contacts = new ArrayList<Contact>();
+				for (Group g : groups) {
+					contacts.addAll(db.getAllContactsFromGroup(g));
+				}
+				contactsPanel.fillTable(contacts);
 			}
 		}
 	}
