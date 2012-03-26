@@ -11,7 +11,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  * Panel with contacts
@@ -28,6 +30,7 @@ class ContactsPanel extends JPanel {
 			return false;
 		}
 	};
+	private final TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<DefaultTableModel>(model);
 
 	/**
 	 * Constructor
@@ -41,7 +44,7 @@ class ContactsPanel extends JPanel {
 		add(label);
 		fillTable(db.getAllContacts());
 		JTable table = new JTable(model);
-		table.setAutoCreateRowSorter(true);
+		table.setRowSorter(sorter);
 		JScrollPane scrollPane = new JScrollPane(table);
 		add(scrollPane);
 	}
@@ -102,5 +105,15 @@ class ContactsPanel extends JPanel {
 				addresses.toString()
 			});
 		}
+	}
+
+	/**
+	 * Filter contacts
+	 *
+	 * @param f String to filter
+	 */
+	void filter(String f) {
+		//System.out.println("Filtering: " + f);
+		sorter.setRowFilter(RowFilter.regexFilter(f));
 	}
 }

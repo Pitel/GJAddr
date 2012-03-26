@@ -137,21 +137,12 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 
 	@Override
 	public void removeUpdate(DocumentEvent e) {
-		filterContacts(searchField.getText());
+		contactsPanel.filter(searchField.getText());
 	}
 
 	@Override
 	public void insertUpdate(DocumentEvent e) {
-		filterContacts(searchField.getText());
-	}
-
-	/**
-	 * Filter contacts
-	 *
-	 * @param filter Text to filer
-	 */
-	public void filterContacts(String filter) {
-		System.out.println("Filtering: " + filter);
+		contactsPanel.filter(searchField.getText());
 	}
 
 	/**
