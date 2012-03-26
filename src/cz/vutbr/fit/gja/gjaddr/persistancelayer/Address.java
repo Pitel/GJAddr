@@ -6,11 +6,10 @@ import java.io.Serializable;
  *
  * @author Ragaj
  */
-public class Adress implements Serializable {
+public class Address implements Serializable {
 		
 	static private final long serialVersionUID = 6L;
-	
-	private int id;	
+
 	private int type;
 	private String street;	
 	private int number;	
@@ -66,8 +65,7 @@ public class Adress implements Serializable {
 		this.country = country;
 	}
 
-	public Adress(int id, int type, String street, int number, String city, int postCode, String country) {
-		this.id = id;
+	public Address(int type, String street, int number, String city, int postCode, String country) {
 		this.type = type;
 		this.street = street;
 		this.number = number;
@@ -84,10 +82,7 @@ public class Adress implements Serializable {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		final Adress other = (Adress) obj;
-		if (this.id != other.id) {
-			return false;
-		}
+		final Address other = (Address) obj;
 		if (this.type != other.type) {
 			return false;
 		}
@@ -111,7 +106,6 @@ public class Adress implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Adress{" + "id=" + id + ", type=" + type + ", street=" + street + ", number=" 
-						         + number + ", city=" + city + ", postCode=" + postCode + ", country=" + country + '}';
-	}
+		return "Address{" + "type=" + type + ", street=" + street + ", number=" + number + ", city=" + city + ", postCode=" + postCode + ", country=" + country + '}';
+	}	
 }

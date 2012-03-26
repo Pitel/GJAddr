@@ -10,9 +10,8 @@ public class Messenger implements Serializable {
 	
 	static private final long serialVersionUID = 6L;	
 	
-	private int id;
-	
 	private int type;
+	private String value;	
 
 	public int getType() {
 		return type;
@@ -21,8 +20,6 @@ public class Messenger implements Serializable {
 	public void setType(int type) {
 		this.type = type;
 	}
-	
-	private String value;
 
 	public String getValue() {
 		return value;
@@ -32,8 +29,7 @@ public class Messenger implements Serializable {
 		this.value = value;
 	}
 
-	public Messenger(int id, int type, String value) {
-		this.id = id;
+	public Messenger(int type, String value) {
 		this.type = type;
 		this.value = value;
 	}
@@ -47,9 +43,7 @@ public class Messenger implements Serializable {
 			return false;
 		}
 		final Messenger other = (Messenger) obj;
-		if (this.id != other.id) {
-			return false;
-		}
+
 		if (this.type != other.type) {
 			return false;
 		}
@@ -61,6 +55,6 @@ public class Messenger implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Messenger{" + "id=" + id + ", type=" + type + ", value=" + value + '}';
+		return "Messenger{type=" + type + ", value=" + value + '}';
 	}
 }

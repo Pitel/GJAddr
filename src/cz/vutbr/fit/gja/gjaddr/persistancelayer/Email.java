@@ -11,8 +11,6 @@ public class Email implements Serializable {
 	
 	static private final long serialVersionUID = 6L;	
 	
-	private int id;
-	
 	private int type;
 	private String email;
 	
@@ -32,9 +30,8 @@ public class Email implements Serializable {
 		this.type = type;
 	}	
 		
-	public Email(int id, int type, String email)					
+	public Email(int type, String email)					
 	{
-		this.id = id;
 		this.type = type;
 		this.email = email;
 	}
@@ -48,9 +45,7 @@ public class Email implements Serializable {
 			return false;
 		}
 		final Email other = (Email) obj;
-		if (this.id != other.id) {
-			return false;
-		}
+
 		if (this.type != other.type) {
 			return false;
 		}
@@ -62,6 +57,6 @@ public class Email implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Email{" + "id=" + id + ", type=" + type + ", email=" + email + '}';
+		return "Email{type=" + type + ", email=" + email + '}';
 	}
 }

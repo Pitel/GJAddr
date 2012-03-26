@@ -10,8 +10,6 @@ public class Custom implements Serializable {
 	
 	static private final long serialVersionUID = 6L;
 	
-	private int id;
-	
 	private String name;
 	private String value;
 
@@ -31,8 +29,7 @@ public class Custom implements Serializable {
 		this.value = value;
 	}
 
-	public Custom(int id, String name, String value) {
-		this.id = id;
+	public Custom(String name, String value) {
 		this.name = name;
 		this.value = value;
 	}
@@ -46,9 +43,7 @@ public class Custom implements Serializable {
 			return false;
 		}
 		final Custom other = (Custom) obj;
-		if (this.id != other.id) {
-			return false;
-		}
+
 		if ((this.name == null) ? (other.name != null) : !this.name.equals(other.name)) {
 			return false;
 		}
@@ -60,6 +55,6 @@ public class Custom implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Custom{" + "id=" + id + ", name=" + name + ", value=" + value + '}';
+		return "Custom{name=" + name + ", value=" + value + '}';
 	}
 }

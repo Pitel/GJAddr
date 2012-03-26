@@ -25,7 +25,7 @@ public class Contact implements Serializable {
 	
 	private List<Messenger> messenger;	
 	private List<Url> urls;	
-	private List<Adress> adresses;	
+	private List<Address> adresses;	
 	private List<PhoneNumber> phoneNumbers;	
 	private List<Email> emails;	
 	private List<Custom> customs;	
@@ -50,11 +50,11 @@ public class Contact implements Serializable {
 		this.urls = urls;
 	}
 
-	public List<Adress> getAdresses() {
+	public List<Address> getAdresses() {
 		return adresses;
 	}
 
-	public void setAdresses(List<Adress> adresses) {
+	public void setAdresses(List<Address> adresses) {
 		this.adresses = adresses;
 	}
 
@@ -124,7 +124,7 @@ public class Contact implements Serializable {
 	}
 
 	public Contact(String firstName, String surName, String nickName, Date dateOfBirth, 
-					       String note, List<Messenger> messenger, List<Url> urls, List<Adress> adresses, 
+					       String note, List<Messenger> messenger, List<Url> urls, List<Address> adresses, 
 								 List<PhoneNumber> phoneNumbers, List<Email> emails, List<Custom> customs) {
 		this.id = id;
 		this.firstName = firstName;

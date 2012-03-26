@@ -1,17 +1,8 @@
 package cz.vutbr.fit.gja.gjaddr.gui;
 
-import cz.vutbr.fit.gja.gjaddr.persistancelayer.Adress;
-import cz.vutbr.fit.gja.gjaddr.persistancelayer.Contact;
-import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
-import cz.vutbr.fit.gja.gjaddr.persistancelayer.Email;
-import cz.vutbr.fit.gja.gjaddr.persistancelayer.PhoneNumber;
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.*;
 import java.util.List;
-import javax.swing.BoxLayout;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.RowFilter;
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
@@ -72,7 +63,7 @@ class ContactsPanel extends JPanel {
 			try {
 				for (PhoneNumber phone : c.getPhoneNumbers()) {
 					phones.append(separator);
-					phones.append(phone.getEmail());	//WTFLOL
+					phones.append(phone.getNumber());	
 					separator = ", ";
 				}
 			} catch (NullPointerException e) {
@@ -82,7 +73,7 @@ class ContactsPanel extends JPanel {
 			separator = "";
 			final StringBuilder addresses = new StringBuilder();
 			try {
-				for (Adress address : c.getAdresses()) {
+				for (Address address : c.getAdresses()) {
 					addresses.append(separator);
 					addresses.append(address.getStreet());
 					addresses.append(" ");

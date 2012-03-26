@@ -11,7 +11,7 @@ public class PhoneNumber implements Serializable {
 	static private final long serialVersionUID = 6L;	
 	
 	private int type;
-	private String email;	
+	private String number;	
 		
 	public int getType() {
 		return type;
@@ -21,17 +21,17 @@ public class PhoneNumber implements Serializable {
 		this.type = type;
 	}
 
-	public String getEmail() {
-		return email;
+	public String getNumber() {
+		return this.number;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setNumber(String number) {
+		this.number = number;
 	}
 
-	public PhoneNumber(int id, int type, String email) {
+	public PhoneNumber(int type, String number) {
 		this.type = type;
-		this.email = email;
+		this.number = number;
 	}
 
 	@Override
@@ -46,14 +46,14 @@ public class PhoneNumber implements Serializable {
 		if (this.type != other.type) {
 			return false;
 		}
-		if ((this.email == null) ? (other.email != null) : !this.email.equals(other.email)) {
+		if ((this.number == null) ? (other.number != null) : !this.number.equals(other.number)) {
 			return false;
 		}
 		return true;
-	}
-
+	}	
+	
 	@Override
 	public String toString() {
-		return "PhoneNumber{" + "type=" + type + ", email=" + email + '}';
+		return "PhoneNumber{" + "type=" + type + ", number=" + number + '}';
 	}
 }

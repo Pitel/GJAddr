@@ -12,8 +12,6 @@ import java.net.URL;
 public class Url implements Serializable {
 	
 	static private final long serialVersionUID = 6L;	
-	
-	private int id;
 
 	private int type;
 	private URL value; 
@@ -34,8 +32,7 @@ public class Url implements Serializable {
 		this.value = value;
 	}
 
-	public Url (int id, int type, String value) {
-		this.id = id;
+	public Url (int type, String value) {
 		this.type = type;
 		
 		try {
@@ -55,9 +52,7 @@ public class Url implements Serializable {
 			return false;
 		}
 		final Url other = (Url) obj;
-		if (this.id != other.id) {
-			return false;
-		}
+
 		if (this.type != other.type) {
 			return false;
 		}
@@ -69,6 +64,6 @@ public class Url implements Serializable {
 	
 	@Override
 	public String toString() {
-		return "Url{" + "id=" + id + ", type=" + type + ", value=" + value + '}';
+		return "Url{type=" + type + ", value=" + value + '}';
 	}
 }
