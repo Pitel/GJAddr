@@ -30,7 +30,7 @@ class GroupsPanel extends JPanel implements ActionListener {
 	/**
 	 * Constructor
 	 *
-	 * @param listener Listener to handle actions outside goups panel
+	 * @param listSelectionListener Listener to handle actions outside goups panel
 	 */
 	public GroupsPanel(ListSelectionListener listSelectionListener) {
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));

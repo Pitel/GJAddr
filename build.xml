@@ -46,7 +46,7 @@
 
 	<target name="doc" description="generates javadoc">
 		<mkdir dir="doc/javadoc" />
-		<javadoc sourcepath="src" destdir="doc/javadoc" packagenames="${package}.*" windowtitle="GJAddr">
+		<javadoc sourcepath="src" destdir="doc/javadoc" packagenames="${package}.*" windowtitle="GJAddr" private="true">
 			<classpath>
 				<fileset refid="libs" />
 			</classpath>

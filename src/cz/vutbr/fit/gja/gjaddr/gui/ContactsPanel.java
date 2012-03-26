@@ -34,8 +34,6 @@ class ContactsPanel extends JPanel {
 
 	/**
 	 * Constructor
-	 *
-	 * @param listener Listener to handle actions outside goups panel
 	 */
 	public ContactsPanel() {
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
