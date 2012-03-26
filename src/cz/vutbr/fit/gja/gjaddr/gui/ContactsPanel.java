@@ -34,7 +34,7 @@ class ContactsPanel extends JPanel {
 	 *
 	 * @param listener Listener to handle actions outside goups panel
 	 */
-	public ContactsPanel(){
+	public ContactsPanel() {
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		JLabel label = new JLabel("Contacts");
 		label.setAlignmentX(CENTER_ALIGNMENT);
@@ -50,6 +50,7 @@ class ContactsPanel extends JPanel {
 	 * Fill table with data from list
 	 */
 	private void fillTable(List<Contact> contacts) {
+		model.setRowCount(0);
 		for (Contact c : contacts) {
 			System.out.println(c);
 
