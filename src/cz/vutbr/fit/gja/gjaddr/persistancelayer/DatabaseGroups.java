@@ -70,6 +70,16 @@ public class DatabaseGroups {
 		this.idCounter = counter;
 	}	
 	
+	private boolean checkNameIfExists(String name) {
+		for (Group group: this.groups) {
+			if (group.getName().equals(name)) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
 	void save()	{
 		
 		if (this.groups == null || this.groups.isEmpty()) {
@@ -107,9 +117,16 @@ public class DatabaseGroups {
 		return new ArrayList<Group>(this.groups);
 	}
 	
-	void addNew(String name) {
+	boolean addNew(String name) {
+		
+		if (this.checkNameIfExists(name)) {
+			return false;
+		}
+		
 		Group newGroup = new Group(++this.idCounter, name);
-		this.groups.add(newGroup);	
+		this.groups.add(newGroup);
+		
+		return true;
 	}
 	
 	void updateGroup(Group group) {
@@ -144,5 +161,5 @@ public class DatabaseGroups {
 			}
 
 		return filteredGroups;
-	}
+	}	
 }

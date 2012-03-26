@@ -82,7 +82,11 @@ public class Database implements IDatabase {
 
 	@Override // DONE
 	public List<Group> addNewGroup(String name) {
-		this.groups.addNew(name);
+
+		if (!this.groups.addNew(name)) {
+			return null;
+		}
+		
 		this.commitChanges(TableType.GROUPS);
 		return this.getAllGroups();
 	}
