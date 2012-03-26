@@ -60,7 +60,7 @@ class GroupsPanel extends JPanel implements ActionListener {
 	 */
 	private void fillList() {
 		listModel.clear();
-		listModel.addElement(new Group("All"));
+		listModel.addElement(new Group("My Contacts"));
 		for (Group g : db.getAllGroups()) {
 			listModel.addElement(g);
 		}
