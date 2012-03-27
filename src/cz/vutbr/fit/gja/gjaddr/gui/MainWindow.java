@@ -47,8 +47,9 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 	static final long serialVersionUID = 0;
 	private final Database db = new Database();
 	private JMenuItem menuItemClose, menuItemHelp, menuItemAbout, menuItemImport, menuItemExport;
-	private final JTextField searchField = new JTextField();
-	private final ContactsPanel contactsPanel = new ContactsPanel();
+	private JTextField searchField;
+	private ContactsPanel contactsPanel;
+	private JButton addButton;
 
 	/**
 	 * Creates the main window.
@@ -64,27 +65,30 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		}
 		setIconImage(new ImageIcon(getClass().getResource("/res/icon.png")).getImage());
 		setJMenuBar(this.createMenu());
-		Container container = this.getContentPane();
-		JToolBar toolbar = new JToolBar();
+		final JToolBar toolbar = new JToolBar();
 		toolbar.setFloatable(false);
-		toolbar.add(new JButton(new ImageIcon(getClass().getResource("/res/plus.png"), "+")));
+		addButton = new JButton(new ImageIcon(getClass().getResource("/res/plus.png"), "+"));
+		addButton.addActionListener(this);
+		toolbar.add(addButton);
+		searchField = new JTextField();
 		searchField.getDocument().addDocumentListener(this);
 		toolbar.add(searchField);
-		container.add(toolbar, BorderLayout.NORTH);
-		Split model = new Split();
-		Leaf groupsLeaf = new Leaf("groups");
-		Leaf contactsLeaf = new Leaf("contacts");
-		Leaf detailLeaf = new Leaf("detail");
+		add(toolbar, BorderLayout.NORTH);
+		final Split model = new Split();
+		final Leaf groupsLeaf = new Leaf("groups");
+		final Leaf contactsLeaf = new Leaf("contacts");
+		final Leaf detailLeaf = new Leaf("detail");
 		groupsLeaf.setWeight(1.0 / 3);
 		contactsLeaf.setWeight(1.0 / 3);
 		detailLeaf.setWeight(1.0 / 3);
 		model.setChildren(Arrays.asList(groupsLeaf, new Divider(), contactsLeaf, new Divider(), detailLeaf));
-		MultiSplitPane multiSplitPane = new MultiSplitPane();
+		final MultiSplitPane multiSplitPane = new MultiSplitPane();
 		multiSplitPane.getMultiSplitLayout().setModel(model);
 		multiSplitPane.add(new GroupsPanel(new GroupSelectionListener()), "groups");
+		contactsPanel = new ContactsPanel();
 		multiSplitPane.add(contactsPanel, "contacts");
 		multiSplitPane.add(new JButton("Detail"), "detail");
-		container.add(multiSplitPane, BorderLayout.CENTER);
+		add(multiSplitPane, BorderLayout.CENTER);
 		pack();
 		setLocationRelativeTo(null);
 	}
@@ -95,8 +99,8 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 	 * @return MenuBar
 	 */
 	private JMenuBar createMenu() {
-		JMenuBar menuBar = new JMenuBar();
-		JMenu fileMenu = new JMenu("File");
+		final JMenuBar menuBar = new JMenuBar();
+		final JMenu fileMenu = new JMenu("File");
 		fileMenu.setMnemonic(KeyEvent.VK_F);
 		menuBar.add(fileMenu);
 		menuBar.add(Box.createHorizontalGlue());
@@ -104,27 +108,27 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		helpMenu.setMnemonic(KeyEvent.VK_H);
 		menuBar.add(helpMenu);
 
-		this.menuItemImport = new JMenuItem("Import", KeyEvent.VK_I);
-		this.menuItemImport.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, ActionEvent.CTRL_MASK));
-		this.menuItemImport.addActionListener(this);
+		menuItemImport = new JMenuItem("Import", KeyEvent.VK_I);
+		menuItemImport.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, ActionEvent.CTRL_MASK));
+		menuItemImport.addActionListener(this);
 		fileMenu.add(this.menuItemImport);
-		this.menuItemExport = new JMenuItem("Export", KeyEvent.VK_E);
-		this.menuItemExport.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.CTRL_MASK));
-		this.menuItemExport.addActionListener(this);
+		menuItemExport = new JMenuItem("Export", KeyEvent.VK_E);
+		menuItemExport.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.CTRL_MASK));
+		menuItemExport.addActionListener(this);
 		fileMenu.add(this.menuItemExport);
 		fileMenu.addSeparator();
-		this.menuItemClose = new JMenuItem("Quit", KeyEvent.VK_Q);
-		this.menuItemClose.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK));
-		this.menuItemClose.addActionListener(this);
+		menuItemClose = new JMenuItem("Quit", KeyEvent.VK_Q);
+		menuItemClose.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK));
+		menuItemClose.addActionListener(this);
 		fileMenu.add(this.menuItemClose);
 
-		this.menuItemHelp = new JMenuItem("Help", KeyEvent.VK_H);
-		this.menuItemHelp.setAccelerator(KeyStroke.getKeyStroke("F1"));
-		this.menuItemHelp.addActionListener(this);
+		menuItemHelp = new JMenuItem("Help", KeyEvent.VK_H);
+		menuItemHelp.setAccelerator(KeyStroke.getKeyStroke("F1"));
+		menuItemHelp.addActionListener(this);
 		helpMenu.add(this.menuItemHelp);
 
-		this.menuItemAbout = new JMenuItem("About", KeyEvent.VK_A);
-		this.menuItemAbout.addActionListener(this);
+		menuItemAbout = new JMenuItem("About", KeyEvent.VK_A);
+		menuItemAbout.addActionListener(this);
 		helpMenu.add(this.menuItemAbout);
 
 		return menuBar;
@@ -153,7 +157,7 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		System.out.println(e);
+		//System.out.println(e);
 		if (e.getSource() == menuItemClose) {
 			dispose();
 		} else if (e.getSource() == menuItemAbout) {
@@ -166,6 +170,8 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 			} catch (IOException ex) {
 				System.err.println(ex);
 			}
+		} else if (e.getSource() == addButton) {
+			new EditWindow();
 		}
 	}
 
