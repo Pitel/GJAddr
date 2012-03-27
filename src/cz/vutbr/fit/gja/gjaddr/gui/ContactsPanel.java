@@ -42,9 +42,9 @@ class ContactsPanel extends JPanel {
 	 * Fill table with data from list
 	 */
 	void fillTable(List<Contact> contacts) {
-		model.setRowCount(0);
+		model.getDataVector().removeAllElements();
 		for (Contact c : contacts) {
-			System.out.println(c);
+			//System.out.println(c);
 
 			String separator = "";
 			final StringBuilder emails = new StringBuilder();
@@ -63,7 +63,7 @@ class ContactsPanel extends JPanel {
 			try {
 				for (PhoneNumber phone : c.getPhoneNumbers()) {
 					phones.append(separator);
-					phones.append(phone.getNumber());	
+					phones.append(phone.getNumber());
 					separator = ", ";
 				}
 			} catch (NullPointerException e) {

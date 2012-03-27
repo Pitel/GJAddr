@@ -14,9 +14,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
@@ -179,12 +176,11 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		@Override
 		public void valueChanged(ListSelectionEvent e) {
 			if (!e.getValueIsAdjusting()) {	//React only on final choice
-				JList list = (JList) e.getSource();
+				final JList list = (JList) e.getSource();
 				//System.out.println("Groups: " + Arrays.toString(groups));
-				
-				List requiredGroupList = Arrays.asList(list.getSelectedValues());				
-				List<Contact> contacts = db.getAllContactsFromGroup(requiredGroupList);
-				
+				final Group[] groups = Arrays.copyOf(list.getSelectedValues(), list.getSelectedValues().length, Group[].class);
+				final List<Group> requiredGroupList = Arrays.asList(groups);
+				final List<Contact> contacts = db.getAllContactsFromGroup(requiredGroupList);
 				contactsPanel.fillTable(contacts);
 			}
 		}
