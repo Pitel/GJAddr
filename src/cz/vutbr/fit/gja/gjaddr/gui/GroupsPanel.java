@@ -96,7 +96,7 @@ class GroupsPanel extends JPanel implements ActionListener {
 			null,
 			""
 		);
-		if (!name.isEmpty()) {
+		if (name != null && !name.isEmpty()) {
 			//System.out.println(name);
 			db.addNewGroup(name);
 		}
