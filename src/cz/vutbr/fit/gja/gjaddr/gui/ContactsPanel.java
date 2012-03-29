@@ -35,6 +35,7 @@ class ContactsPanel extends JPanel {
 		JTable table = new JTable(model);
 		table.setRowSorter(sorter);
 		JScrollPane scrollPane = new JScrollPane(table);
+		filter("");
 		add(scrollPane);
 	}
 
@@ -42,6 +43,9 @@ class ContactsPanel extends JPanel {
 	 * Fill table with data from list
 	 */
 	void fillTable(List<Contact> contacts) {
+		final RowFilter filter = sorter.getRowFilter();	//Warnings!
+		sorter.setRowFilter(null);
+		//System.out.println(model.getDataVector());
 		model.getDataVector().removeAllElements();
 		for (Contact c : contacts) {
 			//System.out.println(c);
@@ -94,6 +98,7 @@ class ContactsPanel extends JPanel {
 				addresses.toString()
 			});
 		}
+		sorter.setRowFilter(filter);
 	}
 
 	/**

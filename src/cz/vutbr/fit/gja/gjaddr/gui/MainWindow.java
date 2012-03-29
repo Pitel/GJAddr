@@ -183,9 +183,9 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		public void valueChanged(ListSelectionEvent e) {
 			if (!e.getValueIsAdjusting()) {	//React only on final choice
 				final JList list = (JList) e.getSource();
-				//System.out.println("Groups: " + Arrays.toString(groups));
 				final Group[] groups = Arrays.copyOf(list.getSelectedValues(), list.getSelectedValues().length, Group[].class);
 				final List<Group> requiredGroupList = Arrays.asList(groups);
+				//System.out.println("Groups: " + requiredGroupList);
 				final List<Contact> contacts = db.getAllContactsFromGroup(requiredGroupList);
 				contactsPanel.fillTable(contacts);
 			}
