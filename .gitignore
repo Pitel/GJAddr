@@ -4,7 +4,8 @@ build
 doc/javadoc
 
 # NetBeans
-lib/CopyLibs
+lib/CopyLibs*
+lib/junit*
 lib/nblibraries.properties
 #nbbuild.xml
 log
