@@ -6,6 +6,6 @@ doc/javadoc
 # NetBeans
 lib/CopyLibs
 lib/nblibraries.properties
-nbbuild.xml
+#nbbuild.xml
 log
 /dist/
