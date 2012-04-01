@@ -4,9 +4,11 @@ build
 doc/javadoc
 
 # NetBeans
+lib/*/
 lib/CopyLibs*
 lib/junit*
 lib/nblibraries.properties
 #nbbuild.xml
+nbproject/
 log
 /dist/
