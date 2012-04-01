@@ -172,8 +172,12 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 			}
 		} else if (e.getSource() == addButton) {
 			new EditWindow();
+		} else if (e.getSource() == this.menuItemImport) {
+			new ImportWindow();
+		} else if (e.getSource() == this.menuItemExport) {
+			new ExportWindow();
 		}
-	}
+ 	}
 
 	/**
 	 * Listener class for groups list selection
