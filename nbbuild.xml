@@ -14,6 +14,7 @@
 	<copy file="res/icon.png" todir="build/classes/res"/>
 	<copy file="res/minus.png" todir="build/classes/res"/>
 	<copy file="res/plus.png" todir="build/classes/res"/>
+	<copy file="res/logback.xml" todir="build/classes"/>
     <!--
 
     There exist several targets which are by default empty and which can be 
