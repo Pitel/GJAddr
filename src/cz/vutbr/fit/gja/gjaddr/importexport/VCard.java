@@ -1,8 +1,11 @@
 package cz.vutbr.fit.gja.gjaddr.importexport;
 
+import a_vcard.android.provider.Contacts;
 import a_vcard.android.syncml.pim.PropertyNode;
 import a_vcard.android.syncml.pim.VDataBuilder;
 import a_vcard.android.syncml.pim.VNode;
+import a_vcard.android.syncml.pim.vcard.ContactStruct;
+import a_vcard.android.syncml.pim.vcard.VCardComposer;
 import a_vcard.android.syncml.pim.vcard.VCardException;
 import a_vcard.android.syncml.pim.vcard.VCardParser;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Contact;
@@ -11,10 +14,14 @@ import cz.vutbr.fit.gja.gjaddr.persistancelayer.Email;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Group;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.PhoneNumber;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Url;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.slf4j.LoggerFactory;
 
@@ -139,8 +146,32 @@ public class VCard {
 	/**
 	 * Export to vCard file
 	 */
-	public void ex() {
-		return;
+	public void exportContacts(File file, List<Contact> contacts) throws FileNotFoundException, VCardException, IOException {
+		OutputStreamWriter writer = new OutputStreamWriter(
+                new FileOutputStream(file));
+
+        VCardComposer composer = new VCardComposer();
+
+		for (Contact c : contacts) {
+			//create a contact
+			ContactStruct contact = new ContactStruct();
+			contact.name = c.getFirstName() + " " + c.getSurName();
+			contact.notes = new ArrayList<String>(Arrays.asList(new String[] {c.getNote()}));
+			if (c.getPhoneNumbers() != null) {
+				for (PhoneNumber p : c.getPhoneNumbers()) {
+					contact.addPhone(Contacts.Phones.TYPE_MOBILE, p.getNumber(), null, true);
+				}
+			}
+
+			//create vCard representation
+			String vcardString = composer.createVCard(contact, VCardComposer.VERSION_VCARD30_INT);
+
+			//write vCard to the output stream
+			writer.write(vcardString);
+			writer.write("\n"); //add empty lines between contacts
+		}
+
+        writer.close();
 	}
 
 	/**
