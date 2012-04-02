@@ -29,7 +29,7 @@ import org.slf4j.LoggerFactory;
  * Class for importing and exporting vCards
  *
  * @author Bc. Jan Kaláb <xkalab00@stud.fit.vutbr.cz>,
- *         Bc. Drahomira Herrmannova <xherrm01@stud.fit.vutbr.cz>
+ * @author Bc. Drahomira Herrmannova <xherrm01@stud.fit.vutbr.cz>
  */
 public class VCard {
 

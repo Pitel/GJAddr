@@ -40,7 +40,7 @@ import org.jdesktop.swingx.MultiSplitPane;
 /**
  * Main application window.
  *
- * @author xherrm01
+ * @author Bc. Drahomira Herrmannova <xherrm01@stud.fit.vutbr.cz>
  * @author Bc. Jan Kaláb <xkalab00@stud.fit,vutbr.cz>
  */
 public class MainWindow extends JFrame implements ActionListener, DocumentListener {
