@@ -14,7 +14,7 @@ import javax.swing.table.TableRowSorter;
 class ContactsPanel extends JPanel {
 	static final long serialVersionUID = 0;
 	private final Database db = new Database();
-	private final DefaultTableModel model = new DefaultTableModel(new String[] {"First Name", "Last Name", "Email", "Phone", "Address"}, 0) {
+	private final DefaultTableModel model = new DefaultTableModel(new String[] {"Name", "Email", "Phone", "Address"}, 0) {
 		static final long serialVersionUID = 0;
 		@Override
 		public boolean isCellEditable(int row, int column) {
@@ -91,8 +91,7 @@ class ContactsPanel extends JPanel {
 			}
 
 			model.addRow(new String[] {
-				c.getFirstName(),
-				c.getSurName(),
+				c.getFirstName() + " " + c.getSurName(),
 				emails.toString(),
 				phones.toString(),
 				addresses.toString()
