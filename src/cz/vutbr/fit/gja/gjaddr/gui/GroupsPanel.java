@@ -44,11 +44,11 @@ class GroupsPanel extends JPanel implements ActionListener {
 		add(listScrollPane);
 		JPanel buttons = new JPanel();
 		buttons.setLayout(new BoxLayout(buttons, BoxLayout.LINE_AXIS));
-		JButton add = new JButton(new ImageIcon(getClass().getResource("/res/plus.png"), "+"));
+		JButton add = new JButton(new ImageIcon(getClass().getResource("/res/plus_g.png"), "+"));
 		add.setActionCommand("addGroup");
 		add.addActionListener(this);
 		buttons.add(add);
-		JButton remove = new JButton(new ImageIcon(getClass().getResource("/res/minus.png"), "-"));
+		JButton remove = new JButton(new ImageIcon(getClass().getResource("/res/minus_g.png"), "-"));
 		remove.setActionCommand("removeGroup");
 		remove.addActionListener(this);
 		buttons.add(remove);
