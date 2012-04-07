@@ -1,5 +1,6 @@
 package cz.vutbr.fit.gja.gjaddr.gui;
 
+import com.community.xanadu.components.table.BeanReaderJTable;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.*;
 import java.util.List;
 import javax.swing.*;
@@ -32,7 +33,8 @@ class ContactsPanel extends JPanel {
 		label.setAlignmentX(CENTER_ALIGNMENT);
 		add(label);
 		fillTable(db.getAllContacts());
-		JTable table = new JTable(model);
+		BeanReaderJTable<Contact> table = new BeanReaderJTable<Contact>(new String[] {"firstName", "surName"});
+		table.addRow(db.getAllContacts());
 		table.setRowSorter(sorter);
 		JScrollPane scrollPane = new JScrollPane(table);
 		filter("");
