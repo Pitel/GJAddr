@@ -113,10 +113,16 @@ public class Contact implements Serializable {
 	public void setNote(String note) {
 		this.note = note;
 	}
-		
+	
+	public String getFullName() {
+		StringBuilder sb = new StringBuilder(this.surName);
+		sb.append("");
+		sb.append(this.firstName);
+		return sb.toString();
+	}
+	
 	
 	public Contact(String firstName, String surName, String nickName, String note) {
-		this.id = id;
 		this.firstName = firstName;
 		this.surName = surName;
 		this.nickName = nickName;
@@ -126,7 +132,6 @@ public class Contact implements Serializable {
 	public Contact(String firstName, String surName, String nickName, Date dateOfBirth, 
 					       String note, List<Messenger> messenger, List<Url> urls, List<Address> adresses, 
 								 List<PhoneNumber> phoneNumbers, List<Email> emails, List<Custom> customs) {
-		this.id = id;
 		this.firstName = firstName;
 		this.surName = surName;
 		this.nickName = nickName;
