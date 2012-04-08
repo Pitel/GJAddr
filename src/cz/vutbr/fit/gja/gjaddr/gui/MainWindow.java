@@ -4,10 +4,7 @@ import com.community.xanadu.components.table.BeanReaderJTable;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Contact;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Group;
-import java.awt.BorderLayout;
-import java.awt.Container;
-import java.awt.Component;
-import java.awt.Desktop;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -167,6 +164,7 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		//System.out.println(e);
+	
 		if (e.getSource() == menuItemClose) {
 			dispose();
 		} else if (e.getSource() == menuItemAbout) {

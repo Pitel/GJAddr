@@ -17,10 +17,11 @@ class ContactsPanel extends JPanel {
 	static final long serialVersionUID = 0;
 	private static final Database db = new Database();
 	private static final BeanReaderJTable<Contact> table = 
-						new BeanReaderJTable<Contact>(new String[] {"FullName", "AllEmails", "AllPhones"},
+					new BeanReaderJTable<Contact>(new String[] {"FullName", "AllEmails", "AllPhones"},
 																					new String[] {"Name", "Emails", "Phone"});																									
 																				
-	private static final TableRowSorter<BeanReaderJTable.GenericTableModel> sorter = new TableRowSorter<BeanReaderJTable.GenericTableModel>(table.getModel());
+	private static final TableRowSorter<BeanReaderJTable.GenericTableModel> sorter = 
+					new TableRowSorter<BeanReaderJTable.GenericTableModel>(table.getModel());
 
 	/**
 	 * Constructor
@@ -33,6 +34,7 @@ class ContactsPanel extends JPanel {
 		fillTable(db.getAllContacts());
 		table.getSelectionModel().addListSelectionListener(listSelectionListener);
 		table.setRowSorter(sorter);
+		table.setDefaultRenderer(Object.class, new TableRowColorRenderer());
 		JScrollPane scrollPane = new JScrollPane(table);
 		filter("");
 		add(scrollPane);
