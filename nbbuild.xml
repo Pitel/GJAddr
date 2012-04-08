@@ -14,6 +14,8 @@
 	<copy file="res/icon.png" todir="build/classes/res"/>
 	<copy file="res/minus.png" todir="build/classes/res"/>
 	<copy file="res/plus.png" todir="build/classes/res"/>
+	<copy file="res/minus_g.png" todir="build/classes/res"/>
+	<copy file="res/plus_g.png" todir="build/classes/res"/>	
 	<copy file="res/import.png" todir="build/classes/res"/>	
 	<copy file="res/export.png" todir="build/classes/res"/>		
 	<copy file="res/preferences.png" todir="build/classes/res"/>			

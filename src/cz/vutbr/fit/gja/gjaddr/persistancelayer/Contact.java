@@ -116,11 +116,39 @@ public class Contact implements Serializable {
 	
 	public String getFullName() {
 		StringBuilder sb = new StringBuilder(this.surName);
-		sb.append("");
+		sb.append(" ");
 		sb.append(this.firstName);
 		return sb.toString();
 	}
 	
+	public String getAddresses() {
+		StringBuilder addresses = new StringBuilder();
+		String separator = "";
+		
+		for (Address address : this.adresses) {
+			addresses.append(separator);
+			addresses.append(address.getStreet());
+			addresses.append(" ");
+			addresses.append(address.getNumber());
+			addresses.append(", ");
+			addresses.append(address.getCity());
+			separator = "; ";
+		}
+			
+		return adresses.toString();
+	}
+	
+	public String getPhones() {
+		StringBuilder phones = new StringBuilder();
+		String separator = "";		
+		for (PhoneNumber phone : this.phoneNumbers) {
+			phones.append(separator);
+			phones.append(phone.getNumber());
+			separator = ", ";
+		}
+		
+		return phones.toString();
+	}
 	
 	public Contact(String firstName, String surName, String nickName, String note) {
 		this.firstName = firstName;
