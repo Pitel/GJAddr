@@ -51,6 +51,7 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 	private JMenuItem menuItemClose, menuItemHelp, menuItemAbout;
 	private JTextField searchField;
 	private ContactsPanel contactsPanel;
+	private DetailPanel detailPanel;
 	private JButton addButton, removeButton;
 
 	/**
@@ -98,7 +99,8 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		multiSplitPane.add(new GroupsPanel(new GroupSelectionListener()), "groups");
 		contactsPanel = new ContactsPanel(new ContactSelectionListener());
 		multiSplitPane.add(contactsPanel, "contacts");
-		multiSplitPane.add(new JButton("Detail"), "detail");
+		detailPanel = new DetailPanel();
+		multiSplitPane.add(detailPanel, "detail");
 		add(multiSplitPane, BorderLayout.CENTER);
 		pack();
 		setLocationRelativeTo(null);
@@ -206,8 +208,7 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		@Override
 		public void valueChanged(ListSelectionEvent e) {
 			if (!e.getValueIsAdjusting()) {	//React only on final choice
-				final Contact c = contactsPanel.getSelectedContact();
-				System.out.println(c);
+				detailPanel.show(contactsPanel.getSelectedContact());
 			}
 		}
 	}
