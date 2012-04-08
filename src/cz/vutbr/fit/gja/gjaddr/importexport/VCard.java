@@ -1,13 +1,11 @@
 package cz.vutbr.fit.gja.gjaddr.importexport;
 
-import a_vcard.android.provider.Contacts;
 import a_vcard.android.syncml.pim.PropertyNode;
 import a_vcard.android.syncml.pim.VDataBuilder;
 import a_vcard.android.syncml.pim.VNode;
-import a_vcard.android.syncml.pim.vcard.ContactStruct;
-import a_vcard.android.syncml.pim.vcard.VCardComposer;
 import a_vcard.android.syncml.pim.vcard.VCardException;
 import a_vcard.android.syncml.pim.vcard.VCardParser;
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.Address;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Contact;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Email;
@@ -21,8 +19,22 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import net.sourceforge.cardme.io.VCardWriter;
+import net.sourceforge.cardme.vcard.VCardImpl;
+import net.sourceforge.cardme.vcard.VCardVersion;
+import net.sourceforge.cardme.vcard.features.AddressFeature;
+import net.sourceforge.cardme.vcard.features.EmailFeature;
+import net.sourceforge.cardme.vcard.features.NoteFeature;
+import net.sourceforge.cardme.vcard.features.TelephoneFeature;
+import net.sourceforge.cardme.vcard.types.AddressType;
+import net.sourceforge.cardme.vcard.types.EmailType;
+import net.sourceforge.cardme.vcard.types.FormattedNameType;
+import net.sourceforge.cardme.vcard.types.NameType;
+import net.sourceforge.cardme.vcard.types.NoteType;
+import net.sourceforge.cardme.vcard.types.TelephoneType;
+import net.sourceforge.cardme.vcard.types.URLType;
+import net.sourceforge.cardme.vcard.types.VersionType;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -48,17 +60,22 @@ public class VCard {
 	}
 	
 	/**
-	 * Import vCard file
-	 *
-	 * @param file File to import
-	 * @exception FileNotFoundException vCard file not found
-	 * @exception IOException vCard file could not be read
-	 * @exception VCardException vCard could not be parsed
+	 * Import vCard file.
+	 * 
+	 * @param file
+	 * @throws VCardException
 	 */
 	public void importContacts(File file) throws VCardException {
 		this.importContactsToGroup(file, null);
 	}
 
+	/**
+	 * Import contacts from vCard file to group (specified by it's name).
+	 *
+	 * @param file
+	 * @param group Name of group to import to.
+	 * @throws VCardException
+	 */
 	public void importContactsToGroup(File file, String group) throws VCardException {
 		final VCardParser parser = new VCardParser();
 		final VDataBuilder builder = new VDataBuilder();
@@ -146,32 +163,83 @@ public class VCard {
 	/**
 	 * Export to vCard file
 	 */
-	public void exportContacts(File file, List<Contact> contacts) throws FileNotFoundException, VCardException, IOException {
-		OutputStreamWriter writer = new OutputStreamWriter(
-                new FileOutputStream(file));
+	public void exportContacts(File file, List<Contact> contacts) 
+			throws FileNotFoundException, IOException {
 
-        VCardComposer composer = new VCardComposer();
+		FileOutputStream fos = null;
+		OutputStreamWriter osw = null;
 
-		for (Contact c : contacts) {
-			//create a contact
-			ContactStruct contact = new ContactStruct();
-			contact.name = c.getFirstName() + " " + c.getSurName();
-			contact.notes = new ArrayList<String>(Arrays.asList(new String[] {c.getNote()}));
-			if (c.getPhoneNumbers() != null) {
-				for (PhoneNumber p : c.getPhoneNumbers()) {
-					contact.addPhone(Contacts.Phones.TYPE_MOBILE, p.getNumber(), null, true);
+		try {
+			fos = new FileOutputStream(file);
+			osw = new OutputStreamWriter(fos);
+
+			VCardWriter writer = new VCardWriter();
+
+			// create one card for each contact
+			for (Contact c : contacts) {
+				net.sourceforge.cardme.vcard.VCard vcard = new VCardImpl();
+				vcard.setVersion(new VersionType(VCardVersion.V3_0));
+
+				// set contact name
+				NameType name = new NameType();
+				name.setFamilyName(c.getSurName());
+				name.setGivenName(c.getFirstName());
+				vcard.setName(name);
+				vcard.setFormattedName(new FormattedNameType(c.getFullName()));
+
+				// set contact addresses
+				for (Address address : c.getAdresses()) {
+					AddressFeature af = new AddressType();
+					af.setCountryName(address.getCountry());
+					af.setLocality(address.getCity());
+					af.setStreetAddress(address.getStreet() + " " + address.getNumber());
+					af.setPostalCode(address.getPostCodeAsString());
+					// TODO set type
+					vcard.addAddress(af);
 				}
+
+				// set contact emails
+				for (Email email : c.getEmails()) {
+					EmailFeature ef = new EmailType();
+					ef.setEmail(email.getEmail());
+					// TODO set type
+					vcard.addEmail(ef);
+				}
+
+				// set contact note
+				if (c.getNote() != null && !c.getNote().isEmpty()) {
+					NoteFeature note = new NoteType();
+					note.setNote(c.getNote());
+					vcard.addNote(note);
+				}
+
+				// set contact phones
+				for (PhoneNumber phone : c.getPhoneNumbers()) {
+					TelephoneFeature tf = new TelephoneType();
+					tf.setTelephone(phone.getNumber());
+					vcard.addTelephoneNumber(tf);
+				}
+
+				// set contact URLs
+				for (Url url : c.getUrls()) {
+					vcard.addURL(new URLType(url.getValue()));
+				}
+
+				//create vCard representation
+				writer.setVCard(vcard);
+				String vcardString = writer.buildVCardString();
+
+				//write vCard to the output stream
+				osw.write(vcardString);
+				osw.write("\n"); //add empty lines between contacts
 			}
-
-			//create vCard representation
-			String vcardString = composer.createVCard(contact, VCardComposer.VERSION_VCARD30_INT);
-
-			//write vCard to the output stream
-			writer.write(vcardString);
-			writer.write("\n"); //add empty lines between contacts
+		} finally {
+			try {
+				osw.close();
+			} finally {
+				fos.close();
+			}
 		}
-
-        writer.close();
 	}
 
 	/**

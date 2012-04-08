@@ -53,6 +53,10 @@ public class Address implements Serializable {
 		return postCode;
 	}
 
+	public String getPostCodeAsString() {
+		return String.valueOf(this.postCode);
+	}
+
 	public void setPostCode(int postCode) {
 		this.postCode = postCode;
 	}
