@@ -1,6 +1,7 @@
 package cz.vutbr.fit.gja.gjaddr.persistancelayer;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class Contact implements Serializable {
 	}
 	
 	public List<Messenger> getMessenger() {
-		return messenger;
+		return (messenger != null) ? messenger : new ArrayList<Messenger>();
 	}
 
 	public void setMessenger(List<Messenger> messenger) {
@@ -43,7 +44,7 @@ public class Contact implements Serializable {
 	}
 
 	public List<Url> getUrls() {
-		return urls;
+		return (urls != null) ? urls : new ArrayList<Url>();
 	}
 
 	public void setUrls(List<Url> urls) {
@@ -51,7 +52,7 @@ public class Contact implements Serializable {
 	}
 
 	public List<Address> getAdresses() {
-		return adresses;
+		return (adresses != null) ? this.adresses : new ArrayList<Address>();
 	}
 
 	public void setAdresses(List<Address> adresses) {
@@ -59,7 +60,7 @@ public class Contact implements Serializable {
 	}
 
 	public List<PhoneNumber> getPhoneNumbers() {
-		return phoneNumbers;
+		return (phoneNumbers != null) ? this.phoneNumbers : new ArrayList<PhoneNumber>();
 	}
 
 	public void setPhoneNumbers(List<PhoneNumber> phoneNumbers) {
@@ -67,7 +68,7 @@ public class Contact implements Serializable {
 	}
 
 	public List<Email> getEmails() {
-		return emails;
+		return (emails != null) ? emails : new ArrayList<Email>();
 	}
 
 	public void setEmails(List<Email> emails) {
@@ -75,7 +76,7 @@ public class Contact implements Serializable {
 	}
 
 	public List<Custom> getCustoms() {
-		return customs;
+		return (customs != null) ? customs : new ArrayList<Custom>();
 	}
 
 	public void setCustoms(List<Custom> customs) {
