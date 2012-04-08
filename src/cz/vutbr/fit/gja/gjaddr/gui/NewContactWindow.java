@@ -23,13 +23,13 @@ import javax.swing.UIManager;
  *
  * @author Bc. Jan Kaláb <xkalab00@stud.fit,vutbr.cz>
  */
-class EditWindow extends JFrame implements ActionListener {
+class NewContactWindow extends JFrame implements ActionListener {
 	static final long serialVersionUID = 0;
 	private final Database db = new Database();
 	private JButton button;
 	private JTextField nameField, surnameField, addressField, emailField, phoneField;
 
-	public EditWindow() {
+	public NewContactWindow() {
 		super("Add Contact");
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

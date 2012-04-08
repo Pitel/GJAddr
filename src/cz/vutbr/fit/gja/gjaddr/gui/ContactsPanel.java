@@ -3,6 +3,9 @@ package cz.vutbr.fit.gja.gjaddr.gui;
 import com.community.xanadu.components.table.BeanReaderJTable;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Contact;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.event.ListSelectionListener;
@@ -15,6 +18,11 @@ import javax.swing.table.TableRowSorter;
  */
 class ContactsPanel extends JPanel {
 	static final long serialVersionUID = 0;
+	
+	private JPopupMenu contextMenu = new JPopupMenu();
+	private MainWindow mainWindowHandle;
+
+	
 	private static final Database db = new Database();
 	private static final BeanReaderJTable<Contact> table = 
 					new BeanReaderJTable<Contact>(new String[] {"FullName", "AllEmails", "AllPhones"}, 
@@ -26,7 +34,9 @@ class ContactsPanel extends JPanel {
 	/**
 	 * Constructor
 	 */
-	public ContactsPanel(ListSelectionListener listSelectionListener) {
+	public ContactsPanel(MainWindow handle, ListSelectionListener listSelectionListener) {
+		this.mainWindowHandle = handle;
+		
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		JLabel label = new JLabel("Contacts");
 		label.setAlignmentX(CENTER_ALIGNMENT);
@@ -38,6 +48,8 @@ class ContactsPanel extends JPanel {
 		JScrollPane scrollPane = new JScrollPane(table);
 		filter("");
 		add(scrollPane);
+		
+		this.initContextMenu();
 	}
 
 	/**
@@ -68,4 +80,36 @@ class ContactsPanel extends JPanel {
 	Contact getSelectedContact() {
 		return table.getSelectedObject();
 	}
+
+	private void initContextMenu() {
+		
+		this.contextMenu.add(this.mainWindowHandle.actions.actionNewContact);
+		this.contextMenu.add(this.mainWindowHandle.actions.actionDeleteContact);
+		
+		this.contextMenu.addSeparator();
+		
+		this.contextMenu.add(this.mainWindowHandle.actions.actionImport);
+		this.contextMenu.add(this.mainWindowHandle.actions.actionExport);
+
+		MouseListener popupListener = new PopupListener();
+		table.addMouseListener(popupListener);	
+	}
+	
+	class PopupListener extends MouseAdapter {
+		@Override
+		public void mousePressed(MouseEvent e) {
+			showPopup(e);
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			showPopup(e);
+		}
+
+		private void showPopup(MouseEvent e) {
+			if (e.isPopupTrigger()) {
+				contextMenu.show(e.getComponent(), e.getX(), e.getY());
+			}
+		}	
+	}		
 }

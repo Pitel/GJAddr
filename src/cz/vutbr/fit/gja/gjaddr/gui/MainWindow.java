@@ -1,10 +1,10 @@
 package cz.vutbr.fit.gja.gjaddr.gui;
 
-import com.community.xanadu.components.table.BeanReaderJTable;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Contact;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Group;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -13,20 +13,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.List;
-import javax.swing.AbstractAction;
-import javax.swing.Box;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JTextField;
-import javax.swing.JToolBar;
-import javax.swing.KeyStroke;
-import javax.swing.UIManager;
+import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
@@ -49,8 +36,9 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 	private JTextField searchField;
 	private ContactsPanel contactsPanel;
 	private DetailPanel detailPanel;
-	private JButton addButton, removeButton;
-
+	
+	public UserActions actions = new UserActions();
+	
 	/**
 	 * Creates the main window.
 	 */
@@ -62,23 +50,22 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
 			System.err.println(e);
-		}
+		}			
+		
 		setIconImage(new ImageIcon(getClass().getResource("/res/icon.png")).getImage());
 		setJMenuBar(this.createMenu());
 		final JToolBar toolbar = new JToolBar();
 		toolbar.setFloatable(false);
-		addButton = new JButton(new ImageIcon(getClass().getResource("/res/plus.png"), "+"));
-		addButton.addActionListener(this);
-		toolbar.add(addButton);
-		removeButton = new JButton(new ImageIcon(getClass().getResource("/res/minus.png"), "-"));
-		removeButton.addActionListener(this);
-		toolbar.add(removeButton);
+		
+		toolbar.add(actions.actionNewContact);
+		toolbar.add(actions.actionDeleteContact);
 		toolbar.addSeparator();
-		toolbar.add(new ImportAction());
-		toolbar.add(new ExportAction());
+		toolbar.add(actions.actionImport);
+		toolbar.add(actions.actionExport);
 		toolbar.addSeparator();
-		toolbar.add(new PreferencesAction());
+		toolbar.add(actions.actionPreferences);
 		toolbar.addSeparator();
+		
 		searchField = new JTextField();
 		searchField.getDocument().addDocumentListener(this);
 		toolbar.add(searchField);
@@ -94,13 +81,13 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		final MultiSplitPane multiSplitPane = new MultiSplitPane();
 		multiSplitPane.getMultiSplitLayout().setModel(model);
 		multiSplitPane.add(new GroupsPanel(new GroupSelectionListener()), "groups");
-		contactsPanel = new ContactsPanel(new ContactSelectionListener());
+		contactsPanel = new ContactsPanel(this, new ContactSelectionListener());
 		multiSplitPane.add(contactsPanel, "contacts");
 		detailPanel = new DetailPanel();
 		multiSplitPane.add(detailPanel, "detail");
 		add(multiSplitPane, BorderLayout.CENTER);
 		pack();
-		setLocationRelativeTo(null);
+		setLocationRelativeTo(null);		
 	}
 
 	/**
@@ -118,11 +105,12 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		helpMenu.setMnemonic(KeyEvent.VK_H);
 		menuBar.add(helpMenu);
 
-		fileMenu.add(new ImportAction());
-		fileMenu.add(new ExportAction());
+		fileMenu.add(this.actions.actionImport);
+		fileMenu.add(this.actions.actionExport);
 		fileMenu.addSeparator();
-		fileMenu.add(new PreferencesAction());
+		fileMenu.add(this.actions.actionPreferences);
 		fileMenu.addSeparator();
+		
 		menuItemClose = new JMenuItem("Quit", KeyEvent.VK_Q);
 		menuItemClose.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK));
 		menuItemClose.addActionListener(this);
@@ -164,7 +152,6 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		//System.out.println(e);
-	
 		if (e.getSource() == menuItemClose) {
 			dispose();
 		} else if (e.getSource() == menuItemAbout) {
@@ -177,11 +164,9 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 			} catch (IOException ex) {
 				System.err.println(ex);
 			}
-		} else if (e.getSource() == addButton) {
-			new EditWindow();
 		}
  	}
-
+		
 	/**
 	 * Listener class for groups list selection
 	 */
@@ -208,74 +193,6 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 			if (!e.getValueIsAdjusting()) {	//React only on final choice
 				detailPanel.show(contactsPanel.getSelectedContact());
 			}
-		}
-	}
-
-	/**
-	 * Action for importing contacts
-	 */
-	private class ImportAction extends AbstractAction {
-		static final long serialVersionUID = 0;
-		private static final String name = "Import";
-		private static final String icon = "/res/import.png";
-		private final Integer mnemonic = KeyEvent.VK_I;
-		private final KeyStroke accelerator = KeyStroke.getKeyStroke(mnemonic, ActionEvent.CTRL_MASK);
-
-		public ImportAction() {
-			super(name);
-			putValue(SMALL_ICON, new ImageIcon(getClass().getResource(icon), name));
-			putValue(MNEMONIC_KEY, mnemonic);
-			putValue(ACCELERATOR_KEY, accelerator);
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			new ImportWindow();
-		}
-	}
-
-	/**
-	 * Action for exporting contacts
-	 */
-	private class ExportAction extends AbstractAction {
-		static final long serialVersionUID = 0;
-		private static final String name = "Export";
-		private static final String icon = "/res/export.png";
-		private final Integer mnemonic = KeyEvent.VK_E;
-		private final KeyStroke accelerator = KeyStroke.getKeyStroke(mnemonic, ActionEvent.CTRL_MASK);
-
-		public ExportAction() {
-			super(name);
-			putValue(SMALL_ICON, new ImageIcon(getClass().getResource(icon), name));
-			putValue(MNEMONIC_KEY, mnemonic);
-			putValue(ACCELERATOR_KEY, accelerator);
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			new ExportWindow();
-		}
-	}
-
-	/**
-	 * Action for preferences
-	 */
-	private class PreferencesAction extends AbstractAction {
-		static final long serialVersionUID = 0;
-		private static final String name = "Preferences";
-		private static final String icon = "/res/preferences.png";
-		private final Integer mnemonic = KeyEvent.VK_P;
-		private final KeyStroke accelerator = KeyStroke.getKeyStroke(mnemonic, ActionEvent.CTRL_MASK);
-
-		public PreferencesAction() {
-			super(name);
-			putValue(SMALL_ICON, new ImageIcon(getClass().getResource(icon), name));
-			putValue(MNEMONIC_KEY, mnemonic);
-			putValue(ACCELERATOR_KEY, accelerator);
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
 		}
 	}
 }
