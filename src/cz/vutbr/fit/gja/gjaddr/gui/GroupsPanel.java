@@ -110,7 +110,7 @@ class GroupsPanel extends JPanel implements ActionListener, KeyListener {
 			"Group name:",
 			"Add group",
 			JOptionPane.QUESTION_MESSAGE,
-			new ImageIcon(getClass().getResource("/res/plus.png"), "+"),
+			new ImageIcon(getClass().getResource("/res/plus_g.png"), "+"),
 			null,
 			""
 		);
@@ -126,6 +126,17 @@ class GroupsPanel extends JPanel implements ActionListener, KeyListener {
 	private void removeGroups() {
 		Group[] groups = Arrays.copyOf(list.getSelectedValues(), list.getSelectedValues().length, Group[].class);
 		//System.out.println("Remove groups: " + Arrays.toString(groups));
-		db.removeGroups(Arrays.asList(groups));
+		int delete = JOptionPane.showConfirmDialog(
+			this,
+			"Delete groups " + Arrays.toString(groups) + "?",
+			"Delete groups",
+			JOptionPane.YES_NO_OPTION,
+			JOptionPane.QUESTION_MESSAGE,
+			new ImageIcon(getClass().getResource("/res/minus_g.png"), "-")
+		);
+		//System.out.println(delete);
+		if (delete == 0) {
+			db.removeGroups(Arrays.asList(groups));
+		}
 	}
 }
