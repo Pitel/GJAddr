@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
  * @author Bc. Drahomira Herrmannova <xherrm01@stud.fit.vutbr.cz>
  * @see <http://opencsv.sourceforge.net/>
  */
-public class CsvIE {
+public class CsvImportExport {
 
 	/**
 	 * Application database.

@@ -1,10 +1,12 @@
 
 package cz.vutbr.fit.gja.gjaddr.gui;
 
-import cz.vutbr.fit.gja.gjaddr.importexport.CsvIE;
-import cz.vutbr.fit.gja.gjaddr.importexport.VCardIE;
+import cz.vutbr.fit.gja.gjaddr.importexport.CsvImportExport;
+import cz.vutbr.fit.gja.gjaddr.importexport.FacebookImport;
+import cz.vutbr.fit.gja.gjaddr.importexport.VCardImportExport;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Group;
+import java.awt.Cursor;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -383,10 +385,13 @@ public class ImportWindow extends JFrame implements ActionListener {
 		String importFormat = this.importFormatsButtonGroup.getSelection().getActionCommand();
 		String importGroup = (String) this.groupsList.getSelectedItem();
 
-		VCardIE vcardImport = new VCardIE();
-		CsvIE csvImport = new CsvIE();
+		VCardImportExport vcardImport = new VCardImportExport();
+		CsvImportExport csvImport = new CsvImportExport();
 		
 		try {
+			// set cursor to wait cursor
+			this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+			// do the import
 			if (importOption.equals(ActionCommands.NO_GROUP.toString())) {
 				if (importFormat.equals(ActionCommands.V_CARD.toString())) {
 					vcardImport.importContacts(file);
@@ -418,6 +423,8 @@ public class ImportWindow extends JFrame implements ActionListener {
 			}
 		} catch (IOException ex) {
 			LoggerFactory.getLogger(this.getClass()).error(ex.toString());
+		} finally {
+			this.setCursor(Cursor.getDefaultCursor());
 		}
 		
 		this.dispose();
@@ -427,7 +434,48 @@ public class ImportWindow extends JFrame implements ActionListener {
 	 * Import contacts from selected service.
 	 */
 	private void importFromService() {
-		// TODO
+		String importOption = this.groupOptionsButtonGroup.getSelection().getActionCommand();
+		String importFormat = this.importFormatsButtonGroup.getSelection().getActionCommand();
+		String importGroup = (String) this.groupsList.getSelectedItem();
+
+		try {
+			// set cursor to wait cursor
+			this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+			// do the import
+			if (importOption.equals(ActionCommands.NO_GROUP.toString())) {
+				if (importFormat.equals(ActionCommands.FACEBOOK.toString())) {
+					new FacebookImport().importContacts();
+				} else {
+					// GO
+				}
+			} else if (importOption.equals(ActionCommands.SELECTED_GROUP.toString())) {
+				if (importFormat.equals(ActionCommands.FACEBOOK.toString())) {
+					new FacebookImport().importContacts(importGroup);
+				} else {
+					// GO
+				}
+			} else {
+				String s = (String) JOptionPane.showInputDialog(this, "New group name:",
+						"New group creation", JOptionPane.PLAIN_MESSAGE, null, null, null);
+				if ((s != null) && (s.length() > 0)) {
+					if (importFormat.equals(ActionCommands.FACEBOOK.toString())) {
+						new FacebookImport().importContacts(s);
+					} else {
+						// GO
+					}
+				} else {
+					if (importFormat.equals(ActionCommands.FACEBOOK.toString())) {
+						new FacebookImport().importContacts();
+					} else {
+						// GO
+					}
+				}
+			}
+		} finally {
+			this.setCursor(Cursor.getDefaultCursor());
+		}
+
+		this.dispose();
 	}
 
 	/**

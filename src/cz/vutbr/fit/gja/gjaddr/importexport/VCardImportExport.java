@@ -50,7 +50,7 @@ import org.slf4j.LoggerFactory;
  * @see <http://dma.pixel-act.com/>
  * @see <http://sourceforge.net/apps/mediawiki/cardme/index.php?title=Main_Page>
  */
-public class VCardIE {
+public class VCardImportExport {
 
 	/**
 	 * Application database.
@@ -300,10 +300,10 @@ public class VCardIE {
 	 */
 	public static void main(String[] args) {
 		try {
-			VCardIE vc = new VCardIE();
+			VCardImportExport vc = new VCardImportExport();
 			vc.importContacts(new File("/Users/damirah/Downloads/contacts.vcf"));
 		} catch (IOException ex) {
-			Logger.getLogger(VCardIE.class.getName()).log(Level.SEVERE, null, ex);
+			Logger.getLogger(VCardImportExport.class.getName()).log(Level.SEVERE, null, ex);
 		}
 	}
 }

@@ -1,8 +1,8 @@
 
 package cz.vutbr.fit.gja.gjaddr.gui;
 
-import cz.vutbr.fit.gja.gjaddr.importexport.CsvIE;
-import cz.vutbr.fit.gja.gjaddr.importexport.VCardIE;
+import cz.vutbr.fit.gja.gjaddr.importexport.CsvImportExport;
+import cz.vutbr.fit.gja.gjaddr.importexport.VCardImportExport;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Contact;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Group;
@@ -347,8 +347,8 @@ public class ExportWindow extends JFrame implements ActionListener {
 		String exportFormat = this.exportFormatButtonGroup.getSelection().getActionCommand();
 		String exportGroup = (String) this.groupsList.getSelectedItem();
 
-		VCardIE vcardExport = new VCardIE();
-		CsvIE csvExport = new CsvIE();
+		VCardImportExport vcardExport = new VCardImportExport();
+		CsvImportExport csvExport = new CsvImportExport();
 
 		try {
 			if (exportOption.equals(ActionCommands.NO_GROUP.toString())) {
