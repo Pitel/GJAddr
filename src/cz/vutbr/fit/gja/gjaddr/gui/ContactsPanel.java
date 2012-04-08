@@ -1,7 +1,8 @@
 package cz.vutbr.fit.gja.gjaddr.gui;
 
 import com.community.xanadu.components.table.BeanReaderJTable;
-import cz.vutbr.fit.gja.gjaddr.persistancelayer.*;
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.Contact;
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.event.ListSelectionListener;
@@ -15,7 +16,10 @@ import javax.swing.table.TableRowSorter;
 class ContactsPanel extends JPanel {
 	static final long serialVersionUID = 0;
 	private static final Database db = new Database();
-	private static final BeanReaderJTable<Contact> table = new BeanReaderJTable<Contact>(new String[] {"FullName", "Phones"}, new String[] {"Name", "Phone"});
+	private static final BeanReaderJTable<Contact> table = 
+						new BeanReaderJTable<Contact>(new String[] {"FullName", "AllEmails", "AllPhones"},
+																					new String[] {"Name", "Emails", "Phone"});																									
+																				
 	private static final TableRowSorter<BeanReaderJTable.GenericTableModel> sorter = new TableRowSorter<BeanReaderJTable.GenericTableModel>(table.getModel());
 
 	/**
