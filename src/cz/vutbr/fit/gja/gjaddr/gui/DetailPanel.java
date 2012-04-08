@@ -31,6 +31,8 @@ class DetailPanel extends JPanel {
 	}
 
 	void show(Contact contact) {
-		name.setText(String.format("<html><h1>%s %s</h1></html>", contact.getFirstName(), contact.getSurName()));
+		if (contact != null) {
+			name.setText(String.format("<html><h1>%s %s</h1></html>", contact.getFirstName(), contact.getSurName()));
+		}
 	}
 }
