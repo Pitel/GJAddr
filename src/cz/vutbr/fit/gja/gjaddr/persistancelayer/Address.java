@@ -78,6 +78,23 @@ public class Address implements Serializable {
 		this.country = country;
 	}
 
+	/**
+	 * Create class representation of address.
+	 * 
+	 * @param type
+	 * @param streetAddress Street address read from vCard has street name and number in one string.
+	 * @param city
+	 * @param postCode
+	 * @param country
+	 */
+	public Address(int type, String streetAddress, String city, int postCode, String country) {
+		this.type = type;
+		this.street = streetAddress;
+		this.city = city;
+		this.postCode = postCode;
+		this.country = country;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == null) {

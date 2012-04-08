@@ -1,8 +1,8 @@
 
 package cz.vutbr.fit.gja.gjaddr.gui;
 
-import cz.vutbr.fit.gja.gjaddr.importexport.Csv;
-import cz.vutbr.fit.gja.gjaddr.importexport.VCard;
+import cz.vutbr.fit.gja.gjaddr.importexport.CsvIE;
+import cz.vutbr.fit.gja.gjaddr.importexport.VCardIE;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Contact;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Group;
@@ -37,6 +37,9 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Window for export management.
+ *
+ * TODO
+ *  - messages in case of errors
  *
  * @author Bc. Drahomira Herrmannova <xherrm01@stud.fit.vutbr.cz>
  */
@@ -99,6 +102,7 @@ public class ExportWindow extends JFrame implements ActionListener {
 	 */
 	public ExportWindow() {
 		super("Export");
+		LoggerFactory.getLogger(this.getClass()).debug("Opening export window.");
 
 		// set window apearance
 		try {
@@ -280,7 +284,7 @@ public class ExportWindow extends JFrame implements ActionListener {
 	private JPanel createCsvExportOptionButton() {
 		// create button for CSV format
 		JPanel csvButtonPanel = new JPanel(new GridLayout());
-		this.csvButton = new JRadioButton("CSV");
+		this.csvButton = new JRadioButton("GJAddr CSV");
 		this.csvButton.addActionListener(this);
 		this.csvButton.setActionCommand(ActionCommands.CSV.toString());
 		csvButtonPanel.add(this.csvButton);
@@ -312,7 +316,7 @@ public class ExportWindow extends JFrame implements ActionListener {
 	 */
 	private JPanel createButtonPanel() {
 		// file chooser button
-		this.openButton = new JButton("Select file");
+		this.openButton = new JButton("Export");
 		this.openButton.addActionListener(this);
 		this.openButton.setIcon(new ImageIcon(getClass().getResource("/res/folder.png")));
 		this.openButton.setIconTextGap(10);
@@ -337,14 +341,14 @@ public class ExportWindow extends JFrame implements ActionListener {
 	 */
 	private void doExport() {
 		File file = this.fileChooser.getSelectedFile();
-		LoggerFactory.getLogger(this.getClass()).info("Opening file [" + file.getName() + "] for import.");
+		LoggerFactory.getLogger(this.getClass()).info("Opening file [" + file.getName() + "] for export.");
 		
 		String exportOption = this.groupButtonGroup.getSelection().getActionCommand();
 		String exportFormat = this.exportFormatButtonGroup.getSelection().getActionCommand();
 		String exportGroup = (String) this.groupsList.getSelectedItem();
 
-		VCard vcardExport = new VCard();
-		Csv csvExport = new Csv();
+		VCardIE vcardExport = new VCardIE();
+		CsvIE csvExport = new CsvIE();
 
 		try {
 			if (exportOption.equals(ActionCommands.NO_GROUP.toString())) {
@@ -400,7 +404,7 @@ public class ExportWindow extends JFrame implements ActionListener {
 			this.noGroupButton.setSelected(false);
 			this.selectGroupButton.setSelected(true);
 		}
-		// open button was clicked -- export data
+		// export button was clicked
 		else if (ae.getSource() == this.openButton) {
 			int result = this.fileChooser.showSaveDialog(ExportWindow.this);
 			if (result == JFileChooser.APPROVE_OPTION) {

@@ -43,6 +43,17 @@ public class Url implements Serializable {
 		}
 	}
 
+	/**
+	 * Create representation of one URL.
+	 * 
+	 * @param type
+	 * @param value
+	 */
+	public Url (int type, URL value) {
+		this.type = type;
+		this.value = value;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == null) {
