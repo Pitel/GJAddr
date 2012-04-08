@@ -4,16 +4,10 @@ import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Group;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.Arrays;
-import javax.swing.BoxLayout;
-import javax.swing.DefaultListModel;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 import javax.swing.event.ListSelectionListener;
 
 /**
@@ -21,11 +15,11 @@ import javax.swing.event.ListSelectionListener;
  *
  * @author Bc. Jan Kaláb <xkalab00@stud.fit,vutbr.cz>
  */
-class GroupsPanel extends JPanel implements ActionListener {
+class GroupsPanel extends JPanel implements ActionListener, KeyListener {
 	static final long serialVersionUID = 0;
-	private final Database db = new Database();
-	private final DefaultListModel listModel = new DefaultListModel();
-	private final JList list = new JList(listModel);
+	private static final Database db = new Database();
+	private static final DefaultListModel listModel = new DefaultListModel();
+	private static final JList list = new JList(listModel);
 
 	/**
 	 * Constructor
@@ -40,6 +34,7 @@ class GroupsPanel extends JPanel implements ActionListener {
 		fillList();
 		list.setSelectedIndex(0);
 		list.addListSelectionListener(listSelectionListener);
+		list.addKeyListener(this);
 		JScrollPane listScrollPane = new JScrollPane(list);
 		add(listScrollPane);
 		JPanel buttons = new JPanel();
@@ -83,6 +78,29 @@ class GroupsPanel extends JPanel implements ActionListener {
 	}
 
 	/**
+	 * Key press listener
+	 */
+	@Override
+	public void keyPressed(KeyEvent e) {
+		if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+			removeGroups();
+			fillList();
+		}
+	}
+
+	/**
+	 * Key release listener
+	 */
+	@Override
+	public void keyReleased(KeyEvent e) {}
+
+	/**
+	 * Key typed listener
+	 */
+	@Override
+	public void keyTyped(KeyEvent e) {}
+
+	/**
 	 * Function for adding group
 	 */
 	private void addGroup() {
@@ -92,7 +110,7 @@ class GroupsPanel extends JPanel implements ActionListener {
 			"Group name:",
 			"Add group",
 			JOptionPane.QUESTION_MESSAGE,
-			new ImageIcon(getClass().getResource("/res/plus.png"), "+"),
+			new ImageIcon(getClass().getResource("/res/plus_g.png"), "+"),
 			null,
 			""
 		);
@@ -108,6 +126,17 @@ class GroupsPanel extends JPanel implements ActionListener {
 	private void removeGroups() {
 		Group[] groups = Arrays.copyOf(list.getSelectedValues(), list.getSelectedValues().length, Group[].class);
 		//System.out.println("Remove groups: " + Arrays.toString(groups));
-		db.removeGroups(Arrays.asList(groups));
+		int delete = JOptionPane.showConfirmDialog(
+			this,
+			"Delete groups " + Arrays.toString(groups) + "?",
+			"Delete groups",
+			JOptionPane.YES_NO_OPTION,
+			JOptionPane.QUESTION_MESSAGE,
+			new ImageIcon(getClass().getResource("/res/minus_g.png"), "-")
+		);
+		//System.out.println(delete);
+		if (delete == 0) {
+			db.removeGroups(Arrays.asList(groups));
+		}
 	}
 }
