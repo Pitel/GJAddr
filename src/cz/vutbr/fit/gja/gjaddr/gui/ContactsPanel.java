@@ -57,6 +57,9 @@ class ContactsPanel extends JPanel {
 		sorter.setRowFilter(RowFilter.regexFilter("(?i)" + f));
 	}
 
+	/**
+	 * Get selected contact
+	 */
 	Contact getSelectedContact() {
 		return table.getSelectedObject();
 	}
