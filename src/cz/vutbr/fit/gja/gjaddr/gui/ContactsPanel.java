@@ -4,6 +4,7 @@ import com.community.xanadu.components.table.BeanReaderJTable;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.*;
 import java.util.List;
 import javax.swing.*;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
@@ -15,7 +16,8 @@ import javax.swing.table.TableRowSorter;
 class ContactsPanel extends JPanel {
 	static final long serialVersionUID = 0;
 	private final Database db = new Database();
-	private final DefaultTableModel model = new DefaultTableModel(new String[] {"Name", "Email", "Phone", "Address"}, 0) {
+	private final BeanReaderJTable<Contact> table = new BeanReaderJTable<Contact>(new String[] {"firstName", "surName"});
+	private final DefaultTableModel model = new DefaultTableModel(0, 2) {
 		static final long serialVersionUID = 0;
 		@Override
 		public boolean isCellEditable(int row, int column) {
@@ -27,13 +29,13 @@ class ContactsPanel extends JPanel {
 	/**
 	 * Constructor
 	 */
-	public ContactsPanel() {
+	public ContactsPanel(ListSelectionListener listSelectionListener) {
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		JLabel label = new JLabel("Contacts");
 		label.setAlignmentX(CENTER_ALIGNMENT);
 		add(label);
 		fillTable(db.getAllContacts());
-		BeanReaderJTable<Contact> table = new BeanReaderJTable<Contact>(new String[] {"firstName", "surName"});
+		table.getSelectionModel().addListSelectionListener(listSelectionListener);
 		table.addRow(db.getAllContacts());
 		table.setRowSorter(sorter);
 		JScrollPane scrollPane = new JScrollPane(table);
@@ -110,5 +112,9 @@ class ContactsPanel extends JPanel {
 	void filter(String f) {
 		//System.out.println("Filtering: " + f);
 		sorter.setRowFilter(RowFilter.regexFilter("(?i)" + f));
+	}
+
+	Contact getSelectedContact() {
+		return table.getSelectedObject();
 	}
 }
