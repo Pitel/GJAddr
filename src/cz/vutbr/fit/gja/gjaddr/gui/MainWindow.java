@@ -1,5 +1,6 @@
 package cz.vutbr.fit.gja.gjaddr.gui;
 
+import com.community.xanadu.components.table.BeanReaderJTable;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Contact;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Group;
@@ -50,6 +51,7 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 	private JMenuItem menuItemClose, menuItemHelp, menuItemAbout;
 	private JTextField searchField;
 	private ContactsPanel contactsPanel;
+	private DetailPanel detailPanel;
 	private JButton addButton, removeButton;
 
 	/**
@@ -95,9 +97,10 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		final MultiSplitPane multiSplitPane = new MultiSplitPane();
 		multiSplitPane.getMultiSplitLayout().setModel(model);
 		multiSplitPane.add(new GroupsPanel(new GroupSelectionListener()), "groups");
-		contactsPanel = new ContactsPanel();
+		contactsPanel = new ContactsPanel(new ContactSelectionListener());
 		multiSplitPane.add(contactsPanel, "contacts");
-		multiSplitPane.add(new JButton("Detail"), "detail");
+		detailPanel = new DetailPanel();
+		multiSplitPane.add(detailPanel, "detail");
 		add(multiSplitPane, BorderLayout.CENTER);
 		pack();
 		setLocationRelativeTo(null);
@@ -194,6 +197,18 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 				//System.out.println("Groups: " + requiredGroupList);
 				final List<Contact> contacts = db.getAllContactsFromGroup(requiredGroupList);
 				contactsPanel.fillTable(contacts);
+			}
+		}
+	}
+
+	/**
+	 * Listener class for contacts table selection
+	 */
+	private class ContactSelectionListener implements ListSelectionListener {
+		@Override
+		public void valueChanged(ListSelectionEvent e) {
+			if (!e.getValueIsAdjusting()) {	//React only on final choice
+				detailPanel.show(contactsPanel.getSelectedContact());
 			}
 		}
 	}

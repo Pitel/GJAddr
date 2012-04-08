@@ -113,10 +113,80 @@ public class Contact implements Serializable {
 	public void setNote(String note) {
 		this.note = note;
 	}
+	
+	public String getFullName() {
+		StringBuilder fullName = new StringBuilder();
 		
+		try {
+			fullName.append(this.surName);	
+			fullName.append(" ");
+			fullName.append(this.firstName);
+		}
+		catch (NullPointerException e) {
+			return "";
+		}
+		
+		return fullName.toString();
+	}
+	
+	public String getAllAddresses() {
+		String separator = "";		
+		StringBuilder addresses = new StringBuilder();
+		
+		try {
+			for (Address address : this.adresses) {
+				addresses.append(separator);
+				addresses.append(address.getStreet());
+				addresses.append(" ");
+				addresses.append(address.getNumber());
+				addresses.append(", ");
+				addresses.append(address.getCity());
+				separator = "; ";
+			}	
+		}
+		catch (NullPointerException e) {
+			return "";
+		}
+		
+		return addresses.toString();
+	}
+	
+	public String getAllPhones() {
+		String separator = "";
+		final StringBuilder phones = new StringBuilder();
+		try {
+			for (PhoneNumber phone : this.phoneNumbers) {
+				phones.append(separator);
+				phones.append(phone.getNumber());
+				separator = ", ";
+			}
+		}
+		catch (NullPointerException e) {
+			return "";
+		}
+
+		return phones.toString();
+	}
+	
+	public String getAllEmails() {
+		String separator = "";
+		final StringBuilder emails = new StringBuilder();
+
+		try {
+			for (Email email : this.emails) {
+				emails.append(separator);
+				emails.append(email.getEmail());
+				separator = ", ";
+			}
+		} 
+		catch (NullPointerException e) {
+			return "";
+		}
+		
+		return emails.toString();
+	}	
 	
 	public Contact(String firstName, String surName, String nickName, String note) {
-		this.id = id;
 		this.firstName = firstName;
 		this.surName = surName;
 		this.nickName = nickName;
@@ -126,7 +196,6 @@ public class Contact implements Serializable {
 	public Contact(String firstName, String surName, String nickName, Date dateOfBirth, 
 					       String note, List<Messenger> messenger, List<Url> urls, List<Address> adresses, 
 								 List<PhoneNumber> phoneNumbers, List<Email> emails, List<Custom> customs) {
-		this.id = id;
 		this.firstName = firstName;
 		this.surName = surName;
 		this.nickName = nickName;
