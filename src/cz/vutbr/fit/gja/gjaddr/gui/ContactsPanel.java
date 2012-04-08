@@ -16,12 +16,8 @@ import javax.swing.table.TableRowSorter;
 class ContactsPanel extends JPanel {
 	static final long serialVersionUID = 0;
 	private static final Database db = new Database();
-	private static final BeanReaderJTable<Contact> table = 
-					new BeanReaderJTable<Contact>(new String[] {"FullName", "AllEmails", "AllPhones"}, 
-																				new String[] {"Name", "Emails", "Phones"});																									
-																				
-	private static final TableRowSorter<BeanReaderJTable.GenericTableModel> sorter = 
-					new TableRowSorter<BeanReaderJTable.GenericTableModel>(table.getModel());
+	private static final BeanReaderJTable<Contact> table = new BeanReaderJTable<Contact>(new String[] {"FullName", "AllEmails", "AllPhones"}, new String[] {"Name", "Emails", "Phones"});
+	private static final TableRowSorter<BeanReaderJTable.GenericTableModel> sorter = new TableRowSorter<BeanReaderJTable.GenericTableModel>(table.getModel());
 
 	/**
 	 * Constructor
