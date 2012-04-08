@@ -4,6 +4,7 @@ import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Group;
 import java.awt.event.*;
 import java.util.Arrays;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.event.ListSelectionListener;
 
@@ -120,7 +121,14 @@ class GroupsPanel extends JPanel implements ActionListener, KeyListener {
 		);
 		if (name != null && !name.isEmpty()) {
 			//System.out.println(name);
-			db.addNewGroup(name);
+			List<Group> result = db.addNewGroup(name);
+			
+			if (result == null) {
+				JOptionPane.showMessageDialog(this, 
+																			"Group with name \" "+ name + "\" is already exists!", 
+																			"Group exists", 
+																			JOptionPane.WARNING_MESSAGE);
+			}
 		}
 	}
 
