@@ -5,7 +5,6 @@ import cz.vutbr.fit.gja.gjaddr.persistancelayer.*;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
 /**
@@ -15,16 +14,9 @@ import javax.swing.table.TableRowSorter;
  */
 class ContactsPanel extends JPanel {
 	static final long serialVersionUID = 0;
-	private final Database db = new Database();
-	private final BeanReaderJTable<Contact> table = new BeanReaderJTable<Contact>(new String[] {"firstName", "surName"});
-	private final DefaultTableModel model = new DefaultTableModel(0, 2) {
-		static final long serialVersionUID = 0;
-		@Override
-		public boolean isCellEditable(int row, int column) {
-			return false;
-		}
-	};
-	private final TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<DefaultTableModel>(model);
+	private static final Database db = new Database();
+	private static final BeanReaderJTable<Contact> table = new BeanReaderJTable<Contact>(new String[] {"FullName", "Phones"}, new String[] {"Name", "Phone"});
+	private static final TableRowSorter<BeanReaderJTable.GenericTableModel> sorter = new TableRowSorter<BeanReaderJTable.GenericTableModel>(table.getModel());
 
 	/**
 	 * Constructor
@@ -36,7 +28,6 @@ class ContactsPanel extends JPanel {
 		add(label);
 		fillTable(db.getAllContacts());
 		table.getSelectionModel().addListSelectionListener(listSelectionListener);
-		table.addRow(db.getAllContacts());
 		table.setRowSorter(sorter);
 		JScrollPane scrollPane = new JScrollPane(table);
 		filter("");
@@ -49,58 +40,9 @@ class ContactsPanel extends JPanel {
 	void fillTable(List<Contact> contacts) {
 		final RowFilter filter = sorter.getRowFilter();	//Warnings!
 		sorter.setRowFilter(null);
+		table.clear();
+		table.addRow(contacts);
 		//System.out.println(model.getDataVector());
-		model.getDataVector().removeAllElements();
-		for (Contact c : contacts) {
-			//System.out.println(c);
-
-			String separator = "";
-			final StringBuilder emails = new StringBuilder();
-			try {
-				for (Email email : c.getEmails()) {
-					emails.append(separator);
-					emails.append(email.getEmail());
-					separator = ", ";
-				}
-			} catch (NullPointerException e) {
-				//Ignore it, probably just no emails
-			}
-
-			separator = "";
-			final StringBuilder phones = new StringBuilder();
-			try {
-				for (PhoneNumber phone : c.getPhoneNumbers()) {
-					phones.append(separator);
-					phones.append(phone.getNumber());
-					separator = ", ";
-				}
-			} catch (NullPointerException e) {
-				//Ignore it, probably just no phone numbers
-			}
-
-			separator = "";
-			final StringBuilder addresses = new StringBuilder();
-			try {
-				for (Address address : c.getAdresses()) {
-					addresses.append(separator);
-					addresses.append(address.getStreet());
-					addresses.append(" ");
-					addresses.append(address.getNumber());
-					addresses.append(", ");
-					addresses.append(address.getCity());
-					separator = "; ";
-				}
-			} catch (NullPointerException e) {
-				//Ignore it, probably just homeless
-			}
-
-			model.addRow(new String[] {
-				c.getFirstName() + " " + c.getSurName(),
-				emails.toString(),
-				phones.toString(),
-				addresses.toString()
-			});
-		}
 		sorter.setRowFilter(filter);
 	}
 
