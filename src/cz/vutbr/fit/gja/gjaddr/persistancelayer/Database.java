@@ -1,5 +1,6 @@
 package cz.vutbr.fit.gja.gjaddr.persistancelayer;
 
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.ServicesEnum;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,10 +14,11 @@ public class Database implements IDatabase {
 	
 	private DatabaseContacts contacts;
 	private DatabaseGroups groups;
-	private DatabaseGroupsContacts groupsContacts;	
+	private DatabaseGroupsContacts groupsContacts;
+	private DatabaseAuth tokens;
 	
 	private enum TableType {
-		CONTACTS, GROUPS, GROUPSCONTACTS, SETTINGS, ALL
+		CONTACTS, GROUPS, GROUPSCONTACTS, SETTINGS, AUTH, ALL
 	}	
 	
 	private boolean autoCommit = true;
@@ -25,6 +27,7 @@ public class Database implements IDatabase {
 		this.contacts = new DatabaseContacts();
 		this.groups = new DatabaseGroups();
 		this.groupsContacts = new DatabaseGroupsContacts();
+		this.tokens = new DatabaseAuth();
 	}
 	
 	private void commitChanges(TableType day) {
@@ -41,7 +44,10 @@ public class Database implements IDatabase {
 					break;	
 				case SETTINGS:
 					// TODO
-					break;							
+					break;
+				case AUTH:
+					this.tokens.save();
+					break;
 				case ALL:
 					this.contacts.save();
 					this.groups.save();					
@@ -57,6 +63,7 @@ public class Database implements IDatabase {
 		this.contacts.clear();
 		this.groups.clear();
 		this.groupsContacts.clear();
+		this.tokens.clear();
 
 		this.commitChanges(TableType.ALL);
 	} 	
@@ -163,5 +170,37 @@ public class Database implements IDatabase {
 		requiredGroups.add(group);
 		
 		return this.getAllContactsFromGroup(requiredGroups);
+	}
+
+	/**
+	 * Get token specified by service.
+	 * 
+	 * @param service
+	 * @return
+	 */
+	public AuthToken getToken(ServicesEnum service) {
+		return this.tokens.get(service.getCode());
+	}
+
+	/**
+	 * Get token specified by service.
+	 *
+	 * @param service
+	 * @return
+	 */
+	public AuthToken getToken(Integer service) {
+		return this.tokens.get(service);
+	}
+
+	/**
+	 * Save new token to database.
+	 * 
+	 * @param token
+	 * @return
+	 */
+	public AuthToken addToken(AuthToken token) {
+		this.tokens.add(token);
+		this.commitChanges(TableType.AUTH);
+		return this.tokens.get(token.getService());
 	}
 }

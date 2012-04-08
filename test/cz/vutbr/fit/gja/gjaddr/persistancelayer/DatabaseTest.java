@@ -4,6 +4,7 @@
  */
 package cz.vutbr.fit.gja.gjaddr.persistancelayer;
 
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.ServicesEnum;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.After;
@@ -457,5 +458,15 @@ public class DatabaseTest {
 		Contact contact = new Contact("aa", "bb", "cc", "ddd");
 		result = this.database.getAllGroupsForContact(contact);			
 		assertEquals(expectedGroups, result);											
+	}
+
+	@Test
+	public void testAuth() {
+		AuthToken toSave = new AuthToken(ServicesEnum.FACEBOOK.getCode(), "AAACvfyVCeY4BAP9SCFZBUtYXrdiBs6DmwwMBjDpYmRy6Op5ZBiTtDJOF7rdGPmhZCZB7VaFz7K5eXWZBgPAGiBAKRMAbMdvyyZAmpgOdFHD4E4ZAZCOcnWYL");
+		this.database.addToken(toSave);
+		AuthToken facebook = this.database.getToken(ServicesEnum.FACEBOOK);
+		assertEquals(facebook.getToken(), "AAACvfyVCeY4BAP9SCFZBUtYXrdiBs6DmwwMBjDpYmRy6Op5ZBiTtDJOF7rdGPmhZCZB7VaFz7K5eXWZBgPAGiBAKRMAbMdvyyZAmpgOdFHD4E4ZAZCOcnWYL");
+		AuthToken facebook2 = this.database.getToken(ServicesEnum.FACEBOOK.getCode());
+		assertEquals(facebook, facebook2);
 	}
 }

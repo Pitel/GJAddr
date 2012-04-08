@@ -1,5 +1,6 @@
 package cz.vutbr.fit.gja.gjaddr.persistancelayer;
 
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.ServicesEnum;
 import java.util.List;
 
 /**
@@ -27,4 +28,9 @@ public interface IDatabase {
 	List<Group> addNewGroup(String name);	
 	List<Group> updateGroup(Group group);	
 	List<Group> removeGroups(List<Group> groupsToRemove);
+
+	// AUTH
+	AuthToken getToken(ServicesEnum service);
+	AuthToken getToken(Integer service);
+	AuthToken addToken(AuthToken token);
 }

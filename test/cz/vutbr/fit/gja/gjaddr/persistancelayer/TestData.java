@@ -1,5 +1,6 @@
 package cz.vutbr.fit.gja.gjaddr.persistancelayer;
 
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.ServicesEnum;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +14,7 @@ public class TestData {
 		fillContacts(db);
 		fillGroups(db);		
 		fillGroupContacts(db);
+		fillAuthTokens(db);
 	}
 
 	private static void fillContacts(Database db) {
@@ -112,5 +114,9 @@ public class TestData {
 		contactsToAdd.clear();
 		contactsToAdd.add(contacts.get(2));
 		db.addContactsToGroup(groups.get(3), contactsToAdd);				
+	}
+
+	private static void fillAuthTokens(Database db) {
+		// TODO
 	}
 }
