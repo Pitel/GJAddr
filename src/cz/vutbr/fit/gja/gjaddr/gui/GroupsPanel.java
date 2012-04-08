@@ -2,10 +2,7 @@ package cz.vutbr.fit.gja.gjaddr.gui;
 
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Group;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 import java.util.Arrays;
 import javax.swing.*;
 import javax.swing.event.ListSelectionListener;
@@ -20,13 +17,18 @@ class GroupsPanel extends JPanel implements ActionListener, KeyListener {
 	private static final Database db = new Database();
 	private static final DefaultListModel listModel = new DefaultListModel();
 	private static final JList list = new JList(listModel);
+	
+	private JPopupMenu contextMenu = new JPopupMenu();	
+	private MainWindow mainWindowHandle;	
 
 	/**
 	 * Constructor
 	 *
-	 * @param listSelectionListener Listener to handle actions outside goups panel
+	 * @param listSelectionListener Listener to handle actions outside groups panel
 	 */
-	public GroupsPanel(ListSelectionListener listSelectionListener) {
+	public GroupsPanel(MainWindow handle, ListSelectionListener listSelectionListener) {
+		this.mainWindowHandle = handle;
+		
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		JLabel label = new JLabel("Groups");
 		label.setAlignmentX(CENTER_ALIGNMENT);
@@ -48,6 +50,8 @@ class GroupsPanel extends JPanel implements ActionListener, KeyListener {
 		remove.addActionListener(this);
 		buttons.add(remove);
 		add(buttons);
+		
+		this.initContextMenu();
 	}
 
 	/**
@@ -123,7 +127,7 @@ class GroupsPanel extends JPanel implements ActionListener, KeyListener {
 	/**
 	 * Function for removing group
 	 */
-	private void removeGroups() {
+	 private void removeGroups() {
 		Group[] groups = Arrays.copyOf(list.getSelectedValues(), list.getSelectedValues().length, Group[].class);
 		//System.out.println("Remove groups: " + Arrays.toString(groups));
 		int delete = JOptionPane.showConfirmDialog(
@@ -139,4 +143,36 @@ class GroupsPanel extends JPanel implements ActionListener, KeyListener {
 			db.removeGroups(Arrays.asList(groups));
 		}
 	}
+	
+	private void initContextMenu() {
+		
+		//this.contextMenu.add(this.mainWindowHandle.actions.actionNewContact);
+		//this.contextMenu.add(this.mainWindowHandle.actions.actionDeleteContact);
+		
+		//this.contextMenu.addSeparator();
+		
+		this.contextMenu.add(this.mainWindowHandle.actions.actionImport);
+		this.contextMenu.add(this.mainWindowHandle.actions.actionExport);
+
+		MouseListener popupListener = new PopupListener();
+		list.addMouseListener(popupListener);	
+	}
+	
+	class PopupListener extends MouseAdapter {
+		@Override
+		public void mousePressed(MouseEvent e) {
+			showPopup(e);
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			showPopup(e);
+		}
+
+		private void showPopup(MouseEvent e) {
+			if (e.isPopupTrigger()) {
+				contextMenu.show(e.getComponent(), e.getX(), e.getY());
+			}
+		}	
+	}	
 }

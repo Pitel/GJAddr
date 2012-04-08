@@ -32,7 +32,7 @@ import org.jdesktop.swingx.MultiSplitPane;
 public class MainWindow extends JFrame implements ActionListener, DocumentListener {
 	static final long serialVersionUID = 0;
 	private final Database db = new Database();
-	private JMenuItem menuItemClose, menuItemHelp, menuItemAbout;
+	private JMenuItem menuItemClose;
 	private JTextField searchField;
 	private ContactsPanel contactsPanel;
 	private DetailPanel detailPanel;
@@ -80,7 +80,7 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		model.setChildren(Arrays.asList(groupsLeaf, new Divider(), contactsLeaf, new Divider(), detailLeaf));
 		final MultiSplitPane multiSplitPane = new MultiSplitPane();
 		multiSplitPane.getMultiSplitLayout().setModel(model);
-		multiSplitPane.add(new GroupsPanel(new GroupSelectionListener()), "groups");
+		multiSplitPane.add(new GroupsPanel(this, new GroupSelectionListener()), "groups");
 		contactsPanel = new ContactsPanel(this, new ContactSelectionListener());
 		multiSplitPane.add(contactsPanel, "contacts");
 		detailPanel = new DetailPanel();
@@ -101,6 +101,7 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		fileMenu.setMnemonic(KeyEvent.VK_F);
 		menuBar.add(fileMenu);
 		menuBar.add(Box.createHorizontalGlue());
+		
 		JMenu helpMenu = new JMenu("Help");
 		helpMenu.setMnemonic(KeyEvent.VK_H);
 		menuBar.add(helpMenu);
@@ -116,14 +117,8 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		menuItemClose.addActionListener(this);
 		fileMenu.add(this.menuItemClose);
 
-		menuItemHelp = new JMenuItem("Help", KeyEvent.VK_H);
-		menuItemHelp.setAccelerator(KeyStroke.getKeyStroke("F1"));
-		menuItemHelp.addActionListener(this);
-		helpMenu.add(this.menuItemHelp);
-
-		menuItemAbout = new JMenuItem("About", KeyEvent.VK_A);
-		menuItemAbout.addActionListener(this);
-		helpMenu.add(this.menuItemAbout);
+		helpMenu.add(this.actions.actionHelp);
+		helpMenu.add(this.actions.actionAbout);
 
 		return menuBar;
 	}
@@ -144,8 +139,7 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 	}
 
 	/**
-	 * Method binding functionality to difference actions performed (e.g. if button
-	 * was pressed etc.).
+	 * Method binding functionality to close window.
 	 *
 	 * @param e
 	 */
@@ -154,17 +148,7 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		//System.out.println(e);
 		if (e.getSource() == menuItemClose) {
 			dispose();
-		} else if (e.getSource() == menuItemAbout) {
-			new AboutWindow();
-		} else if (e.getSource() == menuItemHelp) {
-			try{
-				Desktop.getDesktop().browse(new URI("http://pitel.github.com/GJAddr"));
-			} catch (URISyntaxException ex) {
-				System.err.println(ex);
-			} catch (IOException ex) {
-				System.err.println(ex);
-			}
-		}
+		} 
  	}
 		
 	/**

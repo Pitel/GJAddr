@@ -21,7 +21,6 @@ class ContactsPanel extends JPanel {
 	
 	private JPopupMenu contextMenu = new JPopupMenu();
 	private MainWindow mainWindowHandle;
-
 	
 	private static final Database db = new Database();
 	private static final BeanReaderJTable<Contact> table = new BeanReaderJTable<Contact>(new String[] {"FullName", "AllEmails", "AllPhones"}, new String[] {"Name", "Emails", "Phones"});

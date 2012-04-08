@@ -1,17 +1,17 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.vutbr.fit.gja.gjaddr.gui;
 
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
 
 /**
- * Class for menu, toolbar and context menu items.
+ * Class for menu, toolbar and context menu actions.
  *
  * @author Bc. Radek Gajdušek <xgajdu07@stud.fit,vutbr.cz>
  */
@@ -23,13 +23,20 @@ public class UserActions {
 	ExportAction actionExport;
 	PreferencesAction actionPreferences;
 	
+	HelpAction actionHelp;
+	AboutAction actionAbout;
+	
 	public UserActions() {
 		this.actionNewContact = new AddContactAction();
 		this.actionDeleteContact = new DeleteContactAction();	
 		this.actionImport = new ImportAction();
 		this.actionExport = new ExportAction();
 		this.actionPreferences = new PreferencesAction();
+		
+		this.actionHelp = new HelpAction();
+		this.actionAbout = new AboutAction();
 	}
+	
 	/**
 	 * Action for importing contacts
 	 */
@@ -106,7 +113,7 @@ public class UserActions {
 		static final long serialVersionUID = 0;
 		private static final String name = "Add new contact";
 		private static final String icon = "/res/plus.png";
-		private final Integer mnemonic = KeyEvent.VK_A;
+		private final Integer mnemonic = KeyEvent.VK_N;
 		private final KeyStroke accelerator = KeyStroke.getKeyStroke(mnemonic, ActionEvent.CTRL_MASK);
 
 		public AddContactAction() {
@@ -142,6 +149,60 @@ public class UserActions {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO 	
+		}
+	}		
+	
+	/**
+	 * Action for help action.
+	 */		
+	private class HelpAction extends AbstractAction {
+		static final long serialVersionUID = 0;
+		private static final String name = "Help";
+		// private static final String icon = "/res/help.png";
+		private final Integer mnemonic = KeyEvent.VK_H;
+		private final KeyStroke accelerator = KeyStroke.getKeyStroke("F1");
+
+		public HelpAction() {
+			super(name);
+			//putValue(SMALL_ICON, new ImageIcon(getClass().getResource(icon), name));
+			putValue(MNEMONIC_KEY, mnemonic);
+			putValue(ACCELERATOR_KEY, accelerator);
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			try {
+				Desktop.getDesktop().browse(new URI("http://pitel.github.com/GJAddr"));
+			} 
+			catch (URISyntaxException ex) {
+				System.err.println(ex);
+			} 
+			catch (IOException ex) {
+				System.err.println(ex);
+			}
+		}
+	}			
+	
+	/**
+	 * Action for showing about dialog.
+	 */		
+	private class AboutAction extends AbstractAction {
+		static final long serialVersionUID = 0;
+		private static final String name = "About";
+		// private static final String icon = "/res/about.png";
+		private final Integer mnemonic = KeyEvent.VK_A;
+		private final KeyStroke accelerator = KeyStroke.getKeyStroke(mnemonic, ActionEvent.CTRL_MASK);
+
+		public AboutAction() {
+			super(name);
+			//putValue(SMALL_ICON, new ImageIcon(getClass().getResource(icon), name));
+			putValue(MNEMONIC_KEY, mnemonic);
+			putValue(ACCELERATOR_KEY, accelerator);
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			new AboutWindow();
 		}
 	}		
 }
