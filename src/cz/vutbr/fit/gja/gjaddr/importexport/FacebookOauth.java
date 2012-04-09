@@ -52,7 +52,7 @@ public class FacebookOauth {
 	private Database database;
 
 	public FacebookOauth() {
-		this.database = new Database();
+		this.database = Database.getInstance();
 		this.token = this.database.getToken(ServicesEnum.FACEBOOK);
 		if (this.token != null) {
 			this.client = new DefaultFacebookClient(this.token.getToken());

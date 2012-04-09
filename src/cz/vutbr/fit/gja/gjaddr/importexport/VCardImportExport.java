@@ -55,7 +55,7 @@ public class VCardImportExport {
 	/**
 	 * Application database.
 	 */
-	private Database database = new Database();
+	private Database database = Database.getInstance();
 
 	/**
 	 * Read all contents of file as string.

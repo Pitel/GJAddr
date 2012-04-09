@@ -1,7 +1,6 @@
 package cz.vutbr.fit.gja.gjaddr.persistancelayer;
 
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.ServicesEnum;
-import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +22,18 @@ public class Database implements IDatabase {
 	
 	private boolean autoCommit = true;
 	
-	public Database() {		
+	
+	private static Database instance;
+	
+	public static Database getInstance() {
+		if (instance == null) {
+			instance = new Database();
+		}
+		
+		return instance;
+	}
+	
+	private Database() {		
 		this.contacts = new DatabaseContacts();
 		this.groups = new DatabaseGroups();
 		this.groupsContacts = new DatabaseGroupsContacts();

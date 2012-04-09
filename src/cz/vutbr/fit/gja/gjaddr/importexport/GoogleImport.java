@@ -52,7 +52,7 @@ public class GoogleImport {
 	 * Constructor.
 	 */
 	public GoogleImport() {
-		this.database = new Database();
+		this.database = Database.getInstance();
 		this.token = this.database.getToken(ServicesEnum.GOOGLE);
 		this.service = new ContactsService("GJAddr");
 	}

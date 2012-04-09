@@ -51,7 +51,7 @@ public class PreferencesWindow extends JFrame implements ActionListener {
 	/**
 	 * Application database.
 	 */
-	private Database database = new Database();
+	private Database database = Database.getInstance();
 
 	/**
 	 * Service buttons.

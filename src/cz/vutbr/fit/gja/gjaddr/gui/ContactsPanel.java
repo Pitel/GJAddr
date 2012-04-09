@@ -3,9 +3,11 @@ package cz.vutbr.fit.gja.gjaddr.gui;
 import com.community.xanadu.components.table.BeanReaderJTable;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Contact;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.Group;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Arrays;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.event.ListSelectionListener;
@@ -22,7 +24,7 @@ class ContactsPanel extends JPanel {
 	private JPopupMenu contextMenu = new JPopupMenu();
 	private MainWindow mainWindowHandle;
 	
-	private static final Database db = new Database();
+	private static final Database db = Database.getInstance();
 	private static final BeanReaderJTable<Contact> table = new BeanReaderJTable<Contact>(new String[] {"FullName", "AllEmails", "AllPhones"}, new String[] {"Name", "Emails", "Phones"});
 	private static final TableRowSorter<BeanReaderJTable.GenericTableModel> sorter = new TableRowSorter<BeanReaderJTable.GenericTableModel>(table.getModel());
 
@@ -36,7 +38,9 @@ class ContactsPanel extends JPanel {
 		JLabel label = new JLabel("Contacts");
 		label.setAlignmentX(CENTER_ALIGNMENT);
 		add(label);
+		
 		fillTable(db.getAllContacts());
+		
 		table.getSelectionModel().addListSelectionListener(listSelectionListener);
 		table.setRowSorter(sorter);
 		table.setDefaultRenderer(Object.class, new TableRowColorRenderer());
@@ -50,7 +54,7 @@ class ContactsPanel extends JPanel {
 	/**
 	 * Fill table with data from list
 	 */
-	void fillTable(List<Contact> contacts) {
+	static void fillTable(List<Contact> contacts) {
 		final RowFilter filter = sorter.getRowFilter();	//Warnings!
 		sorter.setRowFilter(null);
 		table.clear();
@@ -70,9 +74,9 @@ class ContactsPanel extends JPanel {
 	}
 
 	/**
-	 * Get selected contact
+	 * Get selected contacts
 	 */
-	Contact getSelectedContact() {
+	static Contact getSelectedContact() {
 		return table.getSelectedObject();
 	}
 
@@ -100,7 +104,7 @@ class ContactsPanel extends JPanel {
 		public void mouseReleased(MouseEvent e) {
 			showPopup(e);
 		}
-
+	
 		private void showPopup(MouseEvent e) {
 			if (e.isPopupTrigger()) {
 				contextMenu.show(e.getComponent(), e.getX(), e.getY());
