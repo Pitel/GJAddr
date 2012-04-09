@@ -29,9 +29,10 @@ class ContactWindow extends JFrame implements ActionListener {
 		}
 		else {
 			{
-				ContactsPanel.fillTable(this.removeContacts());
+				ContactsPanel.fillTable(this.removeContacts());	
+				GroupsPanel.fillList();				
 			}			
-		}
+		}		
 	}
 
 	@Override
@@ -50,8 +51,9 @@ class ContactWindow extends JFrame implements ActionListener {
 			contact.add(new Contact(name, surname, null, null, null, null, null, addresses, phones, emails, null));
 			//System.out.println(contact);
 
-			ContactsPanel.fillTable(db.addNewContacts(contact));			
-			dispose();
+			ContactsPanel.fillTable(db.addNewContacts(contact));	
+			GroupsPanel.fillList();			
+			dispose();			
 		}
 	}
 	

@@ -1,6 +1,8 @@
 package cz.vutbr.fit.gja.gjaddr.persistancelayer;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * One group from database representation.
@@ -56,6 +58,9 @@ public class Group  implements Serializable {
 
 	@Override
 	public String toString() {
-		return name;
+		List<Group> groups = new ArrayList<Group>();
+		groups.add(this);		
+		int size = Database.getInstance().getAllContactsFromGroup(groups).size();
+		return name + " (" + size +")";
 	}
 }

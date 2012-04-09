@@ -3,11 +3,9 @@ package cz.vutbr.fit.gja.gjaddr.gui;
 import com.community.xanadu.components.table.BeanReaderJTable;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Contact;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
-import cz.vutbr.fit.gja.gjaddr.persistancelayer.Group;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.Arrays;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.event.ListSelectionListener;
@@ -60,7 +58,7 @@ class ContactsPanel extends JPanel {
 		table.clear();
 		table.addRow(contacts);
 		//System.out.println(model.getDataVector());
-		sorter.setRowFilter(filter);
+		sorter.setRowFilter(filter);		
 	}
 
 	/**
