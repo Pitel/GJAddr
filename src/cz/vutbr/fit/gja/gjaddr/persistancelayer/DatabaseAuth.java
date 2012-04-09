@@ -20,11 +20,6 @@ public class DatabaseAuth {
 	/**
 	 *
 	 */
-	private int idCounter = 0;
-
-	/**
-	 *
-	 */
 	private final String FILENAME = new File(Settings.getDataDir(), "auth.gja").toString();
 
 	/**
@@ -37,7 +32,6 @@ public class DatabaseAuth {
 	 */
 	public DatabaseAuth() {
 		this.load();
-		this.setLastIdNumber();
 	}	
 
 	/**
@@ -74,22 +68,6 @@ public class DatabaseAuth {
 	}
 
 	/**
-	 * Get the highest ID from database.
-	 */
-	private void setLastIdNumber() {
-		int counter = 0;
-
-		for (AuthToken token : this.tokens) {
-			int id = token.getId();
-			if (id > counter) {
-				counter = id;
-			}
-		}
-
-		this.idCounter = counter;
-	}
-
-	/**
 	 * Save tokens in database.
 	 */
 	void save()	{
@@ -121,9 +99,9 @@ public class DatabaseAuth {
 	 * @param id
 	 * @return
 	 */
-	private AuthToken filterItem(int id) {
+	private AuthToken filterItem(int service) {
 		for (AuthToken token : this.tokens) {
-			if (token.getId() == id) {
+			if (token.getService() == service) {
 				return token;
 			}
 		}
@@ -135,7 +113,6 @@ public class DatabaseAuth {
 	 */
 	void clear() {
 		this.tokens.clear();
-		this.idCounter = 0;
 	}
 
 	/**
@@ -144,7 +121,12 @@ public class DatabaseAuth {
 	 * @param token
 	 */
 	void add(AuthToken token) {
-		token.id = ++this.idCounter;
+		for (AuthToken t : this.tokens) {
+			if (t.getService() == token.getService()) {
+				this.update(token);
+				return;
+			}
+		}
 		this.tokens.add(token);
 	}
 
@@ -154,7 +136,7 @@ public class DatabaseAuth {
 	 * @param token
 	 */
 	void update(AuthToken token) {
-		AuthToken updatedToken = this.filterItem(token.getId());
+		AuthToken updatedToken = this.filterItem(token.getService());
 		int index = this.tokens.indexOf(updatedToken);
 
 		if (index != -1) {
@@ -168,7 +150,18 @@ public class DatabaseAuth {
 	 * @param token
 	 */
 	void remove(AuthToken token) {
-		this.tokens.remove(token);
+		if (token == null) {
+			return;
+		}
+		AuthToken toBeRemoved = null;
+		for (AuthToken t : this.tokens) {
+			if (t.getService() == token.getService()) {
+				toBeRemoved = t;
+			}
+		}
+		if (toBeRemoved != null) {
+			this.tokens.remove(toBeRemoved);
+		}
 	}
 
 	/**

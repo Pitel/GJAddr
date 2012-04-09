@@ -17,11 +17,6 @@ public class AuthToken implements Serializable {
 	static private final long serialVersionUID = 6L;
 
 	/**
-	 * Internal ID. Not visible from GUI, only for DB usage.
-	 */
-	int id = -1;
-
-	/**
 	 *
 	 */
 	private Integer service;
@@ -48,14 +43,6 @@ public class AuthToken implements Serializable {
 	public AuthToken(Integer service, String token) {
 		this.service = service;
 		this.token = token;
-	}
-
-	/**
-	 * 
-	 * @return
-	 */
-	public int getId() {
-		return id;
 	}
 
 	/**

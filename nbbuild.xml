@@ -22,6 +22,8 @@
 	<copy file="res/fbconn.gif" todir="build/classes/res"/>
 	<copy file="res/folder.png" todir="build/classes/res"/>
 	<copy file="res/cancel.png" todir="build/classes/res"/>
+	<copy file="res/facebook.png" todir="build/classes/res"/>
+	<copy file="res/google.png" todir="build/classes/res"/>
 	<copy file="res/logback.xml" todir="build/classes"/>
     <!--
 

@@ -102,7 +102,7 @@ public class UserActions {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			
+			new PreferencesWindow();
 		}
 	}
 	

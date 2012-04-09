@@ -203,4 +203,23 @@ public class Database implements IDatabase {
 		this.commitChanges(TableType.AUTH);
 		return this.tokens.get(token.getService());
 	}
+
+	/**
+	 * Remove token from database.
+	 * 
+	 * @param service
+	 */
+	public void removeToken(Integer service) {
+		this.tokens.remove(this.tokens.get(service));
+		this.commitChanges(TableType.AUTH);
+	}
+
+	/**
+	 * Remove token from database.
+	 *
+	 * @param service
+	 */
+	public void removeToken(ServicesEnum service) {
+		this.removeToken(service.getCode());
+	}
 }
