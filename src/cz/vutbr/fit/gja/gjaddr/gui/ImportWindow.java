@@ -1,8 +1,10 @@
 
 package cz.vutbr.fit.gja.gjaddr.gui;
 
+import com.google.gdata.util.ServiceException;
 import cz.vutbr.fit.gja.gjaddr.importexport.CsvImportExport;
 import cz.vutbr.fit.gja.gjaddr.importexport.FacebookImport;
+import cz.vutbr.fit.gja.gjaddr.importexport.GoogleImport;
 import cz.vutbr.fit.gja.gjaddr.importexport.VCardImportExport;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Group;
@@ -16,6 +18,7 @@ import java.awt.event.ActionListener;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 
 import java.util.List;
 
@@ -446,13 +449,13 @@ public class ImportWindow extends JFrame implements ActionListener {
 				if (importFormat.equals(ActionCommands.FACEBOOK.toString())) {
 					new FacebookImport().importContacts();
 				} else {
-					// GO
+					new GoogleImport().importContacts();
 				}
 			} else if (importOption.equals(ActionCommands.SELECTED_GROUP.toString())) {
 				if (importFormat.equals(ActionCommands.FACEBOOK.toString())) {
 					new FacebookImport().importContacts(importGroup);
 				} else {
-					// GO
+					new GoogleImport().importContacts(importGroup);
 				}
 			} else {
 				String s = (String) JOptionPane.showInputDialog(this, "New group name:",
@@ -461,17 +464,23 @@ public class ImportWindow extends JFrame implements ActionListener {
 					if (importFormat.equals(ActionCommands.FACEBOOK.toString())) {
 						new FacebookImport().importContacts(s);
 					} else {
-						// GO
+						new GoogleImport().importContacts(s);
 					}
 				} else {
 					if (importFormat.equals(ActionCommands.FACEBOOK.toString())) {
 						new FacebookImport().importContacts();
 					} else {
-						// GO
+						new GoogleImport().importContacts();
 					}
 				}
 			}
-		} finally {
+		} catch (MalformedURLException e) {
+			// TODO message
+		} catch (IOException e) {
+			// TODO message
+		} catch (ServiceException e) {
+			// TODO message
+		} finally  {
 			this.setCursor(Cursor.getDefaultCursor());
 		}
 
