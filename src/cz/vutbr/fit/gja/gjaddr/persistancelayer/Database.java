@@ -3,6 +3,8 @@ package cz.vutbr.fit.gja.gjaddr.persistancelayer;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.ServicesEnum;
 import java.util.AbstractList;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -172,6 +174,8 @@ public class Database implements IDatabase {
 		return this.getAllContactsFromGroup(requiredGroups);
 	}
 
+	/* tokens management ******************************************************/
+
 	/**
 	 * Get token specified by service.
 	 * 
@@ -221,5 +225,35 @@ public class Database implements IDatabase {
 	 */
 	public void removeToken(ServicesEnum service) {
 		this.removeToken(service.getCode());
+	}
+
+	/* birthday ***************************************************************/
+
+	/**
+	 * Retrieve contacts with birthday within one month.
+	 * 
+	 * @return
+	 */
+	public List<Contact> getContactsWithBirtday() {
+		List<Contact> all = this.contacts.getAllContacts();
+		List<Contact> csWithBday = new ArrayList<Contact>();
+		// date today
+		Calendar today = Calendar.getInstance();
+		// date within one month
+		Calendar month = Calendar.getInstance();
+		// birthday of contact
+		Calendar bday = Calendar.getInstance();
+		month.add(Calendar.DAY_OF_YEAR, +30);
+		for (Contact c : all) {
+			if (c.getDateOfBirth() != null) {
+				bday.setTime(c.getDateOfBirth());
+				bday.set(Calendar.YEAR, 2012);
+				// retrieve contacts with birtday within one month
+				if (bday.after(today) && bday.before(month)) {
+					csWithBday.add(c);
+				}
+			}
+		}
+		return csWithBday;
 	}
 }

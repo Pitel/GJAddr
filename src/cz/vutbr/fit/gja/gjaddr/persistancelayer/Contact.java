@@ -114,6 +114,14 @@ public class Contact implements Serializable {
 	public void setNote(String note) {
 		this.note = note;
 	}
+
+	public Date getDateOfBirth() {
+		return dateOfBirth;
+	}
+
+	public void setDateOfBirth(Date dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
+	}
 	
 	public String getFullName() {
 		StringBuilder fullName = new StringBuilder();
