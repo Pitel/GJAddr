@@ -31,7 +31,7 @@ import org.jdesktop.swingx.MultiSplitPane;
  */
 public class MainWindow extends JFrame implements ActionListener, DocumentListener {
 	static final long serialVersionUID = 0;
-	private final Database db = new Database();
+	private final Database db = Database.getInstance();
 	private JMenuItem menuItemClose;
 	private JTextField searchField;
 	private ContactsPanel contactsPanel;
@@ -163,7 +163,7 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 				final List<Group> requiredGroupList = Arrays.asList(groups);
 				//System.out.println("Groups: " + requiredGroupList);
 				final List<Contact> contacts = db.getAllContactsFromGroup(requiredGroupList);
-				contactsPanel.fillTable(contacts);
+				ContactsPanel.fillTable(contacts);
 			}
 		}
 	}
@@ -174,7 +174,8 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 	private class ContactSelectionListener implements ListSelectionListener {
 		@Override
 		public void valueChanged(ListSelectionEvent e) {
-			if (!e.getValueIsAdjusting()) {	//React only on final choice
+			//React only on final choice
+			if (!e.getValueIsAdjusting()) {	
 				detailPanel.show(contactsPanel.getSelectedContact());
 			}
 		}

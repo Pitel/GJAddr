@@ -20,7 +20,7 @@ import org.junit.Test;
 public class DatabaseTest {
 	
 	public DatabaseTest() {
-		this.database = new Database();
+		this.database = Database.getInstance();
 		this.database.clearAllData();	
 	}
 

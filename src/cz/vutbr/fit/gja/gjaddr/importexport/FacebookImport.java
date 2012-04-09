@@ -45,7 +45,7 @@ public class FacebookImport {
 	 * Constructor.
 	 */
 	public FacebookImport() {
-		this.database = new Database();
+		this.database = Database.getInstance();
 		this.token = this.database.getToken(ServicesEnum.FACEBOOK);
 		this.client = new DefaultFacebookClient(this.token.getToken());
 	}

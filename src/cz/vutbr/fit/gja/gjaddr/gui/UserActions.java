@@ -1,5 +1,7 @@
 package cz.vutbr.fit.gja.gjaddr.gui;
 
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.Contact;
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -19,6 +21,10 @@ public class UserActions {
 	
 	AddContactAction actionNewContact;	
 	DeleteContactAction actionDeleteContact;		
+	
+	AddGroupAction actionNewGroup;
+	DeleteGroupAction actionDeleteGroup;
+	
 	ImportAction actionImport;	
 	ExportAction actionExport;
 	PreferencesAction actionPreferences;
@@ -28,7 +34,11 @@ public class UserActions {
 	
 	public UserActions() {
 		this.actionNewContact = new AddContactAction();
-		this.actionDeleteContact = new DeleteContactAction();	
+		this.actionDeleteContact = new DeleteContactAction();
+		
+		this.actionNewGroup = new AddGroupAction();
+		this.actionDeleteGroup = new DeleteGroupAction();
+		
 		this.actionImport = new ImportAction();
 		this.actionExport = new ExportAction();
 		this.actionPreferences = new PreferencesAction();
@@ -125,7 +135,7 @@ public class UserActions {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			new NewContactWindow(); 	
+			new ContactWindow(true); 	
 		}
 	}	
 	
@@ -148,9 +158,55 @@ public class UserActions {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO 	
+			new ContactWindow(false); 			
 		}
 	}		
+	
+	/**
+	 * Action for add new group.
+	 */	
+	private class AddGroupAction extends AbstractAction {
+		static final long serialVersionUID = 0;
+		private static final String name = "Add new group";
+		private static final String icon = "/res/plus_g.png";
+		private final Integer mnemonic = KeyEvent.VK_G;
+		private final KeyStroke accelerator = KeyStroke.getKeyStroke(mnemonic, ActionEvent.CTRL_MASK);
+
+		public AddGroupAction() {
+			super(name);
+			putValue(SMALL_ICON, new ImageIcon(getClass().getResource(icon), name));
+			putValue(MNEMONIC_KEY, mnemonic);
+			putValue(ACCELERATOR_KEY, accelerator);
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			new GroupWindow(true);			
+		}
+	}		
+	
+	/**
+	 * Action for delete group.
+	 */	
+	private class DeleteGroupAction extends AbstractAction {
+		static final long serialVersionUID = 0;
+		private static final String name = "Delete group";
+		private static final String icon = "/res/minus_g.png";
+		private final Integer mnemonic = KeyEvent.VK_D;
+		private final KeyStroke accelerator = KeyStroke.getKeyStroke(mnemonic, ActionEvent.CTRL_MASK);
+
+		public DeleteGroupAction() {
+			super(name);
+			putValue(SMALL_ICON, new ImageIcon(getClass().getResource(icon), name));
+			putValue(MNEMONIC_KEY, mnemonic);
+			putValue(ACCELERATOR_KEY, accelerator);
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			new GroupWindow(false);
+		}
+	}			
 	
 	/**
 	 * Action for help action.

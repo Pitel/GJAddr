@@ -2,20 +2,20 @@ package cz.vutbr.fit.gja.gjaddr.gui;
 
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Group;
+import java.awt.BorderLayout;
 import java.awt.event.*;
 import java.util.Arrays;
-import java.util.List;
 import javax.swing.*;
 import javax.swing.event.ListSelectionListener;
 
 /**
- * Panel with groups
+ * Panel with groups.
  *
  * @author Bc. Jan Kaláb <xkalab00@stud.fit,vutbr.cz>
  */
-class GroupsPanel extends JPanel implements ActionListener, KeyListener {
+class GroupsPanel extends JPanel implements KeyListener {
 	static final long serialVersionUID = 0;
-	private static final Database db = new Database();
+	private static final Database db = Database.getInstance();
 	private static final DefaultListModel listModel = new DefaultListModel();
 	private static final JList list = new JList(listModel);
 	
@@ -35,22 +35,18 @@ class GroupsPanel extends JPanel implements ActionListener, KeyListener {
 		label.setAlignmentX(CENTER_ALIGNMENT);
 		add(label);
 		fillList();
-		list.setSelectedIndex(0);
+		
 		list.addListSelectionListener(listSelectionListener);
 		list.addKeyListener(this);
-		JScrollPane listScrollPane = new JScrollPane(list);
+		
+		final JScrollPane listScrollPane = new JScrollPane(list);
 		add(listScrollPane);
-		JPanel buttons = new JPanel();
-		buttons.setLayout(new BoxLayout(buttons, BoxLayout.LINE_AXIS));
-		JButton add = new JButton(new ImageIcon(getClass().getResource("/res/plus_g.png"), "+"));
-		add.setActionCommand("addGroup");
-		add.addActionListener(this);
-		buttons.add(add);
-		JButton remove = new JButton(new ImageIcon(getClass().getResource("/res/minus_g.png"), "-"));
-		remove.setActionCommand("removeGroup");
-		remove.addActionListener(this);
-		buttons.add(remove);
-		add(buttons);
+		
+		final JToolBar buttonToolbar = new JToolBar();
+		buttonToolbar.setFloatable(false);	
+		buttonToolbar.add(this.mainWindowHandle.actions.actionNewGroup);
+		buttonToolbar.add(this.mainWindowHandle.actions.actionDeleteGroup);
+		add(buttonToolbar, BorderLayout.NORTH);
 		
 		this.initContextMenu();
 	}
@@ -58,28 +54,14 @@ class GroupsPanel extends JPanel implements ActionListener, KeyListener {
 	/**
 	 * Fills list with groups from db
 	 */
-	private void fillList() {
+	static void fillList() {
 		listModel.clear();
 		listModel.addElement(new Group("My Contacts"));
 		for (Group g : db.getAllGroups()) {
 			listModel.addElement(g);
 		}
+		
 		list.setSelectedIndex(0);
-	}
-
-	/**
-	 * Listener for actions (add/remove groups)
-	 *
-	 * @param e Action
-	 */
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if ("addGroup".equals(e.getActionCommand())) {
-			addGroup();
-		} else if ("removeGroup".equals(e.getActionCommand())) {
-			removeGroups();
-		}
-		fillList();
 	}
 
 	/**
@@ -88,8 +70,8 @@ class GroupsPanel extends JPanel implements ActionListener, KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_DELETE) {
-			removeGroups();
-			fillList();
+			new GroupWindow(false);
+			
 		}
 	}
 
@@ -105,59 +87,17 @@ class GroupsPanel extends JPanel implements ActionListener, KeyListener {
 	@Override
 	public void keyTyped(KeyEvent e) {}
 
-	/**
-	 * Function for adding group
-	 */
-	private void addGroup() {
-		//System.out.println("addGroup");
-		String name = (String) JOptionPane.showInputDialog(
-			this,
-			"Group name:",
-			"Add group",
-			JOptionPane.QUESTION_MESSAGE,
-			new ImageIcon(getClass().getResource("/res/plus_g.png"), "+"),
-			null,
-			""
-		);
-		if (name != null && !name.isEmpty()) {
-			//System.out.println(name);
-			List<Group> result = db.addNewGroup(name);
-			
-			if (result == null) {
-				JOptionPane.showMessageDialog(this, 
-																			"Group with name \" "+ name + "\" is already exists!", 
-																			"Group exists", 
-																			JOptionPane.WARNING_MESSAGE);
-			}
-		}
-	}
-
-	/**
-	 * Function for removing group
-	 */
-	 private void removeGroups() {
-		Group[] groups = Arrays.copyOf(list.getSelectedValues(), list.getSelectedValues().length, Group[].class);
-		//System.out.println("Remove groups: " + Arrays.toString(groups));
-		int delete = JOptionPane.showConfirmDialog(
-			this,
-			"Delete groups " + Arrays.toString(groups) + "?",
-			"Delete groups",
-			JOptionPane.YES_NO_OPTION,
-			JOptionPane.QUESTION_MESSAGE,
-			new ImageIcon(getClass().getResource("/res/minus_g.png"), "-")
-		);
-		//System.out.println(delete);
-		if (delete == 0) {
-			db.removeGroups(Arrays.asList(groups));
-		}
+	 
+	static Group[] getSelectedGroups() {
+		return Arrays.copyOf(list.getSelectedValues(), list.getSelectedValues().length, Group[].class);
 	}
 	
 	private void initContextMenu() {
 		
-		//this.contextMenu.add(this.mainWindowHandle.actions.actionNewContact);
-		//this.contextMenu.add(this.mainWindowHandle.actions.actionDeleteContact);
+		this.contextMenu.add(this.mainWindowHandle.actions.actionNewGroup);
+		this.contextMenu.add(this.mainWindowHandle.actions.actionDeleteGroup);
 		
-		//this.contextMenu.addSeparator();
+		this.contextMenu.addSeparator();
 		
 		this.contextMenu.add(this.mainWindowHandle.actions.actionImport);
 		this.contextMenu.add(this.mainWindowHandle.actions.actionExport);

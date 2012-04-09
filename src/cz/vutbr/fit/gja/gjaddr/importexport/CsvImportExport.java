@@ -30,7 +30,7 @@ public class CsvImportExport {
 	/**
 	 * Application database.
 	 */
-	private Database database = new Database();
+	private Database database = Database.getInstance();
 
 	/**
 	 * Get group by it's name.
