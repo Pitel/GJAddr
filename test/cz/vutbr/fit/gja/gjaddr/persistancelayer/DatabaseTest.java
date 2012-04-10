@@ -459,14 +459,4 @@ public class DatabaseTest {
 		result = this.database.getAllGroupsForContact(contact);			
 		assertEquals(expectedGroups, result);											
 	}
-
-	@Test
-	public void testAuth() {
-		AuthToken toSave = new AuthToken(ServicesEnum.FACEBOOK.getCode(), "AAACvfyVCeY4BAP9SCFZBUtYXrdiBs6DmwwMBjDpYmRy6Op5ZBiTtDJOF7rdGPmhZCZB7VaFz7K5eXWZBgPAGiBAKRMAbMdvyyZAmpgOdFHD4E4ZAZCOcnWYL");
-		this.database.addToken(toSave);
-		AuthToken facebook = this.database.getToken(ServicesEnum.FACEBOOK);
-		assertEquals(facebook.getToken(), "AAACvfyVCeY4BAP9SCFZBUtYXrdiBs6DmwwMBjDpYmRy6Op5ZBiTtDJOF7rdGPmhZCZB7VaFz7K5eXWZBgPAGiBAKRMAbMdvyyZAmpgOdFHD4E4ZAZCOcnWYL");
-		AuthToken facebook2 = this.database.getToken(ServicesEnum.FACEBOOK.getCode());
-		assertEquals(facebook, facebook2);
-	}
 }

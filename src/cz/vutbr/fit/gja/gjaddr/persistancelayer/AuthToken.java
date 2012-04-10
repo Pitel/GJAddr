@@ -57,16 +57,20 @@ public class AuthToken implements Serializable {
 	 *
 	 * @param service
 	 */
-	public void setService(ServicesEnum service) {
-		this.service = service.getCode();
+	public void setService(ServicesEnum service) throws Exception {
+		this.setService(service.getCode());
 	}
 
 	/**
 	 *
 	 * @param service
 	 */
-	public void setService(Integer service) {
-		this.service = service;
+	public void setService(Integer service) throws Exception {
+		if (ServicesEnum.contains(service)) {
+			this.service = service;
+		} else {
+			throw new Exception("Unsupported service.");
+		}
 	}
 
 	/**
