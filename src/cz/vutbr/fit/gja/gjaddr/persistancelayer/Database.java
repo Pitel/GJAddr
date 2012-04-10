@@ -248,11 +248,12 @@ public class Database implements IDatabase {
 		List<Contact> csWithBday = new ArrayList<Contact>();
 		// date today
 		Calendar today = Calendar.getInstance();
+		today.add(Calendar.DAY_OF_YEAR, -1);
 		// date within one month
 		Calendar month = Calendar.getInstance();
+		month.add(Calendar.DAY_OF_YEAR, +30);
 		// birthday of contact
 		Calendar bday = Calendar.getInstance();
-		month.add(Calendar.DAY_OF_YEAR, +30);
 		for (Contact c : all) {
 			if (c.getDateOfBirth() != null) {
 				bday.setTime(c.getDateOfBirth());

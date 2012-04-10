@@ -1,6 +1,7 @@
 package cz.vutbr.fit.gja.gjaddr.gui;
 
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.*;
+import java.awt.Component;
 import javax.swing.*;
 
 /**
@@ -11,6 +12,8 @@ import javax.swing.*;
 class DetailPanel extends JPanel {
 	static final long serialVersionUID = 0;
 	static final JLabel name = new JLabel();
+	static final JLabel nameIcon = new JLabel();
+	static final JPanel namePanel = new JPanel();
 
 	/**
 	 * Constructor
@@ -20,8 +23,17 @@ class DetailPanel extends JPanel {
 		JLabel label = new JLabel("Detail");
 		label.setAlignmentX(CENTER_ALIGNMENT);
 		add(label);
-		name.setAlignmentX(CENTER_ALIGNMENT);
-		add(name);
+
+		// create panel with name and with birthday icon
+		namePanel.setLayout(new BoxLayout(namePanel, BoxLayout.LINE_AXIS));
+		nameIcon.setIcon(new ImageIcon(getClass().getResource("/res/present.png")));
+		nameIcon.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
+		namePanel.add(nameIcon);
+		namePanel.add(name);
+		namePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		namePanel.setAlignmentY(Component.TOP_ALIGNMENT);
+		add(namePanel);
+		
 		/*
 		label.setBackground(java.awt.Color.blue);
 		label.setOpaque(true);
@@ -32,7 +44,13 @@ class DetailPanel extends JPanel {
 
 	void show(Contact contact) {
 		if (contact != null) {
-			name.setText(String.format("<html><h1>%s %s</h1></html>", contact.getFirstName(), contact.getSurName()));
+			if (contact.hasBirthday()) {
+				nameIcon.setVisible(true);
+			} else {
+				nameIcon.setVisible(false);
+			}
+			name.setText(String.format("<html><h1>%s %s</h1></html>",
+					contact.getFirstName(), contact.getSurName()));
 		}
 	}
 }

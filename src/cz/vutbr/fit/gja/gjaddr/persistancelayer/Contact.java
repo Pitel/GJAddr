@@ -2,6 +2,7 @@ package cz.vutbr.fit.gja.gjaddr.persistancelayer;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -121,6 +122,32 @@ public class Contact implements Serializable {
 
 	public void setDateOfBirth(Date dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
+	}
+
+	/**
+	 * Return true if contact has birthday within one month.
+	 *
+	 * @return
+	 */
+	public boolean hasBirthday() {
+		if (this.dateOfBirth == null) {
+			return false;
+		}
+		// date today
+		Calendar today = Calendar.getInstance();
+		today.add(Calendar.DAY_OF_YEAR, -1);
+		// date within one month
+		Calendar month = Calendar.getInstance();
+		month.add(Calendar.DAY_OF_YEAR, +30);
+		// birthday of contact
+		Calendar bday = Calendar.getInstance();
+		bday.setTime(this.dateOfBirth);
+		bday.set(Calendar.YEAR, 2012);
+		if (bday.after(today) && bday.before(month)) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	public String getFullName() {
