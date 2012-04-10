@@ -1,0 +1,11 @@
+BEGIN:VCARD
+VERSION:3.0
+FN:Frantisek Zboril
+N:Zboril;Frantisek;;;
+EMAIL;TYPE=INTERNET:zborilf@fit.vutbr.cz
+TEL;TYPE=CELL:+420541141237
+ADR;TYPE=HOME:;;Božetěchova 2\n;Brno;;612 66;Czech Republic
+item1.URL:http\://www.fit.vutbr.cz/~zboril/.en
+item1.X-ABLabel:PROFILE
+NOTE:Konzultační hodiny\: Pondělí 13\:00-15\:00
+END:VCARD

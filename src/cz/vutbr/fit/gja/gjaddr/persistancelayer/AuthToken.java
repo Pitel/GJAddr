@@ -7,6 +7,9 @@ import java.io.Serializable;
 /**
  * Class representing authorization tokens for Facebook and Google services.
  *
+ * TODO:
+ *  - javadoc
+ *
  * @author Bc. Drahomira Herrmannova <xherrm01@stud.fit.vutbr.cz>
  */
 public class AuthToken implements Serializable {
@@ -17,7 +20,7 @@ public class AuthToken implements Serializable {
 	static private final long serialVersionUID = 6L;
 
 	/**
-	 *
+	 * Code of service to which this token belongs.
 	 */
 	private Integer service;
 
@@ -123,6 +126,16 @@ public class AuthToken implements Serializable {
 		int hash = 7;
 		hash = 71 * hash + (this.service != null ? this.service.hashCode() : 0);
 		return hash;
+	}
+
+	/**
+	 * To string method prints the token.
+	 * 
+	 * @return
+	 */
+	@Override
+	public String toString() {
+		return this.token;
 	}
 
 }

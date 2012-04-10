@@ -1,0 +1,24 @@
+BEGIN:VCARD
+VERSION:3.0
+FN:Bohuslav Krena
+N:Krena;Bohuslav;;;
+EMAIL;TYPE=INTERNET;TYPE=WORK:krena@fit.vutbr.cz
+TEL;TYPE=CELL:+420541141233
+TEL;TYPE=WORK:+420726811233
+ADR;TYPE=HOME:;;Božetěchova 2\n;Brno;;612 66;Czech Republic
+item1.URL:http\://www.fit.vutbr.cz/~krena/courses.php.cs
+item1.X-ABLabel:PROFILE
+NOTE:Úřední hodiny proděkana i konzultační hodiny vyučujícího jsou pro letn
+ í semestr 2011/2012 v pátek od 14\:00 do 16\:00 v kanceláři A308.
+END:VCARD
+BEGIN:VCARD
+VERSION:3.0
+FN:Frantisek Zboril
+N:Zboril;Frantisek;;;
+EMAIL;TYPE=INTERNET:zborilf@fit.vutbr.cz
+TEL;TYPE=CELL:+420541141237
+ADR;TYPE=HOME:;;Božetěchova 2\n;Brno;;612 66;Czech Republic
+item1.URL:http\://www.fit.vutbr.cz/~zboril/.en
+item1.X-ABLabel:PROFILE
+NOTE:Konzultační hodiny\: Pondělí 13\:00-15\:00
+END:VCARD

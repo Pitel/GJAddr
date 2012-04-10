@@ -1,6 +1,8 @@
 
 package cz.vutbr.fit.gja.gjaddr.persistancelayer;
 
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.rules.ExpectedException;
 import org.junit.Rule;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.ServicesEnum;
@@ -31,6 +33,18 @@ public class AuthTokenTest {
 		this.token = null;
     }
 
+	@BeforeClass
+	public static void setUpClass() throws Exception {
+		System.out.println("AUTH_TOKEN TEST START");
+		System.out.println("---------------------");
+	}
+
+	@AfterClass
+	public static void tearDownClass() throws Exception {
+		System.out.println("-------------------");
+		System.out.println("AUTH_TOKEN TEST END");
+	}
+
     @Before
     public void setUp() {
 		this.token = new AuthToken(ServicesEnum.FACEBOOK, this.testToken1);
@@ -46,6 +60,7 @@ public class AuthTokenTest {
 	 */
 	@Test
 	public void testGetService() {
+		System.out.println("testing getService method");
 		assertThat(ServicesEnum.FACEBOOK.getCode(),
 				equalTo(this.token.getService()));
 		try {
@@ -69,6 +84,7 @@ public class AuthTokenTest {
 	 */
 	@Test
 	public void testSetService_ServicesEnum() throws Exception {
+		System.out.println("testing setService(ServicesEnum) method");
 		// these are OK
 		try {
 			this.token.setService(ServicesEnum.GOOGLE);
@@ -87,6 +103,7 @@ public class AuthTokenTest {
 	 */
 	@Test
 	public void testSetService_Integer() throws Exception {
+		System.out.println("testing setService(Integer) method");
 		// these are OK
 		try {
 			this.token.setService(ServicesEnum.GOOGLE.getCode());
@@ -108,6 +125,7 @@ public class AuthTokenTest {
 	 */
 	@Test
 	public void testGetToken() {
+		System.out.println("testing getToken method");
 		assertThat(this.testToken1, equalTo(this.token.getToken()));
 		this.token.setToken(this.testToken2);
 		assertThat(this.testToken2, equalTo(this.token.getToken()));
@@ -118,6 +136,7 @@ public class AuthTokenTest {
 	 */
 	@Test
 	public void testSetToken() {
+		System.out.println("testing setToken method");
 		assertThat(this.testToken1, equalTo(this.token.getToken()));
 		this.token.setToken(this.testToken2);
 		assertThat(this.testToken2, equalTo(this.token.getToken()));
@@ -130,6 +149,7 @@ public class AuthTokenTest {
 	 */
 	@Test
 	public void testEquals() {
+		System.out.println("testing equals method");
 		AuthToken equal = new AuthToken(ServicesEnum.FACEBOOK, this.testToken1);
 		AuthToken equal2 = new AuthToken(ServicesEnum.FACEBOOK, this.testToken2);
 		AuthToken notEqual = new AuthToken(ServicesEnum.GOOGLE, this.testToken1);
