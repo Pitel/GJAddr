@@ -172,11 +172,7 @@ public class Contact implements Serializable {
 		try {
 			for (Address address : this.adresses) {
 				addresses.append(separator);
-				addresses.append(address.getStreet());
-				addresses.append(" ");
-				addresses.append(address.getNumber());
-				addresses.append(", ");
-				addresses.append(address.getCity());
+				addresses.append(address.getAddress());
 				separator = "; ";
 			}	
 		}

@@ -16,15 +16,24 @@ public final class GroupWindow extends JFrame{
 	
 	private Database db = Database.getInstance();
 	
-	public GroupWindow(boolean newGroup) {
+	static enum Action {
+    NEW, RENAME, REMOVE 
+	}
+	
+	public GroupWindow(Action action) {
 		
-		boolean update;
+		boolean update = false;
 		
-		if (newGroup) {
-			update = this.addNewGroup();
-		}
-		else {
-			update = this.removeGroups();
+		switch(action) {
+			case NEW:
+				update = this.addNewGroup();
+				break;
+			case RENAME:
+				update = this.renameGroup();
+				break;
+			case REMOVE:
+				update = this.removeGroups();
+				break;
 		}
 
 		if (update) {
@@ -32,9 +41,16 @@ public final class GroupWindow extends JFrame{
 		}
 	}
 
+	private void showGroupExistsDialog(String name) {
+		JOptionPane.showMessageDialog(this, 
+			"Group with name \" "+ name + "\" is already exists!", 
+			"Group exists", 
+			JOptionPane.WARNING_MESSAGE);
+	}
+		
 	/**
 	 * Function for adding new group
-	 */	
+	 */		
 	boolean addNewGroup() {
 		boolean update = false;
 		//System.out.println("addGroup");
@@ -49,14 +65,10 @@ public final class GroupWindow extends JFrame{
 		);
 		
 		if (name != null && !name.isEmpty()) {
-			//System.out.println(name);
-			List<Group> result = this.db.addNewGroup(name);
 			
+			List<Group> result = this.db.addNewGroup(name);			
 			if (result == null) {
-				JOptionPane.showMessageDialog(this, 
-																			"Group with name \" "+ name + "\" is already exists!", 
-																			"Group exists", 
-																			JOptionPane.WARNING_MESSAGE);
+				this.showGroupExistsDialog(name);
 			}
 			
 			update = true;
@@ -65,6 +77,35 @@ public final class GroupWindow extends JFrame{
 		return update;
 	}
 
+	/**
+	 * Function for rename group
+	 */		
+	boolean renameGroup() {
+		boolean update = false;
+		Group[] groups = GroupsPanel.getSelectedGroups();		
+		String name = (String) JOptionPane.showInputDialog(
+			this,
+			"Group name:",
+			"Rename group",
+			JOptionPane.QUESTION_MESSAGE,
+			new ImageIcon(getClass().getResource("/res/edit_g.png"), "e"),
+			null,
+			""
+		);		
+		
+		if (name != null && !name.isEmpty()) {
+			
+			List<Group> result = this.db.renameGroup(groups[0], name);		
+			if (result == null) {
+				this.showGroupExistsDialog(name);
+			}
+			
+			update = true;
+		}		
+		
+		
+		return update;
+	}	
 	/**
 	 * Function for removing group
 	 */

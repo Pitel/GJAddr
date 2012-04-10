@@ -17,8 +17,8 @@ public class TestData {
 		fillAuthTokens(db);
 	}
 
-	private static void fillContacts(Database db) {
-			
+private static void fillContacts(Database db) {
+		
 		List<Contact> contactsToAdd = new ArrayList<Contact>();		
 		
 		List<Email> emails = new ArrayList<Email>();
@@ -42,7 +42,7 @@ public class TestData {
 		contact1.setMessenger(new ArrayList<Messenger>(messengers));
 		customs.add(new Custom("test", "123"));
 		contact1.setCustoms(new ArrayList<Custom>(customs));
-		adresses.add(new Address(1, "Osvoboditelů", 44, "Kopřivnice", 74221, "Czech republic"));
+		adresses.add(new Address(1, "Osvoboditelů 44, Kopřivnice, 74221, Czech republic"));
 		contact1.setAdresses(new ArrayList<Address>(adresses));		
 		contactsToAdd.add(contact1);
 		
@@ -59,7 +59,7 @@ public class TestData {
 		phones.add(new PhoneNumber(1, "420658987562"));
 		phones.add(new PhoneNumber(2, "420587978652"));		
 		contact2.setPhoneNumbers(new ArrayList<PhoneNumber>(phones));		
-		adresses.add( new Address(1, "Masarykova", 133, "Brno", 61200, null));
+		adresses.add( new Address(1, "Masarykova 133, Brno, 61200"));
 		contact2.setAdresses(new ArrayList<Address>(adresses));
 		contactsToAdd.add(contact2);
 		
@@ -80,7 +80,7 @@ public class TestData {
 		Email email4 = new Email(2, "pokus@seznam.cz");	
 		emails.add(new Email(2, "pokus@seznam.cz"));
 		contact3.setEmails(new ArrayList<Email>(emails));
-		adresses.add(new Address(2, "Sportovní", 1207, "Nové Město na Moravě", 45879, "Slovensko"));
+		adresses.add(new Address(2, "Sportovní 1207, Nové Město na Moravě, 45879, Slovensko"));
 		contact3.setAdresses(new ArrayList<Address>(adresses));			
 		contactsToAdd.add(contact3);
 		

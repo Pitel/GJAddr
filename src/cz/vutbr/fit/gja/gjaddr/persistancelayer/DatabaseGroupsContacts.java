@@ -63,6 +63,19 @@ public class DatabaseGroupsContacts {
 		this.groupsContacts.removeAll(entriesToRemove);
 	}
 	
+	void removeGroupsEntries(List<Group> groupsToRemove) {
+		List<GroupContact> entriesToRemove = new ArrayList<GroupContact>();		
+		for (Group group: groupsToRemove) {
+			for (GroupContact gc: this.groupsContacts) {
+				if (gc.getContactId() == group.getId()) {
+					entriesToRemove.add(gc);
+				}
+			}
+		}
+			
+		this.groupsContacts.removeAll(entriesToRemove);			
+	}
+	
 	private void load()	{
 		
 		this.groupsContacts = null;

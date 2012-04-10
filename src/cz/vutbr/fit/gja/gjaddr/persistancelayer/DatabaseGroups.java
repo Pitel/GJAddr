@@ -152,6 +152,22 @@ public class DatabaseGroups {
 		}
 	}
 	
+	boolean renameGroup(Group group, String newName) {
+		
+		if (group.getName().equals(newName)) {
+			return true;
+		}
+		
+		if (this.checkNameIfExists(newName)) {
+			return false;
+		}		
+		
+		group.setName(newName);	
+		this.updateGroup(group);
+		
+		return true;
+	}
+	
 	void removeGroup(List<Group> groupsToRemove) {
 		this.groups.removeAll(groupsToRemove);
 	}

@@ -1,7 +1,5 @@
 package cz.vutbr.fit.gja.gjaddr.gui;
 
-import cz.vutbr.fit.gja.gjaddr.persistancelayer.Contact;
-import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -24,6 +22,7 @@ public class UserActions {
 	
 	AddGroupAction actionNewGroup;
 	DeleteGroupAction actionDeleteGroup;
+	RenameGroupAction actionRenameGroup;	
 	
 	ImportAction actionImport;	
 	ExportAction actionExport;
@@ -38,6 +37,7 @@ public class UserActions {
 		
 		this.actionNewGroup = new AddGroupAction();
 		this.actionDeleteGroup = new DeleteGroupAction();
+		this.actionRenameGroup = new RenameGroupAction();
 		
 		this.actionImport = new ImportAction();
 		this.actionExport = new ExportAction();
@@ -63,6 +63,11 @@ public class UserActions {
 			putValue(MNEMONIC_KEY, mnemonic);
 			putValue(ACCELERATOR_KEY, accelerator);
 		}
+
+		@Override
+		public void setEnabled(boolean newValue) {
+			super.setEnabled(newValue);
+		}			
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -181,7 +186,7 @@ public class UserActions {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			new GroupWindow(true);			
+			new GroupWindow(GroupWindow.Action.NEW);			
 		}
 	}		
 	
@@ -204,9 +209,32 @@ public class UserActions {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			new GroupWindow(false);
+			new GroupWindow(GroupWindow.Action.REMOVE);
 		}
-	}			
+	}	
+	
+	/**
+	 * Action for delete group.
+	 */	
+	private class RenameGroupAction extends AbstractAction {
+		static final long serialVersionUID = 0;
+		private static final String name = "Rename group";
+		private static final String icon = "/res/edit_g.png";
+		private final Integer mnemonic = KeyEvent.VK_R;
+		private final KeyStroke accelerator = KeyStroke.getKeyStroke(mnemonic, ActionEvent.CTRL_MASK);
+
+		public RenameGroupAction() {
+			super(name);
+			putValue(SMALL_ICON, new ImageIcon(getClass().getResource(icon), name));
+			putValue(MNEMONIC_KEY, mnemonic);
+			putValue(ACCELERATOR_KEY, accelerator);
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			new GroupWindow(GroupWindow.Action.RENAME);
+		}
+	}		
 	
 	/**
 	 * Action for help action.

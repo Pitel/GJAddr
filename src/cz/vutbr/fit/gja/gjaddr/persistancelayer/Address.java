@@ -11,11 +11,7 @@ public class Address implements Serializable {
 	static private final long serialVersionUID = 6L;
 
 	private int type;
-	private String street;	
-	private int number;	
-	private String city;	
-	private int postCode;	
-	private String country;	
+	private String address;	
 
 	public int getType() {
 		return type;
@@ -25,74 +21,23 @@ public class Address implements Serializable {
 		this.type = type;
 	}
 
-	public String getStreet() {
-		return street;
+	public String getAddress() {
+		return this.address;
 	}
 
-	public void setStreet(String street) {
-		this.street = street;
+	public void setAddress(String address) {
+		this.address = address;
 	}
 	
-	public int getNumber() {
-		return number;
-	}
-
-	public void setNumber(int number) {
-		this.number = number;
-	}
-
-	public String getCity() {
-		return city;
-	}
-
-	public void setCity(String city) {
-		this.city = city;
-	}
-	
-	public int getPostCode() {
-		return postCode;
-	}
-
-	public String getPostCodeAsString() {
-		return String.valueOf(this.postCode);
-	}
-
-	public void setPostCode(int postCode) {
-		this.postCode = postCode;
-	}
-	
-	public String getCountry() {
-		return country;
-	}
-
-	public void setCountry(String country) {
-		this.country = country;
-	}
-
-	public Address(int type, String street, int number, String city, int postCode, String country) {
-		this.type = type;
-		this.street = street;
-		this.number = number;
-		this.city = city;
-		this.postCode = postCode;
-		this.country = country;
-	}
-
 	/**
 	 * Create class representation of address.
 	 * 
 	 * @param type
-	 * @param streetAddress Street address read from vCard has street name and number in one string.
-	 * @param city
-	 * @param postCode
-	 * @param country
-	 */
-	public Address(int type, String streetAddress, String city, int postCode, String country) {
+	 * @param address
+	 */	
+	public Address(int type, String address) {
 		this.type = type;
-		this.street = streetAddress;
-		this.city = city;
-		this.postCode = postCode;
-		this.country = country;
+		this.address = address;
 	}
 
 	@Override
@@ -107,19 +52,7 @@ public class Address implements Serializable {
 		if (this.type != other.type) {
 			return false;
 		}
-		if ((this.street == null) ? (other.street != null) : !this.street.equals(other.street)) {
-			return false;
-		}
-		if (this.number != other.number) {
-			return false;
-		}
-		if ((this.city == null) ? (other.city != null) : !this.city.equals(other.city)) {
-			return false;
-		}
-		if (this.postCode != other.postCode) {
-			return false;
-		}
-		if ((this.country == null) ? (other.country != null) : !this.country.equals(other.country)) {
+		if ((this.address == null) ? (other.address != null) : !this.address.equals(other.address)) {
 			return false;
 		}
 		return true;
@@ -127,6 +60,8 @@ public class Address implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Address{" + "type=" + type + ", street=" + street + ", number=" + number + ", city=" + city + ", postCode=" + postCode + ", country=" + country + '}';
-	}	
+		return "Address{" + "type=" + type + ", address=" + address + '}';
+	}
+	
+	
 }

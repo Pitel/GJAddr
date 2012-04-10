@@ -42,7 +42,7 @@ class ContactWindow extends JFrame implements ActionListener {
 			final String name = nameField.getText();
 			final String surname = surnameField.getText();
 			final ArrayList<Address> addresses = new ArrayList<Address>();
-			addresses.add(new Address(0, addressField.getText(), 0, null, 0, null));
+			addresses.add(new Address(0, addressField.getText()));
 			final ArrayList<PhoneNumber> phones = new ArrayList<PhoneNumber>();
 			phones.add(new PhoneNumber(0, phoneField.getText()));
 			final ArrayList<Email> emails = new ArrayList<Email>();

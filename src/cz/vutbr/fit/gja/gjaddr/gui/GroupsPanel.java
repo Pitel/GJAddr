@@ -45,7 +45,9 @@ class GroupsPanel extends JPanel implements KeyListener {
 		final JToolBar buttonToolbar = new JToolBar();
 		buttonToolbar.setFloatable(false);	
 		buttonToolbar.add(this.mainWindowHandle.actions.actionNewGroup);
+		buttonToolbar.add(this.mainWindowHandle.actions.actionRenameGroup);			
 		buttonToolbar.add(this.mainWindowHandle.actions.actionDeleteGroup);
+	
 		add(buttonToolbar, BorderLayout.NORTH);
 		
 		this.initContextMenu();
@@ -70,7 +72,7 @@ class GroupsPanel extends JPanel implements KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_DELETE) {
-			new GroupWindow(false);
+			new GroupWindow(GroupWindow.Action.REMOVE);
 			
 		}
 	}
@@ -95,6 +97,7 @@ class GroupsPanel extends JPanel implements KeyListener {
 	private void initContextMenu() {
 		
 		this.contextMenu.add(this.mainWindowHandle.actions.actionNewGroup);
+		this.contextMenu.add(this.mainWindowHandle.actions.actionRenameGroup);				
 		this.contextMenu.add(this.mainWindowHandle.actions.actionDeleteGroup);
 		
 		this.contextMenu.addSeparator();
@@ -118,7 +121,7 @@ class GroupsPanel extends JPanel implements KeyListener {
 		}
 
 		private void showPopup(MouseEvent e) {
-			if (e.isPopupTrigger()) {
+			if (e.isPopupTrigger()) {								
 				contextMenu.show(e.getComponent(), e.getX(), e.getY());
 			}
 		}	
