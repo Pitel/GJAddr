@@ -2,13 +2,18 @@
 package cz.vutbr.fit.gja.gjaddr.gui;
 
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Contact;
+import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -20,7 +25,12 @@ import org.slf4j.LoggerFactory;
  *
  * @author Bc. Drahomira Herrmannova <xherrm01@stud.fit.vutbr.cz>
  */
-public class NotificationsWindow extends JFrame {
+public class NotificationsWindow extends JFrame implements ActionListener {
+
+	/**
+	 * Window buttons.
+	 */
+	JButton noShowButton, okButton;
 
 	/**
 	 * Constructor.
@@ -48,9 +58,13 @@ public class NotificationsWindow extends JFrame {
 		// main header
 		this.add(this.createMainHeader());
 
+		// add all contacts
 		for (Contact c : contacts) {
 			this.add(this.createLine(c));
 		}
+
+		// add buttons
+		this.add(this.createButtonPanel());
 
 		// make window visible
 		this.setAlwaysOnTop(true);
@@ -88,5 +102,44 @@ public class NotificationsWindow extends JFrame {
 		panel.add(bday);
 		panel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
 		return panel;
+	}
+
+	/**
+	 * Create button panel.
+	 *
+	 * @return
+	 */
+	private JPanel createButtonPanel() {
+		this.noShowButton = new JButton("Don't show again");
+		this.noShowButton.addActionListener(this);
+		this.noShowButton.setIcon(new ImageIcon(getClass().getResource("/res/cancel.png")));
+		this.noShowButton.setIconTextGap(10);
+		// OK button
+		this.okButton = new JButton("OK");
+		this.okButton.addActionListener(this);
+		this.okButton.setIcon(new ImageIcon(getClass().getResource("/res/confirm.png")));
+		this.okButton.setIconTextGap(10);
+		// panel for buttons
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.LINE_AXIS));
+		buttonPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		buttonPanel.add(this.okButton);
+		buttonPanel.add(Box.createRigidArea(new Dimension(10, 0)));
+		buttonPanel.add(this.noShowButton);
+		buttonPanel.add(Box.createGlue());
+		return buttonPanel;
+	}
+
+	/**
+	 * Assign components actions.
+	 * 
+	 * @param ae
+	 */
+	public void actionPerformed(ActionEvent ae) {
+		if (ae.getSource() == this.noShowButton) {
+			// TODO
+		} else if (ae.getSource() == this.okButton) {
+			this.dispose();
+		}
 	}
 }
