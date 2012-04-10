@@ -28,6 +28,7 @@ class DetailPanel extends JPanel {
 		namePanel.setLayout(new BoxLayout(namePanel, BoxLayout.LINE_AXIS));
 		nameIcon.setIcon(new ImageIcon(getClass().getResource("/res/present.png")));
 		nameIcon.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
+		nameIcon.setVisible(false);
 		namePanel.add(nameIcon);
 		namePanel.add(name);
 		namePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
