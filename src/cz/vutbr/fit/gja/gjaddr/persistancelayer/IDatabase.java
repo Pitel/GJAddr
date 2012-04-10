@@ -24,6 +24,7 @@ public interface IDatabase {
 	List<Contact> removeContactsFromGroup(Group group, List<Contact> contactsToRemove);	
 					
 	// GROUPS
+	Group getGroupByName(String name);
 	List<Group> getAllGroups();	
 	List<Group> addNewGroup(String name);	
 	List<Group> updateGroup(Group group);	
@@ -33,4 +34,9 @@ public interface IDatabase {
 	AuthToken getToken(ServicesEnum service);
 	AuthToken getToken(Integer service);
 	AuthToken addToken(AuthToken token);
+	void removeToken(Integer service);
+	void removeToken(ServicesEnum service);
+
+	// BDAY
+	List<Contact> getContactsWithBirtday();
 }

@@ -116,6 +116,21 @@ public class DatabaseGroups {
 	public List<Group> getAllGroups() {
 		return new ArrayList<Group>(this.groups);
 	}
+
+	/**
+	 * Get group by it's name.
+	 * 
+	 * @param name
+	 * @return
+	 */
+	public Group getGroupByName(String name) {
+		for (Group g : this.groups) {
+			if (g.getName().equals(name)) {
+				return g;
+			}
+		}
+		return null;
+	}
 	
 	boolean addNew(String name) {
 		

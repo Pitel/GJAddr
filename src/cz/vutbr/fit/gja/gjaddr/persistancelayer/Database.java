@@ -102,6 +102,16 @@ public class Database implements IDatabase {
 		List<Integer> contactsId = this.groupsContacts.getContactsIdAssignToGroups(requiredGroups);				
 		return this.contacts.filterByIds(contactsId);
 	}
+
+	/**
+	 * Get group by name.
+	 * 
+	 * @param name
+	 * @return
+	 */
+	public Group getGroupByName(String name) {
+		return this.groups.getGroupByName(name);
+	}
 	
 	@Override // DONE
 	public List<Group> getAllGroups() {

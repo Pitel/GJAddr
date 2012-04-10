@@ -1,8 +1,10 @@
 
 package cz.vutbr.fit.gja.gjaddr.importexport;
 
+import java.util.ArrayList;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Contact;
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.Group;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -26,8 +28,11 @@ public class VCardImportExportTest {
 
 	private Database database = Database.getInstance();
 
+	private String testGroup1 = "testGroup1";
+	private String testGroup2 = "testGroup2";
+
 	private String testFile1 = this.getClass().getResource("./testFiles/test01.vcf").getPath();
-	private String testFile2 = this.getClass().getResource("./testFiles/test02.vcf").getPath();;
+	private String testFile2 = this.getClass().getResource("./testFiles/test02.vcf").getPath();
 
     public VCardImportExportTest() {
 		this.database.clearAllData();
@@ -70,7 +75,7 @@ public class VCardImportExportTest {
 		try {
 			this.vcardIE.importContacts(file);
 		} catch (IOException ex) {
-			fail("method importContacts fail because of IOException");
+			fail("method importContacts failed because of IOException");
 		}
 		List<Contact> cs = this.database.getAllContacts();
 		assertThat(1, is(cs.size()));
@@ -88,7 +93,7 @@ public class VCardImportExportTest {
 		try {
 			this.vcardIE.importContacts(file);
 		} catch (IOException ex) {
-			fail("method importContacts fail because of IOException");
+			fail("method importContacts failed because of IOException");
 		}
 		cs = this.database.getAllContacts();
 		assertThat(2, is(cs.size()));
@@ -98,39 +103,70 @@ public class VCardImportExportTest {
 
 	/**
 	 * Test of importContactsToGroup method, of class VCardImportExport.
-	 *//* @Test
-	public void testImportContactsToGroup() throws Exception {
-		System.out.println("importContactsToGroup");
-		File file = null;
-		String group = "";
-		VCardImportExport instance = new VCardImportExport();
-		instance.importContactsToGroup(file, group);
-		// TODO review the generated test code and remove the default call to fail.
-		fail("The test case is a prototype.");
-	}*/
+	 */
+	@Test
+	public void testImportContactsToGroup() {
+		System.out.println("testing importContacts method");
+		// 1. import to existing group
+		System.out.println("1. import to existing group");
+		Group g = new Group(this.testGroup1);
+		this.database.addNewGroup(g.getName());
+		File file = new File(this.testFile1);
+		try {
+			this.vcardIE.importContactsToGroup(file, g.getName());
+		} catch (IOException ex) {
+			fail("method importContacts failed because of IOException");
+		}
+		List<Group> gs = new ArrayList<Group>();
+		gs.add(g);
+		List<Contact> cs = this.database.getAllContacts();
+		List<Contact> gcs = this.database.getAllContactsFromGroup(gs);
+		assertThat(1, is(cs.size()));
+		assertThat(cs.size(), equalTo(gcs.size()));
+		// 2. import to new group
+		System.out.println("2. import to new group");
+		file = new File(this.testFile2);
+		try {
+			this.vcardIE.importContactsToGroup(file, this.testGroup2);
+		} catch (IOException ex) {
+			fail("method importContacts failed because of IOException");
+		}
+		gs.clear();
+		g = this.database.getGroupByName(this.testGroup2);
+		gs.add(g);
+		cs = this.database.getAllContacts();
+		gcs = this.database.getAllContactsFromGroup(gs);
+		assertThat(3, is(cs.size()));
+		assertThat(2, is(gcs.size()));
+	}
 
 	/**
 	 * Test of exportContacts method, of class VCardImportExport.
-	 *//* @Test
-	public void testExportContacts() throws Exception {
-		System.out.println("exportContacts");
-		File file = null;
-		List<Contact> contacts = null;
-		VCardImportExport instance = new VCardImportExport();
-		instance.exportContacts(file, contacts);
-		// TODO review the generated test code and remove the default call to fail.
-		fail("The test case is a prototype.");
-	}*/
-
-	/**
-	 * Test of main method, of class VCardImportExport.
-	 *//* @Test
-	public void testMain() {
-		System.out.println("main");
-		String[] args = null;
-		VCardImportExport.main(args);
-		// TODO review the generated test code and remove the default call to fail.
-		fail("The test case is a prototype.");
-	}*/
-
+	 */
+	@Test
+	public void testExportContacts() {
+		System.out.println("testing exportContacts method");
+		File file = new File(this.testFile1);
+		try {
+			this.vcardIE.importContacts(file);
+		} catch (IOException ex) {
+			fail("method importContacts failed because of IOException");
+		}
+		File outFile = new File("test03.vcf");
+		try {
+			this.vcardIE.exportContacts(outFile, this.database.getAllContacts());
+		} catch (IOException ex) {
+			fail("method exportContacts failed because of IOException");
+		}
+		this.database.clearAllData();
+		try {
+			this.vcardIE.importContacts(outFile);
+		} catch (IOException ex) {
+			fail("method importContacts failed because of IOException");
+		}
+		assertThat(1, is(this.database.getAllContacts().size()));
+		assertThat("Zboril Frantisek",
+				equalTo(this.database.getAllContacts().get(0).getFullName()));
+		outFile.delete();
+	}
 }
