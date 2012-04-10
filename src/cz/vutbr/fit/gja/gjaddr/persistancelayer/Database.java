@@ -3,7 +3,6 @@ package cz.vutbr.fit.gja.gjaddr.persistancelayer;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.ServicesEnum;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 /**

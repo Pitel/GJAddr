@@ -87,7 +87,13 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		multiSplitPane.add(detailPanel, "detail");
 		add(multiSplitPane, BorderLayout.CENTER);
 		pack();
-		setLocationRelativeTo(null);		
+		setLocationRelativeTo(null);
+
+		// open window with notifications
+		List<Contact> contactsWithBirtday = this.db.getContactsWithBirtday();
+		if (contactsWithBirtday.size() > 0) {
+			new NotificationsWindow(contactsWithBirtday);
+		}
 	}
 
 	/**
