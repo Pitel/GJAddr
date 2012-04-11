@@ -59,6 +59,7 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		toolbar.setFloatable(false);
 		
 		toolbar.add(actions.actionNewContact);
+		toolbar.add(actions.actionEditContact);		
 		toolbar.add(actions.actionDeleteContact);
 		toolbar.addSeparator();
 		toolbar.add(actions.actionImport);
@@ -158,27 +159,37 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		} 
  	}
 		
-		void handleGroupActionsVisibility(Group[] selectedGroups) {		
-			if (isSelectRootGroup(selectedGroups)) {
-				this.actions.actionDeleteGroup.setEnabled(false);
-				this.actions.actionRenameGroup.setEnabled(false);
-			}
-			else {
-				this.actions.actionDeleteGroup.setEnabled(true);
-				this.actions.actionRenameGroup.setEnabled(true);				
+	void handleGroupActionsVisibility() {		
+		if (isSelectRootGroup()) {
+			this.actions.actionDeleteGroup.setEnabled(false);
+			this.actions.actionRenameGroup.setEnabled(false);
+		}
+		else {
+			this.actions.actionDeleteGroup.setEnabled(true);
+			this.actions.actionRenameGroup.setEnabled(true);				
+		}
+	}
+
+	void handleContactActionsVisibility() {		
+		if (ContactsPanel.getSelectedContact() == null) {
+			this.actions.actionDeleteContact.setEnabled(false);
+			this.actions.actionEditContact.setEnabled(false);
+		}
+		else {
+			this.actions.actionDeleteContact.setEnabled(true);
+			this.actions.actionEditContact.setEnabled(true);				
+		}
+	}	
+
+	private boolean isSelectRootGroup() {
+		for (Group g : GroupsPanel.getSelectedGroups()) {
+			if (g.getName().equals(ROOT_GROUP)) {
+				return true;
 			}
 		}
 
-		private boolean isSelectRootGroup(Group[] selectedGroups) {
-		
-			for (Group g : selectedGroups) {
-				if (g.getName().equals(ROOT_GROUP)) {
-					return true;
-				}
-			}
-			
-			return false;
-		}	
+		return false;
+	}	
 	
 	/**
 	 * Listener class for groups list selection
@@ -188,13 +199,9 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		public void valueChanged(ListSelectionEvent e) {
 			if (!e.getValueIsAdjusting()) {	//React only on final choice
 				final JList list = (JList) e.getSource();
-				final Group[] groups = Arrays.copyOf(list.getSelectedValues(), list.getSelectedValues().length, Group[].class);
-				final List<Group> requiredGroupList = Arrays.asList(groups);
-				
-				final List<Contact> contacts = db.getAllContactsFromGroup(requiredGroupList);
-				ContactsPanel.fillTable(contacts);
-				
-				handleGroupActionsVisibility(groups);
+
+				ContactsPanel.fillTable();				
+				handleGroupActionsVisibility();
 			}
 		}
 	}
@@ -208,6 +215,7 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 			//React only on final choice
 			if (!e.getValueIsAdjusting()) {	
 				detailPanel.show(contactsPanel.getSelectedContact());
+				handleContactActionsVisibility();				
 			}
 		}
 	}

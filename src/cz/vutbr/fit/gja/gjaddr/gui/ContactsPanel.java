@@ -3,9 +3,11 @@ package cz.vutbr.fit.gja.gjaddr.gui;
 import com.community.xanadu.components.table.BeanReaderJTable;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Contact;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.Group;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Arrays;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.event.ListSelectionListener;
@@ -23,8 +25,12 @@ class ContactsPanel extends JPanel {
 	private MainWindow mainWindowHandle;
 	
 	private static final Database db = Database.getInstance();
-	private static final BeanReaderJTable<Contact> table = new BeanReaderJTable<Contact>(new String[] {"FullName", "AllEmails", "AllPhones"}, new String[] {"Name", "Emails", "Phones"});
-	private static final TableRowSorter<BeanReaderJTable.GenericTableModel> sorter = new TableRowSorter<BeanReaderJTable.GenericTableModel>(table.getModel());
+	private static final BeanReaderJTable<Contact> table = 
+					new BeanReaderJTable<Contact>(new String[] {"FullName", "AllEmails", "AllPhones"}, 
+					                              new String[] {"Name", "Emails", "Phones"});
+	
+	private static final TableRowSorter<BeanReaderJTable.GenericTableModel> sorter = 
+					new TableRowSorter<BeanReaderJTable.GenericTableModel>(table.getModel());
 
 	/**
 	 * Constructor
@@ -37,7 +43,8 @@ class ContactsPanel extends JPanel {
 		label.setAlignmentX(CENTER_ALIGNMENT);
 		add(label);
 		
-		fillTable(db.getAllContacts());
+		fillTable();
+		this.mainWindowHandle.handleContactActionsVisibility();
 		
 		table.getSelectionModel().addListSelectionListener(listSelectionListener);
 		table.setRowSorter(sorter);
@@ -52,13 +59,19 @@ class ContactsPanel extends JPanel {
 	/**
 	 * Fill table with data from list
 	 */
-	static void fillTable(List<Contact> contacts) {
+	static void fillTable() {
 		final RowFilter filter = sorter.getRowFilter();	//Warnings!
+		
+		Contact selectedContact = getSelectedContact();
+		
+		Group[] groups = GroupsPanel.getSelectedGroups();
+		List<Group> selectedGroups = Arrays.asList(groups);
+		final List<Contact> contacts = db.getAllContactsFromGroup(selectedGroups);		
+		
 		sorter.setRowFilter(null);
 		table.clear();
 		table.addRow(contacts);
-		//System.out.println(model.getDataVector());
-		sorter.setRowFilter(filter);		
+		sorter.setRowFilter(filter);	
 	}
 
 	/**
@@ -67,7 +80,6 @@ class ContactsPanel extends JPanel {
 	 * @param f String to filter
 	 */
 	void filter(String f) {
-		//System.out.println("Filtering: " + f);
 		sorter.setRowFilter(RowFilter.regexFilter("(?i)" + f));
 	}
 
@@ -81,6 +93,7 @@ class ContactsPanel extends JPanel {
 	private void initContextMenu() {
 		
 		this.contextMenu.add(this.mainWindowHandle.actions.actionNewContact);
+		this.contextMenu.add(this.mainWindowHandle.actions.actionEditContact);		
 		this.contextMenu.add(this.mainWindowHandle.actions.actionDeleteContact);
 		
 		this.contextMenu.addSeparator();
@@ -91,8 +104,16 @@ class ContactsPanel extends JPanel {
 		MouseListener popupListener = new PopupListener();
 		table.addMouseListener(popupListener);	
 	}
+
 	
-	class PopupListener extends MouseAdapter {
+	private class PopupListener extends MouseAdapter {
+		@Override
+		public void mouseClicked(MouseEvent e){
+			if (e.getClickCount() == 2){
+				new ContactWindow(ContactWindow.Action.EDIT);
+				}
+			}		
+		
 		@Override
 		public void mousePressed(MouseEvent e) {
 			showPopup(e);

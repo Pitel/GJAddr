@@ -41,7 +41,7 @@ class GroupsPanel extends JPanel implements KeyListener {
 		// fill list and enable/disable buttons
 		fillList();
 		list.setSelectedIndex(0);		
-		this.mainWindowHandle.handleGroupActionsVisibility(getSelectedGroups());
+		this.mainWindowHandle.handleGroupActionsVisibility();
 				
 		list.addListSelectionListener(listSelectionListener);
 		list.addKeyListener(this);

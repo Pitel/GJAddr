@@ -5,7 +5,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import javax.swing.*;
 
@@ -14,90 +13,103 @@ import javax.swing.*;
  *
  * @author Bc. Jan Kaláb <xkalab00@stud.fit,vutbr.cz>
  */
-class ContactWindow extends JFrame implements ActionListener {
+class ContactWindow extends JFrame {
 	static final long serialVersionUID = 0;
 	
 	private final Database db = Database.getInstance();
+	private Contact editedContact;
+	
 	private JButton button;
 	private JTextField nameField, surnameField, addressField, emailField, phoneField;
 
-	public ContactWindow(boolean newContact) {
-		super("Add Contact");
-		
-		if (newContact) {
-			this.addContactWindow();
-		}
-		else {
-			{
-				ContactsPanel.fillTable(this.removeContacts());	
-				GroupsPanel.fillList();				
-			}			
-		}		
+	static enum Action {
+    ADD, EDIT, REMOVE 
 	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		System.out.println(e);
-		if (e.getSource() == button) {
-			final String name = nameField.getText();
-			final String surname = surnameField.getText();
-			final ArrayList<Address> addresses = new ArrayList<Address>();
-			addresses.add(new Address(0, addressField.getText()));
-			final ArrayList<PhoneNumber> phones = new ArrayList<PhoneNumber>();
-			phones.add(new PhoneNumber(0, phoneField.getText()));
-			final ArrayList<Email> emails = new ArrayList<Email>();
-			emails.add(new Email(0, emailField.getText()));
-			final ArrayList<Contact> contact = new ArrayList<Contact>();
-			contact.add(new Contact(name, surname, null, null, null, null, null, addresses, phones, emails, null));
-			//System.out.println(contact);
-
-			ContactsPanel.fillTable(db.addNewContacts(contact));	
-			GroupsPanel.fillList();			
-			dispose();			
-		}
+	
+	public ContactWindow(Action action) {
+		super("Add Contact");
+				
+		switch(action) {
+			case ADD:
+				this.editedContact = new Contact();
+				this.addContact(action);				
+				break;
+			case EDIT:
+				this.editedContact = ContactsPanel.getSelectedContact();
+				this.editContact(action);
+				break;
+			case REMOVE:
+				if(this.removeContacts())
+					GroupsPanel.fillList();
+				break;
+		}		
 	}
 	
 	/**
 	 * Method for removing contact
 	 */
-	 List<Contact> removeContacts() {
+	private boolean removeContacts() {
 		Contact contact = ContactsPanel.getSelectedContact();
 		
 		int delete = JOptionPane.showConfirmDialog(
 			this,
-			"Remove contact " + contact.getFullName() + "?",
-			"Remove contact",
+			"Delete contact " + contact.getFullName() + "?",
+			"Delete contact",
 			JOptionPane.YES_NO_OPTION,
 			JOptionPane.QUESTION_MESSAGE,
 			new ImageIcon(getClass().getResource("/res/minus.png"), "-")
 		);
-		//System.out.println(delete);
+
 		if (delete == 0) {			
 			List<Contact> contactToRemove = new ArrayList<Contact>();
 			contactToRemove.add(contact);
-			return db.removeContacts(contactToRemove);
+			db.removeContacts(contactToRemove);
+			return true;
 		}
 		
-		return null;
+		return false;
 	}		
-	 
-	/**
-	 * Method for removing contact
+	
+	private void addContact(Action action) {
+		 this.createWindowContent(action);
+	 }
+	
+	private void editContact(Action action) {
+		 this.createWindowContent(action);
+		 this.fillEditedContact();
+	 }
+
+	 	/**
+	 * Method for creating window content layout.
 	 */
-	 void addContactWindow() {
+	private void createWindowContent(Action action) {
 
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (Exception e) {
+		} 
+		catch (Exception e) {
 			System.err.println(e);
 		}
-		setIconImage(new ImageIcon(getClass().getResource("/res/plus.png"), "GJAddr").getImage());
+		
+		final JPanel form = new JPanel(new GridLayout(0, 2));		
+		
+		if (action == Action.ADD) {
+			setIconImage(new ImageIcon(getClass().getResource("/res/plus.png"), "GJAddr").getImage());
+			button = new JButton("Add contact");	
+			button.addActionListener(new NewContactActionListener());			
+		}
+		else {
+			setIconImage(new ImageIcon(getClass().getResource("/res/plus_g.png"), "GJAddr").getImage());
+			button = new JButton("Update contact");		
+			button.addActionListener(new EditContactActionListener());
+		}
+		
 		setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
-		final JPanel form = new JPanel(new GridLayout(0, 2));
+
 		form.add(new JLabel("Name"));
 		nameField = new JTextField();
 		form.add(nameField);
-		form.add(new JLabel("Surame"));
+		form.add(new JLabel("Surname"));
 		surnameField = new JTextField();
 		form.add(surnameField);
 		form.add(new JLabel("Address"));
@@ -110,12 +122,62 @@ class ContactWindow extends JFrame implements ActionListener {
 		phoneField = new JTextField();
 		form.add(phoneField);
 		add(form);
-		button = new JButton("Add contact");
-		button.addActionListener(this);
 		add(button);
-		//setResizable(false);
 		setLocationRelativeTo(null);
 		pack();
 		setVisible(true);
-	}			 
+	}		
+	 
+	private void fillEditedContact() {	 
+		 this.nameField.setText(this.editedContact.getFirstName());
+		 this.surnameField.setText(this.editedContact.getSurName());
+		 this.phoneField.setText(this.editedContact.getAllPhones());
+		 this.emailField.setText(this.editedContact.getAllEmails());		 
+		 this.phoneField.setText(this.editedContact.getAllPhones());		 		 
+	 }
+	
+	private void resolveEditedContact() {
+		this.editedContact.setFirstName(nameField.getText());
+		this.editedContact.setSurName(surnameField.getText());
+
+		final ArrayList<Address> addresses = new ArrayList<Address>();
+		addresses.add(new Address(0, addressField.getText()));
+		this.editedContact.setAdresses(addresses);
+		
+		final ArrayList<PhoneNumber> phones = new ArrayList<PhoneNumber>();
+		phones.add(new PhoneNumber(0, phoneField.getText()));
+		this.editedContact.setPhoneNumbers(phones);		
+
+		final ArrayList<Email> emails = new ArrayList<Email>();
+		emails.add(new Email(0, emailField.getText()));
+		this.editedContact.setEmails(emails);		
+	}	 
+	
+	private class NewContactActionListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			List<Contact> newContacts = new ArrayList<Contact>();
+			
+			resolveEditedContact();
+			newContacts.add(editedContact);			
+			db.addNewContacts(newContacts);
+			
+			// update tables
+			ContactsPanel.fillTable();	
+			GroupsPanel.fillList();	
+			
+			dispose();				
+		}		
+	}
+	
+	private class EditContactActionListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			resolveEditedContact();
+			List<Contact> contactsToUpdate = db.updateContact(editedContact);
+			
+			ContactsPanel.fillTable();			
+			dispose();				
+		}		
+	}	
 }

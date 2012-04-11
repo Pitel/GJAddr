@@ -18,6 +18,7 @@ import javax.swing.KeyStroke;
 public class UserActions {
 	
 	AddContactAction actionNewContact;	
+	EditContactAction actionEditContact;
 	DeleteContactAction actionDeleteContact;		
 	
 	AddGroupAction actionNewGroup;
@@ -33,6 +34,7 @@ public class UserActions {
 	
 	public UserActions() {
 		this.actionNewContact = new AddContactAction();
+		this.actionEditContact = new EditContactAction();
 		this.actionDeleteContact = new DeleteContactAction();
 		
 		this.actionNewGroup = new AddGroupAction();
@@ -140,14 +142,37 @@ public class UserActions {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			new ContactWindow(true); 	
+			new ContactWindow(ContactWindow.Action.ADD); 	
 		}
 	}	
 	
 	/**
+	 * Action for add new contact.
+	 */	
+	class EditContactAction extends AbstractAction {
+		static final long serialVersionUID = 0;
+		private static final String name = "Edit contact";
+		private static final String icon = "/res/edit_g.png";
+		private final Integer mnemonic = KeyEvent.VK_N;
+		private final KeyStroke accelerator = KeyStroke.getKeyStroke(mnemonic, ActionEvent.CTRL_MASK);
+
+		public EditContactAction() {
+			super(name);
+			putValue(SMALL_ICON, new ImageIcon(getClass().getResource(icon), name));
+			putValue(MNEMONIC_KEY, mnemonic);
+			putValue(ACCELERATOR_KEY, accelerator);
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			new ContactWindow(ContactWindow.Action.EDIT);
+		}
+	}		
+	
+	/**
 	 * Action for delete contact.
 	 */		
-	private class DeleteContactAction extends AbstractAction {
+	class DeleteContactAction extends AbstractAction {
 		static final long serialVersionUID = 0;
 		private static final String name = "Delete contact";
 		private static final String icon = "/res/minus.png";
@@ -163,7 +188,7 @@ public class UserActions {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			new ContactWindow(false); 			
+			new ContactWindow(ContactWindow.Action.REMOVE); 			
 		}
 	}		
 	

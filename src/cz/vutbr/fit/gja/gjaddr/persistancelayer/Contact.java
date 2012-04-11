@@ -218,6 +218,10 @@ public class Contact implements Serializable {
 		return emails.toString();
 	}	
 	
+	public Contact() {
+		
+	}
+	
 	public Contact(String firstName, String surName, String nickName, String note) {
 		this.firstName = firstName;
 		this.surName = surName;
