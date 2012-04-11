@@ -170,7 +170,7 @@ public class UserActions {
 	/**
 	 * Action for add new group.
 	 */	
-	private class AddGroupAction extends AbstractAction {
+	class AddGroupAction extends AbstractAction {
 		static final long serialVersionUID = 0;
 		private static final String name = "Add new group";
 		private static final String icon = "/res/plus_g.png";
@@ -193,7 +193,7 @@ public class UserActions {
 	/**
 	 * Action for delete group.
 	 */	
-	private class DeleteGroupAction extends AbstractAction {
+	class DeleteGroupAction extends AbstractAction {
 		static final long serialVersionUID = 0;
 		private static final String name = "Delete group";
 		private static final String icon = "/res/minus_g.png";
@@ -216,7 +216,7 @@ public class UserActions {
 	/**
 	 * Action for delete group.
 	 */	
-	private class RenameGroupAction extends AbstractAction {
+	class RenameGroupAction extends AbstractAction {
 		static final long serialVersionUID = 0;
 		private static final String name = "Rename group";
 		private static final String icon = "/res/edit_g.png";

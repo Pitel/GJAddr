@@ -36,6 +36,8 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 	private ContactsPanel contactsPanel;
 	private DetailPanel detailPanel;
 	
+	static final String ROOT_GROUP = "My_Contacts";
+	
 	public UserActions actions = new UserActions();
 	
 	/**
@@ -116,7 +118,7 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		fileMenu.addSeparator();
 		fileMenu.add(this.actions.actionPreferences);
 		fileMenu.addSeparator();
-		
+
 		menuItemClose = new JMenuItem("Quit", KeyEvent.VK_Q);
 		menuItemClose.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK));
 		menuItemClose.addActionListener(this);
@@ -156,6 +158,28 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		} 
  	}
 		
+		void handleGroupActionsVisibility(Group[] selectedGroups) {		
+			if (isSelectRootGroup(selectedGroups)) {
+				this.actions.actionDeleteGroup.setEnabled(false);
+				this.actions.actionRenameGroup.setEnabled(false);
+			}
+			else {
+				this.actions.actionDeleteGroup.setEnabled(true);
+				this.actions.actionRenameGroup.setEnabled(true);				
+			}
+		}
+
+		private boolean isSelectRootGroup(Group[] selectedGroups) {
+		
+			for (Group g : selectedGroups) {
+				if (g.getName().equals(ROOT_GROUP)) {
+					return true;
+				}
+			}
+			
+			return false;
+		}	
+	
 	/**
 	 * Listener class for groups list selection
 	 */
@@ -166,9 +190,11 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 				final JList list = (JList) e.getSource();
 				final Group[] groups = Arrays.copyOf(list.getSelectedValues(), list.getSelectedValues().length, Group[].class);
 				final List<Group> requiredGroupList = Arrays.asList(groups);
-				//System.out.println("Groups: " + requiredGroupList);
+				
 				final List<Contact> contacts = db.getAllContactsFromGroup(requiredGroupList);
 				ContactsPanel.fillTable(contacts);
+				
+				handleGroupActionsVisibility(groups);
 			}
 		}
 	}

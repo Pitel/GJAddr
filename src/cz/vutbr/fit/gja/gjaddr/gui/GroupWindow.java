@@ -106,6 +106,7 @@ public final class GroupWindow extends JFrame{
 		
 		return update;
 	}	
+	
 	/**
 	 * Function for removing group
 	 */

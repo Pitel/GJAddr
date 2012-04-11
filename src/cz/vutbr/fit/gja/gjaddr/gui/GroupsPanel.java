@@ -5,6 +5,9 @@ import cz.vutbr.fit.gja.gjaddr.persistancelayer.Group;
 import java.awt.BorderLayout;
 import java.awt.event.*;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.event.ListSelectionListener;
 
@@ -34,8 +37,12 @@ class GroupsPanel extends JPanel implements KeyListener {
 		JLabel label = new JLabel("Groups");
 		label.setAlignmentX(CENTER_ALIGNMENT);
 		add(label);
-		fillList();
 		
+		// fill list and enable/disable buttons
+		fillList();
+		list.setSelectedIndex(0);		
+		this.mainWindowHandle.handleGroupActionsVisibility(getSelectedGroups());
+				
 		list.addListSelectionListener(listSelectionListener);
 		list.addKeyListener(this);
 		
@@ -54,26 +61,47 @@ class GroupsPanel extends JPanel implements KeyListener {
 	}
 
 	/**
-	 * Fills list with groups from db
+	 * Fills list with groups from the DB
 	 */
 	static void fillList() {
+		
+		Group selectedGroup = (Group)list.getSelectedValue();
+		
 		listModel.clear();
-		listModel.addElement(new Group("My Contacts"));
-		for (Group g : db.getAllGroups()) {
+		listModel.addElement(new Group(MainWindow.ROOT_GROUP));
+		
+		List<Group> listOfGroups = db.getAllGroups();
+		
+		Collections.sort(listOfGroups, new Comparator(){
+ 			@Override
+			public int compare(Object o1, Object o2) {
+					Group p1 = (Group) o1;
+					Group p2 = (Group) o2;
+					return p1.getName().compareToIgnoreCase(p2.getName());
+			}
+    });		
+		
+		for (Group g : listOfGroups ) {
 			listModel.addElement(g);
 		}
-		
-		list.setSelectedIndex(0);
+
+		// if is group missing, we have to set the group to my_contacts
+		if (!listOfGroups.contains(selectedGroup))
+			list.setSelectedIndex(0);
+		else	
+			list.setSelectedValue(selectedGroup, true);
 	}
 
+
 	/**
-	 * Key press listener
+	 * Key press listener, delete key action is possible only when is delete group
+	 * action enabled.
 	 */
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_DELETE) {
-			new GroupWindow(GroupWindow.Action.REMOVE);
-			
+		if (e.getKeyCode() == KeyEvent.VK_DELETE 
+			  && this.mainWindowHandle.actions.actionDeleteGroup.isEnabled()) {
+			new GroupWindow(GroupWindow.Action.REMOVE);			
 		}
 	}
 
