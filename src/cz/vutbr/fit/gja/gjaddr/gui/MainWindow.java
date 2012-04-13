@@ -35,11 +35,11 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 	private JTextField searchField;
 	private ContactsPanel contactsPanel;
 	private DetailPanel detailPanel;
-	
+
 	static final String ROOT_GROUP = "My_Contacts";
-	
+
 	public UserActions actions = new UserActions();
-	
+
 	/**
 	 * Creates the main window.
 	 */
@@ -51,15 +51,15 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
 			System.err.println(e);
-		}			
-		
+		}
+
 		setIconImage(new ImageIcon(getClass().getResource("/res/icon.png")).getImage());
 		setJMenuBar(this.createMenu());
 		final JToolBar toolbar = new JToolBar();
 		toolbar.setFloatable(false);
-		
+
 		toolbar.add(actions.actionNewContact);
-		toolbar.add(actions.actionEditContact);		
+		toolbar.add(actions.actionEditContact);
 		toolbar.add(actions.actionDeleteContact);
 		toolbar.addSeparator();
 		toolbar.add(actions.actionImport);
@@ -67,7 +67,7 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		toolbar.addSeparator();
 		toolbar.add(actions.actionPreferences);
 		toolbar.addSeparator();
-		
+
 		searchField = new JTextField();
 		searchField.getDocument().addDocumentListener(this);
 		toolbar.add(searchField);
@@ -109,7 +109,7 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		fileMenu.setMnemonic(KeyEvent.VK_F);
 		menuBar.add(fileMenu);
 		menuBar.add(Box.createHorizontalGlue());
-		
+
 		JMenu helpMenu = new JMenu("Help");
 		helpMenu.setMnemonic(KeyEvent.VK_H);
 		menuBar.add(helpMenu);
@@ -156,30 +156,30 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		//System.out.println(e);
 		if (e.getSource() == menuItemClose) {
 			dispose();
-		} 
+		}
  	}
-		
-	void handleGroupActionsVisibility() {		
+
+	void handleGroupActionsVisibility() {
 		if (isSelectRootGroup()) {
 			this.actions.actionDeleteGroup.setEnabled(false);
 			this.actions.actionRenameGroup.setEnabled(false);
 		}
 		else {
 			this.actions.actionDeleteGroup.setEnabled(true);
-			this.actions.actionRenameGroup.setEnabled(true);				
+			this.actions.actionRenameGroup.setEnabled(true);
 		}
 	}
 
-	void handleContactActionsVisibility() {		
+	void handleContactActionsVisibility() {
 		if (ContactsPanel.getSelectedContact() == null) {
 			this.actions.actionDeleteContact.setEnabled(false);
 			this.actions.actionEditContact.setEnabled(false);
 		}
 		else {
 			this.actions.actionDeleteContact.setEnabled(true);
-			this.actions.actionEditContact.setEnabled(true);				
+			this.actions.actionEditContact.setEnabled(true);
 		}
-	}	
+	}
 
 	private boolean isSelectRootGroup() {
 		for (Group g : GroupsPanel.getSelectedGroups()) {
@@ -189,8 +189,8 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		}
 
 		return false;
-	}	
-	
+	}
+
 	/**
 	 * Listener class for groups list selection
 	 */
@@ -200,7 +200,7 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 			if (!e.getValueIsAdjusting()) {	//React only on final choice
 				final JList list = (JList) e.getSource();
 
-				ContactsPanel.fillTable();				
+				ContactsPanel.fillTable();
 				handleGroupActionsVisibility();
 			}
 		}
@@ -213,9 +213,9 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		@Override
 		public void valueChanged(ListSelectionEvent e) {
 			//React only on final choice
-			if (!e.getValueIsAdjusting()) {	
+			if (!e.getValueIsAdjusting()) {
 				detailPanel.show(contactsPanel.getSelectedContact());
-				handleContactActionsVisibility();				
+				handleContactActionsVisibility();
 			}
 		}
 	}
