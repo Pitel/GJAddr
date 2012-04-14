@@ -47,39 +47,12 @@ public class DatabaseContacts {
 		return new ArrayList<Contact>(this.contacts);
 	}
 	
-	private void load()	{
-		
-		this.contacts = null;
-		
-		if ((new File(FILENAME)).exists()) {
-			try {
-				FileInputStream flinpstr = new FileInputStream(FILENAME);
-				ObjectInputStream objinstr= new ObjectInputStream(flinpstr);
-
-				try {	
-					this.contacts = (ArrayList<Contact>) objinstr.readObject(); 
-				} 
-				finally {
-					try {
-						objinstr.close();
-					} 
-					finally {
-						flinpstr.close();
-					}
-				}
-			} 
-			catch(IOException ioe) {
-				ioe.printStackTrace();
-			} 
-			catch(ClassNotFoundException cnfe) {
-				cnfe.printStackTrace();
-			}
-		}		
-		
-		// create empty DB
-		if (this.contacts == null) {
-			this.contacts = new ArrayList<Contact>();
-		}			
+	private void load()	{		
+		this.contacts = (ArrayList<Contact>) Serialization.load(FILENAME);	
+	}
+	
+		void save()	{		
+		Serialization.save(FILENAME, this.contacts);
 	}
 	
 	private void setLastIdNumber() {
@@ -94,34 +67,6 @@ public class DatabaseContacts {
 		}
 		
 		this.idCounter = counter;
-	}
-	
-	void save()	{
-		
-		if (this.contacts == null || this.contacts.isEmpty()) {
-			return;
-		}
-		
-		try {
-			FileOutputStream flotpt = new FileOutputStream(FILENAME);
-			ObjectOutputStream objstr= new ObjectOutputStream(flotpt);
-			
-			try {
-				objstr.writeObject(this.contacts); 
-				objstr.flush();
-			} 
-			finally {				
-				try {
-					objstr.close();
-				} 
-				finally {
-					flotpt.close();
-				}
-			}
-		} 
-		catch(IOException ioe) {
-			ioe.printStackTrace();
-		}		
 	}
 	
 	private Contact filterItem(int id) {

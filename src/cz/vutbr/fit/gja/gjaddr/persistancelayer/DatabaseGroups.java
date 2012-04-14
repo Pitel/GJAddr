@@ -22,39 +22,12 @@ public class DatabaseGroups {
 	}	
 	
 	private void load()	{
-		
-		this.groups = null;
-		
-		if ((new File(FILENAME)).exists()) {
-			try {
-				FileInputStream flinpstr = new FileInputStream(FILENAME);
-				ObjectInputStream objinstr= new ObjectInputStream(flinpstr);
-
-				try {	
-					this.groups = (ArrayList<Group>) objinstr.readObject(); 
-				} 
-				finally {
-					try {
-						objinstr.close();
-					} 
-					finally {
-						flinpstr.close();
-					}
-				}
-			} 
-			catch(IOException ioe) {
-				ioe.printStackTrace();
-			} 
-			catch(ClassNotFoundException cnfe) {
-				cnfe.printStackTrace();
-			}
-		}		
-		
-		// create empty DB
-		if (this.groups == null) {
-			this.groups = new ArrayList<Group>();
-		}			
+		this.groups = (ArrayList<Group>) Serialization.load(FILENAME);
 	}
+	
+	void save()	{		
+		Serialization.save(FILENAME, this.groups);
+	}	
 	
 	private void setLastIdNumber() {
 		
@@ -78,34 +51,6 @@ public class DatabaseGroups {
 		}
 		
 		return false;
-	}
-	
-	void save()	{
-		
-		if (this.groups == null || this.groups.isEmpty()) {
-			return;
-		}
-		
-		try {
-			FileOutputStream flotpt = new FileOutputStream(FILENAME);
-			ObjectOutputStream objstr= new ObjectOutputStream(flotpt);
-			
-			try {
-				objstr.writeObject(this.groups); 
-				objstr.flush();
-			} 
-			finally {				
-				try {
-					objstr.close();
-				} 
-				finally {
-					flotpt.close();
-				}
-			}
-		} 
-		catch(IOException ioe) {
-			ioe.printStackTrace();
-		}		
 	}
 	
 	void clear() {
