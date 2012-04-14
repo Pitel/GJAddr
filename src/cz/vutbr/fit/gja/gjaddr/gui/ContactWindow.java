@@ -88,7 +88,7 @@ class ContactWindow extends JFrame {
 				String e = "";
 				String s = f.getName();
 				int i = s.lastIndexOf('.');
-				if (i > 0 &&  i < s.length() - 1) {
+				if (i > 0 && i < s.length() - 1) {
 					e = s.substring(i + 1).toLowerCase();
 				}
 				if (e.equals("jpg") || e.equals("jpeg") || e.equals("gif") || e.equals("png")) {

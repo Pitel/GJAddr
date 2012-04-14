@@ -14,14 +14,15 @@ import java.text.DateFormat;
  */
 class DetailPanel extends JPanel {
 	static final long serialVersionUID = 0;
-	static final JLabel name = new JLabel();
-	static final JLabel address = new JLabel();
-	static final JLabel emails = new JLabel();
-	static final JLabel phones = new JLabel();
-	static final JLabel webs = new JLabel();
-	static final JLabel birthday = new JLabel();
-	static final JLabel note = new JLabel();
-	static final JLabel nameIcon = new JLabel();
+	private final JLabel name = new JLabel();
+	private final JLabel address = new JLabel();
+	private final JLabel emails = new JLabel();
+	private final JLabel phones = new JLabel();
+	private final JLabel webs = new JLabel();
+	private final JLabel birthday = new JLabel();
+	private final JLabel note = new JLabel();
+	private final JLabel nameIcon = new JLabel();
+	private final JLabel photo = new JLabel();
 	JScrollPane detailScrollPane;
 
 	/**
@@ -41,6 +42,7 @@ class DetailPanel extends JPanel {
 		nameIcon.setVisible(false);
 		namePanel.add(nameIcon);
 		namePanel.add(name);
+		namePanel.add(photo);
 		/*
 		namePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		namePanel.setAlignmentY(Component.TOP_ALIGNMENT);
@@ -97,6 +99,12 @@ class DetailPanel extends JPanel {
 				nameIcon.setVisible(true);
 			} else {
 				nameIcon.setVisible(false);
+			}
+			if (contact.getPhoto() != null) {
+				photo.setIcon(contact.getPhoto());
+				photo.setVisible(true);
+			} else {
+				photo.setVisible(false);
 			}
 			name.setText(String.format("<html><h1>%s %s</h1></html>", contact.getFirstName(), contact.getSurName()));
 			//address.setText();
