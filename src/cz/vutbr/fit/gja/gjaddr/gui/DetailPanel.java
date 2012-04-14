@@ -4,8 +4,11 @@ import cz.vutbr.fit.gja.gjaddr.persistancelayer.*;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import javax.swing.*;
+import java.io.IOException;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.text.DateFormat;
+import javax.swing.*;
 
 /**
  * Panel with contact detail
@@ -58,6 +61,8 @@ class DetailPanel extends JPanel {
 		c.gridy = 0;
 		detailPanel.add(new JLabel("<html><b>Address:</b></html>"), c);
 		c.gridx = 1;
+		address.setVerticalTextPosition(JLabel.TOP);
+		address.setHorizontalTextPosition(JLabel.CENTER);
 		detailPanel.add(address, c);
 		c.gridx = 0;
 		c.gridy++;
@@ -107,7 +112,12 @@ class DetailPanel extends JPanel {
 				photo.setVisible(false);
 			}
 			name.setText(String.format("<html><h1>%s %s</h1></html>", contact.getFirstName(), contact.getSurName()));
-			//address.setText();
+			address.setText("Božetěchova 2, Brno");
+			try {
+				address.setIcon(new ImageIcon(new URL("http://maps.google.com/maps/api/staticmap?size=128x128&sensor=false&markers=" + URLEncoder.encode(address.getText(), "utf8"))));
+			} catch (IOException e) {
+				System.err.println(e);
+			}
 			emails.setText("<html>" + contact.getAllEmails().replaceAll(", ", "<br>") + "</html>");
 			phones.setText("<html>" + contact.getAllPhones().replaceAll(", ", "<br>") + "</html>");
 			if (contact.getDateOfBirth() != null) {
