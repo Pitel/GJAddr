@@ -16,39 +16,39 @@ import javax.swing.KeyStroke;
  * @author Bc. Radek Gajdušek <xgajdu07@stud.fit,vutbr.cz>
  */
 public class UserActions {
-	
-	AddContactAction actionNewContact;	
+
+	AddContactAction actionNewContact;
 	EditContactAction actionEditContact;
-	DeleteContactAction actionDeleteContact;		
-	
+	DeleteContactAction actionDeleteContact;
+
 	AddGroupAction actionNewGroup;
 	DeleteGroupAction actionDeleteGroup;
-	RenameGroupAction actionRenameGroup;	
-	
-	ImportAction actionImport;	
+	RenameGroupAction actionRenameGroup;
+
+	ImportAction actionImport;
 	ExportAction actionExport;
 	PreferencesAction actionPreferences;
-	
+
 	HelpAction actionHelp;
 	AboutAction actionAbout;
-	
+
 	public UserActions() {
 		this.actionNewContact = new AddContactAction();
 		this.actionEditContact = new EditContactAction();
 		this.actionDeleteContact = new DeleteContactAction();
-		
+
 		this.actionNewGroup = new AddGroupAction();
 		this.actionDeleteGroup = new DeleteGroupAction();
 		this.actionRenameGroup = new RenameGroupAction();
-		
+
 		this.actionImport = new ImportAction();
 		this.actionExport = new ExportAction();
 		this.actionPreferences = new PreferencesAction();
-		
+
 		this.actionHelp = new HelpAction();
 		this.actionAbout = new AboutAction();
 	}
-	
+
 	/**
 	 * Action for importing contacts
 	 */
@@ -69,17 +69,17 @@ public class UserActions {
 		@Override
 		public void setEnabled(boolean newValue) {
 			super.setEnabled(newValue);
-		}			
+		}
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			new ImportWindow();
 		}
-	}	
-	
+	}
+
 	/**
 	 * Action for exporting contacts
-	 */	
+	 */
 	private class ExportAction extends AbstractAction {
 		static final long serialVersionUID = 0;
 		private static final String name = "Export";
@@ -98,11 +98,11 @@ public class UserActions {
 		public void actionPerformed(ActionEvent e) {
 			new ExportWindow();
 		}
-	}	
-	
+	}
+
 	/**
 	 * Action for preferences
-	 */	
+	 */
 	private class PreferencesAction extends AbstractAction {
 		static final long serialVersionUID = 0;
 		private static final String name = "Preferences";
@@ -122,10 +122,10 @@ public class UserActions {
 			new PreferencesWindow();
 		}
 	}
-	
+
 	/**
 	 * Action for add new contact.
-	 */	
+	 */
 	private class AddContactAction extends AbstractAction {
 		static final long serialVersionUID = 0;
 		private static final String name = "Add new contact";
@@ -142,18 +142,18 @@ public class UserActions {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			new ContactWindow(ContactWindow.Action.ADD); 	
+			new ContactWindow();
 		}
-	}	
-	
+	}
+
 	/**
-	 * Action for add new contact.
-	 */	
+	 * Action for editing contact.
+	 */
 	class EditContactAction extends AbstractAction {
 		static final long serialVersionUID = 0;
 		private static final String name = "Edit contact";
-		private static final String icon = "/res/edit_g.png";
-		private final Integer mnemonic = KeyEvent.VK_N;
+		private static final String icon = "/res/edit.png";
+		private final Integer mnemonic = KeyEvent.VK_E;
 		private final KeyStroke accelerator = KeyStroke.getKeyStroke(mnemonic, ActionEvent.CTRL_MASK);
 
 		public EditContactAction() {
@@ -165,13 +165,13 @@ public class UserActions {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			new ContactWindow(ContactWindow.Action.EDIT);
+			new ContactWindow(ContactsPanel.getSelectedContact());
 		}
-	}		
-	
+	}
+
 	/**
 	 * Action for delete contact.
-	 */		
+	 */
 	class DeleteContactAction extends AbstractAction {
 		static final long serialVersionUID = 0;
 		private static final String name = "Delete contact";
@@ -188,13 +188,13 @@ public class UserActions {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			new ContactWindow(ContactWindow.Action.REMOVE); 			
+			ContactsPanel.removeContact();
 		}
-	}		
-	
+	}
+
 	/**
 	 * Action for add new group.
-	 */	
+	 */
 	class AddGroupAction extends AbstractAction {
 		static final long serialVersionUID = 0;
 		private static final String name = "Add new group";
@@ -211,13 +211,13 @@ public class UserActions {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			new GroupWindow(GroupWindow.Action.NEW);			
+			new GroupWindow(GroupWindow.Action.NEW);
 		}
-	}		
-	
+	}
+
 	/**
 	 * Action for delete group.
-	 */	
+	 */
 	class DeleteGroupAction extends AbstractAction {
 		static final long serialVersionUID = 0;
 		private static final String name = "Delete group";
@@ -236,11 +236,11 @@ public class UserActions {
 		public void actionPerformed(ActionEvent e) {
 			new GroupWindow(GroupWindow.Action.REMOVE);
 		}
-	}	
-	
+	}
+
 	/**
 	 * Action for delete group.
-	 */	
+	 */
 	class RenameGroupAction extends AbstractAction {
 		static final long serialVersionUID = 0;
 		private static final String name = "Rename group";
@@ -259,11 +259,11 @@ public class UserActions {
 		public void actionPerformed(ActionEvent e) {
 			new GroupWindow(GroupWindow.Action.RENAME);
 		}
-	}		
-	
+	}
+
 	/**
 	 * Action for help action.
-	 */		
+	 */
 	private class HelpAction extends AbstractAction {
 		static final long serialVersionUID = 0;
 		private static final String name = "Help";
@@ -282,19 +282,19 @@ public class UserActions {
 		public void actionPerformed(ActionEvent e) {
 			try {
 				Desktop.getDesktop().browse(new URI("http://pitel.github.com/GJAddr"));
-			} 
+			}
 			catch (URISyntaxException ex) {
 				System.err.println(ex);
-			} 
+			}
 			catch (IOException ex) {
 				System.err.println(ex);
 			}
 		}
-	}			
-	
+	}
+
 	/**
 	 * Action for showing about dialog.
-	 */		
+	 */
 	private class AboutAction extends AbstractAction {
 		static final long serialVersionUID = 0;
 		private static final String name = "About";
@@ -313,5 +313,5 @@ public class UserActions {
 		public void actionPerformed(ActionEvent e) {
 			new AboutWindow();
 		}
-	}		
+	}
 }
