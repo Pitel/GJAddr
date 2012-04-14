@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import javax.swing.ImageIcon;
 
 /**
  * Contact object representation.
@@ -22,7 +23,7 @@ public class Contact implements Serializable {
 	private String surName;
 	private String nickName;
 	private Date dateOfBirth;
-	//private x Photo;
+	private ImageIcon Photo;
 	private String note;
 
 	private List<Messenger> messenger;
@@ -122,6 +123,14 @@ public class Contact implements Serializable {
 
 	public void setDateOfBirth(Date dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
+	}
+
+	public ImageIcon getPhoto() {
+		return Photo;
+	}
+
+	public void setPhoto(ImageIcon photo) {
+		this.Photo = photo;
 	}
 
 	/**
