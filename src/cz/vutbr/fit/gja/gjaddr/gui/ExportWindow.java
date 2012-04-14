@@ -1,38 +1,22 @@
 
 package cz.vutbr.fit.gja.gjaddr.gui;
 
+import cz.vutbr.fit.gja.gjaddr.importexport.BinImportExport;
 import cz.vutbr.fit.gja.gjaddr.importexport.CsvImportExport;
 import cz.vutbr.fit.gja.gjaddr.importexport.VCardImportExport;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Contact;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Group;
-
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.UIManager;
-
+import javax.swing.*;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -53,7 +37,8 @@ public class ExportWindow extends JFrame implements ActionListener {
 		SELECTED_GROUP("selected_group"),
 		SELECTED_CONTACTS("selected_contacts"),
 		V_CARD("v_card"),
-		CSV("csv");
+		CSV("csv"),
+		BIN("bin");		
 
 		private String command;
 
@@ -70,7 +55,7 @@ public class ExportWindow extends JFrame implements ActionListener {
 	/**
 	 * Radio buttons with selection of export format.
 	 */
-	private JRadioButton vCardButton, csvButton;
+	private JRadioButton vCardButton, csvButton, binButton;
 
 	/**
 	 * Group of radio buttons with selection of export group.
@@ -146,14 +131,17 @@ public class ExportWindow extends JFrame implements ActionListener {
 		// export formats options
 		JPanel vCardButtonPanel = createVcardExportOptionButton();
 		JPanel csvButtonPanel = createCsvExportOptionButton();
+		JPanel binButtonPanel = createBinExportOptionButton();
 
 		// create group for export formats
 		this.exportFormatButtonGroup = new ButtonGroup();
 		this.exportFormatButtonGroup.add(this.vCardButton);
+		this.exportFormatButtonGroup.add(this.binButton);		
 		this.exportFormatButtonGroup.add(this.csvButton);
 
-		// add all format radio buttons to window
+		// add all format radio buttons to window	
 		this.add(vCardButtonPanel);
+		this.add(binButtonPanel);	
 		this.add(csvButtonPanel);
 
 		// button panel
@@ -275,7 +263,7 @@ public class ExportWindow extends JFrame implements ActionListener {
 		secondHeaderPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
 		return secondHeaderPanel;
 	}
-
+	
 	/**
 	 * Create CSV export option -- for exporting contacts to CSV.
 	 *
@@ -291,6 +279,22 @@ public class ExportWindow extends JFrame implements ActionListener {
 		csvButtonPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
 		return csvButtonPanel;
 	}
+	
+	/**
+	 * Create GJAddr export option -- for exporting contacts to own binary format.
+	 *
+	 * @return
+	 */
+	private JPanel createBinExportOptionButton() {
+		// create button for GJAddr format
+		JPanel binButtonPanel = new JPanel(new GridLayout());
+		this.binButton = new JRadioButton("GJAddr BIN");
+		this.binButton.addActionListener(this);
+		this.binButton.setActionCommand(ActionCommands.BIN.toString());
+		binButtonPanel.add(this.binButton);
+		binButtonPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
+		return binButtonPanel;
+	}	
 
 	/**
 	 * Create vCard export option -- for exporting contacts to vCard format.
@@ -349,30 +353,51 @@ public class ExportWindow extends JFrame implements ActionListener {
 
 		VCardImportExport vcardExport = new VCardImportExport();
 		CsvImportExport csvExport = new CsvImportExport();
+		BinImportExport binExport = new BinImportExport();		
 
 		try {
 			if (exportOption.equals(ActionCommands.NO_GROUP.toString())) {
+				List contacts = this.database.getAllContacts();
+				
 				if (exportFormat.equals(ActionCommands.V_CARD.toString())) {
-					vcardExport.exportContacts(file, this.database.getAllContacts());
-				} else if (exportFormat.equals(ActionCommands.CSV.toString())) {
-					csvExport.exportContacts(file, this.database.getAllContacts());
-				}
-			} else if (exportOption.equals(ActionCommands.SELECTED_GROUP.toString())) {
+					vcardExport.exportContacts(file, contacts);
+				} 
+				else if (exportFormat.equals(ActionCommands.CSV.toString())) {
+					csvExport.exportContacts(file, contacts);
+				} 
+				else if (exportFormat.equals(ActionCommands.BIN.toString())) {
+					binExport.exportContacts(file, contacts);				
+				} 
+			}
+			else if (exportOption.equals(ActionCommands.SELECTED_GROUP.toString())) {
+				List contacts = this.getContactsFromGroup(exportGroup);
 				if (exportFormat.equals(ActionCommands.V_CARD.toString())) {
-					vcardExport.exportContacts(file, this.getContactsFromGroup(exportGroup));
-				} else if (exportFormat.equals(ActionCommands.CSV.toString())) {
-					csvExport.exportContacts(file, this.getContactsFromGroup(exportGroup));
+					vcardExport.exportContacts(file, contacts);
+				} 
+				else if (exportFormat.equals(ActionCommands.CSV.toString())) {
+					csvExport.exportContacts(file, contacts);
 				}
+				else if (exportFormat.equals(ActionCommands.BIN.toString())) {
+					binExport.exportContacts(file, contacts);
+				}				
 			} else {
 				LoggerFactory.getLogger(this.getClass()).error("Export option not yet supported!");
 			}
-		} catch (FileNotFoundException ex) {
+		} 
+		catch (FileNotFoundException ex) {
 			LoggerFactory.getLogger(this.getClass()).error(ex.toString());
-		} catch (IOException ex) {
+		} 
+		catch (IOException ex) {
 			LoggerFactory.getLogger(this.getClass()).error(ex.toString());
 		}
-
+		
 		this.dispose();
+		
+		// TODO - inform user, that import was succesfull or unsuccessfull
+		JOptionPane.showMessageDialog(this, 
+			"Export was successfull.", 
+			"Export success", 
+			JOptionPane.INFORMATION_MESSAGE);		
 	}
 
 	/**
