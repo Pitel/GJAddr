@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import javax.swing.*;
+import java.text.DateFormat;
 
 /**
  * Panel with contact detail
@@ -18,6 +19,8 @@ class DetailPanel extends JPanel {
 	static final JLabel emails = new JLabel();
 	static final JLabel phones = new JLabel();
 	static final JLabel webs = new JLabel();
+	static final JLabel birthday = new JLabel();
+	static final JLabel note = new JLabel();
 	static final JLabel nameIcon = new JLabel();
 	JScrollPane detailScrollPane;
 
@@ -69,6 +72,16 @@ class DetailPanel extends JPanel {
 		detailPanel.add(new JLabel("<html><b>Webs:</b></html>"), c);
 		c.gridx = 1;
 		detailPanel.add(webs, c);
+		c.gridx = 0;
+		c.gridy++;
+		detailPanel.add(new JLabel("<html><b>Birthday:</b></html>"), c);
+		c.gridx = 1;
+		detailPanel.add(birthday, c);
+		c.gridx = 0;
+		c.gridy++;
+		detailPanel.add(new JLabel("<html><b>Note:</b></html>"), c);
+		c.gridx = 1;
+		detailPanel.add(note, c);
 		c.gridy++;
 		c.weighty = 1;
 		detailPanel.add(Box.createVerticalGlue(), c);
@@ -89,6 +102,12 @@ class DetailPanel extends JPanel {
 			//address.setText();
 			emails.setText("<html>" + contact.getAllEmails().replaceAll(", ", "<br>") + "</html>");
 			phones.setText("<html>" + contact.getAllPhones().replaceAll(", ", "<br>") + "</html>");
+			if (contact.getDateOfBirth() != null) {
+				birthday.setText(DateFormat.getDateInstance().format(contact.getDateOfBirth()));
+			} else {
+				birthday.setText("");
+			}
+			note.setText(contact.getNote());
 			detailScrollPane.setVisible(true);
 		}
 	}
