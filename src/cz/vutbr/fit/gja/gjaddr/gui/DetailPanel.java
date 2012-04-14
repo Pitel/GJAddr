@@ -76,13 +76,6 @@ class DetailPanel extends JPanel {
 		detailScrollPane.setBorder(BorderFactory.createEmptyBorder());
 		detailScrollPane.setVisible(false);
 		add(detailScrollPane);
-
-		/*
-		label.setBackground(java.awt.Color.blue);
-		label.setOpaque(true);
-		name.setBackground(java.awt.Color.red);
-		name.setOpaque(true);
-		*/
 	}
 
 	void show(Contact contact) {
