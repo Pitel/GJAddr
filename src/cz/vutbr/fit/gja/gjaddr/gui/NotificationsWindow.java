@@ -2,6 +2,7 @@
 package cz.vutbr.fit.gja.gjaddr.gui;
 
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Contact;
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -25,6 +26,16 @@ public class NotificationsWindow extends JFrame implements ActionListener {
 	JButton noShowButton, okButton;
 
 	/**
+	 * Contacts shown in notifications window.
+	 */
+	List<Contact> contacts;
+
+	/**
+	 * Instance of database.
+	 */
+	private Database db = Database.getInstance();
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param contacts
@@ -32,6 +43,9 @@ public class NotificationsWindow extends JFrame implements ActionListener {
 	public NotificationsWindow(List<Contact> contacts) {
 		super("Import");
 		LoggerFactory.getLogger(this.getClass()).debug("Opening notifications window.");
+
+		// save the list of contacts with bday
+		this.contacts = contacts;
 
 		// set window apearance
 		try {
@@ -129,7 +143,11 @@ public class NotificationsWindow extends JFrame implements ActionListener {
 	 */
 	public void actionPerformed(ActionEvent ae) {
 		if (ae.getSource() == this.noShowButton) {
-			// TODO
+			for (Contact c : this.contacts) {
+				c.disableBdayShowing();
+				this.db.updateContact(c);
+			}
+			this.dispose();
 		} else if (ae.getSource() == this.okButton) {
 			this.dispose();
 		}

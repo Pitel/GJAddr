@@ -4,12 +4,12 @@ import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.ServicesEnum;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import org.slf4j.LoggerFactory;
 
 /**
  * Class for communication with database.
  *
  * @author Bc. Radek Gajdušek <xgajdu07@stud.fit.vutbr.cz>
+ * @author Bc. Drahomira Herrmannova <xherrm01@stud.fit.vutbr.cz>
  */
 public class Database implements IDatabase {
 	
@@ -277,7 +277,7 @@ public class Database implements IDatabase {
 		// birthday of contact
 		Calendar bday = Calendar.getInstance();
 		for (Contact c : all) {
-			if (c.getDateOfBirth() != null) {
+			if (c.getDateOfBirth() != null && !c.isBdayShowingDisabled()) {
 				bday.setTime(c.getDateOfBirth());
 				bday.set(Calendar.YEAR, 2012);
 				// retrieve contacts with birtday within one month

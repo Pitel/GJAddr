@@ -16,13 +16,47 @@ public class Contact implements Serializable {
 
 	static private final long serialVersionUID = 6L;
 
+	/**
+	 * Class for simpler working with contact birthday.
+	 */
+	public class Birthday implements Serializable {
+		private Date dateOfBirth;
+		private Integer yearShowingDisabled;
+
+		public Birthday() {
+			this.dateOfBirth = null;
+			this.yearShowingDisabled = null;
+		}
+
+		public Date getDateOfBirth() {
+			return dateOfBirth;
+		}
+
+		public void setDateOfBirth(Date dateOfBirth) {
+			this.dateOfBirth = dateOfBirth;
+		}
+
+		public boolean isShowingDisabled() {
+			return this.yearShowingDisabled != null
+					&& this.yearShowingDisabled == Calendar.getInstance().get(Calendar.YEAR);
+		}
+
+		public Integer getYearShowingDisabled() {
+			return yearShowingDisabled;
+		}
+
+		public void setYearShowingDisabled(Integer yearShowingDisabled) {
+			this.yearShowingDisabled = yearShowingDisabled;
+		}
+	}
+
 	// not visible for GUI, only for DB usage
 	int id = -1;
 
 	private String firstName;
 	private String surName;
 	private String nickName;
-	private Date dateOfBirth;
+	private Birthday birthday;
 	private ImageIcon Photo;
 	private String note;
 
@@ -118,11 +152,19 @@ public class Contact implements Serializable {
 	}
 
 	public Date getDateOfBirth() {
-		return dateOfBirth;
+		return this.birthday.getDateOfBirth();
 	}
 
 	public void setDateOfBirth(Date dateOfBirth) {
-		this.dateOfBirth = dateOfBirth;
+		this.birthday.setDateOfBirth(dateOfBirth);
+	}
+
+	public void disableBdayShowing() {
+		this.birthday.setYearShowingDisabled(Calendar.getInstance().get(Calendar.YEAR));
+	}
+
+	public boolean isBdayShowingDisabled() {
+		return this.birthday.isShowingDisabled();
 	}
 
 	public ImageIcon getPhoto() {
@@ -139,7 +181,7 @@ public class Contact implements Serializable {
 	 * @return
 	 */
 	public boolean hasBirthday() {
-		if (this.dateOfBirth == null) {
+		if (this.birthday.getDateOfBirth() == null) {
 			return false;
 		}
 		// date today
@@ -147,10 +189,10 @@ public class Contact implements Serializable {
 		today.add(Calendar.DAY_OF_YEAR, -1);
 		// date within one month
 		Calendar month = Calendar.getInstance();
-		month.add(Calendar.DAY_OF_YEAR, +30);
+		month.add(Calendar.DAY_OF_YEAR, 0);
 		// birthday of contact
 		Calendar bday = Calendar.getInstance();
-		bday.setTime(this.dateOfBirth);
+		bday.setTime(this.birthday.getDateOfBirth());
 		bday.set(Calendar.YEAR, 2012);
 		if (bday.after(today) && bday.before(month)) {
 			return true;
@@ -228,10 +270,11 @@ public class Contact implements Serializable {
 	}
 
 	public Contact() {
-
+		this.birthday = new Birthday();
 	}
 
 	public Contact(String firstName, String surName, String nickName, String note) {
+		this();
 		this.firstName = firstName;
 		this.surName = surName;
 		this.nickName = nickName;
@@ -241,10 +284,11 @@ public class Contact implements Serializable {
 	public Contact(String firstName, String surName, String nickName, Date dateOfBirth,
 					       String note, List<Messenger> messenger, List<Url> urls, List<Address> adresses,
 								 List<PhoneNumber> phoneNumbers, List<Email> emails, List<Custom> customs) {
+		this();
 		this.firstName = firstName;
 		this.surName = surName;
 		this.nickName = nickName;
-		this.dateOfBirth = dateOfBirth;
+		this.birthday.setDateOfBirth(dateOfBirth);
 		this.note = note;
 		this.messenger = messenger;
 		this.urls = urls;
@@ -272,7 +316,7 @@ public class Contact implements Serializable {
 		if ((this.nickName == null) ? (other.nickName != null) : !this.nickName.equals(other.nickName)) {
 			return false;
 		}
-		if (this.dateOfBirth != other.dateOfBirth && (this.dateOfBirth == null || !this.dateOfBirth.equals(other.dateOfBirth))) {
+		if (this.birthday.getDateOfBirth() != other.birthday.getDateOfBirth() && (this.birthday.getDateOfBirth() == null || !this.birthday.getDateOfBirth().equals(other.birthday.getDateOfBirth()))) {
 			return false;
 		}
 		if ((this.note == null) ? (other.note != null) : !this.note.equals(other.note)) {
@@ -302,7 +346,7 @@ public class Contact implements Serializable {
 	@Override
 	public String toString() {
 		return "Contact{" + "id=" + id + ", firstName=" + firstName + ", surName=" + surName
-						          + ", nickName=" + nickName + ", dateOfBirth=" + dateOfBirth + ", note="
+						          + ", nickName=" + nickName + ", dateOfBirth=" + birthday.getDateOfBirth() + ", note="
 						          + note + ", messenger=" + messenger + ", urls=" + urls + ", adresses="
 						          + adresses + ", phoneNumbers=" + phoneNumbers + ", emails=" + emails + ", customs="
 						          + customs + '}';
