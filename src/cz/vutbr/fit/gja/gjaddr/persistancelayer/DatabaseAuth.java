@@ -123,8 +123,7 @@ public class DatabaseAuth {
 	void add(AuthToken token) {
 		for (AuthToken t : this.tokens) {
 			if (t.getService() == token.getService()) {
-				this.update(token);
-				return;
+				this.tokens.remove(t);
 			}
 		}
 		this.tokens.add(token);

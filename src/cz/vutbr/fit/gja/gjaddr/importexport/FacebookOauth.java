@@ -91,6 +91,7 @@ public class FacebookOauth {
 			return false;
 		}
 		try {
+			this.client = new DefaultFacebookClient(this.token.getToken());
 			User user = this.client.fetchObject("me", User.class);
 		} catch (FacebookOAuthException ex) {
 			return false;
