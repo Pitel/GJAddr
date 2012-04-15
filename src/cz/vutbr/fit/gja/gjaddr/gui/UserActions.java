@@ -1,5 +1,6 @@
 package cz.vutbr.fit.gja.gjaddr.gui;
 
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.Group;
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -96,7 +97,12 @@ public class UserActions {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			new ExportWindow();
+			Group[] selectedGroups = GroupsPanel.getSelectedGroups();
+			if (selectedGroups.length == 1) {
+				new ExportWindow(null, selectedGroups[0]);
+			} else {
+				new ExportWindow();
+			}
 		}
 	}
 

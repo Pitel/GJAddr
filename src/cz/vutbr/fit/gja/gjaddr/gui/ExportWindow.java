@@ -73,7 +73,7 @@ public class ExportWindow extends JFrame implements ActionListener {
 	private JButton openButton, cancelButton;
 
 	/**
-	 * File chooser for choosing file where to save the exported contacts.
+	 * File chooser for choosing file where to save the exported allContacts.
 	 */
 	private JFileChooser fileChooser = new JFileChooser();
 
@@ -81,6 +81,16 @@ public class ExportWindow extends JFrame implements ActionListener {
 	 * Application database;
 	 */
 	private Database database = Database.getInstance();
+
+	/**
+	 * Contacts to be exported.
+	 */
+	private List<Contact> contacts = null;
+
+	/**
+	 * Group to be exported.
+	 */
+	private Group group = null;
 
 	/**
 	 * Constructor. Initializes the window.
@@ -155,6 +165,104 @@ public class ExportWindow extends JFrame implements ActionListener {
 	}
 
 	/**
+	 * Initialize window with selected allContacts.
+	 * 
+	 * @param allContacts
+	 */
+	public ExportWindow(List<Contact> contacts, Group group) {
+		super("Export");
+		LoggerFactory.getLogger(this.getClass()).debug("Opening export window.");
+
+		// set selected contacts/group
+		this.contacts = contacts;
+		this.group = group;
+
+		// set window apearance
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (Exception e) {
+			System.err.println(e);
+		}
+
+		// set application icon
+		ImageIcon icon = new ImageIcon(getClass().getResource("/res/icon.png"), "GJAddr");
+		this.setIconImage(icon.getImage());
+
+		// set page layout
+		this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.PAGE_AXIS));
+
+		// main header
+		this.add(this.createMainHeader());
+
+		// export options header
+		this.add(this.createExportOptionsHeader());
+
+		// export options buttons
+		JPanel noGroupsButtonPanel = this.createNoGroupOptionButton();
+		JPanel groupsSelectionPanel = this.createSelectGroupOptionButton();
+		JPanel selectedContactsButtonPanel = this.createSelectedContactsOptionButton();
+
+		// create the group selection menu
+		this.groupButtonGroup = new ButtonGroup();
+		this.groupButtonGroup.add(this.noGroupButton);
+		this.groupButtonGroup.add(this.selectGroupButton);
+		this.groupButtonGroup.add(this.selectedContactsButton);
+
+		// exporting group
+		if (this.group != null) {
+			this.noGroupButton.setSelected(false);
+			this.noGroupButton.setFocusPainted(false);
+			this.selectGroupButton.setSelected(true);
+			this.selectGroupButton.setFocusPainted(true);
+			this.selectedContactsButton.setSelected(false);
+			this.selectedContactsButton.setFocusPainted(false);
+		}
+
+		// exporting allContacts
+		if (contacts != null && !contacts.isEmpty()) {
+			this.noGroupButton.setSelected(false);
+			this.noGroupButton.setFocusPainted(false);
+			this.selectGroupButton.setSelected(false);
+			this.selectGroupButton.setFocusPainted(false);
+			this.selectedContactsButton.setSelected(true);
+			this.selectedContactsButton.setFocusPainted(true);
+		}
+
+		// add all radio buttons to window
+		this.add(noGroupsButtonPanel);
+		this.add(groupsSelectionPanel);
+		this.add(selectedContactsButtonPanel);
+
+		// export formats header
+		this.add(this.createExportFormatsHeader());
+
+		// export formats options
+		JPanel vCardButtonPanel = createVcardExportOptionButton();
+		JPanel csvButtonPanel = createCsvExportOptionButton();
+		JPanel binButtonPanel = createBinExportOptionButton();
+
+		// create group for export formats
+		this.exportFormatButtonGroup = new ButtonGroup();
+		this.exportFormatButtonGroup.add(this.vCardButton);
+		this.exportFormatButtonGroup.add(this.binButton);
+		this.exportFormatButtonGroup.add(this.csvButton);
+
+		// add all format radio buttons to window
+		this.add(vCardButtonPanel);
+		this.add(binButtonPanel);
+		this.add(csvButtonPanel);
+
+		// button panel
+		this.add(createButtonPanel());
+
+		// make window visible
+		this.setResizable(false);
+		this.setLocationRelativeTo(null);
+		this.pack();
+		this.setVisible(true);
+	}
+
+	/**
 	 * Create main window header.
 	 * 
 	 * @return
@@ -182,12 +290,12 @@ public class ExportWindow extends JFrame implements ActionListener {
 	}
 
 	/**
-	 * Create no group option button for exporting all contacts.
+	 * Create no group option button for exporting all allContacts.
 	 *
 	 * @return
 	 */
 	private JPanel createNoGroupOptionButton() {
-		// no group button -- export all contacts
+		// no group button -- export all allContacts
 		JPanel noGroupsButtonPanel = new JPanel(new GridLayout());
 		this.noGroupButton = new JRadioButton("all contacts");
 		this.noGroupButton.addActionListener(this);
@@ -220,18 +328,23 @@ public class ExportWindow extends JFrame implements ActionListener {
 	}
 
 	/**
-	 * Create selected contacts option button -- for exporting only selected
-	 * contacts.
+	 * Create selected allContacts option button -- for exporting only selected
+	 * allContacts.
 	 * 
 	 * @return
 	 */
 	private JPanel createSelectedContactsOptionButton() {
-		// export only selected contacts button
+		// export only selected allContacts button
 		JPanel selectedContactsButtonPanel = new JPanel(new GridLayout());
 		this.selectedContactsButton = new JRadioButton("selected contacts");
 		this.selectedContactsButton.addActionListener(this);
 		this.selectedContactsButton.setActionCommand(ActionCommands.SELECTED_CONTACTS.toString());
 		selectedContactsButtonPanel.add(this.selectedContactsButton);
+		// add count of selected allContacts
+		if (this.contacts != null && !this.contacts.isEmpty()) {
+			JLabel count = new JLabel(" (" + this.contacts.size() + ")");
+			selectedContactsButtonPanel.add(count);
+		}
 		selectedContactsButtonPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
 		return selectedContactsButtonPanel;
 	}
@@ -244,8 +357,19 @@ public class ExportWindow extends JFrame implements ActionListener {
 	private String[] getAllGroups() {
 		List<Group> allGroups = this.database.getAllGroups();
 		String[] groupsArray = new String[allGroups.size()];
-		for (int i = 0; i < allGroups.size(); i++) {
-			groupsArray[i] = allGroups.get(i).getName();
+		if (this.group != null) {
+			groupsArray[0] = this.group.getName();
+			int j = 1;
+			for (int i = 0; i < allGroups.size(); i++) {
+				if (allGroups.get(i).equals(this.group)) {
+					continue;
+				}
+				groupsArray[j++] = allGroups.get(i).getName();
+			}
+		} else {
+			for (int i = 0; i < allGroups.size(); i++) {
+				groupsArray[i] = allGroups.get(i).getName();
+			}
 		}
 		return groupsArray;
 	}
@@ -265,7 +389,7 @@ public class ExportWindow extends JFrame implements ActionListener {
 	}
 	
 	/**
-	 * Create CSV export option -- for exporting contacts to CSV.
+	 * Create CSV export option -- for exporting allContacts to CSV.
 	 *
 	 * @return
 	 */
@@ -281,7 +405,7 @@ public class ExportWindow extends JFrame implements ActionListener {
 	}
 	
 	/**
-	 * Create GJAddr export option -- for exporting contacts to own binary format.
+	 * Create GJAddr export option -- for exporting allContacts to own binary format.
 	 *
 	 * @return
 	 */
@@ -297,7 +421,7 @@ public class ExportWindow extends JFrame implements ActionListener {
 	}	
 
 	/**
-	 * Create vCard export option -- for exporting contacts to vCard format.
+	 * Create vCard export option -- for exporting allContacts to vCard format.
 	 * 
 	 * @return
 	 */
@@ -341,7 +465,7 @@ public class ExportWindow extends JFrame implements ActionListener {
 	}
 
 	/**
-	 * Export contacts with selected options.
+	 * Export allContacts with selected options.
 	 */
 	private void doExport() {
 		File file = this.fileChooser.getSelectedFile();
@@ -357,51 +481,54 @@ public class ExportWindow extends JFrame implements ActionListener {
 
 		try {
 			if (exportOption.equals(ActionCommands.NO_GROUP.toString())) {
-				List contacts = this.database.getAllContacts();
-				
+				List allContacts = this.database.getAllContacts();
 				if (exportFormat.equals(ActionCommands.V_CARD.toString())) {
-					vcardExport.exportContacts(file, contacts);
+					vcardExport.exportContacts(file, allContacts);
+				} else if (exportFormat.equals(ActionCommands.CSV.toString())) {
+					csvExport.exportContacts(file, allContacts);
+				} else if (exportFormat.equals(ActionCommands.BIN.toString())) {
+					binExport.exportContacts(file, allContacts);
 				} 
-				else if (exportFormat.equals(ActionCommands.CSV.toString())) {
-					csvExport.exportContacts(file, contacts);
-				} 
-				else if (exportFormat.equals(ActionCommands.BIN.toString())) {
-					binExport.exportContacts(file, contacts);				
-				} 
-			}
-			else if (exportOption.equals(ActionCommands.SELECTED_GROUP.toString())) {
-				List contacts = this.getContactsFromGroup(exportGroup);
+			} else if (exportOption.equals(ActionCommands.SELECTED_GROUP.toString())) {
+				List allContacts = this.getContactsFromGroup(exportGroup);
 				if (exportFormat.equals(ActionCommands.V_CARD.toString())) {
-					vcardExport.exportContacts(file, contacts);
-				} 
-				else if (exportFormat.equals(ActionCommands.CSV.toString())) {
-					csvExport.exportContacts(file, contacts);
-				}
-				else if (exportFormat.equals(ActionCommands.BIN.toString())) {
-					binExport.exportContacts(file, contacts);
+					vcardExport.exportContacts(file, allContacts);
+				} else if (exportFormat.equals(ActionCommands.CSV.toString())) {
+					csvExport.exportContacts(file, allContacts);
+				} else if (exportFormat.equals(ActionCommands.BIN.toString())) {
+					binExport.exportContacts(file, allContacts);
 				}				
 			} else {
-				LoggerFactory.getLogger(this.getClass()).error("Export option not yet supported!");
+				if (exportFormat.equals(ActionCommands.V_CARD.toString())) {
+					vcardExport.exportContacts(file, this.contacts);
+				} else if (exportFormat.equals(ActionCommands.CSV.toString())) {
+					csvExport.exportContacts(file, this.contacts);
+				} else if (exportFormat.equals(ActionCommands.BIN.toString())) {
+					binExport.exportContacts(file, this.contacts);
+				}
 			}
-		} 
-		catch (FileNotFoundException ex) {
+		} catch (FileNotFoundException ex) {
 			LoggerFactory.getLogger(this.getClass()).error(ex.toString());
-		} 
-		catch (IOException ex) {
+			JOptionPane.showMessageDialog(this, "Export was unsuccessful. Please try again.", "Export unsuccessful",
+					JOptionPane.INFORMATION_MESSAGE);
+			return;
+		} catch (IOException ex) {
 			LoggerFactory.getLogger(this.getClass()).error(ex.toString());
+			JOptionPane.showMessageDialog(this, "Export was unsuccessful. Please try again.", "Export unsuccessful",
+					JOptionPane.INFORMATION_MESSAGE);
+			return;
 		}
 		
 		this.dispose();
 		
-		// TODO - inform user, that import was succesfull or unsuccessfull
+		// inform user that export was successful
 		JOptionPane.showMessageDialog(this, 
-			"Export was successfull.", 
-			"Export success", 
+			"Export was successfull.", "Export success", 
 			JOptionPane.INFORMATION_MESSAGE);		
 	}
 
 	/**
-	 * Get all contacts from one group specified by it's name.
+	 * Get all allContacts from one group specified by it's name.
 	 * 
 	 * @param group
 	 * @return
