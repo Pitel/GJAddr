@@ -69,10 +69,14 @@ public class DatabaseAuth {
 	 * @param token
 	 */
 	void add(AuthToken token) {
+		AuthToken oldToken = null;
 		for (AuthToken t : this.tokens) {
-			if (t.getService() == token.getService()) {
-				this.tokens.remove(t);
+			if (t.getService().equals(token.getService())) {
+				oldToken = t;
 			}
+		}
+		if (oldToken != null) {
+			this.tokens.remove(oldToken);
 		}
 		this.tokens.add(token);
 	}

@@ -34,7 +34,7 @@ public class FacebookOauth {
 	/**
 	 * Application ID/API key.
 	 */
-	private String appid = "192960620820878";
+	private String appid = "356956731007633";
 
 	/**
 	 * Facebook client for reading contacts.
@@ -51,11 +51,15 @@ public class FacebookOauth {
 	 */
 	private Database database;
 
+	/**
+	 * Constructor.
+	 */
 	public FacebookOauth() {
 		this.database = Database.getInstance();
 		this.token = this.database.getToken(ServicesEnum.FACEBOOK);
 		if (this.token != null) {
 			this.client = new DefaultFacebookClient(this.token.getToken());
+			
 		} else {
 			this.client = null;
 		}
@@ -66,10 +70,11 @@ public class FacebookOauth {
 	 */
 	public void authenticate() {
 		try {
-			String url = "https://graph.facebook.com/oauth/authorize?";
-			url += "client_id=" + this.appid;
+			String url = "https://www.facebook.com/dialog/oauth";
+			url += "?client_id=" + this.appid;
 			url += "&redirect_uri=https://www.facebook.com/connect/login_success.html";
-			url += "&response_type=code";
+			url += "&response_type=token";
+			url += "&scope=friends_about_me,friends_birthday,friends_location,friends_status,friends_website";
 			Desktop desktop = Desktop.getDesktop();
 			desktop.browse(new URI(url));
 		} catch (URISyntaxException ex) {
@@ -82,6 +87,7 @@ public class FacebookOauth {
 	}
 
 	/**
+	 * Check if token saved in database is still valid.
 	 * 
 	 * @return
 	 */

@@ -6,6 +6,7 @@ import cz.vutbr.fit.gja.gjaddr.importexport.GoogleOauth;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.AuthToken;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.ServicesEnum;
+import java.awt.Cursor;
 
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
@@ -164,27 +165,27 @@ public class PreferencesWindow extends JFrame implements ActionListener {
 	 */
 	private JPanel createGoogleActionButton() {
 		JPanel googlePanel = new JPanel(new GridLayout());
-		// TODO -- check if the token is valid!!
-		AuthToken token = this.database.getToken(ServicesEnum.GOOGLE);
-		// offer connection to facebook
-		if (token == null) {
-			this.googButton = new JButton("Connect to Google");
-			this.googButton.setIcon(new ImageIcon(this.getClass().getResource("/res/google.png")));
-			this.googButton.setIconTextGap(10);
-			this.googButton.addActionListener(this);
-			this.googButton.setSelected(false);
-			this.googButton.setActionCommand(ActionCommands.GOOGLE_CONNECT.toString());
-			this.googButton.setHorizontalAlignment(SwingConstants.LEFT);
-			googlePanel.add(this.googButton);
-		}
+		// check if the token is valid
+		boolean valid = new GoogleOauth().isTokenValid();
 		// if user is connected, he can invalidate the token
-		else {
+		if (valid) {
 			this.googButton = new JButton("Disconnect from Google");
 			this.googButton.setIcon(new ImageIcon(this.getClass().getResource("/res/google.png")));
 			this.googButton.setIconTextGap(10);
 			this.googButton.addActionListener(this);
 			this.googButton.setSelected(false);
 			this.googButton.setActionCommand(ActionCommands.GOOGLE_DISCONNECT.toString());
+			this.googButton.setHorizontalAlignment(SwingConstants.LEFT);
+			googlePanel.add(this.googButton);
+		}
+		// offer connection to google
+		else {
+			this.googButton = new JButton("Connect to Google");
+			this.googButton.setIcon(new ImageIcon(this.getClass().getResource("/res/google.png")));
+			this.googButton.setIconTextGap(10);
+			this.googButton.addActionListener(this);
+			this.googButton.setSelected(false);
+			this.googButton.setActionCommand(ActionCommands.GOOGLE_CONNECT.toString());
 			this.googButton.setHorizontalAlignment(SwingConstants.LEFT);
 			googlePanel.add(this.googButton);
 		}
@@ -235,9 +236,29 @@ public class PreferencesWindow extends JFrame implements ActionListener {
 		new FacebookOauth().authenticate();
 		String s = (String) JOptionPane.showInputDialog(this, "Authentication token:",
 						"Authentication token", JOptionPane.PLAIN_MESSAGE, null, null, null);
+		// user didn't give any token
+		if (s == null || s.isEmpty()) {
+			return;
+		}
+		// set cursor to wait cursor
+		this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+		// add token to database
 		AuthToken token = new AuthToken(ServicesEnum.FACEBOOK, s);
 		this.database.addToken(token);
-		this.dispose();
+		// check if token is valid and display information message
+		FacebookOauth foa = new FacebookOauth();
+		boolean valid = foa.isTokenValid();
+		// set cursor back
+		this.setCursor(Cursor.getDefaultCursor());
+		if (valid) {
+			JOptionPane.showMessageDialog(this, "You were successfuly connected to Facebook.", "Success",
+					JOptionPane.INFORMATION_MESSAGE);
+			this.fbButton.setText("Disconnect from Facebook");
+			this.fbButton.setActionCommand(ActionCommands.FACEBOOK_DISCONNECT.toString());
+		} else {
+			JOptionPane.showMessageDialog(this, "Connection was unsuccessful. Please try again.", "Failure",
+					JOptionPane.INFORMATION_MESSAGE);
+		}
 	}
 
 	/**
@@ -253,9 +274,26 @@ public class PreferencesWindow extends JFrame implements ActionListener {
 		goa.authenticate();
 		String s = (String) JOptionPane.showInputDialog(this, "Authentication token:",
 						"Authentication token", JOptionPane.PLAIN_MESSAGE, null, null, null);
+		// user didn't give any token
+		if (s == null || s.isEmpty()) {
+			return;
+		}
+		// set cursor to wait cursor
+		this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+		// add token to database
 		AuthToken token = goa.authenticate(s);
-		this.database.addToken(token);
-		this.dispose();
+		// set cursor back
+		this.setCursor(Cursor.getDefaultCursor());
+		if (token != null) {
+			this.database.addToken(token);
+			JOptionPane.showMessageDialog(this, "You were successfuly connected to Google.", "Success",
+					JOptionPane.INFORMATION_MESSAGE);
+			this.googButton.setText("Disconnect from Google");
+			this.googButton.setActionCommand(ActionCommands.GOOGLE_DISCONNECT.toString());
+		} else {
+			JOptionPane.showMessageDialog(this, "Connection was unsuccessful. Please try again.", "Failure",
+					JOptionPane.INFORMATION_MESSAGE);
+		}
 	}
 
 	/**

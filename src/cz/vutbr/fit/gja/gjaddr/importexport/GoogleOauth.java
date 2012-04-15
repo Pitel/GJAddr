@@ -13,7 +13,6 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.net.URLEncoder;
 
 import java.util.HashMap;
@@ -24,7 +23,9 @@ import org.slf4j.LoggerFactory;
 import com.google.gson.Gson;
 
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.AuthToken;
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.ServicesEnum;
+import java.net.HttpURLConnection;
 
 /**
  * OAuth authentication for Google Contacts.
@@ -102,6 +103,18 @@ public class GoogleOauth {
 	private String secret = "9PcfBWb_jYdgyZyHt61JvMdY";
 
 	/**
+	 * Local database.
+	 */
+	private Database database;
+
+	/**
+	 * Constructor.
+	 */
+	public GoogleOauth() {
+		this.database = Database.getInstance();
+	}
+
+	/**
 	 * Authenticate user with Facebook and save returned token.
 	 */
 	public void authenticate() {
@@ -111,6 +124,7 @@ public class GoogleOauth {
 			url += "&client_id=" + this.appid;
 			url += "&redirect_uri=" + this.redirectUri;
 			url += "&scope=https://www.google.com/m8/feeds";
+			LoggerFactory.getLogger(this.getClass()).info("Redirecting user to {}", url);
 			Desktop desktop = Desktop.getDesktop();
 			desktop.browse(new URI(url));
 		} catch (URISyntaxException ex) {
@@ -157,7 +171,8 @@ public class GoogleOauth {
 		try {
 			// send the request
 			URL url = new URL("https://accounts.google.com/o/oauth2/token");
-			URLConnection conn = url.openConnection();
+			LoggerFactory.getLogger(this.getClass()).info("Sending request to {}", url.toString());
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setDoOutput(true);
 			wr = new OutputStreamWriter(conn.getOutputStream());
 			wr.write(this.encodeData(data));
@@ -171,14 +186,24 @@ public class GoogleOauth {
 				json += line;
 			}
 
+			// check response code
+			if (conn.getResponseCode() != 200) {
+				LoggerFactory.getLogger(this.getClass()).error("Request was unsuccessful. Status code: {}",
+						String.valueOf(conn.getResponseCode()));
+				return null;
+			}
+
 			// parse the response
 			AuthResponse response = new Gson().fromJson(json, AuthResponse.class);
-			AuthToken token = new AuthToken(ServicesEnum.GOOGLE, response.getAccess_token());			
+			AuthToken token = new AuthToken(ServicesEnum.GOOGLE, response.getAccess_token());
+			LoggerFactory.getLogger(this.getClass()).info("Received new token.");
 			return token;
 		} catch (MalformedURLException ex) {
 			LoggerFactory.getLogger(this.getClass()).error(ex.toString());
+			return null;
 		} catch (IOException ex) {
 			LoggerFactory.getLogger(this.getClass()).error(ex.toString());
+			return null;
 		} finally {
 			try {
 				wr.close();
@@ -186,17 +211,47 @@ public class GoogleOauth {
 			} catch (Exception e) {
 			}
 		}
-
-		return null;
 	}
 
 	/**
-	 * TODO!!!
+	 * Check if token is still valid.
 	 * 
 	 * @return
 	 */
 	public boolean isTokenValid() {
-		return false;
+		LoggerFactory.getLogger(this.getClass()).info("Checking Google token validity.");
+
+		AuthToken token = this.database.getToken(ServicesEnum.GOOGLE);
+		if (token == null) {
+			return false;
+		}
+
+		String stringUrl = "https://www.google.com/m8/feeds/contacts/default/full?access_token=";
+		stringUrl += token.getToken();
+		Integer responseCode = null;
+
+		LoggerFactory.getLogger(this.getClass()).info("Requesting {}", stringUrl);
+
+		try {
+			// send the request
+			URL url = new URL(stringUrl);
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setRequestMethod("GET");
+			conn.setDoOutput(true);
+			responseCode = conn.getResponseCode();
+		} catch (MalformedURLException ex) {
+			LoggerFactory.getLogger(this.getClass()).error(ex.toString());
+		} catch (IOException ex) {
+			LoggerFactory.getLogger(this.getClass()).error(ex.toString());
+		}
+
+		LoggerFactory.getLogger(this.getClass()).info("Response code {}", String.valueOf(responseCode));
+
+		if (responseCode != null && responseCode.equals(200)) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -205,7 +260,6 @@ public class GoogleOauth {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		GoogleOauth goa = new GoogleOauth();
-		goa.authenticate("4/n9rH4c2YfKAUzElRa1ZEn3OGkrjR");
+		new GoogleOauth().isTokenValid();
 	}
 }
