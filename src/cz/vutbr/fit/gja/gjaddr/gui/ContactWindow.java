@@ -62,6 +62,7 @@ class ContactWindow extends JFrame {
 		button.addActionListener(new EditContactActionListener());
 		nameField.setText(contact.getFirstName());
 		surnameField.setText(contact.getSurName());
+		addressField.setText(contact.getAllAddresses());
 		phoneField.setText(contact.getAllPhones());
 		emailField.setText(contact.getAllEmails());
 		phoneField.setText(contact.getAllPhones());
