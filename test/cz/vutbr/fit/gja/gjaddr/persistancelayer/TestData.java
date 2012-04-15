@@ -13,7 +13,6 @@ public class TestData {
 		fillContacts(db);
 		fillGroups(db);		
 		fillGroupContacts(db);
-		fillAuthTokens(db);
 	}
 
 private static void fillContacts(Database db) {
@@ -113,9 +112,5 @@ private static void fillContacts(Database db) {
 		contactsToAdd.clear();
 		contactsToAdd.add(contacts.get(2));
 		db.addContactsToGroup(groups.get(3), contactsToAdd);				
-	}
-
-	private static void fillAuthTokens(Database db) {
-		// TODO
 	}
 }

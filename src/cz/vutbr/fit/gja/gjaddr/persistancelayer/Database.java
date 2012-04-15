@@ -4,6 +4,7 @@ import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.ServicesEnum;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import org.slf4j.LoggerFactory;
 
 /**
  * Class for communication with database.

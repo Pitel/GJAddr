@@ -1,6 +1,8 @@
 package cz.vutbr.fit.gja.gjaddr.persistancelayer;
 
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.ServicesEnum;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,6 +29,7 @@ public class TestData {
 		List<Custom> customs = new ArrayList<Custom>();			
 						
 		Contact contact1 = new Contact("Radek", "Gajdusek", "Speedy", null);
+		contact1.setDateOfBirth(new Date(1988, 03, 20));
 		emails.add(new Email(1, "test@gmail.com"));
 		emails.add(new Email(1, "pokus@gmail.com"));
 		contact1.setEmails(new ArrayList<Email>(emails));
@@ -52,6 +55,7 @@ public class TestData {
 		customs.clear();
 		
 		Contact contact2 = new Contact("Jan", "Kaláb", "Pitel", "pokusná poznámka");
+		contact2.setDateOfBirth(new Date(1987, 04, 01));
 		emails.add(new Email(2, "pokus@centrum.cz"));
 		contact2.setEmails(new ArrayList<Email>(emails));						
 		phones.add(new PhoneNumber(1, "420658987562"));
@@ -69,6 +73,7 @@ public class TestData {
 		customs.clear();		
 		
 		Contact contact3 = new Contact("Petr", "Macháček", null, null);
+		contact3.setDateOfBirth(new Date(1980, 03, 25));
 		urls.add(new Url(2, "http://www.seznam.cz"));
 		urls.add(new Url(2, "http://www.idos.cz"));		
 		contact3.setUrls(new ArrayList<Url>(urls));		
@@ -112,5 +117,12 @@ public class TestData {
 		contactsToAdd.clear();
 		contactsToAdd.add(contacts.get(2));
 		db.addContactsToGroup(groups.get(3), contactsToAdd);				
+	}
+
+	private static void fillAuthTokens(Database db) {
+		AuthToken fb = new AuthToken(ServicesEnum.FACEBOOK, "sdjasjdhajkdha-82y1289");
+		AuthToken go = new AuthToken(ServicesEnum.GOOGLE, "jadskalja2kejk2ejklejl1e");
+		db.addToken(fb);
+		db.addToken(go);
 	}
 }
