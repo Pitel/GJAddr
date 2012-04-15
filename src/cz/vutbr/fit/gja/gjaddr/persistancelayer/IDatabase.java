@@ -28,6 +28,7 @@ public interface IDatabase {
 	List<Group> getAllGroups();	
 	List<Group> addNewGroup(String name);	
 	List<Group> updateGroup(Group group);	
+	List<Group> renameGroup(Group group, String newName);
 	List<Group> removeGroups(List<Group> groupsToRemove);
 
 	// AUTH

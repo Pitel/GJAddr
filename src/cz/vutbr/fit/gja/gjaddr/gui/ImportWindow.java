@@ -2,41 +2,20 @@
 package cz.vutbr.fit.gja.gjaddr.gui;
 
 import com.google.gdata.util.ServiceException;
-import cz.vutbr.fit.gja.gjaddr.importexport.CsvImportExport;
-import cz.vutbr.fit.gja.gjaddr.importexport.FacebookImport;
-import cz.vutbr.fit.gja.gjaddr.importexport.GoogleImport;
-import cz.vutbr.fit.gja.gjaddr.importexport.VCardImportExport;
+import cz.vutbr.fit.gja.gjaddr.importexport.*;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Group;
 import java.awt.Cursor;
-
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
-
 import java.util.List;
-
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.UIManager;
-
+import javax.swing.*;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -58,6 +37,7 @@ public class ImportWindow extends JFrame implements ActionListener {
 		NEW_GROUP("new_group"),
 		V_CARD("v_card"),
 		CSV("csv"),
+		BIN("bin"),		
 		FACEBOOK("facebook"),
 		GOOGLE("google");
 
@@ -76,7 +56,7 @@ public class ImportWindow extends JFrame implements ActionListener {
 	/**
 	 * Radio buttons with selection of import format.
 	 */
-	private JRadioButton vCardButton, csvButton, facebookButton, googleButton;
+	private JRadioButton vCardButton, csvButton, binButton, facebookButton, googleButton;
 	
 	/**
 	 * Group of radio buttons with selection of import group.
@@ -151,6 +131,7 @@ public class ImportWindow extends JFrame implements ActionListener {
 
 		// import formats options
 		JPanel vCardButtonPanel = this.createVcardImportOptionButton();
+		JPanel binButtonPanel = this.createBinExportOptionButton();
 		JPanel csvButtonPanel = this.createCsvImportOptionButton();
 		JPanel facebookButtonPanel = this.createFacebookImportOptionButton();
 		JPanel googleButtonPanel = this.createGoogleImportOptionButton();
@@ -158,12 +139,14 @@ public class ImportWindow extends JFrame implements ActionListener {
 		// create group for import formats
 		this.importFormatsButtonGroup = new ButtonGroup();
 		this.importFormatsButtonGroup.add(this.vCardButton);
+		this.importFormatsButtonGroup.add(this.binButton);
 		this.importFormatsButtonGroup.add(this.csvButton);
 		this.importFormatsButtonGroup.add(this.facebookButton);
 		this.importFormatsButtonGroup.add(this.googleButton);
 
 		// add all format radio buttons to window
 		this.add(vCardButtonPanel);
+		this.add(binButtonPanel);		
 		this.add(csvButtonPanel);
 		this.add(facebookButtonPanel);
 		this.add(googleButtonPanel);
@@ -301,6 +284,23 @@ public class ImportWindow extends JFrame implements ActionListener {
 		csvButtonPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
 		return csvButtonPanel;
 	}
+	
+	/**
+	* Create GJAddr export option -- for exporting contacts to own binary format.
+	*
+	* @return
+	*/
+	private JPanel createBinExportOptionButton() {
+		// create button for GJAddr format
+		JPanel binButtonPanel = new JPanel(new GridLayout());
+		this.binButton = new JRadioButton("GJAddr BIN");
+		this.binButton.addActionListener(this);
+		this.binButton.setActionCommand(ActionCommands.BIN.toString());
+		binButtonPanel.add(this.binButton);
+		binButtonPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
+		return binButtonPanel;
+	}	
+
 
 	/**
 	 * Create vCard import option -- for importing contacts from vCard format.
@@ -390,6 +390,7 @@ public class ImportWindow extends JFrame implements ActionListener {
 
 		VCardImportExport vcardImport = new VCardImportExport();
 		CsvImportExport csvImport = new CsvImportExport();
+		BinImportExport binImport = new BinImportExport();		
 		
 		try {
 			// set cursor to wait cursor
@@ -398,30 +399,49 @@ public class ImportWindow extends JFrame implements ActionListener {
 			if (importOption.equals(ActionCommands.NO_GROUP.toString())) {
 				if (importFormat.equals(ActionCommands.V_CARD.toString())) {
 					vcardImport.importContacts(file);
-				} else {
+				} 
+				else if (importFormat.equals(ActionCommands.BIN.toString())) {
+					binImport.importContacts(file);					
+				}
+				else if (importFormat.equals(ActionCommands.CSV.toString())) {
 					csvImport.importContacts(file);
 				}
-			} else if (importOption.equals(ActionCommands.SELECTED_GROUP.toString())) {
+			} 
+			else if (importOption.equals(ActionCommands.SELECTED_GROUP.toString())) {
 				if (importFormat.equals(ActionCommands.V_CARD.toString())) {
 					vcardImport.importContactsToGroup(file, importGroup);
-				} else {
-					csvImport.importContacts(file, importGroup);
+				} 
+				else if (importFormat.equals(ActionCommands.BIN.toString())) {
+					binImport.importContacts(file, importGroup);
 				}
-			} else if (importOption.equals(ActionCommands.NEW_GROUP.toString())) {
+				else if (importFormat.equals(ActionCommands.CSV.toString())) {
+					csvImport.importContacts(file, importGroup);
+				}				
+			} 
+			else if (importOption.equals(ActionCommands.NEW_GROUP.toString())) {
 				String s = (String) JOptionPane.showInputDialog(this, "New group name:",
 						"New group creation", JOptionPane.PLAIN_MESSAGE, null, null, null);
 				if ((s != null) && (s.length() > 0)) {
 					if (importFormat.equals(ActionCommands.V_CARD.toString())) {
 						vcardImport.importContactsToGroup(file, s);
-					} else {
-						csvImport.importContacts(file, s);
+					} 
+					else if (importFormat.equals(ActionCommands.BIN.toString()))  {
+						binImport.importContacts(file, s);
 					}
-				} else {
+					else if (importFormat.equals(ActionCommands.CSV.toString()))  {
+						csvImport.importContacts(file, s);
+					}					
+				} 
+				else {
 					if (importFormat.equals(ActionCommands.V_CARD.toString())) {
 						vcardImport.importContacts(file);
-					} else {
-						csvImport.importContacts(file);
+					} 
+					else if (importFormat.equals(ActionCommands.BIN.toString()))  {
+						binImport.importContacts(file);
 					}
+					else if (importFormat.equals(ActionCommands.CSV.toString()))  {
+						csvImport.importContacts(file);
+					}			
 				}
 			}
 		} catch (IOException ex) {
@@ -429,8 +449,9 @@ public class ImportWindow extends JFrame implements ActionListener {
 		} finally {
 			this.setCursor(Cursor.getDefaultCursor());
 		}
-		
+						
 		this.dispose();
+		this.performChanges();
 	}
 
 	/**
@@ -484,7 +505,21 @@ public class ImportWindow extends JFrame implements ActionListener {
 			this.setCursor(Cursor.getDefaultCursor());
 		}
 
+
+		this.performChanges();
 		this.dispose();
+	}
+	
+	private void performChanges() {
+		// TODO - inform user, that import was succesfull or unsuccessfull
+		JOptionPane.showMessageDialog(this, 
+			"Import was successfull.", 
+			"Import success", 
+			JOptionPane.INFORMATION_MESSAGE);
+		
+		// update changes in the lists
+		ContactsPanel.fillTable();
+		GroupsPanel.fillList();		
 	}
 
 	/**
@@ -503,7 +538,8 @@ public class ImportWindow extends JFrame implements ActionListener {
 			String exportFormat = this.importFormatsButtonGroup.getSelection().getActionCommand();
 			// import from file
 			if (exportFormat.equals(ActionCommands.V_CARD.toString())
-					|| exportFormat.equals(ActionCommands.CSV.toString())) {
+					|| exportFormat.equals(ActionCommands.CSV.toString())
+					|| exportFormat.equals(ActionCommands.BIN.toString())) {
 				int result = this.fileChooser.showOpenDialog(ImportWindow.this);
 				if (result == JFileChooser.APPROVE_OPTION) {
 					this.importFromFile();

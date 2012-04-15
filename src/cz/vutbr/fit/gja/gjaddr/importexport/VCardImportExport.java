@@ -155,7 +155,7 @@ public class VCardImportExport {
 			while (addressesIterator != null && addressesIterator.hasNext()) {
 				// TODO post code
 				AddressFeature af = addressesIterator.next();
-				addresses.add(new Address(1, af.getStreetAddress(), af.getLocality(), 0, af.getCountryName()));
+				addresses.add(new Address(1, af.getStreetAddress() + af.getLocality() + 0 + af.getCountryName()));
 			}
 			
 			// get emails
@@ -241,10 +241,11 @@ public class VCardImportExport {
 				// set contact addresses
 				for (Address address : c.getAdresses()) {
 					AddressFeature af = new AddressType();
-					af.setCountryName(address.getCountry());
-					af.setLocality(address.getCity());
-					af.setStreetAddress(address.getStreet() + " " + address.getNumber());
-					af.setPostalCode(address.getPostCodeAsString());
+//					af.setCountryName(address.getCountry());
+//					af.setLocality(address.getCity());
+//					af.setStreetAddress(address.getStreet() + " " + address.getNumber());
+//					af.setPostalCode(address.getPostCodeAsString());
+					af.setExtendedAddress(address.getAddress());
 					// TODO set type
 					vcard.addAddress(af);
 				}

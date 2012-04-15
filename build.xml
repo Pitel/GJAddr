@@ -50,6 +50,7 @@
 			<compilerarg value="-Xlint" />
 			<classpath>
 				<pathelement path="test/junit.jar"/>
+				<fileset refid="libs" />
 				<pathelement path="build/classes"/>
 			</classpath>
 		</javac>
@@ -58,9 +59,12 @@
 				<pathelement path="test/junit.jar"/>
 				<pathelement path="build/test"/>
 				<pathelement path="build/classes"/>
+				<fileset refid="libs" />
 			</classpath>
 			<formatter type="plain" usefile="false" />
 			<test name="${package}.persistancelayer.DatabaseTest" />
+			<test name="${package}.persistancelayer.AuthTokenTest" />
+			<test name="${package}.importexport.VCardImportExportTest" />
 		</junit>
 	</target>
 

@@ -4,13 +4,9 @@ import cz.vutbr.fit.gja.gjaddr.persistancelayer.Contact;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Group;
 import java.awt.BorderLayout;
-import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.*;
@@ -35,28 +31,31 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 	private JTextField searchField;
 	private ContactsPanel contactsPanel;
 	private DetailPanel detailPanel;
-	
+
+	static final String ROOT_GROUP = "My_Contacts";
+
 	public UserActions actions = new UserActions();
-	
+
 	/**
 	 * Creates the main window.
 	 */
 	public MainWindow() {
 		super("GJAddr");
-		// cz.vutbr.fit.gja.gjaddr.persistancelayer.TestData.fillTestingData(db);	//DEBUG
+		//cz.vutbr.fit.gja.gjaddr.persistancelayer.TestData.fillTestingData(db);	//DEBUG
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
 			System.err.println(e);
-		}			
-		
+		}
+
 		setIconImage(new ImageIcon(getClass().getResource("/res/icon.png")).getImage());
 		setJMenuBar(this.createMenu());
 		final JToolBar toolbar = new JToolBar();
 		toolbar.setFloatable(false);
-		
+
 		toolbar.add(actions.actionNewContact);
+		toolbar.add(actions.actionEditContact);
 		toolbar.add(actions.actionDeleteContact);
 		toolbar.addSeparator();
 		toolbar.add(actions.actionImport);
@@ -64,7 +63,7 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		toolbar.addSeparator();
 		toolbar.add(actions.actionPreferences);
 		toolbar.addSeparator();
-		
+
 		searchField = new JTextField();
 		searchField.getDocument().addDocumentListener(this);
 		toolbar.add(searchField);
@@ -106,7 +105,7 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		fileMenu.setMnemonic(KeyEvent.VK_F);
 		menuBar.add(fileMenu);
 		menuBar.add(Box.createHorizontalGlue());
-		
+
 		JMenu helpMenu = new JMenu("Help");
 		helpMenu.setMnemonic(KeyEvent.VK_H);
 		menuBar.add(helpMenu);
@@ -116,7 +115,7 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		fileMenu.addSeparator();
 		fileMenu.add(this.actions.actionPreferences);
 		fileMenu.addSeparator();
-		
+
 		menuItemClose = new JMenuItem("Quit", KeyEvent.VK_Q);
 		menuItemClose.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK));
 		menuItemClose.addActionListener(this);
@@ -153,9 +152,41 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		//System.out.println(e);
 		if (e.getSource() == menuItemClose) {
 			dispose();
-		} 
+		}
  	}
-		
+
+	void handleGroupActionsVisibility() {
+		if (isSelectRootGroup()) {
+			this.actions.actionDeleteGroup.setEnabled(false);
+			this.actions.actionRenameGroup.setEnabled(false);
+		}
+		else {
+			this.actions.actionDeleteGroup.setEnabled(true);
+			this.actions.actionRenameGroup.setEnabled(true);
+		}
+	}
+
+	void handleContactActionsVisibility() {
+		if (ContactsPanel.getSelectedContact() == null) {
+			this.actions.actionDeleteContact.setEnabled(false);
+			this.actions.actionEditContact.setEnabled(false);
+		}
+		else {
+			this.actions.actionDeleteContact.setEnabled(true);
+			this.actions.actionEditContact.setEnabled(true);
+		}
+	}
+
+	private boolean isSelectRootGroup() {
+		for (Group g : GroupsPanel.getSelectedGroups()) {
+			if (g.getName().equals(ROOT_GROUP)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	/**
 	 * Listener class for groups list selection
 	 */
@@ -164,11 +195,9 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		public void valueChanged(ListSelectionEvent e) {
 			if (!e.getValueIsAdjusting()) {	//React only on final choice
 				final JList list = (JList) e.getSource();
-				final Group[] groups = Arrays.copyOf(list.getSelectedValues(), list.getSelectedValues().length, Group[].class);
-				final List<Group> requiredGroupList = Arrays.asList(groups);
-				//System.out.println("Groups: " + requiredGroupList);
-				final List<Contact> contacts = db.getAllContactsFromGroup(requiredGroupList);
-				ContactsPanel.fillTable(contacts);
+
+				ContactsPanel.fillTable();
+				handleGroupActionsVisibility();
 			}
 		}
 	}
@@ -180,8 +209,9 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		@Override
 		public void valueChanged(ListSelectionEvent e) {
 			//React only on final choice
-			if (!e.getValueIsAdjusting()) {	
+			if (!e.getValueIsAdjusting()) {
 				detailPanel.show(contactsPanel.getSelectedContact());
+				handleContactActionsVisibility();
 			}
 		}
 	}

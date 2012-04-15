@@ -22,39 +22,12 @@ public class DatabaseGroups {
 	}	
 	
 	private void load()	{
-		
-		this.groups = null;
-		
-		if ((new File(FILENAME)).exists()) {
-			try {
-				FileInputStream flinpstr = new FileInputStream(FILENAME);
-				ObjectInputStream objinstr= new ObjectInputStream(flinpstr);
-
-				try {	
-					this.groups = (ArrayList<Group>) objinstr.readObject(); 
-				} 
-				finally {
-					try {
-						objinstr.close();
-					} 
-					finally {
-						flinpstr.close();
-					}
-				}
-			} 
-			catch(IOException ioe) {
-				ioe.printStackTrace();
-			} 
-			catch(ClassNotFoundException cnfe) {
-				cnfe.printStackTrace();
-			}
-		}		
-		
-		// create empty DB
-		if (this.groups == null) {
-			this.groups = new ArrayList<Group>();
-		}			
+		this.groups = (ArrayList<Group>) Serialization.load(FILENAME);
 	}
+	
+	void save()	{		
+		Serialization.save(FILENAME, this.groups);
+	}	
 	
 	private void setLastIdNumber() {
 		
@@ -78,34 +51,6 @@ public class DatabaseGroups {
 		}
 		
 		return false;
-	}
-	
-	void save()	{
-		
-		if (this.groups == null || this.groups.isEmpty()) {
-			return;
-		}
-		
-		try {
-			FileOutputStream flotpt = new FileOutputStream(FILENAME);
-			ObjectOutputStream objstr= new ObjectOutputStream(flotpt);
-			
-			try {
-				objstr.writeObject(this.groups); 
-				objstr.flush();
-			} 
-			finally {				
-				try {
-					objstr.close();
-				} 
-				finally {
-					flotpt.close();
-				}
-			}
-		} 
-		catch(IOException ioe) {
-			ioe.printStackTrace();
-		}		
 	}
 	
 	void clear() {
@@ -150,6 +95,22 @@ public class DatabaseGroups {
 		if (index != -1) {
 			this.groups.set(index, group);
 		}
+	}
+	
+	boolean renameGroup(Group group, String newName) {
+		
+		if (group.getName().equals(newName)) {
+			return true;
+		}
+		
+		if (this.checkNameIfExists(newName)) {
+			return false;
+		}		
+		
+		group.setName(newName);	
+		this.updateGroup(group);
+		
+		return true;
 	}
 	
 	void removeGroup(List<Group> groupsToRemove) {

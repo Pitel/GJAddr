@@ -89,7 +89,7 @@ public class Database implements IDatabase {
 		return this.contacts.filter(requiredContacts);
 	}
 
-	@Override // TOTEST
+	@Override // DONE
 	public List<Contact> getAllContactsFromGroup(List<Group> requiredGroups) {
 		
 		// groupId == -1 indicate all contacts
@@ -139,9 +139,20 @@ public class Database implements IDatabase {
 	@Override // DONE
 	public List<Group> removeGroups(List<Group> groupsToRemove) {
 		this.groups.removeGroup(groupsToRemove);
+		this.groupsContacts.removeGroupsEntries(groupsToRemove);
 		this.commitChanges(TableType.GROUPS);
+		this.commitChanges(TableType.GROUPSCONTACTS);			
 		return this.groups.getAllGroups();
 	}
+	
+	@Override // TOTEST
+	public List<Group> renameGroup(Group group, String newName) {
+		if (!this.groups.renameGroup(group, newName)) {
+			return null;
+		}
+		this.commitChanges(TableType.GROUPS);
+		return this.groups.getAllGroups();
+	}	
 
 	@Override // DONE
 	public List<Contact> addNewContacts(List<Contact> contacts) {

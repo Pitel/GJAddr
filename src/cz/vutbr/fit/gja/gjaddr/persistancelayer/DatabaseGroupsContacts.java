@@ -63,66 +63,25 @@ public class DatabaseGroupsContacts {
 		this.groupsContacts.removeAll(entriesToRemove);
 	}
 	
-	private void load()	{
-		
-		this.groupsContacts = null;
-		
-		if ((new File(FILENAME)).exists()) {
-			try {
-				FileInputStream flinpstr = new FileInputStream(FILENAME);
-				ObjectInputStream objinstr= new ObjectInputStream(flinpstr);
-
-				try {	
-					this.groupsContacts = (List<GroupContact>) objinstr.readObject(); 
-				} 
-				finally {
-					try {
-						objinstr.close();
-					} 
-					finally {
-						flinpstr.close();
-					}
+	void removeGroupsEntries(List<Group> groupsToRemove) {
+		List<GroupContact> entriesToRemove = new ArrayList<GroupContact>();		
+		for (Group group: groupsToRemove) {
+			for (GroupContact gc: this.groupsContacts) {
+				if (gc.getContactId() == group.getId()) {
+					entriesToRemove.add(gc);
 				}
-			} 
-			catch(IOException ioe) {
-				ioe.printStackTrace();
-			} 
-			catch(ClassNotFoundException cnfe) {
-				cnfe.printStackTrace();
 			}
-		}		
-		
-		if (this.groupsContacts == null) {
-			this.groupsContacts = new ArrayList<GroupContact>();
-		}			
+		}
+			
+		this.groupsContacts.removeAll(entriesToRemove);			
+	}
+	
+	private void load()	{
+		this.groupsContacts = Serialization.load(FILENAME);		
 	}
 	
 	void save()	{
-		
-		if (this.groupsContacts == null || this.groupsContacts.isEmpty()) {
-			return;
-		}
-		
-		try {
-			FileOutputStream flotpt = new FileOutputStream(FILENAME);
-			ObjectOutputStream objstr= new ObjectOutputStream(flotpt);
-			
-			try {
-				objstr.writeObject(this.groupsContacts); 
-				objstr.flush();
-			} 
-			finally {				
-				try {
-					objstr.close();
-				} 
-				finally {
-					flotpt.close();
-				}
-			}
-		} 
-		catch(IOException ioe) {
-			ioe.printStackTrace();
-		}		
+		Serialization.save(FILENAME, this.groupsContacts);
 	}	
 	
 	void clear() {

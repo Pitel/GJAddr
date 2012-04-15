@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import javax.swing.ImageIcon;
 
 /**
  * Contact object representation.
@@ -14,7 +15,7 @@ import java.util.List;
 public class Contact implements Serializable {
 
 	static private final long serialVersionUID = 6L;
-	
+
 	// not visible for GUI, only for DB usage
 	int id = -1;
 
@@ -22,20 +23,20 @@ public class Contact implements Serializable {
 	private String surName;
 	private String nickName;
 	private Date dateOfBirth;
-	//private x Photo;
+	private ImageIcon Photo;
 	private String note;
-	
-	private List<Messenger> messenger;	
-	private List<Url> urls;	
-	private List<Address> adresses;	
-	private List<PhoneNumber> phoneNumbers;	
-	private List<Email> emails;	
-	private List<Custom> customs;	
-	
+
+	private List<Messenger> messenger;
+	private List<Url> urls;
+	private List<Address> adresses;
+	private List<PhoneNumber> phoneNumbers;
+	private List<Email> emails;
+	private List<Custom> customs;
+
 	public int getId() {
 		return id;
 	}
-	
+
 	public List<Messenger> getMessenger() {
 		return (messenger != null) ? messenger : new ArrayList<Messenger>();
 	}
@@ -82,7 +83,7 @@ public class Contact implements Serializable {
 
 	public void setCustoms(List<Custom> customs) {
 		this.customs = customs;
-	}	
+	}
 
 	public String getFirstName() {
 		return firstName;
@@ -124,6 +125,14 @@ public class Contact implements Serializable {
 		this.dateOfBirth = dateOfBirth;
 	}
 
+	public ImageIcon getPhoto() {
+		return Photo;
+	}
+
+	public void setPhoto(ImageIcon photo) {
+		this.Photo = photo;
+	}
+
 	/**
 	 * Return true if contact has birthday within one month.
 	 *
@@ -149,44 +158,40 @@ public class Contact implements Serializable {
 			return false;
 		}
 	}
-	
+
 	public String getFullName() {
 		StringBuilder fullName = new StringBuilder();
-		
+
 		try {
-			fullName.append(this.surName);	
+			fullName.append(this.surName);
 			fullName.append(" ");
 			fullName.append(this.firstName);
 		}
 		catch (NullPointerException e) {
 			return "";
 		}
-		
+
 		return fullName.toString();
 	}
-	
+
 	public String getAllAddresses() {
-		String separator = "";		
+		String separator = "";
 		StringBuilder addresses = new StringBuilder();
-		
+
 		try {
 			for (Address address : this.adresses) {
 				addresses.append(separator);
-				addresses.append(address.getStreet());
-				addresses.append(" ");
-				addresses.append(address.getNumber());
-				addresses.append(", ");
-				addresses.append(address.getCity());
+				addresses.append(address.getAddress());
 				separator = "; ";
-			}	
+			}
 		}
 		catch (NullPointerException e) {
 			return "";
 		}
-		
+
 		return addresses.toString();
 	}
-	
+
 	public String getAllPhones() {
 		String separator = "";
 		final StringBuilder phones = new StringBuilder();
@@ -203,7 +208,7 @@ public class Contact implements Serializable {
 
 		return phones.toString();
 	}
-	
+
 	public String getAllEmails() {
 		String separator = "";
 		final StringBuilder emails = new StringBuilder();
@@ -214,23 +219,27 @@ public class Contact implements Serializable {
 				emails.append(email.getEmail());
 				separator = ", ";
 			}
-		} 
+		}
 		catch (NullPointerException e) {
 			return "";
 		}
-		
+
 		return emails.toString();
-	}	
-	
+	}
+
+	public Contact() {
+
+	}
+
 	public Contact(String firstName, String surName, String nickName, String note) {
 		this.firstName = firstName;
 		this.surName = surName;
 		this.nickName = nickName;
-		this.note = nickName;		
+		this.note = nickName;
 	}
 
-	public Contact(String firstName, String surName, String nickName, Date dateOfBirth, 
-					       String note, List<Messenger> messenger, List<Url> urls, List<Address> adresses, 
+	public Contact(String firstName, String surName, String nickName, Date dateOfBirth,
+					       String note, List<Messenger> messenger, List<Url> urls, List<Address> adresses,
 								 List<PhoneNumber> phoneNumbers, List<Email> emails, List<Custom> customs) {
 		this.firstName = firstName;
 		this.surName = surName;
@@ -292,10 +301,10 @@ public class Contact implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Contact{" + "id=" + id + ", firstName=" + firstName + ", surName=" + surName 
-						          + ", nickName=" + nickName + ", dateOfBirth=" + dateOfBirth + ", note=" 
-						          + note + ", messenger=" + messenger + ", urls=" + urls + ", adresses=" 
-						          + adresses + ", phoneNumbers=" + phoneNumbers + ", emails=" + emails + ", customs=" 
+		return "Contact{" + "id=" + id + ", firstName=" + firstName + ", surName=" + surName
+						          + ", nickName=" + nickName + ", dateOfBirth=" + dateOfBirth + ", note="
+						          + note + ", messenger=" + messenger + ", urls=" + urls + ", adresses="
+						          + adresses + ", phoneNumbers=" + phoneNumbers + ", emails=" + emails + ", customs="
 						          + customs + '}';
 	}
 }

@@ -1,17 +1,12 @@
 
 package cz.vutbr.fit.gja.gjaddr.persistancelayer;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.rules.ExpectedException;
-import org.junit.Rule;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.ServicesEnum;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import static org.hamcrest.Matchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.fail;
+import org.junit.*;
+import org.junit.rules.ExpectedException;
 
 /**
  * Test AuthToken class.

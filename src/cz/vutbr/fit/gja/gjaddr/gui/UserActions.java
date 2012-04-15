@@ -1,7 +1,5 @@
 package cz.vutbr.fit.gja.gjaddr.gui;
 
-import cz.vutbr.fit.gja.gjaddr.persistancelayer.Contact;
-import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -18,35 +16,39 @@ import javax.swing.KeyStroke;
  * @author Bc. Radek Gajdušek <xgajdu07@stud.fit,vutbr.cz>
  */
 public class UserActions {
-	
-	AddContactAction actionNewContact;	
-	DeleteContactAction actionDeleteContact;		
-	
+
+	AddContactAction actionNewContact;
+	EditContactAction actionEditContact;
+	DeleteContactAction actionDeleteContact;
+
 	AddGroupAction actionNewGroup;
 	DeleteGroupAction actionDeleteGroup;
-	
-	ImportAction actionImport;	
+	RenameGroupAction actionRenameGroup;
+
+	ImportAction actionImport;
 	ExportAction actionExport;
 	PreferencesAction actionPreferences;
-	
+
 	HelpAction actionHelp;
 	AboutAction actionAbout;
-	
+
 	public UserActions() {
 		this.actionNewContact = new AddContactAction();
+		this.actionEditContact = new EditContactAction();
 		this.actionDeleteContact = new DeleteContactAction();
-		
+
 		this.actionNewGroup = new AddGroupAction();
 		this.actionDeleteGroup = new DeleteGroupAction();
-		
+		this.actionRenameGroup = new RenameGroupAction();
+
 		this.actionImport = new ImportAction();
 		this.actionExport = new ExportAction();
 		this.actionPreferences = new PreferencesAction();
-		
+
 		this.actionHelp = new HelpAction();
 		this.actionAbout = new AboutAction();
 	}
-	
+
 	/**
 	 * Action for importing contacts
 	 */
@@ -65,14 +67,19 @@ public class UserActions {
 		}
 
 		@Override
+		public void setEnabled(boolean newValue) {
+			super.setEnabled(newValue);
+		}
+
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			new ImportWindow();
 		}
-	}	
-	
+	}
+
 	/**
 	 * Action for exporting contacts
-	 */	
+	 */
 	private class ExportAction extends AbstractAction {
 		static final long serialVersionUID = 0;
 		private static final String name = "Export";
@@ -91,11 +98,11 @@ public class UserActions {
 		public void actionPerformed(ActionEvent e) {
 			new ExportWindow();
 		}
-	}	
-	
+	}
+
 	/**
 	 * Action for preferences
-	 */	
+	 */
 	private class PreferencesAction extends AbstractAction {
 		static final long serialVersionUID = 0;
 		private static final String name = "Preferences";
@@ -115,10 +122,10 @@ public class UserActions {
 			new PreferencesWindow();
 		}
 	}
-	
+
 	/**
 	 * Action for add new contact.
-	 */	
+	 */
 	private class AddContactAction extends AbstractAction {
 		static final long serialVersionUID = 0;
 		private static final String name = "Add new contact";
@@ -135,14 +142,37 @@ public class UserActions {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			new ContactWindow(true); 	
+			new ContactWindow();
 		}
-	}	
-	
+	}
+
+	/**
+	 * Action for editing contact.
+	 */
+	class EditContactAction extends AbstractAction {
+		static final long serialVersionUID = 0;
+		private static final String name = "Edit contact";
+		private static final String icon = "/res/edit.png";
+		private final Integer mnemonic = KeyEvent.VK_E;
+		private final KeyStroke accelerator = KeyStroke.getKeyStroke(mnemonic, ActionEvent.CTRL_MASK);
+
+		public EditContactAction() {
+			super(name);
+			putValue(SMALL_ICON, new ImageIcon(getClass().getResource(icon), name));
+			putValue(MNEMONIC_KEY, mnemonic);
+			putValue(ACCELERATOR_KEY, accelerator);
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			new ContactWindow(ContactsPanel.getSelectedContact());
+		}
+	}
+
 	/**
 	 * Action for delete contact.
-	 */		
-	private class DeleteContactAction extends AbstractAction {
+	 */
+	class DeleteContactAction extends AbstractAction {
 		static final long serialVersionUID = 0;
 		private static final String name = "Delete contact";
 		private static final String icon = "/res/minus.png";
@@ -158,14 +188,14 @@ public class UserActions {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			new ContactWindow(false); 			
+			ContactsPanel.removeContact();
 		}
-	}		
-	
+	}
+
 	/**
 	 * Action for add new group.
-	 */	
-	private class AddGroupAction extends AbstractAction {
+	 */
+	class AddGroupAction extends AbstractAction {
 		static final long serialVersionUID = 0;
 		private static final String name = "Add new group";
 		private static final String icon = "/res/plus_g.png";
@@ -181,14 +211,14 @@ public class UserActions {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			new GroupWindow(true);			
+			new GroupWindow(GroupWindow.Action.NEW);
 		}
-	}		
-	
+	}
+
 	/**
 	 * Action for delete group.
-	 */	
-	private class DeleteGroupAction extends AbstractAction {
+	 */
+	class DeleteGroupAction extends AbstractAction {
 		static final long serialVersionUID = 0;
 		private static final String name = "Delete group";
 		private static final String icon = "/res/minus_g.png";
@@ -204,13 +234,36 @@ public class UserActions {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			new GroupWindow(false);
+			new GroupWindow(GroupWindow.Action.REMOVE);
 		}
-	}			
-	
+	}
+
+	/**
+	 * Action for delete group.
+	 */
+	class RenameGroupAction extends AbstractAction {
+		static final long serialVersionUID = 0;
+		private static final String name = "Rename group";
+		private static final String icon = "/res/edit_g.png";
+		private final Integer mnemonic = KeyEvent.VK_R;
+		private final KeyStroke accelerator = KeyStroke.getKeyStroke(mnemonic, ActionEvent.CTRL_MASK);
+
+		public RenameGroupAction() {
+			super(name);
+			putValue(SMALL_ICON, new ImageIcon(getClass().getResource(icon), name));
+			putValue(MNEMONIC_KEY, mnemonic);
+			putValue(ACCELERATOR_KEY, accelerator);
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			new GroupWindow(GroupWindow.Action.RENAME);
+		}
+	}
+
 	/**
 	 * Action for help action.
-	 */		
+	 */
 	private class HelpAction extends AbstractAction {
 		static final long serialVersionUID = 0;
 		private static final String name = "Help";
@@ -229,19 +282,19 @@ public class UserActions {
 		public void actionPerformed(ActionEvent e) {
 			try {
 				Desktop.getDesktop().browse(new URI("http://pitel.github.com/GJAddr"));
-			} 
+			}
 			catch (URISyntaxException ex) {
 				System.err.println(ex);
-			} 
+			}
 			catch (IOException ex) {
 				System.err.println(ex);
 			}
 		}
-	}			
-	
+	}
+
 	/**
 	 * Action for showing about dialog.
-	 */		
+	 */
 	private class AboutAction extends AbstractAction {
 		static final long serialVersionUID = 0;
 		private static final String name = "About";
@@ -260,5 +313,5 @@ public class UserActions {
 		public void actionPerformed(ActionEvent e) {
 			new AboutWindow();
 		}
-	}		
+	}
 }
