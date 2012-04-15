@@ -3,7 +3,9 @@ package cz.vutbr.fit.gja.gjaddr.importexport;
 import com.restfb.Connection;
 import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
+import com.restfb.types.NamedFacebookType;
 import com.restfb.types.User;
+import cz.vutbr.fit.gja.gjaddr.importexport.exception.FacebookImportException;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.AuthToken;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Contact;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Custom;
@@ -20,7 +22,6 @@ import org.slf4j.LoggerFactory;
  * Class for fetching Facebook contacts.
  *
  * @author Bc. Drahomira Herrmannova <xherrm01@stud.fit.vutbr.cz>
- * @author Bc. Jan Kaláb <xkalab00@stud.fit.vutbr.cz>
  * @see <a href="http://restfb.com">RestFB</a>
  * @see <a href="https://developers.facebook.com/docs/reference/api/user">Facebook Graph API</a>
  */
@@ -47,7 +48,11 @@ public class FacebookImport {
 	public FacebookImport() {
 		this.database = Database.getInstance();
 		this.token = this.database.getToken(ServicesEnum.FACEBOOK);
-		this.client = new DefaultFacebookClient(this.token.getToken());
+		if (this.token != null) {
+			this.client = new DefaultFacebookClient(this.token.getToken());
+		} else {
+			this.client = null;
+		}
 	}
 
 	/**
@@ -81,17 +86,30 @@ public class FacebookImport {
 		Contact contact = new Contact(user.getFirstName(), user.getLastName(), user.getUsername(), user.getAbout());
 
 		// contact emails
-		emails.add(new Email(1, user.getEmail()));
-		contact.setEmails(emails);
+		if (user.getEmail() != null && !user.getEmail().isEmpty() && !user.getEmail().equalsIgnoreCase("null")) {
+			emails.add(new Email(1, user.getEmail()));
+			contact.setEmails(emails);
+		}
 
 		// contact URLs
-		urls.add(new Url(1, user.getLink()));
-		urls.add(new Url(1, user.getWebsite()));
-		contact.setUrls(urls);
+		if (user.getLink() != null && !user.getLink().isEmpty() && !user.getLink().equalsIgnoreCase("null")) {
+			urls.add(new Url(1, user.getLink()));
+		}
+		if (user.getWebsite() != null && !user.getWebsite().isEmpty() && !user.getWebsite().equalsIgnoreCase("null")) {
+			urls.add(new Url(1, user.getWebsite()));
+		}
+		if (!urls.isEmpty()) {
+			contact.setUrls(urls);
+		}
+
+		// set birthday
+		if (user.getBirthdayAsDate() != null) {
+			contact.setDateOfBirth(user.getBirthdayAsDate());
+		}
 
 		// custom fields
 		customFields.add(new Custom("hometown", user.getHometownName()));
-		customFields.add(new Custom("birthday", user.getBirthday()));
+		customFields.add(new Custom("location", user.getLocation().getName()));
 		contact.setCustoms(customFields);
 
 		return contact;
@@ -102,7 +120,12 @@ public class FacebookImport {
 	 * 
 	 * @return
 	 */
-	private List<Contact> fetchContacts() {
+	private List<Contact> fetchContacts() throws FacebookImportException {
+		if (this.client == null) {
+			throw new FacebookImportException("You need to connect to Facebook before importing.\n"
+					+ "Please go to Preferences and setup connection to Facebook.");
+		}
+
 		// fetch user friends
 		Connection<User> userFriends = this.client.fetchConnection("me/friends", User.class);
 		// create list with contacts to import
@@ -123,8 +146,8 @@ public class FacebookImport {
 	/**
 	 * Import contacts from Facebook.
 	 */
-	public void importContacts() {
-		this.importContacts(null);
+	public int importContacts() throws FacebookImportException {
+		return this.importContacts(null);
 	}
 
 	/**
@@ -132,7 +155,7 @@ public class FacebookImport {
 	 * 
 	 * @param group
 	 */
-	public void importContacts(String group) {
+	public int importContacts(String group) throws FacebookImportException {
 		// fetch contacts from facebook
 		List<Contact> contacts = this.fetchContacts();
 
@@ -154,6 +177,8 @@ public class FacebookImport {
 				this.database.addContactsToGroup(dbGroup, contacts);
 			}
 		}
+
+		return contacts.size();
 	}
 
 	/**
@@ -161,7 +186,7 @@ public class FacebookImport {
 	 * 
 	 * @param args
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws FacebookImportException {
 		FacebookImport fb = new FacebookImport();
 		List<Contact> cs = fb.fetchContacts();
 		for (Contact c : cs) {

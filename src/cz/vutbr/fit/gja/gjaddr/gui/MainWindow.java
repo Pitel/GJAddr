@@ -18,7 +18,6 @@ import org.jdesktop.swingx.MultiSplitLayout.Divider;
 import org.jdesktop.swingx.MultiSplitLayout.Leaf;
 import org.jdesktop.swingx.MultiSplitLayout.Split;
 import org.jdesktop.swingx.MultiSplitPane;
-import org.slf4j.LoggerFactory;
 
 /**
  * Main application window.

@@ -3,6 +3,8 @@ package cz.vutbr.fit.gja.gjaddr.gui;
 
 import com.google.gdata.util.ServiceException;
 import cz.vutbr.fit.gja.gjaddr.importexport.*;
+import cz.vutbr.fit.gja.gjaddr.importexport.exception.FacebookImportException;
+import cz.vutbr.fit.gja.gjaddr.importexport.exception.GoogleImportException;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Group;
 import java.awt.Cursor;
@@ -437,19 +439,15 @@ public class ImportWindow extends JFrame implements ActionListener {
 			}
 		} catch (IOException ex) {
 			LoggerFactory.getLogger(this.getClass()).error(ex.toString());
-			JOptionPane.showMessageDialog(this, "Import was unsuccessful. Please try again.", "Unsuccessful",
+			JOptionPane.showMessageDialog(this, "Import was unsuccessful. Please try again.", "Import unsuccessful",
 					JOptionPane.INFORMATION_MESSAGE);
-			this.dispose();
-			this.performChanges();
+			return;
 		} finally {
 			this.setCursor(Cursor.getDefaultCursor());
 		}
-
-		JOptionPane.showMessageDialog(this, imported.toString() + " contacts were successfuly imported.", "Success",
-					JOptionPane.INFORMATION_MESSAGE);
 		
 		this.dispose();
-		this.performChanges();
+		this.performChanges(imported);
 	}
 
 	/**
@@ -460,60 +458,84 @@ public class ImportWindow extends JFrame implements ActionListener {
 		String importFormat = this.importFormatsButtonGroup.getSelection().getActionCommand();
 		String importGroup = (String) this.groupsList.getSelectedItem();
 
+		Integer imported = null;
+
 		try {
 			// set cursor to wait cursor
 			this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 			// do the import
 			if (importOption.equals(ActionCommands.NO_GROUP.toString())) {
 				if (importFormat.equals(ActionCommands.FACEBOOK.toString())) {
-					new FacebookImport().importContacts();
+					imported = new FacebookImport().importContacts();
 				} else {
-					new GoogleImport().importContacts();
+					imported = new GoogleImport().importContacts();
 				}
 			} else if (importOption.equals(ActionCommands.SELECTED_GROUP.toString())) {
 				if (importFormat.equals(ActionCommands.FACEBOOK.toString())) {
-					new FacebookImport().importContacts(importGroup);
+					imported = new FacebookImport().importContacts(importGroup);
 				} else {
-					new GoogleImport().importContacts(importGroup);
+					imported = new GoogleImport().importContacts(importGroup);
 				}
 			} else {
 				String s = (String) JOptionPane.showInputDialog(this, "New group name:",
 						"New group creation", JOptionPane.PLAIN_MESSAGE, null, null, null);
 				if ((s != null) && (s.length() > 0)) {
 					if (importFormat.equals(ActionCommands.FACEBOOK.toString())) {
-						new FacebookImport().importContacts(s);
+						imported = new FacebookImport().importContacts(s);
 					} else {
-						new GoogleImport().importContacts(s);
+						imported = new GoogleImport().importContacts(s);
 					}
 				} else {
 					if (importFormat.equals(ActionCommands.FACEBOOK.toString())) {
-						new FacebookImport().importContacts();
+						imported = new FacebookImport().importContacts();
 					} else {
-						new GoogleImport().importContacts();
+						imported = new GoogleImport().importContacts();
 					}
 				}
 			}
 		} catch (MalformedURLException e) {
-			// TODO message
+			LoggerFactory.getLogger(this.getClass()).error(e.toString());
+			JOptionPane.showMessageDialog(this, "Import was unsuccessful. Please try again.", "Import unsuccessful",
+					JOptionPane.INFORMATION_MESSAGE);
+			return;
 		} catch (IOException e) {
-			// TODO message
+			LoggerFactory.getLogger(this.getClass()).error(e.toString());
+			JOptionPane.showMessageDialog(this, "Import was unsuccessful. Please try again.", "Import unsuccessful",
+					JOptionPane.INFORMATION_MESSAGE);
+			return;
 		} catch (ServiceException e) {
-			// TODO message
-		} finally  {
+			LoggerFactory.getLogger(this.getClass()).error(e.toString());
+			JOptionPane.showMessageDialog(this, "Import was unsuccessful. Please try again.", "Import unsuccessful",
+					JOptionPane.INFORMATION_MESSAGE);
+			return;
+		} catch (FacebookImportException e) {
+			JOptionPane.showMessageDialog(this, e.getMessage(), "Import unsuccessful",
+					JOptionPane.INFORMATION_MESSAGE);
+			new PreferencesWindow();
+			return;
+		} catch (GoogleImportException e) {
+			JOptionPane.showMessageDialog(this, e.getMessage(), "Import unsuccessful",
+					JOptionPane.INFORMATION_MESSAGE);
+			new PreferencesWindow();
+			return;
+		} finally {
 			this.setCursor(Cursor.getDefaultCursor());
 		}
 
-
-		this.performChanges();
 		this.dispose();
+		this.performChanges(imported);
 	}
-	
-	private void performChanges() {
-		// TODO - inform user, that import was succesfull or unsuccessfull
-		JOptionPane.showMessageDialog(this, 
-			"Import was successfull.", 
-			"Import success", 
-			JOptionPane.INFORMATION_MESSAGE);
+
+	/**
+	 * Inform user about successful import.
+	 * 
+	 * @param count
+	 */
+	private void performChanges(int count) {
+		// inform user, that import was succesfull
+		JOptionPane.showMessageDialog(this,
+				"Import was successfull.\n" + count + " contacts were imported.",
+				"Import success", JOptionPane.INFORMATION_MESSAGE);
 		
 		// update changes in the lists
 		ContactsPanel.fillTable();
