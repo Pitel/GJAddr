@@ -110,8 +110,8 @@ public class VCardImportExport {
 	 * @param file
 	 * @throws VCardException
 	 */
-	public void importContacts(File file) throws IOException {
-		this.importContactsToGroup(file, null);
+	public int importContacts(File file) throws IOException {
+		return this.importContactsToGroup(file, null);
 	}
 
 	/**
@@ -121,7 +121,7 @@ public class VCardImportExport {
 	 * @param group Name of group to import to.
 	 * @throws VCardException
 	 */
-	public void importContactsToGroup(File file, String group) throws IOException {
+	public int importContactsToGroup(File file, String group) throws IOException {
 		String[] vcardStrings = this.splitVcardFile(file);
 		VCardEngine vcardEngine = new VCardEngine();
 		VCard[] vcards = vcardEngine.parse(vcardStrings);
@@ -210,6 +210,8 @@ public class VCardImportExport {
 				this.database.addContactsToGroup(dbGroup, contacts);
 			}
 		}
+
+		return contacts.size();
 	}
 
 	/**

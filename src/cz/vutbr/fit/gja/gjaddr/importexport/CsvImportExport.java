@@ -52,8 +52,8 @@ public class CsvImportExport {
 	 * 
 	 * @param file
 	 */
-	public void importContacts(File file) throws IOException {
-		this.importContacts(file, null);
+	public int importContacts(File file) throws IOException {
+		return this.importContacts(file, null);
 	}
 
 	/**
@@ -62,7 +62,7 @@ public class CsvImportExport {
 	 * @param file
 	 * @param group
 	 */
-	public void importContacts(File file, String group) throws IOException {
+	public int importContacts(File file, String group) throws IOException {
 		CSVReader reader = new CSVReader(new FileReader(file));
 		List<Contact> contacts = new ArrayList<Contact>();
 		String [] nextLine;
@@ -118,6 +118,8 @@ public class CsvImportExport {
 				this.database.addContactsToGroup(dbGroup, contacts);
 			}
 		}
+
+		return contacts.size();
 	}
 
 	/**

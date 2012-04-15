@@ -390,7 +390,9 @@ public class ImportWindow extends JFrame implements ActionListener {
 
 		VCardImportExport vcardImport = new VCardImportExport();
 		CsvImportExport csvImport = new CsvImportExport();
-		BinImportExport binImport = new BinImportExport();		
+		BinImportExport binImport = new BinImportExport();
+
+		Integer imported = null;
 		
 		try {
 			// set cursor to wait cursor
@@ -398,58 +400,54 @@ public class ImportWindow extends JFrame implements ActionListener {
 			// do the import
 			if (importOption.equals(ActionCommands.NO_GROUP.toString())) {
 				if (importFormat.equals(ActionCommands.V_CARD.toString())) {
-					vcardImport.importContacts(file);
-				} 
-				else if (importFormat.equals(ActionCommands.BIN.toString())) {
-					binImport.importContacts(file);					
+					imported = vcardImport.importContacts(file);
+				} else if (importFormat.equals(ActionCommands.BIN.toString())) {
+					imported = binImport.importContacts(file);
+				} else if (importFormat.equals(ActionCommands.CSV.toString())) {
+					imported = csvImport.importContacts(file);
 				}
-				else if (importFormat.equals(ActionCommands.CSV.toString())) {
-					csvImport.importContacts(file);
-				}
-			} 
-			else if (importOption.equals(ActionCommands.SELECTED_GROUP.toString())) {
+			} else if (importOption.equals(ActionCommands.SELECTED_GROUP.toString())) {
 				if (importFormat.equals(ActionCommands.V_CARD.toString())) {
-					vcardImport.importContactsToGroup(file, importGroup);
-				} 
-				else if (importFormat.equals(ActionCommands.BIN.toString())) {
-					binImport.importContacts(file, importGroup);
-				}
-				else if (importFormat.equals(ActionCommands.CSV.toString())) {
-					csvImport.importContacts(file, importGroup);
+					imported = vcardImport.importContactsToGroup(file, importGroup);
+				} else if (importFormat.equals(ActionCommands.BIN.toString())) {
+					imported = binImport.importContacts(file, importGroup);
+				} else if (importFormat.equals(ActionCommands.CSV.toString())) {
+					imported = csvImport.importContacts(file, importGroup);
 				}				
-			} 
-			else if (importOption.equals(ActionCommands.NEW_GROUP.toString())) {
+			} else if (importOption.equals(ActionCommands.NEW_GROUP.toString())) {
 				String s = (String) JOptionPane.showInputDialog(this, "New group name:",
 						"New group creation", JOptionPane.PLAIN_MESSAGE, null, null, null);
 				if ((s != null) && (s.length() > 0)) {
 					if (importFormat.equals(ActionCommands.V_CARD.toString())) {
-						vcardImport.importContactsToGroup(file, s);
-					} 
-					else if (importFormat.equals(ActionCommands.BIN.toString()))  {
-						binImport.importContacts(file, s);
-					}
-					else if (importFormat.equals(ActionCommands.CSV.toString()))  {
-						csvImport.importContacts(file, s);
+						imported = vcardImport.importContactsToGroup(file, s);
+					} else if (importFormat.equals(ActionCommands.BIN.toString()))  {
+						imported = binImport.importContacts(file, s);
+					} else if (importFormat.equals(ActionCommands.CSV.toString()))  {
+						imported = csvImport.importContacts(file, s);
 					}					
-				} 
-				else {
+				} else {
 					if (importFormat.equals(ActionCommands.V_CARD.toString())) {
-						vcardImport.importContacts(file);
-					} 
-					else if (importFormat.equals(ActionCommands.BIN.toString()))  {
-						binImport.importContacts(file);
-					}
-					else if (importFormat.equals(ActionCommands.CSV.toString()))  {
-						csvImport.importContacts(file);
+						imported = vcardImport.importContacts(file);
+					} else if (importFormat.equals(ActionCommands.BIN.toString()))  {
+						imported = binImport.importContacts(file);
+					} else if (importFormat.equals(ActionCommands.CSV.toString()))  {
+						imported = csvImport.importContacts(file);
 					}			
 				}
 			}
 		} catch (IOException ex) {
 			LoggerFactory.getLogger(this.getClass()).error(ex.toString());
+			JOptionPane.showMessageDialog(this, "Import was unsuccessful. Please try again.", "Unsuccessful",
+					JOptionPane.INFORMATION_MESSAGE);
+			this.dispose();
+			this.performChanges();
 		} finally {
 			this.setCursor(Cursor.getDefaultCursor());
 		}
-						
+
+		JOptionPane.showMessageDialog(this, imported.toString() + " contacts were successfuly imported.", "Success",
+					JOptionPane.INFORMATION_MESSAGE);
+		
 		this.dispose();
 		this.performChanges();
 	}

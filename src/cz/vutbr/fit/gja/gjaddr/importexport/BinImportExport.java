@@ -32,8 +32,8 @@ public class BinImportExport {
 	 * 
 	 * @param file
 	 */
-	public void importContacts(File file) throws IOException {
-		this.importContacts(file, null);
+	public int importContacts(File file) throws IOException {
+		return this.importContacts(file, null);
 	}	
 	
 	/**
@@ -42,7 +42,7 @@ public class BinImportExport {
 	 * @param file
 	 * @param group
 	 */
-	public void importContacts(File file, String group) {
+	public int importContacts(File file, String group) {
 	
 		List<Contact> contacts = Serialization.load(file.getAbsolutePath());
 				
@@ -56,7 +56,9 @@ public class BinImportExport {
 			if (dbGroup != null) {
 				this.database.addContactsToGroup(dbGroup, contacts);
 			}
-		}		
+		}
+
+		return contacts.size();
 	}
 
 	/**
