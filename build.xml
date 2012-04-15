@@ -49,14 +49,14 @@
 		<javac srcdir="test" destdir="build/test" encoding="UTF-8" debug="on">
 			<compilerarg value="-Xlint" />
 			<classpath>
-				<pathelement path="test/junit.jar"/>
+				<fileset dir="test" includes="*.jar" />
 				<fileset refid="libs" />
 				<pathelement path="build/classes"/>
 			</classpath>
 		</javac>
 		<junit>
 			<classpath>
-				<pathelement path="test/junit.jar"/>
+				<fileset dir="test" includes="*.jar" />
 				<pathelement path="build/test"/>
 				<pathelement path="build/classes"/>
 				<fileset refid="libs" />

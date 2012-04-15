@@ -18,7 +18,7 @@ import javax.swing.*;
 class DetailPanel extends JPanel {
 	static final long serialVersionUID = 0;
 	private final JLabel name = new JLabel();
-	private final JLabel address = new JLabel();
+	private final JPanel address = new JPanel();
 	private final JLabel emails = new JLabel();
 	private final JLabel phones = new JLabel();
 	private final JLabel webs = new JLabel();
@@ -61,8 +61,7 @@ class DetailPanel extends JPanel {
 		c.gridy = 0;
 		detailPanel.add(new JLabel("<html><b>Address:</b></html>"), c);
 		c.gridx = 1;
-		address.setVerticalTextPosition(JLabel.TOP);
-		address.setHorizontalTextPosition(JLabel.CENTER);
+		address.setLayout(new BoxLayout(address, BoxLayout.PAGE_AXIS));
 		detailPanel.add(address, c);
 		c.gridx = 0;
 		c.gridy++;
@@ -112,11 +111,22 @@ class DetailPanel extends JPanel {
 				photo.setVisible(false);
 			}
 			name.setText(String.format("<html><h1>%s %s</h1></html>", contact.getFirstName(), contact.getSurName()));
-			address.setText("Božetěchova 2, Brno");
-			try {
-				address.setIcon(new ImageIcon(new URL("http://maps.google.com/maps/api/staticmap?size=128x128&sensor=false&markers=" + URLEncoder.encode(address.getText(), "utf8"))));
-			} catch (IOException e) {
-				System.err.println(e);
+			address.removeAll();
+			for (Address a : contact.getAdresses()) {
+				if (!a.getAddress().isEmpty()){
+					//System.out.println(a);
+					JLabel l = new JLabel();
+					l.setVerticalTextPosition(JLabel.TOP);
+					l.setHorizontalTextPosition(JLabel.CENTER);
+					l.setAlignmentX(Component.LEFT_ALIGNMENT);
+					l.setText(a.getAddress());
+					try {
+						l.setIcon(new ImageIcon(new URL("http://maps.google.com/maps/api/staticmap?size=128x128&sensor=false&markers=" + URLEncoder.encode(l.getText(), "utf8"))));
+					} catch (IOException e) {
+						System.err.println(e);
+					}
+					address.add(l);
+				}
 			}
 			emails.setText("<html>" + contact.getAllEmails().replaceAll(", ", "<br>") + "</html>");
 			phones.setText("<html>" + contact.getAllPhones().replaceAll(", ", "<br>") + "</html>");
