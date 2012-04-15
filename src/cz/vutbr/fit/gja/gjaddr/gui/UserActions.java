@@ -1,5 +1,6 @@
 package cz.vutbr.fit.gja.gjaddr.gui;
 
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Group;
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;
@@ -7,6 +8,9 @@ import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
@@ -100,8 +104,10 @@ public class UserActions {
 			Group[] selectedGroups = GroupsPanel.getSelectedGroups();
 			if (selectedGroups.length == 1) {
 				new ExportWindow(null, selectedGroups[0]);
+			} else if (selectedGroups.length > 1) {
+				new ExportWindow(Database.getInstance().getAllContactsFromGroup(Arrays.asList(selectedGroups)), null);
 			} else {
-				new ExportWindow();
+				new ExportWindow(null, null);
 			}
 		}
 	}
