@@ -43,6 +43,7 @@ class ContactWindow extends JFrame {
 		photo.setIcon(new ImageIcon(getClass().getResource("/res/photo.png"), ":)"));
 		button.setText("Add contact");
 		button.addActionListener(new NewContactActionListener());
+		contact = new Contact();
 		prepare();
 	}
 
