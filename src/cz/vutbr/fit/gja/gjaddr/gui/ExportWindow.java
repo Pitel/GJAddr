@@ -137,7 +137,7 @@ public class ExportWindow extends JFrame implements ActionListener {
 		this.groupButtonGroup.add(this.selectedContactsButton);
 
 		// exporting group
-		if (this.group != null) {
+		if (this.group != null && this.group.getId() >= 0) {
 			this.noGroupButton.setSelected(false);
 			this.noGroupButton.setFocusPainted(false);
 			this.selectGroupButton.setSelected(true);
@@ -247,6 +247,13 @@ public class ExportWindow extends JFrame implements ActionListener {
 		// create combo box with list of groups
 		this.groupsList = new JComboBox(this.getAllGroups());
 		this.groupsList.addActionListener(this);
+		// pre-select group
+		if (this.group != null) {
+			int index = this.database.getAllGroups().indexOf(this.group);
+			if (index >= 0) {
+				this.groupsList.setSelectedIndex(index);
+			}
+		}
 		// create panel with radio button for group selection and with groups
 		JPanel groupsSelectionPanel = new JPanel(new GridLayout());
 		groupsSelectionPanel.add(this.selectGroupButton);
@@ -285,19 +292,8 @@ public class ExportWindow extends JFrame implements ActionListener {
 	private String[] getAllGroups() {
 		List<Group> allGroups = this.database.getAllGroups();
 		String[] groupsArray = new String[allGroups.size()];
-		if (this.group != null) {
-			groupsArray[0] = this.group.getName();
-			int j = 1;
-			for (int i = 0; i < allGroups.size(); i++) {
-				if (allGroups.get(i).equals(this.group)) {
-					continue;
-				}
-				groupsArray[j++] = allGroups.get(i).getName();
-			}
-		} else {
-			for (int i = 0; i < allGroups.size(); i++) {
-				groupsArray[i] = allGroups.get(i).getName();
-			}
+		for (int i = 0; i < allGroups.size(); i++) {
+			groupsArray[i] = allGroups.get(i).getName();
 		}
 		return groupsArray;
 	}

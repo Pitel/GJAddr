@@ -111,7 +111,7 @@ public class VCardImportExport {
 	 * @throws VCardException
 	 */
 	public int importContacts(File file) throws IOException {
-		return this.importContactsToGroup(file, null);
+		return this.importContacts(file, null);
 	}
 
 	/**
@@ -121,7 +121,7 @@ public class VCardImportExport {
 	 * @param group Name of group to import to.
 	 * @throws VCardException
 	 */
-	public int importContactsToGroup(File file, String group) throws IOException {
+	public int importContacts(File file, String group) throws IOException {
 		String[] vcardStrings = this.splitVcardFile(file);
 		VCardEngine vcardEngine = new VCardEngine();
 		VCard[] vcards = vcardEngine.parse(vcardStrings);

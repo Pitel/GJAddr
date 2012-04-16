@@ -410,7 +410,7 @@ public class ImportWindow extends JFrame implements ActionListener {
 				}
 			} else if (importOption.equals(ActionCommands.SELECTED_GROUP.toString())) {
 				if (importFormat.equals(ActionCommands.V_CARD.toString())) {
-					imported = vcardImport.importContactsToGroup(file, importGroup);
+					imported = vcardImport.importContacts(file, importGroup);
 				} else if (importFormat.equals(ActionCommands.BIN.toString())) {
 					imported = binImport.importContacts(file, importGroup);
 				} else if (importFormat.equals(ActionCommands.CSV.toString())) {
@@ -421,7 +421,7 @@ public class ImportWindow extends JFrame implements ActionListener {
 						"New group creation", JOptionPane.PLAIN_MESSAGE, null, null, null);
 				if ((s != null) && (s.length() > 0)) {
 					if (importFormat.equals(ActionCommands.V_CARD.toString())) {
-						imported = vcardImport.importContactsToGroup(file, s);
+						imported = vcardImport.importContacts(file, s);
 					} else if (importFormat.equals(ActionCommands.BIN.toString()))  {
 						imported = binImport.importContacts(file, s);
 					} else if (importFormat.equals(ActionCommands.CSV.toString()))  {

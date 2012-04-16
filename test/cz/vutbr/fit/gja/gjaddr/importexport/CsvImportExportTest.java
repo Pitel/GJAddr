@@ -2,11 +2,11 @@
 package cz.vutbr.fit.gja.gjaddr.importexport;
 
 import java.util.ArrayList;
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.Group;
+import java.io.IOException;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Contact;
-import cz.vutbr.fit.gja.gjaddr.persistancelayer.Group;
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -18,62 +18,62 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.*;
 
 /**
- * Test VCardImportExport class.
+ * Test CsvImportExport class.
  *
  * @author Bc. Drahomira Herrmannova <xherrm01@stud.fit.vutbr.cz>
  */
-public class VCardImportExportTest {
+public class CsvImportExportTest {
 
-	private VCardImportExport vcardIE;
+	private CsvImportExport csvIE;
 
 	private Database database = Database.getInstance();
 
 	private String testGroup1 = "testGroup1";
 	private String testGroup2 = "testGroup2";
 
-	private String testFile1 = this.getClass().getResource("./testFiles/test01.vcf").getPath();
-	private String testFile2 = this.getClass().getResource("./testFiles/test02.vcf").getPath();
+	private String testFile1 = this.getClass().getResource("./testFiles/test01.csv").getPath();
+	private String testFile2 = this.getClass().getResource("./testFiles/test02.csv").getPath();
 
-    public VCardImportExportTest() {
+    public CsvImportExportTest() {
 		this.database.clearAllData();
-		this.vcardIE = null;
+		this.csvIE = null;
     }
 
 	@BeforeClass
 	public static void setUpClass() throws Exception {
-		System.out.println("VCARD_IMPORT_EXPORT TEST START");
-		System.out.println("------------------------------");
+		System.out.println("CSV_IMPORT_EXPORT TEST START");
+		System.out.println("----------------------------");
 	}
 
 	@AfterClass
 	public static void tearDownClass() throws Exception {
-		System.out.println("----------------------------");
-		System.out.println("VCARD_IMPORT_EXPORT TEST END");
+		System.out.println("--------------------------");
+		System.out.println("CSV_IMPORT_EXPORT TEST END");
 	}
 
     @Before
     public void setUp() {
 		this.database.clearAllData();
-		this.vcardIE = new VCardImportExport();
+		this.csvIE = new CsvImportExport();
     }
 
     @After
     public void tearDown() {
 		this.database.clearAllData();
-		this.vcardIE = null;
+		this.csvIE = null;
     }
 
 	/**
-	 * Test of importContacts method, of class VCardImportExport.
+	 * Test of importContacts method, of class CsvImportExport.
 	 */
 	@Test
-	public void testImportContacts() {
+	public void testImportContacts() throws Exception {
 		System.out.println("testing importContacts method");
 		// import just one contact and test it's values
 		System.out.println("1. import one contact");
 		File file = new File(this.testFile1);
 		try {
-			this.vcardIE.importContacts(file);
+			this.csvIE.importContacts(file);
 		} catch (IOException ex) {
 			fail("method importContacts failed because of IOException");
 		}
@@ -85,13 +85,14 @@ public class VCardImportExportTest {
 		assertThat(1, equalTo(c.getEmails().size()));
 		assertThat("zborilf@fit.vutbr.cz", equalTo(c.getEmails().get(0).getEmail()));
 		assertThat(1, equalTo(c.getAdresses().size()));
-		assertThat(1, equalTo(c.getUrls().size()));
+		// TODO URLs
+		// assertThat(1, equalTo(c.getUrls().size()));
 		// import multiple contacts
 		System.out.println("2. import multiples contacts");
 		this.database.clearAllData();
 		file = new File(this.testFile2);
 		try {
-			this.vcardIE.importContacts(file);
+			this.csvIE.importContacts(file);
 		} catch (IOException ex) {
 			fail("method importContacts failed because of IOException");
 		}
@@ -102,10 +103,10 @@ public class VCardImportExportTest {
 	}
 
 	/**
-	 * Test of importContacts method, of class VCardImportExport.
+	 * Test of importContacts method, of class CsvImportExport.
 	 */
 	@Test
-	public void testImportContactsToGroup() {
+	public void testImportContactsToGroup() throws Exception {
 		System.out.println("testing importContacts method");
 		// 1. import to existing group
 		System.out.println("1. import to existing group");
@@ -113,7 +114,7 @@ public class VCardImportExportTest {
 		this.database.addNewGroup(g.getName());
 		File file = new File(this.testFile1);
 		try {
-			this.vcardIE.importContacts(file, g.getName());
+			this.csvIE.importContacts(file, g.getName());
 		} catch (IOException ex) {
 			fail("method importContacts failed because of IOException");
 		}
@@ -127,7 +128,7 @@ public class VCardImportExportTest {
 		System.out.println("2. import to new group");
 		file = new File(this.testFile2);
 		try {
-			this.vcardIE.importContacts(file, this.testGroup2);
+			this.csvIE.importContacts(file, this.testGroup2);
 		} catch (IOException ex) {
 			fail("method importContacts failed because of IOException");
 		}
@@ -141,26 +142,26 @@ public class VCardImportExportTest {
 	}
 
 	/**
-	 * Test of exportContacts method, of class VCardImportExport.
+	 * Test of exportContacts method, of class CsvImportExport.
 	 */
-	@Test
-	public void testExportContacts() {
+	 @Test
+	public void testExportContacts() throws Exception {
 		System.out.println("testing exportContacts method");
 		File file = new File(this.testFile1);
 		try {
-			this.vcardIE.importContacts(file);
+			this.csvIE.importContacts(file);
 		} catch (IOException ex) {
 			fail("method importContacts failed because of IOException");
 		}
 		File outFile = new File("test03.vcf");
 		try {
-			this.vcardIE.exportContacts(outFile, this.database.getAllContacts());
+			this.csvIE.exportContacts(outFile, this.database.getAllContacts());
 		} catch (IOException ex) {
 			fail("method exportContacts failed because of IOException");
 		}
 		this.database.clearAllData();
 		try {
-			this.vcardIE.importContacts(outFile);
+			this.csvIE.importContacts(outFile);
 		} catch (IOException ex) {
 			fail("method importContacts failed because of IOException");
 		}
@@ -169,4 +170,5 @@ public class VCardImportExportTest {
 				equalTo(this.database.getAllContacts().get(0).getFullName()));
 		outFile.delete();
 	}
+
 }

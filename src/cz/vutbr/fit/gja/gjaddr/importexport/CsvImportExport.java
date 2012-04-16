@@ -3,6 +3,7 @@ package cz.vutbr.fit.gja.gjaddr.importexport;
 
 import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.Address;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Contact;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Email;
@@ -74,7 +75,7 @@ public class CsvImportExport {
 			}
 
 			// create new contact
-			Contact contact = new Contact(nextLine[0], nextLine[1], nextLine[2], nextLine[3]);
+			Contact contact = new Contact(nextLine[1], nextLine[0], nextLine[2], nextLine[3]);
 
 			// set contact emails
 			String[] emails = nextLine[4].split(",");
@@ -85,14 +86,22 @@ public class CsvImportExport {
 			contact.setEmails(emailsList);
 
 			// set contact phones
-			String[] phones = nextLine[4].split(", ");
+			String[] phones = nextLine[5].split(",");
 			List<PhoneNumber> phonesList = new ArrayList<PhoneNumber>();
 			for (String phone : phones) {
-				phonesList.add(new PhoneNumber(1, phone));
+				phonesList.add(new PhoneNumber(1, phone.trim()));
 			}
 			contact.setPhoneNumbers(phonesList);
 
-			// TODO addresses
+			// set contact addresses
+			String[] addresses = nextLine[6].split(";");
+			List<Address> addressesList = new ArrayList<Address>();
+			for (String address : addresses) {
+				addressesList.add(new Address(1, address));
+			}
+			contact.setAdresses(addressesList);
+
+			// TODO URLs
 
 			// add contact to list to be imported
 			contacts.add(contact);
@@ -152,6 +161,7 @@ public class CsvImportExport {
 				entries.add(c.getAllEmails());
 				entries.add(c.getAllPhones());
 				entries.add(c.getAllAddresses());
+				// TODO URLs
 				writer.writeNext(entries.toArray(new String[entries.size()]));
 			}
 
