@@ -4,9 +4,7 @@ import com.community.xanadu.components.table.BeanReaderJTable;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Contact;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Group;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +17,7 @@ import javax.swing.table.TableRowSorter;
  *
  * @author Bc. Jan Kaláb <xkalab00@stud.fit,vutbr.cz>
  */
-class ContactsPanel extends JPanel {
+class ContactsPanel extends JPanel implements KeyListener {
 	static final long serialVersionUID = 0;
 
 	private JPopupMenu contextMenu = new JPopupMenu();
@@ -50,10 +48,10 @@ class ContactsPanel extends JPanel {
 		table.getSelectionModel().addListSelectionListener(listSelectionListener);
 		table.setRowSorter(sorter);
 		table.setDefaultRenderer(Object.class, new TableRowColorRenderer());
+		table.addKeyListener(this);
 		JScrollPane scrollPane = new JScrollPane(table);
 		filter("");
 		add(scrollPane);
-
 		this.initContextMenu();
 	}
 
@@ -147,6 +145,21 @@ class ContactsPanel extends JPanel {
 		table.addMouseListener(popupListener);
 	}
 
+	@Override
+	public void keyPressed(KeyEvent e) {
+		if (e.getKeyCode() == KeyEvent.VK_DELETE 
+			  && this.mainWindowHandle.actions.actionDeleteContact.isEnabled()) {
+			removeContact();
+		}
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+	}
 
 	private class PopupListener extends MouseAdapter {
 		@Override

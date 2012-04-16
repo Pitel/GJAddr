@@ -13,7 +13,7 @@ public class Settings {
 	
 	public static String getDataDir()	{
 		
-		File dataDir = new File(userHomeDir, "/.gjaaddr/data");
+		File dataDir = new File(userHomeDir, "/.gjaddr/data");
 		
 		if (!dataDir.exists()) {
 			dataDir.mkdirs();
