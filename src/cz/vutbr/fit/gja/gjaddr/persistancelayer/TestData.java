@@ -1,5 +1,6 @@
 package cz.vutbr.fit.gja.gjaddr.persistancelayer;
 
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.TypesEnum;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.ServicesEnum;
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,20 +31,20 @@ public class TestData {
 						
 		Contact contact1 = new Contact("Radek", "Gajdusek", "Speedy", null);
 		contact1.setDateOfBirth(new Date(1988 - 1900, 03, 15));
-		emails.add(new Email(1, "test@gmail.com"));
-		emails.add(new Email(1, "pokus@gmail.com"));
+		emails.add(new Email(TypesEnum.HOME, "test@gmail.com"));
+		emails.add(new Email(TypesEnum.HOME, "pokus@gmail.com"));
 		contact1.setEmails(new ArrayList<Email>(emails));
-		phones.add(new PhoneNumber(1, "420582978653"));
-		phones.add(new PhoneNumber(2, "420654789369"));		
+		phones.add(new PhoneNumber(TypesEnum.HOME, "420582978653"));
+		phones.add(new PhoneNumber(TypesEnum.WORK, "420654789369"));		
 		contact1.setPhoneNumbers(new ArrayList<PhoneNumber>(phones));
-		urls.add(new Url(1, "http://www.lahvators.cz"));
+		urls.add(new Url(TypesEnum.HOME, "http://www.lahvators.cz"));
 		contact1.setUrls(new ArrayList<Url>(urls));
-		messengers.add(new Messenger(1, "ragaj@jabber.org"));
-		messengers.add(new Messenger(2, "278456123"));
+		messengers.add(new Messenger(TypesEnum.HOME, "ragaj@jabber.org"));
+		messengers.add(new Messenger(TypesEnum.WORK, "278456123"));
 		contact1.setMessenger(new ArrayList<Messenger>(messengers));
 		customs.add(new Custom("test", "123"));
 		contact1.setCustoms(new ArrayList<Custom>(customs));
-		adresses.add(new Address(1, "Osvoboditelů 44, Kopřivnice, 74221, Czech republic"));
+		adresses.add(new Address(TypesEnum.HOME, "Osvoboditelů 44, Kopřivnice, 74221, Czech republic"));
 		contact1.setAdresses(new ArrayList<Address>(adresses));		
 		contactsToAdd.add(contact1);
 		
@@ -56,12 +57,12 @@ public class TestData {
 		
 		Contact contact2 = new Contact("Jan", "Kaláb", "Pitel", "pokusná poznámka");
 		contact2.setDateOfBirth(new Date(1987 - 1900, 04, 01));
-		emails.add(new Email(2, "pokus@centrum.cz"));
+		emails.add(new Email(TypesEnum.WORK, "pokus@centrum.cz"));
 		contact2.setEmails(new ArrayList<Email>(emails));						
-		phones.add(new PhoneNumber(1, "420658987562"));
-		phones.add(new PhoneNumber(2, "420587978652"));		
+		phones.add(new PhoneNumber(TypesEnum.HOME, "420658987562"));
+		phones.add(new PhoneNumber(TypesEnum.WORK, "420587978652"));		
 		contact2.setPhoneNumbers(new ArrayList<PhoneNumber>(phones));		
-		adresses.add( new Address(1, "Masarykova 133, Brno, 61200"));
+		adresses.add( new Address(TypesEnum.HOME, "Masarykova 133, Brno, 61200"));
 		contact2.setAdresses(new ArrayList<Address>(adresses));
 		contactsToAdd.add(contact2);
 		
@@ -74,16 +75,16 @@ public class TestData {
 		
 		Contact contact3 = new Contact("Petr", "Macháček", null, null);
 		contact3.setDateOfBirth(new Date(1980 - 1900, 03, 25));
-		urls.add(new Url(2, "http://www.seznam.cz"));
-		urls.add(new Url(2, "http://www.idos.cz"));		
+		urls.add(new Url(TypesEnum.WORK, "http://www.seznam.cz"));
+		urls.add(new Url(TypesEnum.WORK, "http://www.idos.cz"));		
 		contact3.setUrls(new ArrayList<Url>(urls));		
-		messengers.add(new Messenger(1, "test@jabbim.cz"));
-		messengers.add(new Messenger(2, "147896321"));
+		messengers.add(new Messenger(TypesEnum.HOME, "test@jabbim.cz"));
+		messengers.add(new Messenger(TypesEnum.WORK, "147896321"));
 		contact3.setMessenger(new ArrayList<Messenger>(messengers));		
-		Email email4 = new Email(2, "pokus@seznam.cz");	
-		emails.add(new Email(2, "pokus@seznam.cz"));
+		Email email4 = new Email(TypesEnum.WORK, "pokus@seznam.cz");	
+		emails.add(new Email(TypesEnum.WORK, "pokus@seznam.cz"));
 		contact3.setEmails(new ArrayList<Email>(emails));
-		adresses.add(new Address(2, "Sportovní 1207, Nové Město na Moravě, 45879, Slovensko"));
+		adresses.add(new Address(TypesEnum.WORK, "Sportovní 1207, Nové Město na Moravě, 45879, Slovensko"));
 		contact3.setAdresses(new ArrayList<Address>(adresses));			
 		contactsToAdd.add(contact3);
 		

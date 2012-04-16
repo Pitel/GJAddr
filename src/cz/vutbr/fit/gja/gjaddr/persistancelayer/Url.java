@@ -1,5 +1,6 @@
 package cz.vutbr.fit.gja.gjaddr.persistancelayer;
 
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.TypesEnum;
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -13,14 +14,14 @@ public class Url implements Serializable {
 	
 	static private final long serialVersionUID = 6L;	
 
-	private int type;
+	private TypesEnum type;
 	private URL value; 
 
-	public int getType() {
+	public TypesEnum getType() {
 		return type;
 	}
 
-	public void setType(int type) {
+	public void setType(TypesEnum type) {
 		this.type = type;
 	}
 
@@ -32,7 +33,7 @@ public class Url implements Serializable {
 		this.value = value;
 	}
 
-	public Url (int type, String value) {
+	public Url (TypesEnum type, String value) {
 		this.type = type;
 		
 		try {
@@ -49,7 +50,7 @@ public class Url implements Serializable {
 	 * @param type
 	 * @param value
 	 */
-	public Url (int type, URL value) {
+	public Url (TypesEnum type, URL value) {
 		this.type = type;
 		this.value = value;
 	}

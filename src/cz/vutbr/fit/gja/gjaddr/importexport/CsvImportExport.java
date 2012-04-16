@@ -9,6 +9,7 @@ import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Email;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Group;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.PhoneNumber;
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.TypesEnum;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -81,7 +82,7 @@ public class CsvImportExport {
 			String[] emails = nextLine[4].split(",");
 			List<Email> emailsList = new ArrayList<Email>();
 			for (String email : emails) {
-				emailsList.add(new Email(1, email));
+				emailsList.add(new Email(TypesEnum.HOME, email));
 			}
 			contact.setEmails(emailsList);
 
@@ -89,7 +90,7 @@ public class CsvImportExport {
 			String[] phones = nextLine[5].split(",");
 			List<PhoneNumber> phonesList = new ArrayList<PhoneNumber>();
 			for (String phone : phones) {
-				phonesList.add(new PhoneNumber(1, phone.trim()));
+				phonesList.add(new PhoneNumber(TypesEnum.HOME, phone.trim()));
 			}
 			contact.setPhoneNumbers(phonesList);
 
@@ -97,7 +98,7 @@ public class CsvImportExport {
 			String[] addresses = nextLine[6].split(";");
 			List<Address> addressesList = new ArrayList<Address>();
 			for (String address : addresses) {
-				addressesList.add(new Address(1, address));
+				addressesList.add(new Address(TypesEnum.HOME, address));
 			}
 			contact.setAdresses(addressesList);
 

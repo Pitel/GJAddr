@@ -1,6 +1,6 @@
 package cz.vutbr.fit.gja.gjaddr.importexport;
 
-import com.google.gdata.client.contacts.*;
+import com.google.gdata.client.contacts.ContactsService;
 import com.google.gdata.data.contacts.ContactEntry;
 import com.google.gdata.data.contacts.ContactFeed;
 import com.google.gdata.data.contacts.Website;
@@ -10,14 +10,8 @@ import com.google.gdata.data.extensions.Name;
 import com.google.gdata.data.extensions.PostalAddress;
 import com.google.gdata.util.ServiceException;
 import cz.vutbr.fit.gja.gjaddr.importexport.exception.GoogleImportException;
-import cz.vutbr.fit.gja.gjaddr.persistancelayer.Address;
-import cz.vutbr.fit.gja.gjaddr.persistancelayer.AuthToken;
-import cz.vutbr.fit.gja.gjaddr.persistancelayer.Contact;
-import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
-import cz.vutbr.fit.gja.gjaddr.persistancelayer.Group;
-import cz.vutbr.fit.gja.gjaddr.persistancelayer.Messenger;
-import cz.vutbr.fit.gja.gjaddr.persistancelayer.PhoneNumber;
-import cz.vutbr.fit.gja.gjaddr.persistancelayer.Url;
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.*;
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.TypesEnum;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.ServicesEnum;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -105,31 +99,31 @@ public class GoogleImport {
 		List<cz.vutbr.fit.gja.gjaddr.persistancelayer.Email> emails =
 				new ArrayList<cz.vutbr.fit.gja.gjaddr.persistancelayer.Email>();
 		for (Email email : entry.getEmailAddresses()) {
-			emails.add(new cz.vutbr.fit.gja.gjaddr.persistancelayer.Email(1, email.getAddress()));
+			emails.add(new cz.vutbr.fit.gja.gjaddr.persistancelayer.Email(TypesEnum.HOME, email.getAddress()));
 		}
 
 		// get messengers
 		List<Messenger> messengers = new ArrayList<Messenger>();
 		for (Im im : entry.getImAddresses()) {
-			messengers.add(new Messenger(1, im.getAddress()));
+			messengers.add(new Messenger(TypesEnum.HOME, im.getAddress()));
 		}
 
 		// phone numbers
 		List<PhoneNumber> phones = new ArrayList<PhoneNumber>();
 		for (com.google.gdata.data.extensions.PhoneNumber phone : entry.getPhoneNumbers()) {
-			phones.add(new PhoneNumber(1, phone.getPhoneNumber()));
+			phones.add(new PhoneNumber(TypesEnum.HOME, phone.getPhoneNumber()));
 		}
 
 		// links
 		List<Url> urls = new ArrayList<Url>();
 		for (Website website : entry.getWebsites()) {
-			urls.add(new Url(1, website.getHref()));
+			urls.add(new Url(TypesEnum.HOME, website.getHref()));
 		}
 
 		// addresses
 		List<Address> addresses = new ArrayList<Address>();
 		for (PostalAddress pa : entry.getPostalAddresses()) {
-			addresses.add(new Address(1, pa.getValue()));
+			addresses.add(new Address(TypesEnum.HOME, pa.getValue()));
 		}
 
 		// TODO photo

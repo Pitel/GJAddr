@@ -8,6 +8,7 @@ import cz.vutbr.fit.gja.gjaddr.persistancelayer.Email;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Group;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.PhoneNumber;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Url;
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.TypesEnum;
 
 import java.io.IOException;
 import java.io.File;
@@ -155,28 +156,28 @@ public class VCardImportExport {
 			while (addressesIterator != null && addressesIterator.hasNext()) {
 				// TODO post code
 				AddressFeature af = addressesIterator.next();
-				addresses.add(new Address(1, af.getStreetAddress() + af.getLocality() + 0 + af.getCountryName()));
+				addresses.add(new Address(TypesEnum.HOME, af.getStreetAddress() + af.getLocality() + 0 + af.getCountryName()));
 			}
 			
 			// get emails
 			Iterator<EmailFeature> emailsIterator = vcard.getEmails();
 			List<Email> emails = new ArrayList<Email>();
 			while (emailsIterator != null && emailsIterator.hasNext()) {
-				emails.add(new Email(1, emailsIterator.next().getEmail()));
+				emails.add(new Email(TypesEnum.HOME, emailsIterator.next().getEmail()));
 			}
 			
 			// get phones
 			Iterator<TelephoneFeature> telephoneNumbersIterator = vcard.getTelephoneNumbers();
 			List<PhoneNumber> phones = new ArrayList<PhoneNumber>();
 			while (telephoneNumbersIterator != null && telephoneNumbersIterator.hasNext()) {
-				phones.add(new PhoneNumber(1, telephoneNumbersIterator.next().getTelephone()));
+				phones.add(new PhoneNumber(TypesEnum.HOME, telephoneNumbersIterator.next().getTelephone()));
 			}
 			
 			// get URLs
 			Iterator<URLFeature> urlsIterator = vcard.getURLs();
 			List<Url> urls = new ArrayList<Url>();
 			while (urlsIterator != null && urlsIterator.hasNext()) {
-				urls.add(new Url(1, urlsIterator.next().getURL()));
+				urls.add(new Url(TypesEnum.HOME, urlsIterator.next().getURL()));
 			}
 
 			// build new contact

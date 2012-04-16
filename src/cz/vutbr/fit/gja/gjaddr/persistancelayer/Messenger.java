@@ -1,5 +1,6 @@
 package cz.vutbr.fit.gja.gjaddr.persistancelayer;
 
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.TypesEnum;
 import java.io.Serializable;
 
 /**
@@ -10,14 +11,14 @@ public class Messenger implements Serializable {
 	
 	static private final long serialVersionUID = 6L;	
 	
-	private int type;
+	private TypesEnum type;
 	private String value;	
 
-	public int getType() {
+	public TypesEnum getType() {
 		return type;
 	}
 
-	public void setType(int type) {
+	public void setType(TypesEnum type) {
 		this.type = type;
 	}
 
@@ -29,7 +30,7 @@ public class Messenger implements Serializable {
 		this.value = value;
 	}
 
-	public Messenger(int type, String value) {
+	public Messenger(TypesEnum type, String value) {
 		this.type = type;
 		this.value = value;
 	}

@@ -1,5 +1,6 @@
 package cz.vutbr.fit.gja.gjaddr.persistancelayer;
 
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.TypesEnum;
 import java.io.Serializable;
 
 /**
@@ -11,7 +12,7 @@ public class Email implements Serializable {
 	
 	static private final long serialVersionUID = 6L;	
 	
-	private int type;
+	private TypesEnum type;
 	private String email;
 	
 	public String getEmail() {
@@ -22,15 +23,15 @@ public class Email implements Serializable {
 		this.email = email;
 	}
 
-	public int getType() {
+	public TypesEnum getType() {
 		return type;
 	}
 
-	public void setType(int type) {
+	public void setType(TypesEnum type) {
 		this.type = type;
 	}	
 		
-	public Email(int type, String email)					
+	public Email(TypesEnum type, String email)					
 	{
 		this.type = type;
 		this.email = email;

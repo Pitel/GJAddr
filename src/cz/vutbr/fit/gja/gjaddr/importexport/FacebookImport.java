@@ -13,6 +13,7 @@ import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Email;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Group;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Url;
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.TypesEnum;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.ServicesEnum;
 import java.util.ArrayList;
 import java.util.List;
@@ -87,16 +88,16 @@ public class FacebookImport {
 
 		// contact emails
 		if (user.getEmail() != null && !user.getEmail().isEmpty() && !user.getEmail().equalsIgnoreCase("null")) {
-			emails.add(new Email(1, user.getEmail()));
+			emails.add(new Email(TypesEnum.HOME, user.getEmail()));
 			contact.setEmails(emails);
 		}
 
 		// contact URLs
 		if (user.getLink() != null && !user.getLink().isEmpty() && !user.getLink().equalsIgnoreCase("null")) {
-			urls.add(new Url(1, user.getLink()));
+			urls.add(new Url(TypesEnum.HOME, user.getLink()));
 		}
 		if (user.getWebsite() != null && !user.getWebsite().isEmpty() && !user.getWebsite().equalsIgnoreCase("null")) {
-			urls.add(new Url(1, user.getWebsite()));
+			urls.add(new Url(TypesEnum.HOME, user.getWebsite()));
 		}
 		if (!urls.isEmpty()) {
 			contact.setUrls(urls);

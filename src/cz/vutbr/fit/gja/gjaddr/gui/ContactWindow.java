@@ -1,6 +1,7 @@
 package cz.vutbr.fit.gja.gjaddr.gui;
 
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.*;
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.TypesEnum;
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -163,15 +164,15 @@ class ContactWindow extends JFrame {
 		contact.setSurName(surnameField.getText());
 
 		final ArrayList<Address> addresses = new ArrayList<Address>();
-		addresses.add(new Address(0, addressField.getText()));
+		addresses.add(new Address(TypesEnum.HOME, addressField.getText()));
 		contact.setAdresses(addresses);
 
 		final ArrayList<PhoneNumber> phones = new ArrayList<PhoneNumber>();
-		phones.add(new PhoneNumber(0, phoneField.getText()));
+		phones.add(new PhoneNumber(TypesEnum.HOME, phoneField.getText()));
 		contact.setPhoneNumbers(phones);
 
 		final ArrayList<Email> emails = new ArrayList<Email>();
-		emails.add(new Email(0, emailField.getText()));
+		emails.add(new Email(TypesEnum.HOME, emailField.getText()));
 		contact.setEmails(emails);
 	}
 
