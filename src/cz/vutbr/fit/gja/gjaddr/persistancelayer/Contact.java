@@ -345,10 +345,6 @@ public class Contact implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Contact{" + "id=" + id + ", firstName=" + firstName + ", surName=" + surName
-						          + ", nickName=" + nickName + ", dateOfBirth=" + birthday.getDateOfBirth() + ", note="
-						          + note + ", messenger=" + messenger + ", urls=" + urls + ", adresses="
-						          + adresses + ", phoneNumbers=" + phoneNumbers + ", emails=" + emails + ", customs="
-						          + customs + '}';
+		return this.getFullName() + ", " + this.getNickName();
 	}
 }
