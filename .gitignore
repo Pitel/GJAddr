@@ -4,7 +4,6 @@ build
 doc/javadoc
 
 # NetBeans
-lib/*/
 lib/nblibraries.properties
 #nbbuild.xml
 nbproject/
