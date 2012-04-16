@@ -104,7 +104,6 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		final JMenu fileMenu = new JMenu("File");
 		fileMenu.setMnemonic(KeyEvent.VK_F);
 		menuBar.add(fileMenu);
-		menuBar.add(Box.createHorizontalGlue());
 
 		JMenu helpMenu = new JMenu("Help");
 		helpMenu.setMnemonic(KeyEvent.VK_H);
@@ -164,7 +163,7 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		else {
 			this.actions.actionDeleteGroup.setEnabled(true);
 			this.actions.actionRenameGroup.setEnabled(true);
-			this.actions.actionManageGroup.setEnabled(true);			
+			this.actions.actionManageGroup.setEnabled(true);
 		}
 	}
 
@@ -172,12 +171,12 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		if (ContactsPanel.getSelectedContact() == null) {
 			this.actions.actionDeleteContact.setEnabled(false);
 			this.actions.actionEditContact.setEnabled(false);
-			this.actions.actionManageContactGroups.setEnabled(false);			
+			this.actions.actionManageContactGroups.setEnabled(false);
 		}
 		else {
 			this.actions.actionDeleteContact.setEnabled(true);
 			this.actions.actionEditContact.setEnabled(true);
-			this.actions.actionManageContactGroups.setEnabled(true);				
+			this.actions.actionManageContactGroups.setEnabled(true);
 		}
 	}
 

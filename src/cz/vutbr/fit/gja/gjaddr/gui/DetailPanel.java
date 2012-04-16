@@ -110,7 +110,7 @@ class DetailPanel extends JPanel {
 			} else {
 				photo.setVisible(false);
 			}
-			name.setText(String.format("<html><h1>%s %s</h1></html>", contact.getFirstName(), contact.getSurName()));
+			name.setText(String.format("<html><h1>" + contact.getFullName() + "</h1></html>"));
 			address.removeAll();
 			for (Address a : contact.getAdresses()) {
 				if (!a.getAddress().isEmpty()){
