@@ -1,6 +1,7 @@
 
 package cz.vutbr.fit.gja.gjaddr.gui;
 
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.Contact;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Group;
 import java.awt.Desktop;
@@ -107,10 +108,13 @@ public class UserActions {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			Group[] selectedGroups = GroupsPanel.getSelectedGroups();
-			if (selectedGroups.length == 1) {
-				new ExportWindow(null, selectedGroups[0]);
-			} else if (selectedGroups.length > 1) {
+			Contact[] selectedContacts = ContactsPanel.getSelectedContacts();
+			if (selectedGroups.length > 1) {
 				new ExportWindow(Database.getInstance().getAllContactsFromGroup(Arrays.asList(selectedGroups)), null);
+			} else if (selectedContacts.length >= 1) {
+				new ExportWindow(Arrays.asList(selectedContacts), null);
+			} else if (selectedGroups.length == 1) {
+				new ExportWindow(null, selectedGroups[0]);
 			} else {
 				new ExportWindow(null, null);
 			}

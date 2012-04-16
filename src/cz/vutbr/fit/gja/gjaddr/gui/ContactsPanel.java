@@ -92,6 +92,20 @@ class ContactsPanel extends JPanel {
 	}
 
 	/**
+	 * Get all selected contacts.
+	 * 
+	 * @return
+	 */
+	static Contact[] getSelectedContacts() {
+		Object[] objects =  table.getSelectedObjects();
+		Contact[] contacts = new Contact[objects.length];
+		for (int i = 0; i < objects.length; i++) {
+			contacts[i] = (Contact) objects[i];
+		}
+		return contacts;
+	}
+
+	/**
 	 * Method for removing contact
 	 */
 	static boolean removeContact() {
