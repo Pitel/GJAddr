@@ -184,6 +184,20 @@ public class Database implements IDatabase {
 		this.commitChanges(TableType.GROUPSCONTACTS);
 		return this.getAllContactsFromGroup(group);
 	}
+	
+	// TOTEST
+	public List<Contact> updateContactsGroup(List<Contact> contacts, List<Group> groups) {
+		this.groupsContacts.updateContactsGroups(contacts, groups);
+		this.commitChanges(TableType.GROUPSCONTACTS);
+		return this.getAllContacts();
+	}	
+	
+	// TOTEST
+	public List<Contact> updateGroupsContacts(List<Group> groups, List<Contact> contacts) {
+		this.groupsContacts.updateGroupsContacts(groups, contacts);
+		this.commitChanges(TableType.GROUPSCONTACTS);
+		return this.getAllContacts();
+	}		
 
 	@Override // DONE
 	public List<Contact> removeContactsFromGroup(Group group, List<Contact> contactsToRemove) {

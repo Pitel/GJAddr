@@ -40,7 +40,6 @@ class GroupsPanel extends JPanel implements KeyListener {
 		
 		// fill list and enable/disable buttons
 		fillList();
-		list.setSelectedIndex(0);		
 		this.mainWindowHandle.handleGroupActionsVisibility();
 				
 		list.addListSelectionListener(listSelectionListener);
@@ -54,7 +53,7 @@ class GroupsPanel extends JPanel implements KeyListener {
 		buttonToolbar.add(this.mainWindowHandle.actions.actionNewGroup);
 		buttonToolbar.add(this.mainWindowHandle.actions.actionRenameGroup);			
 		buttonToolbar.add(this.mainWindowHandle.actions.actionDeleteGroup);
-	
+		buttonToolbar.add(this.mainWindowHandle.actions.actionManageGroup);
 		add(buttonToolbar, BorderLayout.NORTH);
 		
 		this.initContextMenu();
@@ -118,6 +117,10 @@ class GroupsPanel extends JPanel implements KeyListener {
 	public void keyTyped(KeyEvent e) {}
 
 	 
+	static Group getSelectedGroup() {
+		return getSelectedGroups()[0];
+	}
+	
 	static Group[] getSelectedGroups() {
 		return Arrays.copyOf(list.getSelectedValues(), list.getSelectedValues().length, Group[].class);
 	}
@@ -126,10 +129,10 @@ class GroupsPanel extends JPanel implements KeyListener {
 		
 		this.contextMenu.add(this.mainWindowHandle.actions.actionNewGroup);
 		this.contextMenu.add(this.mainWindowHandle.actions.actionRenameGroup);				
-		this.contextMenu.add(this.mainWindowHandle.actions.actionDeleteGroup);
-		
-		this.contextMenu.addSeparator();
-		
+		this.contextMenu.add(this.mainWindowHandle.actions.actionDeleteGroup);		
+		this.contextMenu.addSeparator();		
+		this.contextMenu.add(this.mainWindowHandle.actions.actionManageGroup);		
+		this.contextMenu.addSeparator();				
 		this.contextMenu.add(this.mainWindowHandle.actions.actionImport);
 		this.contextMenu.add(this.mainWindowHandle.actions.actionExport);
 
@@ -153,5 +156,12 @@ class GroupsPanel extends JPanel implements KeyListener {
 				contextMenu.show(e.getComponent(), e.getX(), e.getY());
 			}
 		}	
+    
+		@Override
+		public void mouseClicked(MouseEvent e){
+			if (e.getClickCount() == 2 && mainWindowHandle.actions.actionManageGroup.isEnabled()) {
+				new GroupWindow(GroupWindow.Action.RENAME);
+			}
+		}
 	}	
 }

@@ -1,3 +1,4 @@
+
 package cz.vutbr.fit.gja.gjaddr.gui;
 
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
@@ -8,9 +9,7 @@ import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
@@ -29,6 +28,9 @@ public class UserActions {
 	AddGroupAction actionNewGroup;
 	DeleteGroupAction actionDeleteGroup;
 	RenameGroupAction actionRenameGroup;
+	
+	ManageGroupAction actionManageGroup;
+	ManageContactGroupsAction actionManageContactGroups;
 
 	ImportAction actionImport;
 	ExportAction actionExport;
@@ -45,6 +47,9 @@ public class UserActions {
 		this.actionNewGroup = new AddGroupAction();
 		this.actionDeleteGroup = new DeleteGroupAction();
 		this.actionRenameGroup = new RenameGroupAction();
+		
+		this.actionManageGroup = new ManageGroupAction();
+		this.actionManageContactGroups = new ManageContactGroupsAction();
 
 		this.actionImport = new ImportAction();
 		this.actionExport = new ExportAction();
@@ -203,13 +208,60 @@ public class UserActions {
 			ContactsPanel.removeContact();
 		}
 	}
+	
+	
+	/**
+	 * Action for managing contacts in the group.
+	 */
+	class ManageGroupAction extends AbstractAction {
+		static final long serialVersionUID = 0;
+		private static final String name = "Manage group";
+		private static final String icon = "/res/contacts_g.png";
+		private final Integer mnemonic = KeyEvent.VK_M;
+		private final KeyStroke accelerator = KeyStroke.getKeyStroke(mnemonic, ActionEvent.CTRL_MASK);
+
+		public ManageGroupAction() {
+			super(name);
+			putValue(SMALL_ICON, new ImageIcon(getClass().getResource(icon), name));
+			putValue(MNEMONIC_KEY, mnemonic);
+			putValue(ACCELERATOR_KEY, accelerator);
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			new GroupsMembershipWindow(GroupsPanel.getSelectedGroup());
+		}
+	}		
 
 	/**
-	 * Action for add new group.
+	 * Action for managing groups for contact.
+	 */
+	class ManageContactGroupsAction extends AbstractAction {
+		static final long serialVersionUID = 0;
+		private static final String name = "Manage contact groups";
+		private static final String icon = "/res/contacts_g.png";
+		private final Integer mnemonic = KeyEvent.VK_M;
+		private final KeyStroke accelerator = KeyStroke.getKeyStroke(mnemonic, ActionEvent.CTRL_MASK);
+
+		public ManageContactGroupsAction() {
+			super(name);
+			putValue(SMALL_ICON, new ImageIcon(getClass().getResource(icon), name));
+			putValue(MNEMONIC_KEY, mnemonic);
+			putValue(ACCELERATOR_KEY, accelerator);
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			new GroupsMembershipWindow(ContactsPanel.getSelectedContact());
+		}
+	}
+
+	/**
+	 * Action for editing contact.
 	 */
 	class AddGroupAction extends AbstractAction {
 		static final long serialVersionUID = 0;
-		private static final String name = "Add new group";
+		private static final String name = "Add group";
 		private static final String icon = "/res/plus_g.png";
 		private final Integer mnemonic = KeyEvent.VK_G;
 		private final KeyStroke accelerator = KeyStroke.getKeyStroke(mnemonic, ActionEvent.CTRL_MASK);
@@ -225,8 +277,8 @@ public class UserActions {
 		public void actionPerformed(ActionEvent e) {
 			new GroupWindow(GroupWindow.Action.NEW);
 		}
-	}
-
+	}		
+	
 	/**
 	 * Action for delete group.
 	 */

@@ -1,6 +1,6 @@
 package cz.vutbr.fit.gja.gjaddr.persistancelayer;
 
-import java.io.*;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +23,20 @@ public class DatabaseGroupsContacts {
 		for (Contact contact : contactsToAdd) {
 			GroupContact gc = new GroupContact(group.getId(), contact.getId());
 			this.groupsContacts.add(gc);
+		}
+	}
+	
+	void updateGroupsContacts(List<Group> groups, List<Contact> contacts) {
+		this.removeGroupsEntries(groups);
+		for (Group group : groups) {
+			this.addContactsToGroup(group, contacts);
+		}
+	}	
+	
+	void updateContactsGroups(List<Contact> contacts, List<Group> groups) {
+		this.removeContactsEntries(contacts);
+		for (Group group : groups) {
+			this.addContactsToGroup(group, contacts);
 		}
 	}
 	
@@ -67,7 +81,7 @@ public class DatabaseGroupsContacts {
 		List<GroupContact> entriesToRemove = new ArrayList<GroupContact>();		
 		for (Group group: groupsToRemove) {
 			for (GroupContact gc: this.groupsContacts) {
-				if (gc.getContactId() == group.getId()) {
+				if (gc.getGroupId() == group.getId()) {
 					entriesToRemove.add(gc);
 				}
 			}

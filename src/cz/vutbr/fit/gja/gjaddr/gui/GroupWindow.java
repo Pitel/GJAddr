@@ -90,7 +90,7 @@ public final class GroupWindow extends JFrame{
 			JOptionPane.QUESTION_MESSAGE,
 			new ImageIcon(getClass().getResource("/res/edit_g.png"), "e"),
 			null,
-			""
+			groups[0].getName()
 		);		
 		
 		if (name != null && !name.isEmpty()) {

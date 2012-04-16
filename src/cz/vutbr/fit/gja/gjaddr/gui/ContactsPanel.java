@@ -123,9 +123,9 @@ class ContactsPanel extends JPanel {
 		this.contextMenu.add(this.mainWindowHandle.actions.actionNewContact);
 		this.contextMenu.add(this.mainWindowHandle.actions.actionEditContact);
 		this.contextMenu.add(this.mainWindowHandle.actions.actionDeleteContact);
-
-		this.contextMenu.addSeparator();
-
+		this.contextMenu.addSeparator();		
+		this.contextMenu.add(this.mainWindowHandle.actions.actionManageContactGroups);		
+		this.contextMenu.addSeparator();		
 		this.contextMenu.add(this.mainWindowHandle.actions.actionImport);
 		this.contextMenu.add(this.mainWindowHandle.actions.actionExport);
 

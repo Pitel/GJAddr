@@ -159,10 +159,12 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		if (isSelectRootGroup()) {
 			this.actions.actionDeleteGroup.setEnabled(false);
 			this.actions.actionRenameGroup.setEnabled(false);
+			this.actions.actionManageGroup.setEnabled(false);
 		}
 		else {
 			this.actions.actionDeleteGroup.setEnabled(true);
 			this.actions.actionRenameGroup.setEnabled(true);
+			this.actions.actionManageGroup.setEnabled(true);			
 		}
 	}
 
@@ -170,10 +172,12 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		if (ContactsPanel.getSelectedContact() == null) {
 			this.actions.actionDeleteContact.setEnabled(false);
 			this.actions.actionEditContact.setEnabled(false);
+			this.actions.actionManageContactGroups.setEnabled(false);			
 		}
 		else {
 			this.actions.actionDeleteContact.setEnabled(true);
 			this.actions.actionEditContact.setEnabled(true);
+			this.actions.actionManageContactGroups.setEnabled(true);				
 		}
 	}
 
