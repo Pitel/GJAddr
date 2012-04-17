@@ -4,6 +4,7 @@ import cz.vutbr.fit.gja.gjaddr.persistancelayer.Contact;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Group;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -14,10 +15,6 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import org.jdesktop.swingx.MultiSplitLayout.Divider;
-import org.jdesktop.swingx.MultiSplitLayout.Leaf;
-import org.jdesktop.swingx.MultiSplitLayout.Split;
-import org.jdesktop.swingx.MultiSplitPane;
 
 /**
  * Main application window.
@@ -41,7 +38,7 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 	 */
 	public MainWindow() {
 		super("GJAddr");
-		cz.vutbr.fit.gja.gjaddr.persistancelayer.TestData.fillTestingData(db);	//DEBUG
+		//cz.vutbr.fit.gja.gjaddr.persistancelayer.TestData.fillTestingData(db);	//DEBUG
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -68,22 +65,16 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		searchField.getDocument().addDocumentListener(this);
 		toolbar.add(searchField);
 		add(toolbar, BorderLayout.NORTH);
-		final Split model = new Split();
-		final Leaf groupsLeaf = new Leaf("groups");
-		final Leaf contactsLeaf = new Leaf("contacts");
-		final Leaf detailLeaf = new Leaf("detail");
-		groupsLeaf.setWeight(1.0 / 3);
-		contactsLeaf.setWeight(1.0 / 3);
-		detailLeaf.setWeight(1.0 / 3);
-		model.setChildren(Arrays.asList(groupsLeaf, new Divider(), contactsLeaf, new Divider(), detailLeaf));
-		final MultiSplitPane multiSplitPane = new MultiSplitPane();
-		multiSplitPane.getMultiSplitLayout().setModel(model);
-		multiSplitPane.add(new GroupsPanel(this, new GroupSelectionListener()), "groups");
+
+		add(new GroupsPanel(this, new GroupSelectionListener()), BorderLayout.WEST);
 		contactsPanel = new ContactsPanel(this, new ContactSelectionListener());
-		multiSplitPane.add(contactsPanel, "contacts");
+		//contactsPanel.setMinimumSize(new Dimension(300, 300));
 		detailPanel = new DetailPanel();
-		multiSplitPane.add(detailPanel, "detail");
-		add(multiSplitPane, BorderLayout.CENTER);
+		detailPanel.setMinimumSize(new Dimension(300, 300));
+		final JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, contactsPanel, detailPanel);
+		splitPane.setResizeWeight(1);
+		splitPane.setContinuousLayout(true);
+		add(splitPane);
 		pack();
 		setLocationRelativeTo(null);
 
