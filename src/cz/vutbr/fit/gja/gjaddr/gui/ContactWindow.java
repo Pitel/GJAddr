@@ -8,9 +8,12 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 
@@ -216,9 +219,15 @@ class ContactWindow extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (photochooser.showOpenDialog(ContactWindow.this) == JFileChooser.APPROVE_OPTION) {
-				File pic = photochooser.getSelectedFile();
-				//System.out.println(pic);
-				photo.setIcon(new ImageIcon(pic.getAbsolutePath()));
+				File f = photochooser.getSelectedFile();
+				//System.out.println(f);
+				try {
+					final BufferedImage image = ImageIO.read(f);
+					final int w = 100;
+					photo.setIcon(new ImageIcon(image.getScaledInstance(w, (int) (w * 1.33), BufferedImage.SCALE_DEFAULT)));
+				} catch (IOException ex) {
+					System.err.println(ex);
+				}
 			}
 		}
 	}
