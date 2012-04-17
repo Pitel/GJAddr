@@ -49,14 +49,17 @@
 		<javac srcdir="test" destdir="build/test" encoding="UTF-8" debug="on">
 			<compilerarg value="-Xlint" />
 			<classpath>
-				<fileset dir="test" includes="*.jar" />
+				<fileset dir="lib/test" includes="*.jar" />
 				<fileset refid="libs" />
 				<pathelement path="build/classes"/>
 			</classpath>
 		</javac>
+		<copy todir="build/test/cz/vutbr/fit/gja/gjaddr/importexport/testFiles/">
+			<fileset dir="test/cz/vutbr/fit/gja/gjaddr/importexport/testFiles/"/>
+		</copy>
 		<junit>
 			<classpath>
-				<fileset dir="test" includes="*.jar" />
+				<fileset dir="lib/test" includes="*.jar" />
 				<pathelement path="build/test"/>
 				<pathelement path="build/classes"/>
 				<fileset refid="libs" />
