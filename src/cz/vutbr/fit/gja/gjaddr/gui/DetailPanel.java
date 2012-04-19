@@ -17,6 +17,7 @@ import javax.swing.*;
  */
 class DetailPanel extends JPanel {
 	static final long serialVersionUID = 0;
+	private final Database db = Database.getInstance();
 	private final JLabel name = new JLabel();
 	private final JPanel address = new JPanel();
 	private final JLabel emails = new JLabel();
@@ -26,7 +27,8 @@ class DetailPanel extends JPanel {
 	private final JLabel note = new JLabel();
 	private final JLabel nameIcon = new JLabel();
 	private final JLabel photo = new JLabel();
-	JScrollPane detailScrollPane;
+	private final JLabel groups = new JLabel();
+	private JScrollPane detailScrollPane;
 
 	/**
 	 * Constructor
@@ -88,6 +90,11 @@ class DetailPanel extends JPanel {
 		detailPanel.add(new JLabel("<html><b>Note:</b></html>"), c);
 		c.gridx = 1;
 		detailPanel.add(note, c);
+		c.gridx = 0;
+		c.gridy++;
+		detailPanel.add(new JLabel("<html><b>Groups:</b></html>"), c);
+		c.gridx = 1;
+		detailPanel.add(groups, c);
 		c.gridy++;
 		c.weighty = 1;
 		detailPanel.add(Box.createVerticalGlue(), c);
@@ -136,6 +143,7 @@ class DetailPanel extends JPanel {
 				birthday.setText("");
 			}
 			note.setText(contact.getNote());
+			groups.setText(db.getAllGroupsForContact(contact).toString());
 			detailScrollPane.setVisible(true);
 		}
 	}
