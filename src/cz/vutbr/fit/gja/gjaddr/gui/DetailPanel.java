@@ -2,9 +2,15 @@ package cz.vutbr.fit.gja.gjaddr.gui;
 
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.*;
 import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Desktop;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.text.DateFormat;
@@ -20,7 +26,7 @@ class DetailPanel extends JPanel {
 	private final Database db = Database.getInstance();
 	private final JLabel name = new JLabel();
 	private final JPanel address = new JPanel();
-	private final JLabel emails = new JLabel();
+	private final JPanel emails = new JPanel();
 	private final JLabel phones = new JLabel();
 	private final JLabel webs = new JLabel();
 	private final JLabel birthday = new JLabel();
@@ -69,6 +75,7 @@ class DetailPanel extends JPanel {
 		c.gridy++;
 		detailPanel.add(new JLabel("<html><b>Email:</b></html>"), c);
 		c.gridx = 1;
+		emails.setLayout(new BoxLayout(emails, BoxLayout.PAGE_AXIS));
 		detailPanel.add(emails, c);
 		c.gridx = 0;
 		c.gridy++;
@@ -135,7 +142,15 @@ class DetailPanel extends JPanel {
 					address.add(l);
 				}
 			}
-			emails.setText("<html>" + contact.getAllEmails().replaceAll(", ", "<br>") + "</html>");
+			emails.removeAll();
+			for (Email e : contact.getEmails()) {
+				if (!e.getEmail().isEmpty()) {
+					JLabelButton lb = new JLabelButton(e.getEmail());
+					lb.setCursor(new Cursor(Cursor.HAND_CURSOR));
+					lb.addActionListener(new EmailListener());
+					emails.add(lb);
+				}
+			}
 			phones.setText("<html>" + contact.getAllPhones().replaceAll(", ", "<br>") + "</html>");
 			if (contact.getDateOfBirth() != null) {
 				birthday.setText(DateFormat.getDateInstance().format(contact.getDateOfBirth()));
@@ -145,6 +160,23 @@ class DetailPanel extends JPanel {
 			note.setText(contact.getNote());
 			groups.setText(db.getAllGroupsForContact(contact).toString());
 			detailScrollPane.setVisible(true);
+		}
+	}
+
+	/**
+	 * Action for opening mail client
+	 */
+	private class EmailListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent ev) {
+			final JButton b = (JButton) ev.getSource();
+			try {
+				Desktop.getDesktop().mail(new URI("mailto", b.getText(), null));
+			} catch (URISyntaxException ex) {
+				System.err.println(ex);
+			} catch (IOException ex) {
+				System.err.println(ex);
+			}
 		}
 	}
 }
