@@ -29,7 +29,7 @@ public class UserActions {
 	AddGroupAction actionNewGroup;
 	DeleteGroupAction actionDeleteGroup;
 	RenameGroupAction actionRenameGroup;
-	
+
 	ManageGroupAction actionManageGroup;
 	ManageContactGroupsAction actionManageContactGroups;
 
@@ -48,7 +48,7 @@ public class UserActions {
 		this.actionNewGroup = new AddGroupAction();
 		this.actionDeleteGroup = new DeleteGroupAction();
 		this.actionRenameGroup = new RenameGroupAction();
-		
+
 		this.actionManageGroup = new ManageGroupAction();
 		this.actionManageContactGroups = new ManageContactGroupsAction();
 
@@ -68,7 +68,7 @@ public class UserActions {
 		private static final String name = "Import";
 		private static final String icon = "/res/import.png";
 		private final Integer mnemonic = KeyEvent.VK_I;
-		private final KeyStroke accelerator = KeyStroke.getKeyStroke(mnemonic, ActionEvent.CTRL_MASK);
+		private final KeyStroke accelerator = KeyStroke.getKeyStroke(mnemonic, ActionEvent.ALT_MASK);
 
 		public ImportAction() {
 			super(name);
@@ -96,7 +96,7 @@ public class UserActions {
 		private static final String name = "Export";
 		private static final String icon = "/res/export.png";
 		private final Integer mnemonic = KeyEvent.VK_E;
-		private final KeyStroke accelerator = KeyStroke.getKeyStroke(mnemonic, ActionEvent.CTRL_MASK);
+		private final KeyStroke accelerator = KeyStroke.getKeyStroke(mnemonic, ActionEvent.ALT_MASK);
 
 		public ExportAction() {
 			super(name);
@@ -212,8 +212,8 @@ public class UserActions {
 			ContactsPanel.removeContact();
 		}
 	}
-	
-	
+
+
 	/**
 	 * Action for managing contacts in the group.
 	 */
@@ -235,7 +235,7 @@ public class UserActions {
 		public void actionPerformed(ActionEvent e) {
 			new GroupsMembershipWindow(GroupsPanel.getSelectedGroup());
 		}
-	}		
+	}
 
 	/**
 	 * Action for managing groups for contact.
@@ -281,8 +281,8 @@ public class UserActions {
 		public void actionPerformed(ActionEvent e) {
 			new GroupWindow(GroupWindow.Action.NEW);
 		}
-	}		
-	
+	}
+
 	/**
 	 * Action for delete group.
 	 */
