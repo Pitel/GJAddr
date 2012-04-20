@@ -198,7 +198,7 @@ public class UserActions {
 		private static final String name = "Delete contact";
 		private static final String icon = "/res/minus.png";
 		private final Integer mnemonic = KeyEvent.VK_D;
-		private final KeyStroke accelerator = KeyStroke.getKeyStroke(mnemonic, ActionEvent.CTRL_MASK);
+		private final KeyStroke accelerator = KeyStroke.getKeyStroke("DELETE");
 
 		public DeleteContactAction() {
 			super(name);
@@ -291,7 +291,7 @@ public class UserActions {
 		private static final String name = "Delete group";
 		private static final String icon = "/res/minus_g.png";
 		private final Integer mnemonic = KeyEvent.VK_D;
-		private final KeyStroke accelerator = KeyStroke.getKeyStroke(mnemonic, ActionEvent.CTRL_MASK);
+		private final KeyStroke accelerator = KeyStroke.getKeyStroke("DELETE");
 
 		public DeleteGroupAction() {
 			super(name);
