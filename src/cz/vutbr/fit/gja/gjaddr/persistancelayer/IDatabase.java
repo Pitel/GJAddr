@@ -19,9 +19,11 @@ public interface IDatabase {
 	
 	// GROUP <=> CONTACTS
 	List<Contact> getAllContactsFromGroup(List<Group> requiredGroups);
-	List<Group> getAllGroupsForContact(Contact contact);		
 	List<Contact> addContactsToGroup(Group group, List<Contact> contactsToAdd);
 	List<Contact> removeContactsFromGroup(Group group, List<Contact> contactsToRemove);	
+  
+	List<Group> getAllGroupsForContact(Contact contact);	  
+  List<Contact> getAllContactsFromGroup(Group group);   
 					
 	// GROUPS
 	Group getGroupByName(String name);

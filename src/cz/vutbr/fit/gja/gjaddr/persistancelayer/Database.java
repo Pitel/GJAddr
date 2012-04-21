@@ -1,3 +1,4 @@
+
 package cz.vutbr.fit.gja.gjaddr.persistancelayer;
 
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.ServicesEnum;
@@ -110,6 +111,7 @@ public class Database implements IDatabase {
 	 * @param name
 	 * @return
 	 */
+  @Override
 	public Group getGroupByName(String name) {
 		return this.groups.getGroupByName(name);
 	}
@@ -212,7 +214,8 @@ public class Database implements IDatabase {
 		return this.groups.filter(groupsId);
 	}
 	
-	private List<Contact> getAllContactsFromGroup(Group group) {
+  @Override
+	public List<Contact> getAllContactsFromGroup(Group group) {
 		List<Group> requiredGroups = new ArrayList<Group>();
 		requiredGroups.add(group);
 		
@@ -227,6 +230,7 @@ public class Database implements IDatabase {
 	 * @param service
 	 * @return
 	 */
+  @Override
 	public AuthToken getToken(ServicesEnum service) {
 		return this.tokens.get(service.getCode());
 	}
@@ -237,6 +241,7 @@ public class Database implements IDatabase {
 	 * @param service
 	 * @return
 	 */
+  @Override
 	public AuthToken getToken(Integer service) {
 		return this.tokens.get(service);
 	}
@@ -247,6 +252,7 @@ public class Database implements IDatabase {
 	 * @param token
 	 * @return
 	 */
+  @Override
 	public AuthToken addToken(AuthToken token) {
 		this.tokens.add(token);
 		this.commitChanges(TableType.AUTH);
@@ -258,6 +264,7 @@ public class Database implements IDatabase {
 	 * 
 	 * @param service
 	 */
+  @Override
 	public void removeToken(Integer service) {
 		this.tokens.remove(this.tokens.get(service));
 		this.commitChanges(TableType.AUTH);
@@ -268,6 +275,7 @@ public class Database implements IDatabase {
 	 *
 	 * @param service
 	 */
+  @Override
 	public void removeToken(ServicesEnum service) {
 		this.removeToken(service.getCode());
 	}
@@ -279,6 +287,7 @@ public class Database implements IDatabase {
 	 * 
 	 * @return
 	 */
+  @Override
 	public List<Contact> getContactsWithBirtday() {
 		List<Contact> all = this.contacts.getAllContacts();
 		List<Contact> csWithBday = new ArrayList<Contact>();

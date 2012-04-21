@@ -345,6 +345,30 @@ public class Contact implements Serializable {
 
 	@Override
 	public String toString() {
-		return this.getFullName() + ", " + this.getNickName();
+    StringBuilder sb = new StringBuilder();
+    
+    if (this.surName != null && !this.surName.isEmpty()) {
+      sb.append(this.surName);
+    }
+    
+    if (this.firstName != null && !this.firstName.isEmpty()) {
+      if (sb.length() != 0) {
+        sb.append(" ");
+      }      
+      sb.append(this.firstName);
+    }
+    
+    if (this.nickName != null && !this.nickName.isEmpty()) {
+      if (sb.length() == 0) {        
+        sb.append(this.nickName); 
+      }
+      else {
+        sb.append(" (");
+        sb.append(this.nickName);      
+        sb.append(")");        
+      }
+    }    
+    
+    return sb.toString();
 	}
 }

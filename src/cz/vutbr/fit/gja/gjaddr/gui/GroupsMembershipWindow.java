@@ -72,6 +72,7 @@ class GroupsMembershipWindow extends JFrame {
 
 		// set as list model
 		listModel.clear();
+    
 		for (Contact contact : allContacts) {
 			listModel.addElement(contact);
 		}
@@ -194,12 +195,16 @@ class GroupsMembershipWindow extends JFrame {
 	}	
 
 	private List<Group> getSelectedGroups() {
-		Group[] groupArray = Arrays.copyOf(this.list.getSelectedValues(), this.list.getSelectedValues().length, Group[].class);
+		Group[] groupArray = Arrays.copyOf(this.list.getSelectedValues(), 
+                                       this.list.getSelectedValues().length, 
+                                       Group[].class);
 		return Arrays.asList(groupArray);
 	}
 	
 	private List<Contact> getSelectedContacts() {
-		Contact[] contactsArray = Arrays.copyOf(this.list.getSelectedValues(), this.list.getSelectedValues().length, Contact[].class);
+		Contact[] contactsArray = Arrays.copyOf(this.list.getSelectedValues(), 
+                                            this.list.getSelectedValues().length, 
+                                            Contact[].class);
 		return Arrays.asList(contactsArray);
 	}	
 }
