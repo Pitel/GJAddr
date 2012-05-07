@@ -56,10 +56,17 @@ public class Contact implements Serializable {
 	private String firstName;
 	private String surName;
 	private String nickName;
+  
+  /**
+   * DO NOT USE - use dates collection with event types
+   */
+  @Deprecated
 	private Birthday birthday;
+  
 	private ImageIcon Photo;
 	private String note;
-
+  
+  private List<Dates> dates;
 	private List<Messenger> messenger;
 	private List<Url> urls;
 	private List<Address> adresses;
@@ -70,6 +77,14 @@ public class Contact implements Serializable {
 	public int getId() {
 		return id;
 	}
+
+  public List<Dates> getDates() {
+    return dates;
+  }
+
+  public void setDates(List<Dates> dates) {
+    this.dates = dates;
+  }   
 
 	public List<Messenger> getMessenger() {
 		return (messenger != null) ? messenger : new ArrayList<Messenger>();
@@ -298,50 +313,53 @@ public class Contact implements Serializable {
 		this.customs = customs;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		final Contact other = (Contact) obj;
-		if (this.id != other.id) {
-			return false;
-		}
-		if ((this.surName == null) ? (other.surName != null) : !this.surName.equals(other.surName)) {
-			return false;
-		}
-		if ((this.nickName == null) ? (other.nickName != null) : !this.nickName.equals(other.nickName)) {
-			return false;
-		}
-		if (this.birthday.getDateOfBirth() != other.birthday.getDateOfBirth() && (this.birthday.getDateOfBirth() == null || !this.birthday.getDateOfBirth().equals(other.birthday.getDateOfBirth()))) {
-			return false;
-		}
-		if ((this.note == null) ? (other.note != null) : !this.note.equals(other.note)) {
-			return false;
-		}
-		if (this.messenger != other.messenger && (this.messenger == null || !this.messenger.equals(other.messenger))) {
-			return false;
-		}
-		if (this.urls != other.urls && (this.urls == null || !this.urls.equals(other.urls))) {
-			return false;
-		}
-		if (this.adresses != other.adresses && (this.adresses == null || !this.adresses.equals(other.adresses))) {
-			return false;
-		}
-		if (this.phoneNumbers != other.phoneNumbers && (this.phoneNumbers == null || !this.phoneNumbers.equals(other.phoneNumbers))) {
-			return false;
-		}
-		if (this.emails != other.emails && (this.emails == null || !this.emails.equals(other.emails))) {
-			return false;
-		}
-		if (this.customs != other.customs && (this.customs == null || !this.customs.equals(other.customs))) {
-			return false;
-		}
-		return true;
-	}
+  @Override
+  public boolean equals(Object obj) {
+    if (obj == null) {
+      return false;
+    }
+    if (getClass() != obj.getClass()) {
+      return false;
+    }
+    final Contact other = (Contact) obj;
+    if ((this.firstName == null) ? (other.firstName != null) : !this.firstName.equals(other.firstName)) {
+      return false;
+    }
+    if ((this.surName == null) ? (other.surName != null) : !this.surName.equals(other.surName)) {
+      return false;
+    }
+    if ((this.nickName == null) ? (other.nickName != null) : !this.nickName.equals(other.nickName)) {
+      return false;
+    }
+    if (this.Photo != other.Photo && (this.Photo == null || !this.Photo.equals(other.Photo))) {
+      return false;
+    }
+    if ((this.note == null) ? (other.note != null) : !this.note.equals(other.note)) {
+      return false;
+    }
+    if (this.dates != other.dates && (this.dates == null || !this.dates.equals(other.dates))) {
+      return false;
+    }
+    if (this.messenger != other.messenger && (this.messenger == null || !this.messenger.equals(other.messenger))) {
+      return false;
+    }
+    if (this.urls != other.urls && (this.urls == null || !this.urls.equals(other.urls))) {
+      return false;
+    }
+    if (this.adresses != other.adresses && (this.adresses == null || !this.adresses.equals(other.adresses))) {
+      return false;
+    }
+    if (this.phoneNumbers != other.phoneNumbers && (this.phoneNumbers == null || !this.phoneNumbers.equals(other.phoneNumbers))) {
+      return false;
+    }
+    if (this.emails != other.emails && (this.emails == null || !this.emails.equals(other.emails))) {
+      return false;
+    }
+    if (this.customs != other.customs && (this.customs == null || !this.customs.equals(other.customs))) {
+      return false;
+    }
+    return true;
+  }	
 
 	@Override
 	public String toString() {

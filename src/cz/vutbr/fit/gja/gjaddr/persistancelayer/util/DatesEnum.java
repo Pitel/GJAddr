@@ -2,19 +2,20 @@
 package cz.vutbr.fit.gja.gjaddr.persistancelayer.util;
 
 /**
- * List of supported contact types.
+ * List of supported date types.
  *
  * @author Bc. Radek Gajdusek <xgajdu07@stud.fit.vutbr.cz>
  */
-public enum TypesEnum {
+public enum DatesEnum {
 	
-	WORK(0),
-	HOME(1),
-	OTHER(2);
+	NAMEDAY(0),
+	BIRTHDAY(1),
+	CELEBRATION(2),
+  OTHER(3);
 	
 	private Integer code;
 
-	private TypesEnum(int code) {
+	private DatesEnum(int code) {
 		this.code = code;
 	}	
 	
