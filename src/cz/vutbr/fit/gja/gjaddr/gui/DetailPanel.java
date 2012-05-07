@@ -158,7 +158,15 @@ class DetailPanel extends JPanel {
 				birthday.setText("");
 			}
 			note.setText(contact.getNote());
-			groups.setText(db.getAllGroupsForContact(contact).toString());
+
+			String separator = "";
+			final StringBuilder groupstring = new StringBuilder();
+			for (Group g : db.getAllGroupsForContact(contact)) {
+				groupstring.append(separator);
+				groupstring.append(g.getName());
+				separator = ", ";
+			}
+			groups.setText(groupstring.toString());
 			detailScrollPane.setVisible(true);
 		}
 	}
