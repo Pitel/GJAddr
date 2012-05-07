@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory;
  * @author Bc. Drahomira Herrmannova <xherrm01@stud.fit.vutbr.cz>
  */
 public class PreferencesWindow extends JFrame implements ActionListener {
-
+	static final long serialVersionUID = 0;
 	/**
 	 * List of action commands for radio buttons selection.
 	 */

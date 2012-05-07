@@ -11,7 +11,7 @@ import javax.swing.table.DefaultTableCellRenderer;
  * @author Bc. Radek Gajdušek <xgajdu07@stud.fit,vutbr.cz>
  */
 class TableRowColorRenderer extends DefaultTableCellRenderer  {
-    
+	static final long serialVersionUID = 0;
 	// used color from Tango schema:
 	// http://tango.freedesktop.org/Tango_Icon_Theme_Guidelines		
 	

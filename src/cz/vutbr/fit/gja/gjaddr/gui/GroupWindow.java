@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
  * @author Ragaj
  */
 public final class GroupWindow extends JFrame{
-	
+	static final long serialVersionUID = 0;
 	private Database db = Database.getInstance();
 	
 	static enum Action {
