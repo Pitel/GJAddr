@@ -108,6 +108,7 @@ class ContactWindow extends JFrame {
 			}
 		});
 		final JPanel form = new JPanel(new GridBagLayout());
+		form.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		final GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.insets = new Insets(1, 1, 1, 1);
