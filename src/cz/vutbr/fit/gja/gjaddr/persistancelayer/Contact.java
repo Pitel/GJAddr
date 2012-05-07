@@ -66,7 +66,7 @@ public class Contact implements Serializable {
 	private ImageIcon Photo;
 	private String note;
   
-  private List<Dates> dates;
+  private List<Event> dates;
 	private List<Messenger> messenger;
 	private List<Url> urls;
 	private List<Address> adresses;
@@ -78,11 +78,11 @@ public class Contact implements Serializable {
 		return id;
 	}
 
-  public List<Dates> getDates() {
+  public List<Event> getDates() {
     return dates;
   }
 
-  public void setDates(List<Dates> dates) {
+  public void setDates(List<Event> dates) {
     this.dates = dates;
   }   
 

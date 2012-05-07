@@ -1,7 +1,7 @@
 
 package cz.vutbr.fit.gja.gjaddr.persistancelayer;
 
-import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.DatesEnum;
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.EventsEnum;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -10,11 +10,11 @@ import java.util.Date;
  *
  * @author Bc. Radek Gajdusek <xgajdu07@stud.fit.vutbr.cz>
  */
-public class Dates implements Serializable {
+public class Event implements Serializable {
 	
   static private final long serialVersionUID = 6L;
 	
-	private DatesEnum type;
+	private EventsEnum type;
   private Date date;
 
   public Date getDate() {
@@ -25,15 +25,15 @@ public class Dates implements Serializable {
     this.date = date;
   }
 
-  public DatesEnum getType() {
+  public EventsEnum getType() {
     return type;
   }
 
-  public void setType(DatesEnum type) {
+  public void setType(EventsEnum type) {
     this.type = type;
   }
 
-  public Dates(DatesEnum type, Date date) {
+  public Event(EventsEnum type, Date date) {
     this.type = type;
     this.date = date;
   } 
@@ -46,7 +46,7 @@ public class Dates implements Serializable {
     if (getClass() != obj.getClass()) {
       return false;
     }
-    final Dates other = (Dates) obj;
+    final Event other = (Event) obj;
     if (this.type != other.type) {
       return false;
     }

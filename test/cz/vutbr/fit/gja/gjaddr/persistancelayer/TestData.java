@@ -1,5 +1,6 @@
 package cz.vutbr.fit.gja.gjaddr.persistancelayer;
 
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.EventsEnum;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.TypesEnum;
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,6 +22,7 @@ public class TestData {
 		
 		List<Contact> contactsToAdd = new ArrayList<Contact>();		
 		
+		List<Event> dates = new ArrayList<Event>();    
 		List<Email> emails = new ArrayList<Email>();
 		List<PhoneNumber> phones = new ArrayList<PhoneNumber>();		
 		List<Url> urls = new ArrayList<Url>();			
@@ -29,7 +31,8 @@ public class TestData {
 		List<Custom> customs = new ArrayList<Custom>();			
 						
 		Contact contact1 = new Contact("Radek", "Gajdusek", "Speedy", null);
-		contact1.setDateOfBirth(new Date(1988 - 1900, 03, 15));
+    dates.add(new Event(EventsEnum.BIRTHDAY, new Date(1988 - 1900, 03, 15)));
+    contact1.setDates(dates);
 		emails.add(new Email(TypesEnum.HOME, "test@gmail.com"));
 		emails.add(new Email(TypesEnum.HOME, "pokus@gmail.com"));
 		contact1.setEmails(new ArrayList<Email>(emails));
@@ -47,6 +50,7 @@ public class TestData {
 		contact1.setAdresses(new ArrayList<Address>(adresses));		
 		contactsToAdd.add(contact1);
 		
+    dates.clear();
 		emails.clear();
 		phones.clear();
 		urls.clear();
@@ -55,7 +59,8 @@ public class TestData {
 		customs.clear();
 		
 		Contact contact2 = new Contact("Jan", "Kaláb", "Pitel", "pokusná poznámka");
-		contact2.setDateOfBirth(new Date(1987 - 1900, 04, 01));
+		dates.add(new Event(EventsEnum.BIRTHDAY, new Date(1987 - 1900, 04, 01)));
+    contact2.setDates(dates);
 		emails.add(new Email(TypesEnum.WORK, "pokus@centrum.cz"));
 		contact2.setEmails(new ArrayList<Email>(emails));						
 		phones.add(new PhoneNumber(TypesEnum.HOME, "420658987562"));
@@ -65,6 +70,7 @@ public class TestData {
 		contact2.setAdresses(new ArrayList<Address>(adresses));
 		contactsToAdd.add(contact2);
 		
+    dates.clear();    
 		emails.clear();
 		phones.clear();
 		urls.clear();
@@ -73,7 +79,8 @@ public class TestData {
 		customs.clear();		
 		
 		Contact contact3 = new Contact("Petr", "Macháček", null, null);
-		contact3.setDateOfBirth(new Date(1980 - 1900, 03, 25));
+		dates.add(new Event(EventsEnum.BIRTHDAY, new Date(1980 - 1900, 03, 25)));
+    contact3.setDates(dates);    
 		urls.add(new Url(TypesEnum.WORK, "http://www.seznam.cz"));
 		urls.add(new Url(TypesEnum.WORK, "http://www.idos.cz"));		
 		contact3.setUrls(new ArrayList<Url>(urls));		

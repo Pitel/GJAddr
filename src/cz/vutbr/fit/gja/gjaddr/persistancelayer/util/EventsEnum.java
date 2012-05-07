@@ -6,7 +6,7 @@ package cz.vutbr.fit.gja.gjaddr.persistancelayer.util;
  *
  * @author Bc. Radek Gajdusek <xgajdu07@stud.fit.vutbr.cz>
  */
-public enum DatesEnum {
+public enum EventsEnum {
 	
 	NAMEDAY(0),
 	BIRTHDAY(1),
@@ -15,7 +15,7 @@ public enum DatesEnum {
 	
 	private Integer code;
 
-	private DatesEnum(int code) {
+	private EventsEnum(int code) {
 		this.code = code;
 	}	
 	
