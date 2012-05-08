@@ -14,7 +14,7 @@ public class DatabaseAuth {
 	/**
 	 *
 	 */
-	private final String FILENAME = new File(Settings.getDataDir(), "auth").toString();
+	private final String FILENAME = new File(Settings.instance().getDataDir(), "auth").toString();
 
 	/**
 	 *

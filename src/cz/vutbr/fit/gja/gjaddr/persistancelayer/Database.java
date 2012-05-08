@@ -65,12 +65,17 @@ public class Database implements IDatabase {
 					this.contacts.save();
 					this.groups.save();					
 					this.groupsContacts.save();
+          this.tokens.save();
 					break;
 				default:
 					// TODO
 			}
 		}
 	}
+  
+  public void saveAllData() {
+    this.commitChanges(TableType.ALL);
+  }
 	
 	public void clearAllData() {
 		this.contacts.clear();

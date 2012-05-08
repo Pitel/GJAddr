@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class DatabaseGroupsContacts {
 
-	private final String FILENAME = new File(Settings.getDataDir(), "groupsContacts").toString();
+	private final String FILENAME = new File(Settings.instance().getDataDir(), "groupsContacts").toString();
 	private List<GroupContact> groupsContacts = null;
 
 	public DatabaseGroupsContacts() {		

@@ -27,10 +27,10 @@ public class Persistance {
   private final String BIN_EXT = ".gja";
   
   /**
-   * TEMPORARY
+   * Binary persistance indicator.
    */
-  private boolean binary = true;
-
+  private boolean binary = Settings.instance().isBinPersistance();
+  
   /**
   * Stores data to the persistance according to current persistance settings.
   * @param filename source filename

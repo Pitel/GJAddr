@@ -171,7 +171,7 @@ class GroupsMembershipWindow extends JFrame {
 
 			db.updateContactsGroup(contacts, selectedGroups);
 
-			ContactsPanel.fillTable();
+			ContactsPanel.fillTable(false);
 			GroupsPanel.fillList();
 
 			dispose();
@@ -187,7 +187,7 @@ class GroupsMembershipWindow extends JFrame {
 			
 			db.updateGroupsContacts(groups, selectedContacts);
 
-			ContactsPanel.fillTable();
+			ContactsPanel.fillTable(false);
 			GroupsPanel.fillList();
 
 			dispose();

@@ -13,7 +13,7 @@ public class DatabaseContacts {
 
 	private int idCounter = 0;
 		
-	private final String FILENAME = new File(Settings.getDataDir(), "contacts").toString();
+	private final String FILENAME = new File(Settings.instance().getDataDir(), "contacts").toString();
 				
 	private ArrayList<Contact> contacts = null;
 

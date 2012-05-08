@@ -5,8 +5,8 @@ import cz.vutbr.fit.gja.gjaddr.persistancelayer.Contact;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Group;
 import java.awt.event.*;
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.event.ListSelectionListener;
@@ -17,7 +17,7 @@ import javax.swing.table.TableRowSorter;
  *
  * @author Bc. Jan Kaláb <xkalab00@stud.fit,vutbr.cz>
  */
-class ContactsPanel extends JPanel implements KeyListener {
+public class ContactsPanel extends JPanel implements KeyListener {
 	static final long serialVersionUID = 0;
 
 	private JPopupMenu contextMenu = new JPopupMenu();
@@ -42,7 +42,7 @@ class ContactsPanel extends JPanel implements KeyListener {
 		label.setAlignmentX(CENTER_ALIGNMENT);
 		add(label);
 
-		fillTable();
+		fillTable(false);
 		this.mainWindowHandle.handleContactActionsVisibility();
 
 		table.getSelectionModel().addListSelectionListener(listSelectionListener);
@@ -58,10 +58,13 @@ class ContactsPanel extends JPanel implements KeyListener {
 	/**
 	 * Fill table with data from list
 	 */
-	static void fillTable() {
+	public static void fillTable(boolean rememberSelection) {
 		final RowFilter filter = sorter.getRowFilter();	//Warnings!
 
-		Contact selectedContact = getSelectedContact();
+    int[] selRows = null;
+    if (rememberSelection) {
+     selRows = table.getSelectedRows();
+    }
 
 		Group[] groups = GroupsPanel.getSelectedGroups();
 		List<Group> selectedGroups = Arrays.asList(groups);
@@ -71,6 +74,12 @@ class ContactsPanel extends JPanel implements KeyListener {
 		table.clear();
 		table.addRow(contacts);
 		sorter.setRowFilter(filter);
+    
+    if (rememberSelection) {
+      for (int row : selRows) {
+      table.setRowSelectionInterval(row, row);
+      }
+    }
 	}
 
 	/**
@@ -122,7 +131,7 @@ class ContactsPanel extends JPanel implements KeyListener {
 			List<Contact> contactToRemove = new ArrayList<Contact>();
 			contactToRemove.add(contact);
 			db.removeContacts(contactToRemove);
-			ContactsPanel.fillTable();
+			ContactsPanel.fillTable(false);
 			GroupsPanel.fillList();
 			return true;
 		}

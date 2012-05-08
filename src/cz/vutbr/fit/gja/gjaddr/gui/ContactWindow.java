@@ -159,7 +159,7 @@ class ContactWindow extends JFrame {
 			db.addNewContacts(newContacts);
 
 			// update tables
-			ContactsPanel.fillTable();
+			ContactsPanel.fillTable(false);
 			GroupsPanel.fillList();
 
 			dispose();
@@ -174,7 +174,7 @@ class ContactWindow extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			resolvecontact();
 			db.updateContact(contact);
-			ContactsPanel.fillTable();
+			ContactsPanel.fillTable(false);
 			dispose();
 		}
 	}

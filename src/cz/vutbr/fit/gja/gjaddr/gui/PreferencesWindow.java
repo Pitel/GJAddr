@@ -5,25 +5,15 @@ import cz.vutbr.fit.gja.gjaddr.importexport.FacebookOauth;
 import cz.vutbr.fit.gja.gjaddr.importexport.GoogleOauth;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.AuthToken;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.Settings;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.ServicesEnum;
+import java.awt.BorderLayout;
 import java.awt.Cursor;
-
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-import javax.swing.UIManager;
-
+import javax.swing.*;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -82,8 +72,16 @@ public class PreferencesWindow extends JFrame implements ActionListener {
 
 		// main header
 		this.add(this.createMainHeader());
-
-		// services header
+    
+    // name order header and radio button group
+    this.add(this.createNameOrderHeader());
+    this.add(this.createNameOrderRadionButtons());      
+    
+    // persistance header and radio button group
+    this.add(this.createPersistanceHeader());
+    this.add(this.createPersistanceRadioButtons());     
+    
+    // services header
 		this.add(this.createServicesHeader());
 
 		// action buttons
@@ -107,9 +105,95 @@ public class PreferencesWindow extends JFrame implements ActionListener {
 		JLabel mainHeader = new JLabel("<html><h1>Preferences</h1></html>", JLabel.LEFT);
 		mainHeaderPanel.add(mainHeader);
 		mainHeaderPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
+    
 		return mainHeaderPanel;
 	}
 
+	/**
+	 * Create persistance header.
+	 *
+	 * @return
+	 */     
+	private JPanel createPersistanceHeader() {
+		JPanel persistanceHeader = new JPanel(new GridLayout());
+		JLabel firstHeader = new JLabel("<html><h2>Persistance layer</h2></html>", JLabel.LEFT);
+		persistanceHeader.add(firstHeader);
+		persistanceHeader.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
+
+    return persistanceHeader;
+  }
+  
+	/**
+	 * Create persistance radio buttons.
+	 *
+	 * @return
+	 */     
+  private JPanel createPersistanceRadioButtons() {
+    JRadioButton binaryButton = new JRadioButton("Binary persistance");
+    binaryButton.setActionCommand("bin");    
+    binaryButton.addActionListener(this);
+    
+    JRadioButton xmlButton = new JRadioButton("XML persistance");   
+    xmlButton.setActionCommand("xml");     
+    xmlButton.addActionListener(this);    
+    
+    ButtonGroup bg = new ButtonGroup();
+    bg.add(binaryButton);
+    bg.add(xmlButton);    
+    
+    JPanel radioPanel = new JPanel(new GridLayout(0, 1));
+    radioPanel.add(binaryButton);
+    radioPanel.add(xmlButton);   
+    
+    binaryButton.setSelected(Settings.instance().isBinPersistance());
+    xmlButton.setSelected(!Settings.instance().isBinPersistance());    
+    
+    return radioPanel;
+  }
+  
+	/**
+	 * Create name order header.
+	 *
+	 * @return
+	 */    
+	private JPanel createNameOrderHeader() {
+		JPanel nameOrderHeader = new JPanel(new GridLayout());
+		JLabel firstHeader = new JLabel("<html><h2>User names order</h2></html>", JLabel.LEFT);
+		nameOrderHeader.add(firstHeader);
+		nameOrderHeader.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
+
+    return nameOrderHeader;
+  }
+  
+	/**
+	 * Create name order radion buttons.
+	 *
+	 * @return
+	 */  
+  private JPanel createNameOrderRadionButtons() {
+    JRadioButton firstNameButton = new JRadioButton("Firstname first");
+    firstNameButton.setActionCommand("firstName");    
+    firstNameButton.addActionListener(this);
+    
+    JRadioButton surNameButton = new JRadioButton("Surname first");   
+    surNameButton.setActionCommand("surName");     
+    surNameButton.addActionListener(this);    
+    
+    ButtonGroup bg = new ButtonGroup();
+    bg.add(firstNameButton);
+    bg.add(surNameButton);    
+    
+    JPanel radioPanel = new JPanel(new GridLayout(0, 1));
+    radioPanel.add(firstNameButton);
+    radioPanel.add(surNameButton);   
+    
+    firstNameButton.setSelected(Settings.instance().isNameFirst());
+    surNameButton.setSelected(!Settings.instance().isNameFirst());    
+    
+    return radioPanel;
+  }  
+
+  
 	/**
 	 * Create services header.
 	 *
@@ -192,7 +276,7 @@ public class PreferencesWindow extends JFrame implements ActionListener {
 		googlePanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
 		return googlePanel;
 	}
-
+  
 	/**
 	 * Disconnect user from Facebook.
 	 * 
@@ -301,6 +385,7 @@ public class PreferencesWindow extends JFrame implements ActionListener {
 	 * 
 	 * @param ae
 	 */
+  @Override
 	public void actionPerformed(ActionEvent ae) {
 		// facebook button pressed
 		if (ae.getSource() == this.fbButton) {
@@ -320,5 +405,13 @@ public class PreferencesWindow extends JFrame implements ActionListener {
 				this.googleDisconnect();
 			}
 		}
+    // persistance changed
+    else if (ae.getActionCommand().equals("bin") || ae.getActionCommand().equals("xml"))  {
+      Settings.instance().changePersistance();
+    }
+    // name order changed
+    else if (ae.getActionCommand().equals("firstName") || ae.getActionCommand().equals("surName"))  {
+      Settings.instance().changeNameOrder();
+    }    
 	}
 }

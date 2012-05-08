@@ -188,7 +188,7 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 			if (!e.getValueIsAdjusting()) {	//React only on final choice
 				final JList list = (JList) e.getSource();
 
-				ContactsPanel.fillTable();
+				ContactsPanel.fillTable(false);
 				handleGroupActionsVisibility();
 			}
 		}
