@@ -53,30 +53,6 @@ public class DatabaseTest {
 	}
 
 	/**
-	 * Test of getSpecificContacts method, of class Database.
-	 */
-	@Test
-	public void testGetSpecificContacts() {
-		
-		System.out.println("testing getSpecificContacts method ...");			
-
-		// no specific contact
-		List<Contact> expectedResult = this.database.getAllContacts();
-		List<Contact> result = this.database.getSpecificContacts(new ArrayList<Contact>());		
-		assertEquals(0, result.size());		
-		
-		// all contacts
-		result = this.database.getSpecificContacts(expectedResult);	
-		assertEquals(expectedResult, result);		
-		
-		// some selection
-		expectedResult.remove(1);		
-		result = this.database.getSpecificContacts(expectedResult);	
-		
-		assertEquals(expectedResult, result);
-	}
-
-	/**
 	 * Test of getAllContactsFromGroup method, of class Database.
 	 */
 	@Test
@@ -181,30 +157,6 @@ public class DatabaseTest {
 		result = this.database.addNewGroup("Lahvators");	
 		List<Group> expectedResult = null;
 		assertEquals(expectedResult, result);						
-	}
-
-	/**
-	 * Test of updateGroup method, of class Database.
-	 */
-	@Test
-	public void testUpdateGroup() {
-		System.out.println("testing addNewGroup method...");
-		
-		int groupIndex = 0;
-		
-		List<Group> groupsBeforeUpdate = this.database.getAllGroups();
-
-		Group groupToUpdate = groupsBeforeUpdate.get(groupIndex);
-		groupToUpdate.setName("XYZ");
-				
-		List<Group> result = this.database.updateGroup(groupToUpdate);
-		assertEquals(groupsBeforeUpdate, result);	
-
-		Group groupNotInDb = new Group(100, "FAILED");
-		groupsBeforeUpdate = this.database.getAllGroups();		
-		result = this.database.updateGroup(groupNotInDb);
-		
-		assertEquals(groupsBeforeUpdate, result);
 	}
 
 	/**
