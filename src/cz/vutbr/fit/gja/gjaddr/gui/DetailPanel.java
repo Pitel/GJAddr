@@ -125,16 +125,18 @@ class DetailPanel extends JPanel {
 			for (Address a : contact.getAdresses()) {
 				if (!a.getAddress().isEmpty()){
 					//System.out.println(a);
-					JLabel l = new JLabel();
+					JLabelButton l = new JLabelButton();
 					l.setVerticalTextPosition(JLabel.TOP);
 					l.setHorizontalTextPosition(JLabel.CENTER);
 					l.setAlignmentX(Component.LEFT_ALIGNMENT);
+					l.setCursor(new Cursor(Cursor.HAND_CURSOR));
 					l.setText(a.getAddress());
 					try {
 						l.setIcon(new ImageIcon(new URL("http://maps.google.com/maps/api/staticmap?size=128x128&sensor=false&markers=" + URLEncoder.encode(l.getText(), "utf8"))));
 					} catch (IOException e) {
 						System.err.println(e);
 					}
+					l.addActionListener(new MapListener());
 					address.add(l);
 				}
 			}
@@ -176,6 +178,23 @@ class DetailPanel extends JPanel {
 			final JButton b = (JButton) ev.getSource();
 			try {
 				Desktop.getDesktop().mail(new URI("mailto", b.getText(), null));
+			} catch (URISyntaxException ex) {
+				System.err.println(ex);
+			} catch (IOException ex) {
+				System.err.println(ex);
+			}
+		}
+	}
+
+	/**
+	 * Action for opening browser with maps
+	 */
+	private class MapListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent ev) {
+			final JButton b = (JButton) ev.getSource();
+			try {
+				Desktop.getDesktop().browse(new URI("http://maps.google.com/maps?q=" + URLEncoder.encode(b.getText(), "utf8")));
 			} catch (URISyntaxException ex) {
 				System.err.println(ex);
 			} catch (IOException ex) {
