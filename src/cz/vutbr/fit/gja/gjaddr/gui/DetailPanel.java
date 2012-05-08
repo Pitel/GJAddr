@@ -41,6 +41,7 @@ class DetailPanel extends JPanel {
 	 */
 	public DetailPanel() {
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+		setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
 		final JLabel label = new JLabel("Detail");
 		label.setAlignmentX(CENTER_ALIGNMENT);
 		add(label);
