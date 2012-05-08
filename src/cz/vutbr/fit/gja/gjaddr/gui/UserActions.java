@@ -67,6 +67,7 @@ public class UserActions {
 		static final long serialVersionUID = 0;
 		private static final String name = "Import";
 		private static final String icon = "/res/import.png";
+    private static final String tooltip = "Import contacts";
 		private final Integer mnemonic = KeyEvent.VK_I;
 		private final KeyStroke accelerator = KeyStroke.getKeyStroke(mnemonic, ActionEvent.ALT_MASK);
 
@@ -75,6 +76,7 @@ public class UserActions {
 			putValue(SMALL_ICON, new ImageIcon(getClass().getResource(icon), name));
 			putValue(MNEMONIC_KEY, mnemonic);
 			putValue(ACCELERATOR_KEY, accelerator);
+      putValue(SHORT_DESCRIPTION, tooltip);
 		}
 
 		@Override
@@ -95,6 +97,7 @@ public class UserActions {
 		static final long serialVersionUID = 0;
 		private static final String name = "Export";
 		private static final String icon = "/res/export.png";
+    private static final String tooltip = "Export contacts";   
 		private final Integer mnemonic = KeyEvent.VK_E;
 		private final KeyStroke accelerator = KeyStroke.getKeyStroke(mnemonic, ActionEvent.ALT_MASK);
 
@@ -103,6 +106,7 @@ public class UserActions {
 			putValue(SMALL_ICON, new ImageIcon(getClass().getResource(icon), name));
 			putValue(MNEMONIC_KEY, mnemonic);
 			putValue(ACCELERATOR_KEY, accelerator);
+      putValue(SHORT_DESCRIPTION, tooltip);      
 		}
 
 		@Override
@@ -128,6 +132,7 @@ public class UserActions {
 		static final long serialVersionUID = 0;
 		private static final String name = "Preferences";
 		private static final String icon = "/res/preferences.png";
+    private static final String tooltip = "Manage preferences";       
 		private final Integer mnemonic = KeyEvent.VK_P;
 		private final KeyStroke accelerator = KeyStroke.getKeyStroke(mnemonic, ActionEvent.CTRL_MASK);
 
@@ -136,6 +141,7 @@ public class UserActions {
 			putValue(SMALL_ICON, new ImageIcon(getClass().getResource(icon), name));
 			putValue(MNEMONIC_KEY, mnemonic);
 			putValue(ACCELERATOR_KEY, accelerator);
+      putValue(SHORT_DESCRIPTION, tooltip);         
 		}
 
 		@Override
@@ -151,6 +157,7 @@ public class UserActions {
 		static final long serialVersionUID = 0;
 		private static final String name = "Add new contact";
 		private static final String icon = "/res/plus.png";
+    private static final String tooltip = "Add new contact";       
 		private final Integer mnemonic = KeyEvent.VK_N;
 		private final KeyStroke accelerator = KeyStroke.getKeyStroke(mnemonic, ActionEvent.CTRL_MASK);
 
@@ -159,6 +166,7 @@ public class UserActions {
 			putValue(SMALL_ICON, new ImageIcon(getClass().getResource(icon), name));
 			putValue(MNEMONIC_KEY, mnemonic);
 			putValue(ACCELERATOR_KEY, accelerator);
+      putValue(SHORT_DESCRIPTION, tooltip);         
 		}
 
 		@Override
@@ -174,6 +182,7 @@ public class UserActions {
 		static final long serialVersionUID = 0;
 		private static final String name = "Edit contact";
 		private static final String icon = "/res/edit.png";
+    private static final String tooltip = "Edit contact";      
 		private final Integer mnemonic = KeyEvent.VK_E;
 		private final KeyStroke accelerator = KeyStroke.getKeyStroke(mnemonic, ActionEvent.CTRL_MASK);
 
@@ -181,7 +190,8 @@ public class UserActions {
 			super(name);
 			putValue(SMALL_ICON, new ImageIcon(getClass().getResource(icon), name));
 			putValue(MNEMONIC_KEY, mnemonic);
-			putValue(ACCELERATOR_KEY, accelerator);
+			putValue(ACCELERATOR_KEY, accelerator);       
+      putValue(SHORT_DESCRIPTION, tooltip);       
 		}
 
 		@Override
@@ -197,6 +207,7 @@ public class UserActions {
 		static final long serialVersionUID = 0;
 		private static final String name = "Delete contact";
 		private static final String icon = "/res/minus.png";
+    private static final String tooltip = "Delete contact";      
 		private final Integer mnemonic = KeyEvent.VK_D;
 		private final KeyStroke accelerator = KeyStroke.getKeyStroke("DELETE");
 
@@ -205,6 +216,7 @@ public class UserActions {
 			putValue(SMALL_ICON, new ImageIcon(getClass().getResource(icon), name));
 			putValue(MNEMONIC_KEY, mnemonic);
 			putValue(ACCELERATOR_KEY, accelerator);
+      putValue(SHORT_DESCRIPTION, tooltip);        
 		}
 
 		@Override
@@ -221,6 +233,7 @@ public class UserActions {
 		static final long serialVersionUID = 0;
 		private static final String name = "Manage group";
 		private static final String icon = "/res/contacts_g.png";
+    private static final String tooltip = "Manage contacts for group";       
 		private final Integer mnemonic = KeyEvent.VK_M;
 		private final KeyStroke accelerator = KeyStroke.getKeyStroke(mnemonic, ActionEvent.CTRL_MASK);
 
@@ -229,6 +242,7 @@ public class UserActions {
 			putValue(SMALL_ICON, new ImageIcon(getClass().getResource(icon), name));
 			putValue(MNEMONIC_KEY, mnemonic);
 			putValue(ACCELERATOR_KEY, accelerator);
+      putValue(SHORT_DESCRIPTION, tooltip);         
 		}
 
 		@Override
@@ -244,6 +258,7 @@ public class UserActions {
 		static final long serialVersionUID = 0;
 		private static final String name = "Manage contact groups";
 		private static final String icon = "/res/contacts_g.png";
+    private static final String tooltip = "Manage groups for contact";     
 		private final Integer mnemonic = KeyEvent.VK_M;
 		private final KeyStroke accelerator = KeyStroke.getKeyStroke(mnemonic, ActionEvent.CTRL_MASK);
 
@@ -252,6 +267,7 @@ public class UserActions {
 			putValue(SMALL_ICON, new ImageIcon(getClass().getResource(icon), name));
 			putValue(MNEMONIC_KEY, mnemonic);
 			putValue(ACCELERATOR_KEY, accelerator);
+      putValue(SHORT_DESCRIPTION, tooltip);         
 		}
 
 		@Override
@@ -267,6 +283,7 @@ public class UserActions {
 		static final long serialVersionUID = 0;
 		private static final String name = "Add group";
 		private static final String icon = "/res/plus_g.png";
+    private static final String tooltip = "Add new group";     
 		private final Integer mnemonic = KeyEvent.VK_G;
 		private final KeyStroke accelerator = KeyStroke.getKeyStroke(mnemonic, ActionEvent.CTRL_MASK);
 
@@ -275,6 +292,7 @@ public class UserActions {
 			putValue(SMALL_ICON, new ImageIcon(getClass().getResource(icon), name));
 			putValue(MNEMONIC_KEY, mnemonic);
 			putValue(ACCELERATOR_KEY, accelerator);
+      putValue(SHORT_DESCRIPTION, tooltip);            
 		}
 
 		@Override
@@ -290,6 +308,7 @@ public class UserActions {
 		static final long serialVersionUID = 0;
 		private static final String name = "Delete group";
 		private static final String icon = "/res/minus_g.png";
+    private static final String tooltip = "Delete group";     
 		private final Integer mnemonic = KeyEvent.VK_D;
 		private final KeyStroke accelerator = KeyStroke.getKeyStroke("DELETE");
 
@@ -298,6 +317,7 @@ public class UserActions {
 			putValue(SMALL_ICON, new ImageIcon(getClass().getResource(icon), name));
 			putValue(MNEMONIC_KEY, mnemonic);
 			putValue(ACCELERATOR_KEY, accelerator);
+      putValue(SHORT_DESCRIPTION, tooltip);            
 		}
 
 		@Override
@@ -313,6 +333,7 @@ public class UserActions {
 		static final long serialVersionUID = 0;
 		private static final String name = "Rename group";
 		private static final String icon = "/res/edit_g.png";
+    private static final String tooltip = "Rename group";     
 		private final Integer mnemonic = KeyEvent.VK_R;
 		private final KeyStroke accelerator = KeyStroke.getKeyStroke(mnemonic, ActionEvent.CTRL_MASK);
 
@@ -321,6 +342,7 @@ public class UserActions {
 			putValue(SMALL_ICON, new ImageIcon(getClass().getResource(icon), name));
 			putValue(MNEMONIC_KEY, mnemonic);
 			putValue(ACCELERATOR_KEY, accelerator);
+      putValue(SHORT_DESCRIPTION, tooltip);         
 		}
 
 		@Override
