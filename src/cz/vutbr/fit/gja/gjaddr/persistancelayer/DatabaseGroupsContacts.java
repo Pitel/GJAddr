@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class DatabaseGroupsContacts {
 
-	private final String FILENAME = new File(Settings.getDataDir(), "groupsContacts.gja").toString();
+	private final String FILENAME = new File(Settings.getDataDir(), "groupsContacts").toString();
 	private List<GroupContact> groupsContacts = null;
 
 	public DatabaseGroupsContacts() {		
@@ -91,11 +91,13 @@ public class DatabaseGroupsContacts {
 	}
 	
 	private void load()	{
-		this.groupsContacts = Serialization.load(FILENAME);		
+    Persistance per = new Persistance();    
+		this.groupsContacts = per.loadData(FILENAME);		
 	}
 	
 	void save()	{
-		Serialization.save(FILENAME, this.groupsContacts);
+    Persistance per = new Persistance();    
+		per.saveData(FILENAME, this.groupsContacts);
 	}	
 	
 	void clear() {

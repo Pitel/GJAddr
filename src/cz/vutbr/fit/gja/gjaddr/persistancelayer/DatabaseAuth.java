@@ -14,7 +14,7 @@ public class DatabaseAuth {
 	/**
 	 *
 	 */
-	private final String FILENAME = new File(Settings.getDataDir(), "auth.gja").toString();
+	private final String FILENAME = new File(Settings.getDataDir(), "auth").toString();
 
 	/**
 	 *
@@ -32,14 +32,16 @@ public class DatabaseAuth {
 	 * Initialize database.
 	 */
 	private void load()	{
-		this.tokens = (ArrayList<AuthToken>) Serialization.load(FILENAME);
+    Persistance per = new Persistance();
+		this.tokens = (ArrayList<AuthToken>) per.loadData(FILENAME);
 	}
 
 	/**
 	 * Save tokens in database.
 	 */
 	void save()	{
-		Serialization.save(FILENAME, this.tokens);
+    Persistance per = new Persistance();    
+		per.saveData(FILENAME, this.tokens);
 	}
 
 	/**

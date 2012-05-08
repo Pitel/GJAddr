@@ -13,7 +13,7 @@ public class DatabaseContacts {
 
 	private int idCounter = 0;
 		
-	private final String FILENAME = new File(Settings.getDataDir(), "contacts.gja").toString();
+	private final String FILENAME = new File(Settings.getDataDir(), "contacts").toString();
 				
 	private ArrayList<Contact> contacts = null;
 
@@ -48,11 +48,13 @@ public class DatabaseContacts {
 	}
 	
 	private void load()	{		
-		this.contacts = (ArrayList<Contact>) Serialization.load(FILENAME);	
+    Persistance per = new Persistance();    
+		this.contacts = (ArrayList<Contact>) per.loadData(FILENAME);	
 	}
 	
-		void save()	{		
-		Serialization.save(FILENAME, this.contacts);
+  void save()	{		
+    Persistance per = new Persistance();    
+		per.saveData(FILENAME, this.contacts);
 	}
 	
 	private void setLastIdNumber() {

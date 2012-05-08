@@ -1,6 +1,6 @@
 package cz.vutbr.fit.gja.gjaddr.persistancelayer;
 
-import java.io.*;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +13,7 @@ public class DatabaseGroups {
 	
 	private int idCounter = 0;
 	
-	private final String FILENAME = new File(Settings.getDataDir(), "groups.gja").toString();
+	private final String FILENAME = new File(Settings.getDataDir(), "groups").toString();
 	private ArrayList<Group> groups = null;
 
 	public DatabaseGroups() {		
@@ -22,11 +22,13 @@ public class DatabaseGroups {
 	}	
 	
 	private void load()	{
-		this.groups = (ArrayList<Group>) Serialization.load(FILENAME);
+    Persistance per = new Persistance();    
+		this.groups = (ArrayList<Group>) per.loadData(FILENAME);
 	}
 	
 	void save()	{		
-		Serialization.save(FILENAME, this.groups);
+    Persistance per = new Persistance();    
+		per.saveData(FILENAME, this.groups);
 	}	
 	
 	private void setLastIdNumber() {
