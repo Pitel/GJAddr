@@ -8,14 +8,9 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.filechooser.FileFilter;
 
 /**
  * Contact editing window.
@@ -28,10 +23,8 @@ class ContactWindow extends JFrame {
 	private final Database db = Database.getInstance();
 
 	private Contact contact;
-
 	private final JButton button = new JButton();
-	private final JButton photo = new JButton();
-	private final JFileChooser photochooser = new JFileChooser();
+	private final PhotoButton photo = new PhotoButton();
 	private final JTextField nameField = new JTextField();
 	private final JTextField surnameField = new JTextField();
 	private final JTextField addressField = new JTextField();
@@ -58,11 +51,7 @@ class ContactWindow extends JFrame {
 		super("Edit contact");
 		this.contact = contact;
 		setIconImage(new ImageIcon(getClass().getResource("/res/edit.png"), "Edit").getImage());
-		if (contact.getPhoto() != null) {
-			photo.setIcon(contact.getPhoto());
-		} else {
-			photo.setIcon(new ImageIcon(getClass().getResource("/res/photo.png"), ":)"));
-		}
+		photo.setContact(contact);
 		button.setText("Edit contact");
 		button.addActionListener(new EditContactActionListener());
 		nameField.setText(contact.getFirstName());
@@ -84,29 +73,6 @@ class ContactWindow extends JFrame {
 		catch (Exception e) {
 			System.err.println(e);
 		}
-		photo.addActionListener(new PhotoActionListener());
-		photochooser.setFileFilter(new FileFilter() {
-			@Override
-			public boolean accept(File f) {
-				if (f.isDirectory()) {
-					return true;
-				}
-				String e = "";
-				String s = f.getName();
-				int i = s.lastIndexOf('.');
-				if (i > 0 && i < s.length() - 1) {
-					e = s.substring(i + 1).toLowerCase();
-				}
-				if (e.equals("jpg") || e.equals("jpeg") || e.equals("gif") || e.equals("png")) {
-					return true;
-				}
-				return false;
-			}
-			@Override
-			public String getDescription() {
-				return "Images";
-			}
-		});
 		final JPanel form = new JPanel(new GridBagLayout());
 		form.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		final GridBagConstraints c = new GridBagConstraints();
@@ -210,26 +176,6 @@ class ContactWindow extends JFrame {
 			db.updateContact(contact);
 			ContactsPanel.fillTable();
 			dispose();
-		}
-	}
-
-	/**
-	 * Action for loading photo
-	 */
-	private class PhotoActionListener implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			if (photochooser.showOpenDialog(ContactWindow.this) == JFileChooser.APPROVE_OPTION) {
-				File f = photochooser.getSelectedFile();
-				//System.out.println(f);
-				try {
-					final BufferedImage image = ImageIO.read(f);
-					final int w = 100;
-					photo.setIcon(new ImageIcon(image.getScaledInstance(w, (int) (w * 1.33), BufferedImage.SCALE_DEFAULT)));
-				} catch (IOException ex) {
-					System.err.println(ex);
-				}
-			}
 		}
 	}
 }

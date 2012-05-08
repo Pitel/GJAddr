@@ -32,7 +32,7 @@ class DetailPanel extends JPanel {
 	private final JLabel birthday = new JLabel();
 	private final JLabel note = new JLabel();
 	private final JLabel nameIcon = new JLabel();
-	private final JLabel photo = new JLabel();
+	private final PhotoButton photo = new PhotoButton();
 	private final JLabel groups = new JLabel();
 	private JScrollPane detailScrollPane;
 
@@ -118,12 +118,7 @@ class DetailPanel extends JPanel {
 			} else {
 				nameIcon.setVisible(false);
 			}
-			if (contact.getPhoto() != null) {
-				photo.setIcon(contact.getPhoto());
-				photo.setVisible(true);
-			} else {
-				photo.setVisible(false);
-			}
+			photo.setContact(contact);
 			name.setText(String.format("<html><h1>" + contact.getFullName() + "</h1></html>"));
 			address.removeAll();
 			for (Address a : contact.getAdresses()) {
