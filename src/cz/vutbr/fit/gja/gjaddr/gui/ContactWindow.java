@@ -66,16 +66,18 @@ class ContactWindow extends JFrame {
 		surnameField.setText(contact.getSurName());
 		addressField.setText(contact.getAllAddresses());
 		for (Url u : contact.getUrls()) {
-			switch (u.getType()) {
-				case WORK:
-					workUrlField.setText(u.getValue().toString());
-					break;
-				case HOME:
-					homeUrlField.setText(u.getValue().toString());
-					break;
-				case OTHER:
-					otherUrlField.setText(u.getValue().toString());
-					break;
+			if (u.getValue() != null) {
+				switch (u.getType()) {
+					case WORK:
+						workUrlField.setText(u.getValue().toString());
+						break;
+					case HOME:
+						homeUrlField.setText(u.getValue().toString());
+						break;
+					case OTHER:
+						otherUrlField.setText(u.getValue().toString());
+						break;
+				}
 			}
 		}
 		for (Email e : contact.getEmails()) {
