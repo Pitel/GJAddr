@@ -1,5 +1,6 @@
 package cz.vutbr.fit.gja.gjaddr.gui;
 
+import cz.vutbr.fit.gja.gjaddr.gui.util.Validators;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.*;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.TypesEnum;
 import java.awt.BorderLayout;
@@ -29,6 +30,7 @@ class ContactWindow extends JFrame {
 	private final JTextField surnameField = new JTextField();
 	private final JTextField addressField = new JTextField();
 	private final JTextField emailField = new JTextField();
+	private final JTextField urlField = new JTextField();  
 	private final JTextField phoneField = new JTextField();
 
 	/**
@@ -57,6 +59,7 @@ class ContactWindow extends JFrame {
 		nameField.setText(contact.getFirstName());
 		surnameField.setText(contact.getSurName());
 		addressField.setText(contact.getAllAddresses());
+		urlField.setText(contact.getAllUrls());
 		phoneField.setText(contact.getAllPhones());
 		emailField.setText(contact.getAllEmails());
 		phoneField.setText(contact.getAllPhones());
@@ -117,6 +120,13 @@ class ContactWindow extends JFrame {
 		c.gridy++;
 		c.gridx = 0;
 		c.weightx = 0;
+		form.add(new JLabel("Url"), c);
+		c.gridx = 1;
+		c.weightx = 1;
+		form.add(urlField, c);
+		c.gridy++;
+		c.gridx = 0;
+		c.weightx = 0;    
 		form.add(new JLabel("Phone"), c);
 		c.gridx = 1;
 		c.weightx = 1;
@@ -128,23 +138,65 @@ class ContactWindow extends JFrame {
 		setVisible(true);
 	}
 
-	private void resolvecontact() {
-		contact.setPhoto((ImageIcon) photo.getIcon());
-		contact.setFirstName(nameField.getText());
-		contact.setSurName(surnameField.getText());
+	private boolean resolvecontact() {
+    
+    boolean result = this.validateData();    
+    if (!result) {
+      return result;    
+    }
+    
+    contact.setPhoto((ImageIcon) photo.getIcon());
+    contact.setFirstName(nameField.getText());
+    contact.setSurName(surnameField.getText());
 
-		final ArrayList<Address> addresses = new ArrayList<Address>();
-		addresses.add(new Address(TypesEnum.HOME, addressField.getText()));
-		contact.setAdresses(addresses);
+    final ArrayList<Address> addresses = new ArrayList<Address>();
+    addresses.add(new Address(TypesEnum.HOME, addressField.getText()));
+    contact.setAdresses(addresses);
+    
+    final ArrayList<Url> urls = new ArrayList<Url>();
+    urls.add(new Url(TypesEnum.HOME, urlField.getText()));
+    contact.setUrls(urls);    
 
-		final ArrayList<PhoneNumber> phones = new ArrayList<PhoneNumber>();
-		phones.add(new PhoneNumber(TypesEnum.HOME, phoneField.getText()));
-		contact.setPhoneNumbers(phones);
+    final ArrayList<PhoneNumber> phones = new ArrayList<PhoneNumber>();
+    phones.add(new PhoneNumber(TypesEnum.HOME, phoneField.getText()));
+    contact.setPhoneNumbers(phones);
 
-		final ArrayList<Email> emails = new ArrayList<Email>();
-		emails.add(new Email(TypesEnum.HOME, emailField.getText()));
-		contact.setEmails(emails);
+    final ArrayList<Email> emails = new ArrayList<Email>();
+    emails.add(new Email(TypesEnum.HOME, emailField.getText()));
+    contact.setEmails(emails);
+    
+    return result;
 	}
+  
+  /**
+   * Check if is email and url valid, if is not valid, display a message.
+   * @return true if is validation successfull, otherwise false.
+   */
+  private boolean validateData() {
+    String message = "";
+  
+    boolean result = Validators.isEmailValid(emailField.getText());    
+    if (!result) {
+      message += "Email address is not valid\r\n";
+    }
+    
+    result = Validators.isUrlValid(urlField.getText());    
+    if (!result) {
+      message += "Url address is not valid\r\n";
+    }    
+    
+    result = Validators.isPhoneNumberValid(phoneField.getText());    
+    if (!result) {
+      message += "Phone number is not valid\r\n";
+    }        
+    
+    // display message if is there same error
+    if (!message.isEmpty()) {
+      JOptionPane.showMessageDialog(this, message, "Validation failed!", JOptionPane.WARNING_MESSAGE);		      
+    }
+    
+    return result;
+  }
 
 	/**
 	 * Submiting new contact action
@@ -154,7 +206,11 @@ class ContactWindow extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			List<Contact> newContacts = new ArrayList<Contact>();
 
-			resolvecontact();
+			boolean result = resolvecontact();
+      if (!result) {
+        return;
+      }
+      
 			newContacts.add(contact);
 			db.addNewContacts(newContacts);
 
@@ -172,7 +228,12 @@ class ContactWindow extends JFrame {
 	private class EditContactActionListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			resolvecontact();
+      
+			boolean result = resolvecontact();
+      if (!result) {
+        return;
+      }
+      
 			db.updateContact(contact);
 			ContactsPanel.fillTable(false);
 			dispose();

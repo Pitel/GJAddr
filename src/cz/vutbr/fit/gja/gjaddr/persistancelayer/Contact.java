@@ -1,6 +1,5 @@
 package cz.vutbr.fit.gja.gjaddr.persistancelayer;
 
-import com.sun.xml.internal.bind.v2.runtime.reflect.Accessor;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -282,6 +281,23 @@ public class Contact implements Serializable {
 
     return emails.toString();
   }
+  
+  public String getAllUrls() {
+    String separator = "";
+    StringBuilder links = new StringBuilder();
+
+    try {
+      for (Url url : this.urls) {
+        links.append(separator);
+        links.append(url.getValue());
+        separator = "; ";
+      }
+    } catch (NullPointerException e) {
+      return "";
+    }
+
+    return links.toString();
+  }  
 
   public Contact() {
     this.birthday = new Birthday();
