@@ -28,7 +28,10 @@ public class Validators {
     if (email == null) {
       return false;
     }
-    //Assigning the email format regular expression
+    
+    if (email.isEmpty()) {
+      return true;
+    }
 
     return email.matches(emailPattern);
   }
@@ -43,6 +46,11 @@ public class Validators {
     if (url == null) {
       return false;
     }
+    
+    if (url.isEmpty()) {
+      return true;
+    }    
+    
     return url.matches(urlPattern);
   }
   
@@ -56,6 +64,11 @@ public class Validators {
     if (number == null) {
       return false;
     }
+    
+    if (number.isEmpty()) {
+      return true;
+    }      
+    
     try {
       Integer ret = Integer.parseInt(number);
       return true;
