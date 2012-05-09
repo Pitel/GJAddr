@@ -24,12 +24,19 @@ class DetailPanel extends JPanel {
 	private final JPanel address = new JPanel();
 	private final JPanel emails = new JPanel();
 	private final JLabel phones = new JLabel();
-	private final JLabel webs = new JLabel();
+	private final JPanel webs = new JPanel();
 	private final JLabel birthday = new JLabel();
 	private final JLabel note = new JLabel();
 	private final JLabel nameIcon = new JLabel();
 	private final PhotoButton photo = new PhotoButton();
 	private final JLabel groups = new JLabel();
+	private final JLabel addressLabel = new JLabel("<html><b>Address:</b></html>");
+	private final JLabel emailLabel = new JLabel("<html><b>Email:</b></html>");
+	private final JLabel phoneLabel = new JLabel("<html><b>Phone:</b></html>");
+	private final JLabel websLabel = new JLabel("<html><b>Webs:</b></html>");
+	private final JLabel birthdayLabel = new JLabel("<html><b>Birthday:</b></html>");
+	private final JLabel noteLabel = new JLabel("<html><b>Note:</b></html>");
+	private final JLabel groupsLabel = new JLabel("<html><b>Groups:</b></html>");
 	private JScrollPane detailScrollPane;
 
 	/**
@@ -65,45 +72,46 @@ class DetailPanel extends JPanel {
 		c.anchor = GridBagConstraints.PAGE_START;
 		c.gridx = 0;
 		c.gridy = 0;
-		detailPanel.add(new JLabel("<html><b>Address:</b></html>"), c);
+		detailPanel.add(addressLabel, c);
 		c.gridx = 1;
 		address.setLayout(new BoxLayout(address, BoxLayout.PAGE_AXIS));
 		address.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
 		detailPanel.add(address, c);
 		c.gridx = 0;
 		c.gridy++;
-		detailPanel.add(new JLabel("<html><b>Email:</b></html>"), c);
+		detailPanel.add(emailLabel, c);
 		c.gridx = 1;
 		emails.setLayout(new BoxLayout(emails, BoxLayout.PAGE_AXIS));
 		emails.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
 		detailPanel.add(emails, c);
 		c.gridx = 0;
 		c.gridy++;
-		detailPanel.add(new JLabel("<html><b>Phone:</b></html>"), c);
+		detailPanel.add(phoneLabel, c);
 		c.gridx = 1;
 		phones.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
 		detailPanel.add(phones, c);
 		c.gridx = 0;
 		c.gridy++;
-		detailPanel.add(new JLabel("<html><b>Webs:</b></html>"), c);
+		detailPanel.add(websLabel, c);
 		c.gridx = 1;
+		webs.setLayout(new BoxLayout(webs, BoxLayout.PAGE_AXIS));
 		webs.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
 		detailPanel.add(webs, c);
 		c.gridx = 0;
 		c.gridy++;
-		detailPanel.add(new JLabel("<html><b>Birthday:</b></html>"), c);
+		detailPanel.add(birthdayLabel, c);
 		c.gridx = 1;
 		birthday.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
 		detailPanel.add(birthday, c);
 		c.gridx = 0;
 		c.gridy++;
-		detailPanel.add(new JLabel("<html><b>Note:</b></html>"), c);
+		detailPanel.add(noteLabel, c);
 		c.gridx = 1;
 		note.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
 		detailPanel.add(note, c);
 		c.gridx = 0;
 		c.gridy++;
-		detailPanel.add(new JLabel("<html><b>Groups:</b></html>"), c);
+		detailPanel.add(groupsLabel, c);
 		c.gridx = 1;
 		//groups.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));	//Last without margin
 		detailPanel.add(groups, c);
@@ -126,10 +134,12 @@ class DetailPanel extends JPanel {
 			photo.setContact(contact);
 			photo.setVisible(true);
 			name.setText(String.format("<html><h1>" + contact.getFullName() + "</h1></html>"));
+
 			address.removeAll();
+			addressLabel.setVisible(false);
 			for (Address a : contact.getAdresses()) {
-				if (!a.getAddress().isEmpty()){
-					//System.out.println(a);
+				if (!a.getAddress().isEmpty()) {
+					addressLabel.setVisible(true);
 					JLabelButton l = new JLabelButton();
 					l.setVerticalTextPosition(JLabel.TOP);
 					l.setHorizontalTextPosition(JLabel.CENTER);
@@ -145,31 +155,71 @@ class DetailPanel extends JPanel {
 					address.add(l);
 				}
 			}
+
 			emails.removeAll();
+			emailLabel.setVisible(false);
 			for (Email e : contact.getEmails()) {
 				if (!e.getEmail().isEmpty()) {
+					emailLabel.setVisible(true);
 					JLabelButton lb = new JLabelButton(e.getEmail());
 					lb.setCursor(new Cursor(Cursor.HAND_CURSOR));
 					lb.addActionListener(new EmailListener());
 					emails.add(lb);
 				}
 			}
-			phones.setText("<html>" + contact.getAllPhones().replaceAll(", ", "<br>") + "</html>");
+
+			webs.removeAll();
+			websLabel.setVisible(false);
+			for (Url u : contact.getUrls()) {
+				if (u.getValue() != null) {
+					websLabel.setVisible(true);
+					JLabelButton lb = new JLabelButton(u.getValue().toString());
+					lb.setCursor(new Cursor(Cursor.HAND_CURSOR));
+					lb.addActionListener(new WebListener());
+					emails.add(lb);
+				}
+			}
+
+			if (!contact.getPhoneNumbers().isEmpty()) {
+				phoneLabel.setVisible(true);
+				phones.setVisible(true);
+				phones.setText("<html>" + contact.getAllPhones().replaceAll(", ", "<br>") + "</html>");
+			} else {
+				phoneLabel.setVisible(false);
+				phones.setVisible(false);
+			}
+
 			if (contact.getDateOfBirth() != null) {
+				birthday.setVisible(true);
+				birthdayLabel.setVisible(true);
 				birthday.setText(DateFormat.getDateInstance().format(contact.getDateOfBirth()));
 			} else {
-				birthday.setText("");
+				birthday.setVisible(false);
+				birthdayLabel.setVisible(false);
 			}
-			note.setText(contact.getNote());
+
+			if (contact.getNote() != null && !contact.getNote().isEmpty()) {
+				note.setVisible(true);
+				noteLabel.setVisible(true);
+				note.setText(contact.getNote());
+			} else {
+				note.setVisible(false);
+				noteLabel.setVisible(false);
+			}
 
 			String separator = "";
 			final StringBuilder groupstring = new StringBuilder();
+			groups.setVisible(false);
+			groupsLabel.setVisible(false);
 			for (Group g : db.getAllGroupsForContact(contact)) {
+				groups.setVisible(true);
+				groupsLabel.setVisible(true);
 				groupstring.append(separator);
 				groupstring.append(g.getName());
 				separator = ", ";
 			}
 			groups.setText(groupstring.toString());
+
 			detailScrollPane.setVisible(true);
 		}
 	}
@@ -200,6 +250,23 @@ class DetailPanel extends JPanel {
 			final JButton b = (JButton) ev.getSource();
 			try {
 				Desktop.getDesktop().browse(new URI("http://maps.google.com/maps?q=" + URLEncoder.encode(b.getText(), "utf8")));
+			} catch (URISyntaxException ex) {
+				System.err.println(ex);
+			} catch (IOException ex) {
+				System.err.println(ex);
+			}
+		}
+	}
+
+	/**
+	 * Action for opening browser with web
+	 */
+	private class WebListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent ev) {
+			final JButton b = (JButton) ev.getSource();
+			try {
+				Desktop.getDesktop().browse(new URI(b.getText()));
 			} catch (URISyntaxException ex) {
 				System.err.println(ex);
 			} catch (IOException ex) {
