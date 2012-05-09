@@ -50,6 +50,7 @@ class DetailPanel extends JPanel {
 		nameIcon.setVisible(false);
 		namePanel.add(nameIcon);
 		namePanel.add(name);
+		photo.setVisible(false);
 		namePanel.add(photo);
 		/*
 		namePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -123,6 +124,7 @@ class DetailPanel extends JPanel {
 				nameIcon.setVisible(false);
 			}
 			photo.setContact(contact);
+			photo.setVisible(true);
 			name.setText(String.format("<html><h1>" + contact.getFullName() + "</h1></html>"));
 			address.removeAll();
 			for (Address a : contact.getAdresses()) {

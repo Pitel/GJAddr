@@ -329,15 +329,11 @@ class ContactWindow extends JFrame {
 	private class EditContactActionListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-
-			boolean result = resolvecontact();
-			if (!result) {
-				return;
+			if (resolvecontact()) {
+				db.updateContact(contact);
+				ContactsPanel.fillTable(false);
+				dispose();
 			}
-
-			db.updateContact(contact);
-			ContactsPanel.fillTable(false);
-			dispose();
 		}
 	}
 }

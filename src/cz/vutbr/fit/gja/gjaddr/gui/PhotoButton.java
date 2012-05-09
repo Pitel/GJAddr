@@ -22,7 +22,7 @@ class PhotoButton extends JButton {
 
 	PhotoButton() {
 		super();
-		setIcon(new ImageIcon(getClass().getResource("/res/present.png")));
+		setIcon(new ImageIcon(getClass().getResource("/res/photo.png")));
 		init();
 	}
 
