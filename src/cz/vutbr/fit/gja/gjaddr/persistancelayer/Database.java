@@ -91,20 +91,31 @@ public class Database implements IDatabase {
 	}
 
 	@Override // DONE
-	public List<Contact> getAllContactsFromGroup(List<Group> requiredGroups) {
+	public List<Contact> getAllContactsFromGroups(List<Group> requiredGroups) {
 		
+    if (requiredGroups.isEmpty()) {
+      return new ArrayList<Contact>();
+    }
+    
 		// groupId == -1 indicate all contacts
 		for (Group group : requiredGroups) {
 			if (group.getId() == -1) {
-        this.log("DB: Get all contacts (-1)");         
+        this.log("DB: Get all contacts from groups [ROOT]");         
 				return this.contacts.getAllContacts();
 			}
-		}
-		
+		}		
+    
 		List<Integer> contactsId = this.groupsContacts.getContactsIdAssignToGroups(requiredGroups);			
-    this.log("DB: Get all contacts from groups");          
+    this.log("DB: Get all contacts from groups " + requiredGroups.toString());          
 		return this.contacts.filterByIds(contactsId);
 	}
+  
+  public int getNumberOfContactsForGroup (Group group) {
+    List<Group> groupList = new ArrayList<Group>();
+    groupList.add(group);
+    List<Integer> contactsId = this.groupsContacts.getContactsIdAssignToGroups(groupList);			
+    return contactsId.size();   
+  }
 
 	/**
 	 * Get group by name.
@@ -219,12 +230,11 @@ public class Database implements IDatabase {
 		return this.groups.filter(groupsId);
 	}
 	
-  @Override
-	public List<Contact> getAllContactsFromGroup(Group group) {
+	private List<Contact> getAllContactsFromGroup(Group group) {
 		List<Group> requiredGroups = new ArrayList<Group>();
 		requiredGroups.add(group);
     this.log("DB: Get all contacts from group " + group.toString());   		
-		return this.getAllContactsFromGroup(requiredGroups);
+		return this.getAllContactsFromGroups(requiredGroups);
 	}
 
 	/* tokens management ******************************************************/

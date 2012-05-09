@@ -57,10 +57,8 @@ public class Group  implements Serializable {
 	}
 
 	@Override
-	public String toString() {
-		List<Group> groups = new ArrayList<Group>();
-		groups.add(this);		
-		int size = Database.getInstance().getAllContactsFromGroup(groups).size();
+	public String toString() {	
+		int size = Database.getInstance().getNumberOfContactsForGroup(this);
 		return name + " (" + size +")";
 	}
 }

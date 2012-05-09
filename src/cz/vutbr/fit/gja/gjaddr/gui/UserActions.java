@@ -114,7 +114,7 @@ public class UserActions {
 			Group[] selectedGroups = GroupsPanel.getSelectedGroups();
 			Contact[] selectedContacts = ContactsPanel.getSelectedContacts();
 			if (selectedGroups.length > 1) {
-				new ExportWindow(Database.getInstance().getAllContactsFromGroup(Arrays.asList(selectedGroups)), null);
+				new ExportWindow(Database.getInstance().getAllContactsFromGroups(Arrays.asList(selectedGroups)), null);
 			} else if (selectedContacts.length >= 1) {
 				new ExportWindow(Arrays.asList(selectedContacts), null);
 			} else if (selectedGroups.length == 1) {

@@ -466,7 +466,7 @@ public class ExportWindow extends JFrame implements ActionListener {
 		}
 		List<Group> selectedGroups = new ArrayList<Group>();
 		selectedGroups.add(selectedGroup);
-		return this.database.getAllContactsFromGroup(selectedGroups);
+		return this.database.getAllContactsFromGroups(selectedGroups);
 	}
 
 	/**

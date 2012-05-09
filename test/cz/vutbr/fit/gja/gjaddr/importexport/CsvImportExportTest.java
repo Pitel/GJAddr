@@ -121,7 +121,7 @@ public class CsvImportExportTest {
 		List<Group> gs = new ArrayList<Group>();
 		gs.add(g);
 		List<Contact> cs = this.database.getAllContacts();
-		List<Contact> gcs = this.database.getAllContactsFromGroup(gs);
+		List<Contact> gcs = this.database.getAllContactsFromGroups(gs);
 		assertThat(1, is(cs.size()));
 		assertThat(cs.size(), equalTo(gcs.size()));
 		// 2. import to new group
@@ -136,7 +136,7 @@ public class CsvImportExportTest {
 		g = this.database.getGroupByName(this.testGroup2);
 		gs.add(g);
 		cs = this.database.getAllContacts();
-		gcs = this.database.getAllContactsFromGroup(gs);
+		gcs = this.database.getAllContactsFromGroups(gs);
 		assertThat(3, is(cs.size()));
 		assertThat(2, is(gcs.size()));
 	}

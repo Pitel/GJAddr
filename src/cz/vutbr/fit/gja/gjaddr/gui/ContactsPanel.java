@@ -68,7 +68,7 @@ public class ContactsPanel extends JPanel implements KeyListener {
 
 		Group[] groups = GroupsPanel.getSelectedGroups();
 		List<Group> selectedGroups = Arrays.asList(groups);
-		final List<Contact> contacts = db.getAllContactsFromGroup(selectedGroups);
+		final List<Contact> contacts = db.getAllContactsFromGroups(selectedGroups);
 
 		sorter.setRowFilter(null);
 		table.clear();

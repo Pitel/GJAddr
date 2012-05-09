@@ -81,7 +81,7 @@ class GroupsMembershipWindow extends JFrame {
 		List<Group> editedGroups = new ArrayList<Group>();
 		editedGroups.add(this.editedGroup);
 		
-		List<Contact> selectedContacts = this.db.getAllContactsFromGroup(editedGroups);
+		List<Contact> selectedContacts = this.db.getAllContactsFromGroups(editedGroups);
 		int[] selectedIndexes = this.getContactsSelectedIndexes(allContacts, selectedContacts);
 		list.setSelectedIndices(selectedIndexes);
 	}	

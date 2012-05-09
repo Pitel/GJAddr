@@ -43,7 +43,7 @@ public interface IDatabase {
    * @param requiredGroups 
    * @return list of contacts from specific groups.
    */
-	List<Contact> getAllContactsFromGroup(List<Group> requiredGroups);
+	List<Contact> getAllContactsFromGroups(List<Group> requiredGroups);
   
   /**
    * Associate contacts with group.
@@ -67,13 +67,6 @@ public interface IDatabase {
    * @return list of all group associated with contact.
    */
 	List<Group> getAllGroupsForContact(Contact contact);	  
-  
-  /**
-   * Get all contacts for group.
-   * @param group required group.
-   * @return list of all contacts associated with group.
-   */
-  List<Contact> getAllContactsFromGroup(Group group);   
 					
 	/**
    * Get grrou according to the name.
