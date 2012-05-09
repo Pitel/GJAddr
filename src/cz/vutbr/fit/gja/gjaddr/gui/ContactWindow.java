@@ -30,7 +30,7 @@ class ContactWindow extends JFrame {
 	private final JTextField surnameField = new JTextField();
 	private final JTextField addressField = new JTextField();
 	private final JTextField emailField = new JTextField();
-	private final JTextField urlField = new JTextField();  
+	private final JTextField urlField = new JTextField();
 	private final JTextField phoneField = new JTextField();
 
 	/**
@@ -126,7 +126,7 @@ class ContactWindow extends JFrame {
 		form.add(urlField, c);
 		c.gridy++;
 		c.gridx = 0;
-		c.weightx = 0;    
+		c.weightx = 0;
 		form.add(new JLabel("Phone"), c);
 		c.gridx = 1;
 		c.weightx = 1;
@@ -139,64 +139,64 @@ class ContactWindow extends JFrame {
 	}
 
 	private boolean resolvecontact() {
-    
-    boolean result = this.validateData();    
-    if (!result) {
-      return result;    
-    }
-    
-    contact.setPhoto((ImageIcon) photo.getIcon());
-    contact.setFirstName(nameField.getText());
-    contact.setSurName(surnameField.getText());
 
-    final ArrayList<Address> addresses = new ArrayList<Address>();
-    addresses.add(new Address(TypesEnum.HOME, addressField.getText()));
-    contact.setAdresses(addresses);
-    
-    final ArrayList<Url> urls = new ArrayList<Url>();
-    urls.add(new Url(TypesEnum.HOME, urlField.getText()));
-    contact.setUrls(urls);    
+		boolean result = this.validateData();
+		if (!result) {
+			return result;
+		}
 
-    final ArrayList<PhoneNumber> phones = new ArrayList<PhoneNumber>();
-    phones.add(new PhoneNumber(TypesEnum.HOME, phoneField.getText()));
-    contact.setPhoneNumbers(phones);
+		contact.setPhoto((ImageIcon) photo.getIcon());
+		contact.setFirstName(nameField.getText());
+		contact.setSurName(surnameField.getText());
 
-    final ArrayList<Email> emails = new ArrayList<Email>();
-    emails.add(new Email(TypesEnum.HOME, emailField.getText()));
-    contact.setEmails(emails);
-    
-    return result;
+		final ArrayList<Address> addresses = new ArrayList<Address>();
+		addresses.add(new Address(TypesEnum.HOME, addressField.getText()));
+		contact.setAdresses(addresses);
+
+		final ArrayList<Url> urls = new ArrayList<Url>();
+		urls.add(new Url(TypesEnum.HOME, urlField.getText()));
+		contact.setUrls(urls);
+
+		final ArrayList<PhoneNumber> phones = new ArrayList<PhoneNumber>();
+		phones.add(new PhoneNumber(TypesEnum.HOME, phoneField.getText()));
+		contact.setPhoneNumbers(phones);
+
+		final ArrayList<Email> emails = new ArrayList<Email>();
+		emails.add(new Email(TypesEnum.HOME, emailField.getText()));
+		contact.setEmails(emails);
+
+		return result;
 	}
-  
-  /**
-   * Check if is email and url valid, if is not valid, display a message.
-   * @return true if is validation successfull, otherwise false.
-   */
-  private boolean validateData() {
-    String message = "";
-  
-    boolean result = Validators.isEmailValid(emailField.getText());    
-    if (!result) {
-      message += "Email address is not valid\r\n";
-    }
-    
-    result = Validators.isUrlValid(urlField.getText());    
-    if (!result) {
-      message += "Url address is not valid\r\n";
-    }    
-    
-    result = Validators.isPhoneNumberValid(phoneField.getText());    
-    if (!result) {
-      message += "Phone number is not valid\r\n";
-    }        
-    
-    // display message if is there same error
-    if (!message.isEmpty()) {
-      JOptionPane.showMessageDialog(this, message, "Validation failed!", JOptionPane.WARNING_MESSAGE);		      
-    }
-    
-    return result;
-  }
+
+	/**
+	 * Check if is email and url valid, if is not valid, display a message.
+	 * @return true if is validation successfull, otherwise false.
+	 */
+	private boolean validateData() {
+		String message = "";
+
+		boolean result = Validators.isEmailValid(emailField.getText());
+		if (!result) {
+			message += "Email address is not valid\r\n";
+		}
+
+		result = Validators.isUrlValid(urlField.getText());
+		if (!result) {
+			message += "Url address is not valid\r\n";
+		}
+
+		result = Validators.isPhoneNumberValid(phoneField.getText());
+		if (!result) {
+			message += "Phone number is not valid\r\n";
+		}
+
+		// display message if is there same error
+		if (!message.isEmpty()) {
+			JOptionPane.showMessageDialog(this, message, "Validation failed!", JOptionPane.WARNING_MESSAGE);
+		}
+
+		return result;
+	}
 
 	/**
 	 * Submiting new contact action
@@ -207,10 +207,10 @@ class ContactWindow extends JFrame {
 			List<Contact> newContacts = new ArrayList<Contact>();
 
 			boolean result = resolvecontact();
-      if (!result) {
-        return;
-      }
-      
+			if (!result) {
+				return;
+			}
+
 			newContacts.add(contact);
 			db.addNewContacts(newContacts);
 
@@ -228,12 +228,12 @@ class ContactWindow extends JFrame {
 	private class EditContactActionListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-      
+
 			boolean result = resolvecontact();
-      if (!result) {
-        return;
-      }
-      
+			if (!result) {
+				return;
+			}
+
 			db.updateContact(contact);
 			ContactsPanel.fillTable(false);
 			dispose();
