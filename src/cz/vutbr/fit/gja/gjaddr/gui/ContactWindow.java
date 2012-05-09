@@ -29,9 +29,15 @@ class ContactWindow extends JFrame {
 	private final JTextField nameField = new JTextField();
 	private final JTextField surnameField = new JTextField();
 	private final JTextField addressField = new JTextField();
-	private final JTextField emailField = new JTextField();
-	private final JTextField urlField = new JTextField();
-	private final JTextField phoneField = new JTextField();
+	private final JTextField workEmailField = new JTextField();
+	private final JTextField homeEmailField = new JTextField();
+	private final JTextField otherEmailField = new JTextField();
+	private final JTextField workUrlField = new JTextField();
+	private final JTextField homeUrlField = new JTextField();
+	private final JTextField otherUrlField = new JTextField();
+	private final JTextField workPhoneField = new JTextField();
+	private final JTextField homePhoneField = new JTextField();
+	private final JTextField otherPhoneField = new JTextField();
 
 	/**
 	 * Constructor for adding new contact
@@ -59,10 +65,45 @@ class ContactWindow extends JFrame {
 		nameField.setText(contact.getFirstName());
 		surnameField.setText(contact.getSurName());
 		addressField.setText(contact.getAllAddresses());
-		urlField.setText(contact.getAllUrls());
-		phoneField.setText(contact.getAllPhones());
-		emailField.setText(contact.getAllEmails());
-		phoneField.setText(contact.getAllPhones());
+		for (Url u : contact.getUrls()) {
+			switch (u.getType()) {
+				case WORK:
+					workUrlField.setText(u.getValue().toString());
+					break;
+				case HOME:
+					homeUrlField.setText(u.getValue().toString());
+					break;
+				case OTHER:
+					otherUrlField.setText(u.getValue().toString());
+					break;
+			}
+		}
+		for (Email e : contact.getEmails()) {
+			switch (e.getType()) {
+				case WORK:
+					workEmailField.setText(e.getEmail());
+					break;
+				case HOME:
+					homeEmailField.setText(e.getEmail());
+					break;
+				case OTHER:
+					otherEmailField.setText(e.getEmail());
+					break;
+			}
+		}
+		for (PhoneNumber p : contact.getPhoneNumbers()) {
+			switch (p.getType()) {
+				case WORK:
+					workPhoneField.setText(p.getNumber());
+					break;
+				case HOME:
+					homePhoneField.setText(p.getNumber());
+					break;
+				case OTHER:
+					otherPhoneField.setText(p.getNumber());
+					break;
+			}
+		}
 		prepare();
 	}
 
@@ -113,24 +154,66 @@ class ContactWindow extends JFrame {
 		c.gridy++;
 		c.gridx = 0;
 		c.weightx = 0;
-		form.add(new JLabel("E-mail"), c);
+		form.add(new JLabel("Work E-mail"), c);
 		c.gridx = 1;
 		c.weightx = 1;
-		form.add(emailField, c);
+		form.add(workEmailField, c);
 		c.gridy++;
 		c.gridx = 0;
 		c.weightx = 0;
-		form.add(new JLabel("Url"), c);
+		form.add(new JLabel("Home E-mail"), c);
 		c.gridx = 1;
 		c.weightx = 1;
-		form.add(urlField, c);
+		form.add(homeEmailField, c);
 		c.gridy++;
 		c.gridx = 0;
 		c.weightx = 0;
-		form.add(new JLabel("Phone"), c);
+		form.add(new JLabel("Other E-mail"), c);
 		c.gridx = 1;
 		c.weightx = 1;
-		form.add(phoneField, c);
+		form.add(otherEmailField, c);
+		c.gridy++;
+		c.gridx = 0;
+		c.weightx = 0;
+		form.add(new JLabel("Work URL"), c);
+		c.gridx = 1;
+		c.weightx = 1;
+		form.add(workUrlField, c);
+		c.gridy++;
+		c.gridx = 0;
+		c.weightx = 0;
+		form.add(new JLabel("Home URL"), c);
+		c.gridx = 1;
+		c.weightx = 1;
+		form.add(homeUrlField, c);
+		c.gridy++;
+		c.gridx = 0;
+		c.weightx = 0;
+		form.add(new JLabel("Other URL"), c);
+		c.gridx = 1;
+		c.weightx = 1;
+		form.add(otherUrlField, c);
+		c.gridy++;
+		c.gridx = 0;
+		c.weightx = 0;
+		form.add(new JLabel("Work Phone"), c);
+		c.gridx = 1;
+		c.weightx = 1;
+		form.add(workPhoneField, c);
+		c.gridy++;
+		c.gridx = 0;
+		c.weightx = 0;
+		form.add(new JLabel("Home Phone"), c);
+		c.gridx = 1;
+		c.weightx = 1;
+		form.add(homePhoneField, c);
+		c.gridy++;
+		c.gridx = 0;
+		c.weightx = 0;
+		form.add(new JLabel("Other Phone"), c);
+		c.gridx = 1;
+		c.weightx = 1;
+		form.add(otherPhoneField, c);
 		add(form, BorderLayout.CENTER);
 		add(button, BorderLayout.PAGE_END);
 		setLocationRelativeTo(null);
@@ -140,32 +223,35 @@ class ContactWindow extends JFrame {
 
 	private boolean resolvecontact() {
 
-		boolean result = this.validateData();
-		if (!result) {
-			return result;
+		boolean valid = this.validateData();
+		if (valid) {
+			contact.setPhoto((ImageIcon) photo.getIcon());
+			contact.setFirstName(nameField.getText());
+			contact.setSurName(surnameField.getText());
+
+			final ArrayList<Address> addresses = new ArrayList<Address>();
+			addresses.add(new Address(TypesEnum.HOME, addressField.getText()));
+			contact.setAdresses(addresses);
+
+			final ArrayList<Url> urls = new ArrayList<Url>();
+			urls.add(new Url(TypesEnum.WORK, workUrlField.getText()));
+			urls.add(new Url(TypesEnum.HOME, homeUrlField.getText()));
+			urls.add(new Url(TypesEnum.OTHER, otherUrlField.getText()));
+			contact.setUrls(urls);
+
+			final ArrayList<PhoneNumber> phones = new ArrayList<PhoneNumber>();
+			phones.add(new PhoneNumber(TypesEnum.WORK, workPhoneField.getText()));
+			phones.add(new PhoneNumber(TypesEnum.HOME, homePhoneField.getText()));
+			phones.add(new PhoneNumber(TypesEnum.OTHER, otherPhoneField.getText()));
+			contact.setPhoneNumbers(phones);
+
+			final ArrayList<Email> emails = new ArrayList<Email>();
+			emails.add(new Email(TypesEnum.WORK, workEmailField.getText()));
+			emails.add(new Email(TypesEnum.HOME, homeEmailField.getText()));
+			emails.add(new Email(TypesEnum.OTHER, otherEmailField.getText()));
+			contact.setEmails(emails);
 		}
-
-		contact.setPhoto((ImageIcon) photo.getIcon());
-		contact.setFirstName(nameField.getText());
-		contact.setSurName(surnameField.getText());
-
-		final ArrayList<Address> addresses = new ArrayList<Address>();
-		addresses.add(new Address(TypesEnum.HOME, addressField.getText()));
-		contact.setAdresses(addresses);
-
-		final ArrayList<Url> urls = new ArrayList<Url>();
-		urls.add(new Url(TypesEnum.HOME, urlField.getText()));
-		contact.setUrls(urls);
-
-		final ArrayList<PhoneNumber> phones = new ArrayList<PhoneNumber>();
-		phones.add(new PhoneNumber(TypesEnum.HOME, phoneField.getText()));
-		contact.setPhoneNumbers(phones);
-
-		final ArrayList<Email> emails = new ArrayList<Email>();
-		emails.add(new Email(TypesEnum.HOME, emailField.getText()));
-		contact.setEmails(emails);
-
-		return result;
+		return valid;
 	}
 
 	/**
@@ -173,29 +259,42 @@ class ContactWindow extends JFrame {
 	 * @return true if is validation successfull, otherwise false.
 	 */
 	private boolean validateData() {
-		String message = "";
+		StringBuilder message = new StringBuilder();
 
-		boolean result = Validators.isEmailValid(emailField.getText());
-		if (!result) {
-			message += "Email address is not valid\r\n";
+		if (!Validators.isEmailValid(workEmailField.getText())) {
+			message.append("Work email address is not valid\r\n");
 		}
-
-		result = Validators.isUrlValid(urlField.getText());
-		if (!result) {
-			message += "Url address is not valid\r\n";
+		if (!Validators.isEmailValid(homeEmailField.getText())) {
+			message.append("Home email address is not valid\r\n");
 		}
-
-		result = Validators.isPhoneNumberValid(phoneField.getText());
-		if (!result) {
-			message += "Phone number is not valid\r\n";
+		if (!Validators.isEmailValid(otherEmailField.getText())) {
+			message.append("Other email address is not valid\r\n");
+		}
+		if (!Validators.isUrlValid(workUrlField.getText())) {
+			message.append("Work URL is not valid\r\n");
+		}
+		if (!Validators.isUrlValid(homeUrlField.getText())) {
+			message.append("Home URL is not valid\r\n");
+		}
+		if (!Validators.isUrlValid(otherUrlField.getText())) {
+			message.append("Other URL is not valid\r\n");
+		}
+		if (!Validators.isPhoneNumberValid(workPhoneField.getText())) {
+			message.append("Work phone is not valid\r\n");
+		}
+		if (!Validators.isPhoneNumberValid(homePhoneField.getText())) {
+			message.append("Home phone is not valid\r\n");
+		}
+		if (!Validators.isPhoneNumberValid(otherPhoneField.getText())) {
+			message.append("Other phone is not valid\r\n");
 		}
 
 		// display message if is there same error
-		if (!message.isEmpty()) {
+		if (message.length() > 0) {
 			JOptionPane.showMessageDialog(this, message, "Validation failed!", JOptionPane.WARNING_MESSAGE);
 		}
 
-		return result;
+		return message.length() == 0;
 	}
 
 	/**
