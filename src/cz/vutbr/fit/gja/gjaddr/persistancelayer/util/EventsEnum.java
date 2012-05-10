@@ -1,4 +1,3 @@
-
 package cz.vutbr.fit.gja.gjaddr.persistancelayer.util;
 
 /**
@@ -7,19 +6,5 @@ package cz.vutbr.fit.gja.gjaddr.persistancelayer.util;
  * @author Bc. Radek Gajdusek <xgajdu07@stud.fit.vutbr.cz>
  */
 public enum EventsEnum {
-	
-	NAMEDAY(0),
-	BIRTHDAY(1),
-	CELEBRATION(2),
-  OTHER(3);
-	
-	private Integer code;
-
-	private EventsEnum(int code) {
-		this.code = code;
-	}	
-	
-	public Integer getCode() {
-		return this.code;
-	}	
+	NAMEDAY, BIRTHDAY, CELEBRATION, OTHER;
 }

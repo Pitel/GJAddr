@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
+import org.jdesktop.swingx.JXDatePicker;
 
 /**
  * Contact editing window.
@@ -38,6 +39,8 @@ class ContactWindow extends JFrame {
 	private final JTextField workPhoneField = new JTextField();
 	private final JTextField homePhoneField = new JTextField();
 	private final JTextField otherPhoneField = new JTextField();
+	private final JXDatePicker birthdayPicker = new JXDatePicker();
+
 
 	/**
 	 * Constructor for adding new contact
@@ -65,6 +68,7 @@ class ContactWindow extends JFrame {
 		nameField.setText(contact.getFirstName());
 		surnameField.setText(contact.getSurName());
 		addressField.setText(contact.getAllAddresses());
+		birthdayPicker.setDate(contact.getDateOfBirth());
 		for (Url u : contact.getUrls()) {
 			if (u.getValue() != null) {
 				switch (u.getType()) {
@@ -156,6 +160,13 @@ class ContactWindow extends JFrame {
 		c.gridy++;
 		c.gridx = 0;
 		c.weightx = 0;
+		form.add(new JLabel("Birthday"), c);
+		c.gridx = 1;
+		c.weightx = 1;
+		form.add(birthdayPicker, c);
+		c.gridy++;
+		c.gridx = 0;
+		c.weightx = 0;
 		form.add(new JLabel("Work E-mail"), c);
 		c.gridx = 1;
 		c.weightx = 1;
@@ -224,12 +235,12 @@ class ContactWindow extends JFrame {
 	}
 
 	private boolean resolvecontact() {
-
 		boolean valid = this.validateData();
 		if (valid) {
 			contact.setPhoto((ImageIcon) photo.getIcon());
 			contact.setFirstName(nameField.getText());
 			contact.setSurName(surnameField.getText());
+			contact.setDateOfBirth(birthdayPicker.getDate());
 
 			final ArrayList<Address> addresses = new ArrayList<Address>();
 			addresses.add(new Address(TypesEnum.HOME, addressField.getText()));
@@ -305,21 +316,15 @@ class ContactWindow extends JFrame {
 	private class NewContactActionListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			List<Contact> newContacts = new ArrayList<Contact>();
-
-			boolean result = resolvecontact();
-			if (!result) {
-				return;
+			if (resolvecontact()) {
+				List<Contact> newContacts = new ArrayList<Contact>();
+				newContacts.add(contact);
+				db.addNewContacts(newContacts);
+				// update tables
+				ContactsPanel.fillTable(false);
+				GroupsPanel.fillList();
+				dispose();
 			}
-
-			newContacts.add(contact);
-			db.addNewContacts(newContacts);
-
-			// update tables
-			ContactsPanel.fillTable(false);
-			GroupsPanel.fillList();
-
-			dispose();
 		}
 	}
 
