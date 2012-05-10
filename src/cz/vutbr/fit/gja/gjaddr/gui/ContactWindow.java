@@ -40,6 +40,7 @@ class ContactWindow extends JFrame {
 	private final JTextField workPhoneField = new JTextField();
 	private final JTextField homePhoneField = new JTextField();
 	private final JTextField otherPhoneField = new JTextField();
+	private final JTextArea noteField = new JTextArea();
 	private final JXDatePicker birthdayPicker = new JXDatePicker();
 
 
@@ -71,6 +72,7 @@ class ContactWindow extends JFrame {
 		nicknameField.setText(contact.getNickName());
 		addressField.setText(contact.getAllAddresses());
 		birthdayPicker.setDate(contact.getDateOfBirth());
+		noteField.setText(contact.getNote());
 		for (Url u : contact.getUrls()) {
 			if (u.getValue() != null) {
 				switch (u.getType()) {
@@ -236,6 +238,16 @@ class ContactWindow extends JFrame {
 		c.gridx = 1;
 		c.weightx = 1;
 		form.add(otherPhoneField, c);
+		c.gridy++;
+		c.gridx = 0;
+		c.weightx = 0;
+		form.add(new JLabel("Note"), c);
+		c.gridx = 1;
+		c.weightx = 1;
+		noteField.setLineWrap(true);
+		noteField.setWrapStyleWord(true);
+		noteField.setRows(3);
+		form.add(noteField, c);
 		add(form, BorderLayout.CENTER);
 		add(button, BorderLayout.PAGE_END);
 		setLocationRelativeTo(null);
@@ -251,6 +263,7 @@ class ContactWindow extends JFrame {
 			contact.setSurName(surnameField.getText());
 			contact.setNickName(nicknameField.getText());
 			contact.setDateOfBirth(birthdayPicker.getDate());
+			contact.setNote(noteField.getText());
 
 			final ArrayList<Address> addresses = new ArrayList<Address>();
 			addresses.add(new Address(TypesEnum.HOME, addressField.getText()));

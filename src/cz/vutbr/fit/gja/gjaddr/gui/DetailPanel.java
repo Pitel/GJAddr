@@ -217,7 +217,7 @@ class DetailPanel extends JPanel {
 			if (contact.getNote() != null && !contact.getNote().isEmpty()) {
 				note.setVisible(true);
 				noteLabel.setVisible(true);
-				note.setText(contact.getNote());
+				note.setText("<html>" + contact.getNote().replaceAll("\n", "<br>") + "</html>");
 			} else {
 				note.setVisible(false);
 				noteLabel.setVisible(false);
