@@ -6,6 +6,7 @@ import com.restfb.FacebookClient;
 import com.restfb.types.NamedFacebookType;
 import com.restfb.types.User;
 import cz.vutbr.fit.gja.gjaddr.importexport.exception.FacebookImportException;
+import cz.vutbr.fit.gja.gjaddr.importexport.util.Progress;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.AuthToken;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Contact;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Custom;
@@ -145,18 +146,11 @@ public class FacebookImport {
 	}
 
 	/**
-	 * Import contacts from Facebook.
-	 */
-	public int importContacts() throws FacebookImportException {
-		return this.importContacts(null);
-	}
-
-	/**
 	 * Import contacts from Facebook to selected group.
 	 * 
 	 * @param group
 	 */
-	public int importContacts(String group) throws FacebookImportException {
+	public int importContacts(Progress progress, String group) throws FacebookImportException {
 		// fetch contacts from facebook
 		List<Contact> contacts = this.fetchContacts();
 

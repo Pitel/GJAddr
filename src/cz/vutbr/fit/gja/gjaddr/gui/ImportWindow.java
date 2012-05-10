@@ -466,13 +466,19 @@ public class ImportWindow extends JFrame implements ActionListener {
 			// do the import
 			if (importOption.equals(ActionCommands.NO_GROUP.toString())) {
 				if (importFormat.equals(ActionCommands.FACEBOOK.toString())) {
-					imported = new FacebookImport().importContacts();
+					// TODO -- hlaska v pripade neuspechu
+					FacebookImportThread fit = new FacebookImportThread();
+					fit.start();
+					imported = fit.getProgress().getSuccessful();
 				} else {
 					imported = new GoogleImport().importContacts();
 				}
 			} else if (importOption.equals(ActionCommands.SELECTED_GROUP.toString())) {
 				if (importFormat.equals(ActionCommands.FACEBOOK.toString())) {
-					imported = new FacebookImport().importContacts(importGroup);
+					FacebookImportThread fit = new FacebookImportThread();
+					fit.setGroup(importGroup);
+					fit.start();
+					imported = fit.getProgress().getSuccessful();
 				} else {
 					imported = new GoogleImport().importContacts(importGroup);
 				}
@@ -481,13 +487,18 @@ public class ImportWindow extends JFrame implements ActionListener {
 						"New group creation", JOptionPane.PLAIN_MESSAGE, null, null, null);
 				if ((s != null) && (s.length() > 0)) {
 					if (importFormat.equals(ActionCommands.FACEBOOK.toString())) {
-						imported = new FacebookImport().importContacts(s);
+						FacebookImportThread fit = new FacebookImportThread();
+						fit.setGroup(s);
+						fit.start();
+						imported = fit.getProgress().getSuccessful();
 					} else {
 						imported = new GoogleImport().importContacts(s);
 					}
 				} else {
 					if (importFormat.equals(ActionCommands.FACEBOOK.toString())) {
-						imported = new FacebookImport().importContacts();
+						FacebookImportThread fit = new FacebookImportThread();
+						fit.start();
+						imported = fit.getProgress().getSuccessful();
 					} else {
 						imported = new GoogleImport().importContacts();
 					}
@@ -507,11 +518,6 @@ public class ImportWindow extends JFrame implements ActionListener {
 			LoggerFactory.getLogger(this.getClass()).error(e.toString());
 			JOptionPane.showMessageDialog(this, "Import was unsuccessful. Please try again.", "Import unsuccessful",
 					JOptionPane.INFORMATION_MESSAGE);
-			return;
-		} catch (FacebookImportException e) {
-			JOptionPane.showMessageDialog(this, e.getMessage(), "Import unsuccessful",
-					JOptionPane.INFORMATION_MESSAGE);
-			new PreferencesWindow();
 			return;
 		} catch (GoogleImportException e) {
 			JOptionPane.showMessageDialog(this, e.getMessage(), "Import unsuccessful",
