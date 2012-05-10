@@ -29,6 +29,7 @@ class ContactWindow extends JFrame {
 	private final PhotoButton photo = new PhotoButton();
 	private final JTextField nameField = new JTextField();
 	private final JTextField surnameField = new JTextField();
+	private final JTextField nicknameField = new JTextField();
 	private final JTextField addressField = new JTextField();
 	private final JTextField workEmailField = new JTextField();
 	private final JTextField homeEmailField = new JTextField();
@@ -67,6 +68,7 @@ class ContactWindow extends JFrame {
 		button.addActionListener(new EditContactActionListener());
 		nameField.setText(contact.getFirstName());
 		surnameField.setText(contact.getSurName());
+		nicknameField.setText(contact.getNickName());
 		addressField.setText(contact.getAllAddresses());
 		birthdayPicker.setDate(contact.getDateOfBirth());
 		for (Url u : contact.getUrls()) {
@@ -150,6 +152,13 @@ class ContactWindow extends JFrame {
 		c.gridx = 1;
 		c.weightx = 1;
 		form.add(surnameField, c);
+		c.gridy++;
+		c.gridx = 0;
+		c.weightx = 0;
+		form.add(new JLabel("Nickname"), c);
+		c.gridx = 1;
+		c.weightx = 1;
+		form.add(nicknameField, c);
 		c.gridy++;
 		c.gridx = 0;
 		c.weightx = 0;
@@ -240,6 +249,7 @@ class ContactWindow extends JFrame {
 			contact.setPhoto((ImageIcon) photo.getIcon());
 			contact.setFirstName(nameField.getText());
 			contact.setSurName(surnameField.getText());
+			contact.setNickName(nicknameField.getText());
 			contact.setDateOfBirth(birthdayPicker.getDate());
 
 			final ArrayList<Address> addresses = new ArrayList<Address>();

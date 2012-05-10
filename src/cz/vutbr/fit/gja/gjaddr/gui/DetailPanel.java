@@ -21,6 +21,7 @@ class DetailPanel extends JPanel {
 	static final long serialVersionUID = 0;
 	private final Database db = Database.getInstance();
 	private final JLabel name = new JLabel();
+	private final JLabel nickname = new JLabel();
 	private final JPanel address = new JPanel();
 	private final JPanel emails = new JPanel();
 	private final JLabel phones = new JLabel();
@@ -30,6 +31,7 @@ class DetailPanel extends JPanel {
 	private final JLabel nameIcon = new JLabel();
 	private final PhotoButton photo = new PhotoButton();
 	private final JLabel groups = new JLabel();
+	private final JLabel nicknameLabel = new JLabel("<html><b>Nickname:</b></html>");
 	private final JLabel addressLabel = new JLabel("<html><b>Address:</b></html>");
 	private final JLabel emailLabel = new JLabel("<html><b>Email:</b></html>");
 	private final JLabel phoneLabel = new JLabel("<html><b>Phone:</b></html>");
@@ -72,6 +74,12 @@ class DetailPanel extends JPanel {
 		c.anchor = GridBagConstraints.PAGE_START;
 		c.gridx = 0;
 		c.gridy = 0;
+		detailPanel.add(nicknameLabel, c);
+		c.gridx = 1;
+		nickname.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
+		detailPanel.add(nickname, c);
+		c.gridx = 0;
+		c.gridy++;
 		detailPanel.add(addressLabel, c);
 		c.gridx = 1;
 		address.setLayout(new BoxLayout(address, BoxLayout.PAGE_AXIS));
@@ -134,6 +142,14 @@ class DetailPanel extends JPanel {
 			photo.setContact(contact);
 			photo.setVisible(true);
 			name.setText(String.format("<html><h1>" + contact.getFullName() + "</h1></html>"));
+			if (contact.getNickName() != null && !contact.getNickName().isEmpty()) {
+				nicknameLabel.setVisible(true);
+				nickname.setVisible(true);
+				nickname.setText(contact.getNickName());
+			} else {
+				nicknameLabel.setVisible(false);
+				nickname.setVisible(false);
+			}
 
 			address.removeAll();
 			addressLabel.setVisible(false);
