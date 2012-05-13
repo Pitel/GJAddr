@@ -2,8 +2,9 @@
 package cz.vutbr.fit.gja.gjaddr.importexport.util;
 
 /**
+ * Class capturing import progress for displaying a progress bar.
  *
- * @author xherrm01
+ * @author Bc. Drahomira Herrmannova <xherrm01@stud.fit.vutbr.cz>
  */
 public class Progress {
 	

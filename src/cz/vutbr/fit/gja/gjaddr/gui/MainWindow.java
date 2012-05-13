@@ -27,6 +27,7 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 	private JTextField searchField;
 	private ContactsPanel contactsPanel;
 	private DetailPanel detailPanel;
+    private StatusBar statusBar;
 
 	static final String ROOT_GROUP = "My_Contacts";
 
@@ -73,6 +74,10 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		splitPane.setResizeWeight(1);
 		splitPane.setContinuousLayout(true);
 		add(splitPane);
+        
+        this.statusBar = new StatusBar();
+        add(this.statusBar, BorderLayout.SOUTH);
+        
 		pack();
 		setLocationRelativeTo(null);
 

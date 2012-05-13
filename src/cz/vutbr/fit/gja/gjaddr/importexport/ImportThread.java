@@ -1,41 +1,86 @@
 
 package cz.vutbr.fit.gja.gjaddr.importexport;
 
+import cz.vutbr.fit.gja.gjaddr.gui.ImportWindow;
 import cz.vutbr.fit.gja.gjaddr.importexport.exception.ImportException;
 import cz.vutbr.fit.gja.gjaddr.importexport.util.Progress;
 import org.slf4j.LoggerFactory;
 
 /**
+ * Thread for contacts import.
  *
- * @author xherrm01
+ * @author Bc. Drahomira Herrmannova <xherrm01@stud.fit.vutbr.cz>
  */
 public abstract class ImportThread extends Thread {
 	
+    /**
+     * Contacts group for import. Can be a new or existing group.
+     */
 	private String group = null;
+    
+    /**
+     * Success status.
+     */
 	private boolean success = false;
+    
+    /**
+     * True if import thread was interrupted.
+     */
 	private boolean interrupted = false;
+    
+    /**
+     * Class for capturing import progress.
+     */
 	protected Progress progress = new Progress();
 	
+    /**
+     * Was thread interrupted?
+     * 
+     * @return 
+     */
 	public boolean getInterrupted() {
 		return this.interrupted;
 	}
 
+    /**
+     * Get contacts group for import.
+     * 
+     * @return 
+     */
 	public String getGroup() {
 		return group;
 	}
 
+    /**
+     * Set contacts group for import.
+     * 
+     * @param group 
+     */
 	public void setGroup(String group) {
 		this.group = group;
 	}
 
+    /**
+     * Get import success status.
+     * 
+     * @return 
+     */
 	public boolean getSuccess() {
 		return this.success;
 	}
 
+    /**
+     * Get current progress.
+     * 
+     * @return 
+     */
 	public Progress getProgress() {
 		return progress;
 	}
 
+    /**
+     * Interrupt thread.
+     */
 	@Override
     public void interrupt() {
         super.interrupt();
@@ -43,13 +88,24 @@ public abstract class ImportThread extends Thread {
         LoggerFactory.getLogger(this.getClass()).info("Interrupting thread: " + this.toString());
     }
 	
+    /**
+     * Run the import method.
+     * 
+     * @param group
+     * @return
+     * @throws ImportException 
+     */
 	public abstract int runImport(String group) throws ImportException;
 	
+    /**
+     * Run the thread.
+     */
 	@Override
 	public void run() {
 		try {
-			runImport(this.group);
-			this.success = true;
+            LoggerFactory.getLogger(this.getClass()).info("Running import thread: {}", this.getClass().getCanonicalName());
+            int imported = runImport(this.group);
+			ImportWindow.performChanges(imported);
 		} catch (ImportException ex) {
 			LoggerFactory.getLogger(this.getClass()).error(ex.toString());
 			this.success = false;

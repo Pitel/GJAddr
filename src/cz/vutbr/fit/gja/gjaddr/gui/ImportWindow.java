@@ -3,7 +3,6 @@ package cz.vutbr.fit.gja.gjaddr.gui;
 
 import com.google.gdata.util.ServiceException;
 import cz.vutbr.fit.gja.gjaddr.importexport.*;
-import cz.vutbr.fit.gja.gjaddr.importexport.exception.FacebookImportException;
 import cz.vutbr.fit.gja.gjaddr.importexport.exception.GoogleImportException;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Group;
@@ -537,9 +536,9 @@ public class ImportWindow extends JFrame implements ActionListener {
 	 * 
 	 * @param count
 	 */
-	private void performChanges(int count) {
+	public static void performChanges(int count) {
 		// inform user, that import was succesfull
-		JOptionPane.showMessageDialog(this,
+		JOptionPane.showMessageDialog(null,
 				"Import was successfull.\n" + count + " contacts were imported.",
 				"Import success", JOptionPane.INFORMATION_MESSAGE);
 		
@@ -553,6 +552,7 @@ public class ImportWindow extends JFrame implements ActionListener {
 	 * 
 	 * @param ae
 	 */
+    @Override
 	public void actionPerformed(ActionEvent ae) {
 		// Change import option if user clicks on groups list.
 		if (ae.getSource() == this.groupsList) {
