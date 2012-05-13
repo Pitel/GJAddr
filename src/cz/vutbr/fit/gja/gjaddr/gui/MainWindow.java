@@ -74,10 +74,10 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		splitPane.setResizeWeight(1);
 		splitPane.setContinuousLayout(true);
 		add(splitPane);
-        
+
         this.statusBar = new StatusBar();
         add(this.statusBar, BorderLayout.SOUTH);
-        
+
 		pack();
 		setLocationRelativeTo(null);
 
@@ -121,9 +121,7 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 	}
 
 	@Override
-	public void changedUpdate(DocumentEvent e) {
-		System.out.println(e.toString());
-	}
+	public void changedUpdate(DocumentEvent e) {}
 
 	@Override
 	public void removeUpdate(DocumentEvent e) {
@@ -142,7 +140,6 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		//System.out.println(e);
 		if (e.getSource() == menuItemClose) {
 			dispose();
 		}

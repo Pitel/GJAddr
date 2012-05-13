@@ -15,15 +15,15 @@ import javax.swing.JOptionPane;
 public final class GroupWindow extends JFrame{
 	static final long serialVersionUID = 0;
 	private Database db = Database.getInstance();
-	
+
 	static enum Action {
-    NEW, RENAME, REMOVE 
+    NEW, RENAME, REMOVE
 	}
-	
+
 	public GroupWindow(Action action) {
-		
+
 		boolean update = false;
-		
+
 		switch(action) {
 			case NEW:
 				update = this.addNewGroup();
@@ -42,18 +42,17 @@ public final class GroupWindow extends JFrame{
 	}
 
 	private void showGroupExistsDialog(String name) {
-		JOptionPane.showMessageDialog(this, 
-			"Group with name \" "+ name + "\" is already exists!", 
-			"Group exists", 
+		JOptionPane.showMessageDialog(this,
+			"Group with name \" "+ name + "\" is already exists!",
+			"Group exists",
 			JOptionPane.WARNING_MESSAGE);
 	}
-		
+
 	/**
 	 * Function for adding new group
-	 */		
+	 */
 	boolean addNewGroup() {
 		boolean update = false;
-		//System.out.println("addGroup");
 		String name = (String) JOptionPane.showInputDialog(
 			this,
 			"Group name:",
@@ -63,26 +62,26 @@ public final class GroupWindow extends JFrame{
 			null,
 			""
 		);
-		
+
 		if (name != null && !name.isEmpty()) {
-			
-			List<Group> result = this.db.addNewGroup(name);			
+
+			List<Group> result = this.db.addNewGroup(name);
 			if (result == null) {
 				this.showGroupExistsDialog(name);
 			}
-			
+
 			update = true;
 		}
-		
+
 		return update;
 	}
 
 	/**
 	 * Function for rename group
-	 */		
+	 */
 	boolean renameGroup() {
 		boolean update = false;
-		Group[] groups = GroupsPanel.getSelectedGroups();		
+		Group[] groups = GroupsPanel.getSelectedGroups();
 		String name = (String) JOptionPane.showInputDialog(
 			this,
 			"Group name:",
@@ -91,22 +90,22 @@ public final class GroupWindow extends JFrame{
 			new ImageIcon(getClass().getResource("/res/edit_g.png"), "e"),
 			null,
 			groups[0].getName()
-		);		
-		
+		);
+
 		if (name != null && !name.isEmpty()) {
-			
-			List<Group> result = this.db.renameGroup(groups[0], name);		
+
+			List<Group> result = this.db.renameGroup(groups[0], name);
 			if (result == null) {
 				this.showGroupExistsDialog(name);
 			}
-			
+
 			update = true;
-		}		
-		
-		
+		}
+
+
 		return update;
-	}	
-	
+	}
+
 	/**
 	 * Function for removing group
 	 */
@@ -125,7 +124,7 @@ public final class GroupWindow extends JFrame{
 			db.removeGroups(Arrays.asList(groups));
 			return true;
 		}
-		
+
 		return false;
-	}		
+	}
 }

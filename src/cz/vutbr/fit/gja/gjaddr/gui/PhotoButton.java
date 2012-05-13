@@ -88,7 +88,6 @@ class PhotoButton extends JButton {
 		public void actionPerformed(ActionEvent e) {
 			if (photochooser.showOpenDialog(PhotoButton.this) == JFileChooser.APPROVE_OPTION) {
 				File f = photochooser.getSelectedFile();
-				//System.out.println(f);
 				try {
 					final BufferedImage image = ImageIO.read(f);
 					final int w = 100;
