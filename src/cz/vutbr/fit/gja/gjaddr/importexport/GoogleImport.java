@@ -139,9 +139,7 @@ public class GoogleImport {
             try {
                 String photoUrl = photoLink.getHref();
                 URL url = new URL(photoUrl + "?access_token=" + this.database.getToken(ServicesEnum.GOOGLE));
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                // get the response
-                InputStream rd = conn.getInputStream();
+                InputStream rd = url.openConnection().getInputStream();
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
                 byte[] buffer = new byte[4096];
                 int read;
@@ -154,6 +152,7 @@ public class GoogleImport {
                 }
                 icon = new ImageIcon(out.toByteArray());                
             } catch (IOException ex) {
+                LoggerFactory.getLogger(this.getClass()).error(LoggerUtil.getStackTrace(ex));
             } 
         }
 		// TODO photo

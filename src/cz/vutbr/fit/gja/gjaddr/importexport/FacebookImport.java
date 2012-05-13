@@ -11,8 +11,16 @@ import cz.vutbr.fit.gja.gjaddr.persistancelayer.*;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.ServicesEnum;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.TypesEnum;
 import cz.vutbr.fit.gja.gjaddr.util.LoggerUtil;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -108,6 +116,33 @@ public class FacebookImport {
 		if (user.getBirthdayAsDate() != null) {
 			contact.setDateOfBirth(user.getBirthdayAsDate());
 		}
+        
+        // download photo
+        ImageIcon icon = null;
+        try {
+            URL iconUrl = new URL("http://graph.facebook.com/" + id + "/picture");
+            InputStream rd = iconUrl.openConnection().getInputStream();
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            byte[] buffer = new byte[4096];
+            int read;
+            while (true) {
+                if ((read = rd.read(buffer)) != -1) {
+                    out.write(buffer, 0, read);
+                } else {
+                    break;
+                }
+            }
+            icon = new ImageIcon(out.toByteArray());    
+        } catch (MalformedURLException ex) {
+            LoggerFactory.getLogger(this.getClass()).error(LoggerUtil.getStackTrace(ex));
+        } catch (IOException ex) {
+            LoggerFactory.getLogger(this.getClass()).error(LoggerUtil.getStackTrace(ex));
+        }
+        
+        // set photo
+        if (icon != null) {
+            contact.setPhoto(icon);
+        }
 
 		// custom fields
         if (user.getHometownName() != null && !user.getHometownName().isEmpty()) {
