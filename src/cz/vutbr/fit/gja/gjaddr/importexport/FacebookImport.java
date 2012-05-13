@@ -6,7 +6,6 @@ import com.restfb.FacebookClient;
 import com.restfb.types.User;
 import cz.vutbr.fit.gja.gjaddr.gui.StatusBar;
 import cz.vutbr.fit.gja.gjaddr.importexport.exception.FacebookImportException;
-import cz.vutbr.fit.gja.gjaddr.importexport.util.Progress;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.*;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.ServicesEnum;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.TypesEnum;
@@ -38,17 +37,16 @@ public class FacebookImport {
 	 * Facebook client for reading contacts.
 	 */
 	private FacebookClient client;
-    
+
     /**
-     * Import progress.
+     * How many contacts were imported so far.
      */
-    private Progress progress;
+    private Integer processed = 0;
 
 	/**
 	 * Constructor.
 	 */
 	public FacebookImport() {
-        this.progress = new Progress();
 		this.database = Database.getInstance();
 		this.token = this.database.getToken(ServicesEnum.FACEBOOK);
 		if (this.token != null) {
@@ -57,15 +55,6 @@ public class FacebookImport {
 			this.client = null;
 		}
 	}
-
-    /**
-     * Get the import progress.
-     * 
-     * @return 
-     */
-    public Progress getProgress() {
-        return progress;
-    }
 
 	/**
 	 * Get group by it's name.
@@ -151,17 +140,15 @@ public class FacebookImport {
         for (List<User> userList : userFriends) {
             total += userList.size();
         }
-        this.progress.setAll(total);
         StatusBar.setProgressBounds(0, total);
         StatusBar.setMessage("Importing contacts...");
         // facebook returns the list of users in parts
 		for (List<User> userList : userFriends) {
 			for (User user : userList) {
-                this.progress.incProcessed();
 				try {
 					contactsToImport.add(this.fetchContact(user.getId()));
-                    this.progress.incSuccessful();
-                    StatusBar.setProgressValue(this.progress.getSuccessful());
+                    this.processed++;
+                    StatusBar.setProgressValue(this.processed);
 				} catch (Exception e) {
                     LoggerFactory.getLogger(this.getClass()).error("Import of contact failed: {}", LoggerUtil.getStackTrace(e));
 					continue;
@@ -176,9 +163,9 @@ public class FacebookImport {
 	 * 
 	 * @param group
 	 */
-	public int importContacts(Progress progress, String group) throws FacebookImportException {
+	public int importContacts(String group) throws FacebookImportException {
         // set progress
-        this.progress = progress;
+        this.processed = 0;
 		// fetch contacts from facebook
 		List<Contact> contacts = this.fetchContacts();
 
@@ -201,7 +188,7 @@ public class FacebookImport {
 			}
 		}
         
-        StatusBar.setMessage("Ready");
+        StatusBar.setProgressFinished();
 
 		return contacts.size();
 	}
@@ -217,9 +204,5 @@ public class FacebookImport {
 		for (Contact c : cs) {
 			System.out.println(c.getFullName() + " " + c.getAllEmails());
 		}
-        Progress p = fb.getProgress();
-        System.out.println(p.getAll());
-        System.out.println(p.getProcessed());
-        System.out.println(p.getSuccessful());
 	}
 }

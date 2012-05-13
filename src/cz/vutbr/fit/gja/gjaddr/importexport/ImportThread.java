@@ -3,7 +3,6 @@ package cz.vutbr.fit.gja.gjaddr.importexport;
 
 import cz.vutbr.fit.gja.gjaddr.gui.ImportWindow;
 import cz.vutbr.fit.gja.gjaddr.importexport.exception.ImportException;
-import cz.vutbr.fit.gja.gjaddr.importexport.util.Progress;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -27,11 +26,6 @@ public abstract class ImportThread extends Thread {
      * True if import thread was interrupted.
      */
 	private boolean interrupted = false;
-    
-    /**
-     * Class for capturing import progress.
-     */
-	protected Progress progress = new Progress();
 	
     /**
      * Was thread interrupted?
@@ -70,15 +64,6 @@ public abstract class ImportThread extends Thread {
 	}
 
     /**
-     * Get current progress.
-     * 
-     * @return 
-     */
-	public Progress getProgress() {
-		return progress;
-	}
-
-    /**
      * Interrupt thread.
      */
 	@Override
@@ -108,7 +93,7 @@ public abstract class ImportThread extends Thread {
 			ImportWindow.performChanges(imported);
 		} catch (ImportException ex) {
 			LoggerFactory.getLogger(this.getClass()).error(ex.toString());
-			this.success = false;
+            ImportWindow.showErrorMessage(ex.getMessage());
 		}
 	}
 }

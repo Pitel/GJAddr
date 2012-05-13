@@ -1,10 +1,8 @@
 
 package cz.vutbr.fit.gja.gjaddr.gui;
 
-import cz.vutbr.fit.gja.gjaddr.importexport.util.Progress;
 import java.awt.BorderLayout;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 
@@ -45,7 +43,8 @@ public class StatusBar extends JPanel {
         StatusBar.progressBar.setValue(value);
     }
     
-    public static void setProgressFinished(int total) {
+    public static void setProgressFinished() {
+        StatusBar.setMessage("Ready");
         StatusBar.progressBar.setVisible(false);
     }
 }

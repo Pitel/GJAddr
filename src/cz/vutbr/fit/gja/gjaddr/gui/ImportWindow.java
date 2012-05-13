@@ -1,9 +1,7 @@
 
 package cz.vutbr.fit.gja.gjaddr.gui;
 
-import com.google.gdata.util.ServiceException;
 import cz.vutbr.fit.gja.gjaddr.importexport.*;
-import cz.vutbr.fit.gja.gjaddr.importexport.exception.GoogleImportException;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Group;
 import java.awt.Cursor;
@@ -14,7 +12,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.List;
 import javax.swing.*;
 import org.slf4j.LoggerFactory;
@@ -457,29 +454,27 @@ public class ImportWindow extends JFrame implements ActionListener {
 		String importFormat = this.importFormatsButtonGroup.getSelection().getActionCommand();
 		String importGroup = (String) this.groupsList.getSelectedItem();
 
-		Integer imported = null;
-
 		try {
 			// set cursor to wait cursor
 			this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 			// do the import
 			if (importOption.equals(ActionCommands.NO_GROUP.toString())) {
 				if (importFormat.equals(ActionCommands.FACEBOOK.toString())) {
-					// TODO -- hlaska v pripade neuspechu
 					FacebookImportThread fit = new FacebookImportThread();
 					fit.start();
-					imported = fit.getProgress().getSuccessful();
 				} else {
-					imported = new GoogleImport().importContacts();
+					GoogleImportThread git = new GoogleImportThread();
+                    git.start();
 				}
 			} else if (importOption.equals(ActionCommands.SELECTED_GROUP.toString())) {
 				if (importFormat.equals(ActionCommands.FACEBOOK.toString())) {
 					FacebookImportThread fit = new FacebookImportThread();
 					fit.setGroup(importGroup);
 					fit.start();
-					imported = fit.getProgress().getSuccessful();
 				} else {
-					imported = new GoogleImport().importContacts(importGroup);
+					GoogleImportThread git = new GoogleImportThread();
+                    git.setGroup(importGroup);
+                    git.start();
 				}
 			} else {
 				String s = (String) JOptionPane.showInputDialog(this, "New group name:",
@@ -489,46 +484,26 @@ public class ImportWindow extends JFrame implements ActionListener {
 						FacebookImportThread fit = new FacebookImportThread();
 						fit.setGroup(s);
 						fit.start();
-						imported = fit.getProgress().getSuccessful();
 					} else {
-						imported = new GoogleImport().importContacts(s);
+						GoogleImportThread git = new GoogleImportThread();
+                        git.setGroup(s);
+                        git.start();
 					}
 				} else {
 					if (importFormat.equals(ActionCommands.FACEBOOK.toString())) {
 						FacebookImportThread fit = new FacebookImportThread();
 						fit.start();
-						imported = fit.getProgress().getSuccessful();
 					} else {
-						imported = new GoogleImport().importContacts();
+						GoogleImportThread git = new GoogleImportThread();
+                        git.start();
 					}
 				}
 			}
-		} catch (MalformedURLException e) {
-			LoggerFactory.getLogger(this.getClass()).error(e.toString());
-			JOptionPane.showMessageDialog(this, "Import was unsuccessful. Please try again.", "Import unsuccessful",
-					JOptionPane.INFORMATION_MESSAGE);
-			return;
-		} catch (IOException e) {
-			LoggerFactory.getLogger(this.getClass()).error(e.toString());
-			JOptionPane.showMessageDialog(this, "Import was unsuccessful. Please try again.", "Import unsuccessful",
-					JOptionPane.INFORMATION_MESSAGE);
-			return;
-		} catch (ServiceException e) {
-			LoggerFactory.getLogger(this.getClass()).error(e.toString());
-			JOptionPane.showMessageDialog(this, "Import was unsuccessful. Please try again.", "Import unsuccessful",
-					JOptionPane.INFORMATION_MESSAGE);
-			return;
-		} catch (GoogleImportException e) {
-			JOptionPane.showMessageDialog(this, e.getMessage(), "Import unsuccessful",
-					JOptionPane.INFORMATION_MESSAGE);
-			new PreferencesWindow();
-			return;
 		} finally {
 			this.setCursor(Cursor.getDefaultCursor());
 		}
 
 		this.dispose();
-		this.performChanges(imported);
 	}
 
 	/**
@@ -546,6 +521,17 @@ public class ImportWindow extends JFrame implements ActionListener {
 		ContactsPanel.fillTable(false);
 		GroupsPanel.fillList();		
 	}
+    
+    /**
+     * Show error message.
+     * 
+     * @param message 
+     */
+    public static void showErrorMessage(String message) {
+        JOptionPane.showMessageDialog(null, message, "Import unsuccessful",
+                JOptionPane.INFORMATION_MESSAGE);
+        new PreferencesWindow();
+    }
 
 	/**
 	 * Assign components actions.

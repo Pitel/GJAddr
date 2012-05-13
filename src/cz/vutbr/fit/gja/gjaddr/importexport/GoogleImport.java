@@ -8,11 +8,12 @@ import com.google.gdata.data.extensions.Email;
 import com.google.gdata.data.extensions.Im;
 import com.google.gdata.data.extensions.Name;
 import com.google.gdata.data.extensions.PostalAddress;
-import com.google.gdata.util.ServiceException;
+import cz.vutbr.fit.gja.gjaddr.gui.StatusBar;
 import cz.vutbr.fit.gja.gjaddr.importexport.exception.GoogleImportException;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.*;
-import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.TypesEnum;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.ServicesEnum;
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.TypesEnum;
+import cz.vutbr.fit.gja.gjaddr.util.LoggerUtil;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -21,12 +22,8 @@ import java.util.List;
 import org.slf4j.LoggerFactory;
 
 /**
- * Class for importing Google contacts
+ * Class for importing Google contacts.
  *
- * TODO:
- *  - solve NULL values
- *
- * @author Bc. Jan Kaláb <xkalab00@stud.fit.vutbr.cz>
  * @author Bc. Drahomira Herrmannova <xherrm01@stud.fit.vutbr.cz>
  * @see <a href="https://code.google.com/apis/contacts">Google Contacts Data API</a>
  * @see <a href="https://code.google.com/p/gdata-java-client">Google Data Java Client Library</a>
@@ -47,6 +44,11 @@ public class GoogleImport {
 	 * Google Contacts service for fetching contacts.
 	 */
 	private ContactsService service;
+    
+    /**
+     * How many contacts were imported so far.
+     */
+    private Integer processed = 0;
 
 	/**
 	 * Constructor.
@@ -155,8 +157,9 @@ public class GoogleImport {
 	 * @throws IOException
 	 * @throws ServiceException
 	 */
-	private List<Contact> fetchContacts() throws MalformedURLException, IOException,
-			ServiceException, GoogleImportException {
+	private List<Contact> fetchContacts() throws GoogleImportException {
+        // set progress
+        this.processed = 0;
 		// check if token exists
 		if (this.token == null) {
 			throw new GoogleImportException("You need to connect to Google before importing.\n"
@@ -167,8 +170,14 @@ public class GoogleImport {
 		List<Contact> contacts = new ArrayList<Contact>();
 		
 		// request contact feed
-		URL feedUrl = new URL("https://www.google.com/m8/feeds/contacts/default/full?access_token="
-				+ this.token.getToken());
+        URL feedUrl;
+        try {
+            feedUrl = new URL("https://www.google.com/m8/feeds/contacts/default/full?access_token="
+                    + this.token.getToken());
+        } catch (MalformedURLException ex) {
+            LoggerFactory.getLogger(this.getClass()).error(LoggerUtil.getStackTrace(ex));
+            throw new GoogleImportException("Import was unsuccessful due to application error. Please try again.");
+        }
 
 		// get contacts
 		while (feedUrl != null) {
@@ -179,37 +188,36 @@ public class GoogleImport {
 			try {
 				resultFeed = this.service.getFeed(feedUrl, ContactFeed.class);
 			} catch (Exception e) {
+                LoggerFactory.getLogger(this.getClass()).error(LoggerUtil.getStackTrace(e));
 				throw new GoogleImportException("You need to connect to Google before importing.\n"
 					+ "Please go to Preferences and setup connection to Google.");
 			}
+            
+            StatusBar.setProgressBounds(0, resultFeed.getTotalResults());
+            StatusBar.setMessage("Importing contacts...");
 
 			// add all contacts to list
 			for (ContactEntry entry : resultFeed.getEntries()) {
 				contacts.add(this.fetchContact(entry));
+                this.processed++;
+                StatusBar.setProgressValue(this.processed);
 			}
 
 			// get link to next page with contacts
 			if (resultFeed.getNextLink() != null) {
 				String nextLink = resultFeed.getNextLink().getHref();
-				feedUrl = new URL(nextLink + "&access_token=" + this.token.getToken());
+                try {
+                    feedUrl = new URL(nextLink + "&access_token=" + this.token.getToken());
+                } catch (MalformedURLException ex) {
+                    LoggerFactory.getLogger(this.getClass()).error(LoggerUtil.getStackTrace(ex));
+                    feedUrl = null;
+                }
 			} else {
 				feedUrl = null;
 			}
 		}
 
 		return contacts;
-	}
-
-	/**
-	 * Import contacts from Google.
-	 *
-	 * @throws MalformedURLException
-	 * @throws IOException
-	 * @throws ServiceException
-	 */
-	public int importContacts() throws MalformedURLException, IOException, 
-			ServiceException, GoogleImportException {
-		return this.importContacts(null);
 	}
 	
 	/**
@@ -220,8 +228,7 @@ public class GoogleImport {
 	 * @throws IOException
 	 * @throws ServiceException
 	 */
-	public int importContacts(String group) throws MalformedURLException, IOException, 
-			ServiceException, GoogleImportException {
+	public int importContacts(String group) throws GoogleImportException {
 		// fetch contacts from facebook
 		List<Contact> contacts = this.fetchContacts();
 
@@ -243,6 +250,8 @@ public class GoogleImport {
 				this.database.addContactsToGroup(dbGroup, contacts);
 			}
 		}
+        
+        StatusBar.setProgressFinished();
 
 		return contacts.size();
 	}
