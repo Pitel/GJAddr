@@ -83,10 +83,15 @@ public class UserActions {
 		public void setEnabled(boolean newValue) {
 			super.setEnabled(newValue);
 		}
-
-		@Override
+        
+        @Override
 		public void actionPerformed(ActionEvent e) {
-			new ImportWindow();
+			Group[] selectedGroups = GroupsPanel.getSelectedGroups();
+			if (selectedGroups.length == 1) {
+				new ImportWindow(selectedGroups[0]);
+			} else {
+				new ImportWindow(null);
+			}
 		}
 	}
 

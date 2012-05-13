@@ -80,13 +80,21 @@ public class ImportWindow extends JFrame implements ActionListener {
 	 * Application database;
 	 */
 	private Database database = Database.getInstance();
+    
+    /**
+	 * Group for import.
+	 */
+	private Group group = null;
 
 	/**
 	 * Constructor. Initializes the window.
 	 */
-	public ImportWindow() {
+	public ImportWindow(Group group) {
 		super("Import");
 		LoggerFactory.getLogger(this.getClass()).debug("Opening import window.");
+        
+        // set selected group
+        this.group = group;
 
 		// set window apearance
 		try {
@@ -118,6 +126,16 @@ public class ImportWindow extends JFrame implements ActionListener {
 		this.groupOptionsButtonGroup.add(this.noGroupButton);
 		this.groupOptionsButtonGroup.add(this.selectGroupButton);
 		this.groupOptionsButtonGroup.add(this.newGroupButton);
+        
+        // exporting group
+		if (this.group != null && this.group.getId() >= 0) {
+			this.noGroupButton.setSelected(false);
+			this.noGroupButton.setFocusPainted(false);
+			this.selectGroupButton.setSelected(true);
+			this.selectGroupButton.setFocusPainted(true);
+			this.newGroupButton.setSelected(false);
+			this.newGroupButton.setFocusPainted(false);
+		}
 
 		// add all radio buttons to window
 		this.add(noGroupsButtonPanel);
@@ -216,6 +234,13 @@ public class ImportWindow extends JFrame implements ActionListener {
 		// create combo box with list of groups
 		this.groupsList = new JComboBox(this.getAllGroups());
 		this.groupsList.addActionListener(this);
+        // pre-select group
+		if (this.group != null) {
+			int index = this.database.getAllGroups().indexOf(this.group);
+			if (index >= 0) {
+				this.groupsList.setSelectedIndex(index);
+			}
+		}
 		// create panel with radio button for group selection and with groups
 		JPanel groupsSelectionPanel = new JPanel(new GridLayout());
 		groupsSelectionPanel.add(this.selectGroupButton);
