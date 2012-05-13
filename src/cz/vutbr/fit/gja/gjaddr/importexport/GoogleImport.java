@@ -1,6 +1,7 @@
 package cz.vutbr.fit.gja.gjaddr.importexport;
 
 import com.google.gdata.client.contacts.ContactsService;
+import com.google.gdata.data.Link;
 import com.google.gdata.data.contacts.ContactEntry;
 import com.google.gdata.data.contacts.ContactFeed;
 import com.google.gdata.data.contacts.Website;
@@ -8,17 +9,20 @@ import com.google.gdata.data.extensions.Email;
 import com.google.gdata.data.extensions.Im;
 import com.google.gdata.data.extensions.Name;
 import com.google.gdata.data.extensions.PostalAddress;
+import com.google.gdata.util.ServiceException;
 import cz.vutbr.fit.gja.gjaddr.gui.StatusBar;
 import cz.vutbr.fit.gja.gjaddr.importexport.exception.GoogleImportException;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.*;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.ServicesEnum;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.TypesEnum;
 import cz.vutbr.fit.gja.gjaddr.util.LoggerUtil;
-import java.io.IOException;
+import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.ImageIcon;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -128,6 +132,30 @@ public class GoogleImport {
 			addresses.add(new Address(TypesEnum.HOME, pa.getValue()));
 		}
 
+        // photo
+        ImageIcon icon = null;
+        if (entry.getContactPhotoLink() != null) {
+            Link photoLink = entry.getContactPhotoLink();
+            try {
+                String photoUrl = photoLink.getHref();
+                URL url = new URL(photoUrl + "?access_token=" + this.database.getToken(ServicesEnum.GOOGLE));
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                // get the response
+                InputStream rd = conn.getInputStream();
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                byte[] buffer = new byte[4096];
+                int read;
+                while (true) {
+                    if ((read = rd.read(buffer)) != -1) {
+                        out.write(buffer, 0, read);
+                    } else {
+                        break;
+                    }
+                }
+                icon = new ImageIcon(out.toByteArray());                
+            } catch (IOException ex) {
+            } 
+        }
 		// TODO photo
 		// https://developers.google.com/google-apps/contacts/v3/#retrieving_a_contacts_photo
 
@@ -143,6 +171,9 @@ public class GoogleImport {
 		contact.setPhoneNumbers(phones);
 		contact.setUrls(urls);
 		contact.setAdresses(addresses);
+        if (icon != null) {
+            contact.setPhoto(icon);
+        }
 
 		LoggerFactory.getLogger(this.getClass()).debug("Adding contact : " + firstName + " " + surname);
 

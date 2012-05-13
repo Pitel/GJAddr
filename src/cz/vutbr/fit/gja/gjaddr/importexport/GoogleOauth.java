@@ -1,31 +1,16 @@
 
 package cz.vutbr.fit.gja.gjaddr.importexport;
 
-import java.awt.Desktop;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
-
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLEncoder;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import org.slf4j.LoggerFactory;
-
 import com.google.gson.Gson;
-
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.AuthToken;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.ServicesEnum;
-import java.net.HttpURLConnection;
+import java.awt.Desktop;
+import java.io.*;
+import java.net.*;
+import java.util.HashMap;
+import java.util.Map;
+import org.slf4j.LoggerFactory;
 
 /**
  * OAuth authentication for Google Contacts.
