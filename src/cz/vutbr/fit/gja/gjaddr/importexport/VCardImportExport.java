@@ -1,47 +1,21 @@
 
 package cz.vutbr.fit.gja.gjaddr.importexport;
 
-import cz.vutbr.fit.gja.gjaddr.persistancelayer.Address;
-import cz.vutbr.fit.gja.gjaddr.persistancelayer.Contact;
-import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
-import cz.vutbr.fit.gja.gjaddr.persistancelayer.Email;
-import cz.vutbr.fit.gja.gjaddr.persistancelayer.Group;
-import cz.vutbr.fit.gja.gjaddr.persistancelayer.PhoneNumber;
-import cz.vutbr.fit.gja.gjaddr.persistancelayer.Url;
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.*;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.TypesEnum;
-
-import java.io.IOException;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import net.sourceforge.cardme.vcard.VCard;
 import net.sourceforge.cardme.engine.VCardEngine;
 import net.sourceforge.cardme.io.VCardWriter;
+import net.sourceforge.cardme.vcard.VCard;
 import net.sourceforge.cardme.vcard.VCardImpl;
 import net.sourceforge.cardme.vcard.VCardVersion;
-import net.sourceforge.cardme.vcard.features.AddressFeature;
-import net.sourceforge.cardme.vcard.features.EmailFeature;
-import net.sourceforge.cardme.vcard.features.NameFeature;
-import net.sourceforge.cardme.vcard.features.NicknameFeature;
-import net.sourceforge.cardme.vcard.features.NoteFeature;
-import net.sourceforge.cardme.vcard.features.TelephoneFeature;
-import net.sourceforge.cardme.vcard.features.URLFeature;
-import net.sourceforge.cardme.vcard.types.AddressType;
-import net.sourceforge.cardme.vcard.types.EmailType;
-import net.sourceforge.cardme.vcard.types.FormattedNameType;
-import net.sourceforge.cardme.vcard.types.NameType;
-import net.sourceforge.cardme.vcard.types.NoteType;
-import net.sourceforge.cardme.vcard.types.TelephoneType;
-import net.sourceforge.cardme.vcard.types.URLType;
-import net.sourceforge.cardme.vcard.types.VersionType;
-
+import net.sourceforge.cardme.vcard.features.*;
+import net.sourceforge.cardme.vcard.types.*;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -154,9 +128,21 @@ public class VCardImportExport {
 			Iterator<AddressFeature> addressesIterator = vcard.getAddresses();
 			List<Address> addresses = new ArrayList<Address>();
 			while (addressesIterator != null && addressesIterator.hasNext()) {
-				// TODO post code
 				AddressFeature af = addressesIterator.next();
-				addresses.add(new Address(TypesEnum.HOME, af.getStreetAddress() + af.getLocality() + 0 + af.getCountryName()));
+                String address = "";
+                if (af.getStreetAddress() != null && !af.getStreetAddress().isEmpty()) {
+                    address += af.getStreetAddress() + ", ";
+                }
+                if (af.getRegion() != null && !af.getRegion().isEmpty()) {
+                    address += af.getRegion() + ", ";
+                }
+                if (af.getPostalCode() != null && !af.getPostalCode().isEmpty()) {
+                    address += af.getPostalCode() + ", ";
+                }
+                if (af.getCountryName() != null && !af.getCountryName().isEmpty()) {
+                    address += af.getCountryName() + ", ";
+                }
+				addresses.add(new Address(TypesEnum.HOME, address));
 			}
 			
 			// get emails

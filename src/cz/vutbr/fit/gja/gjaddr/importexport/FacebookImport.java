@@ -148,10 +148,14 @@ public class FacebookImport {
         if (user.getHometownName() != null && !user.getHometownName().isEmpty()) {
             customFields.add(new Custom("hometown", user.getHometownName()));
         }
-        if (user.getLocation() != null && user.getLocation().getName() != null) {
-            customFields.add(new Custom("location", user.getLocation().getName()));
-        }
 		contact.setCustoms(customFields);
+        
+        // address
+        List<Address> addresses = new ArrayList<Address>();
+        if (user.getLocation() != null && user.getLocation().getName() != null) {
+            addresses.add(new Address(TypesEnum.HOME, user.getLocation().getName()));
+            contact.setAdresses(addresses);
+        }
 
 		return contact;
 	}

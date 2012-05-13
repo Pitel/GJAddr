@@ -16,8 +16,9 @@ import cz.vutbr.fit.gja.gjaddr.persistancelayer.*;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.ServicesEnum;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.TypesEnum;
 import cz.vutbr.fit.gja.gjaddr.util.LoggerUtil;
-import java.io.*;
-import java.net.HttpURLConnection;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -129,7 +130,8 @@ public class GoogleImport {
 		// addresses
 		List<Address> addresses = new ArrayList<Address>();
 		for (PostalAddress pa : entry.getPostalAddresses()) {
-			addresses.add(new Address(TypesEnum.HOME, pa.getValue()));
+            String addr = pa.getValue().replaceAll("(\\r|\\n)", ", ");
+			addresses.add(new Address(TypesEnum.HOME, addr));
 		}
 
         // photo

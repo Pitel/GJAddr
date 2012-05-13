@@ -98,7 +98,7 @@ public class CsvImportExport {
 			String[] addresses = nextLine[6].split(";");
 			List<Address> addressesList = new ArrayList<Address>();
 			for (String address : addresses) {
-				addressesList.add(new Address(TypesEnum.HOME, address));
+				addressesList.add(new Address(TypesEnum.HOME, address.replaceAll("(\\r|\\n)", ", ")));
 			}
 			contact.setAdresses(addressesList);
 
