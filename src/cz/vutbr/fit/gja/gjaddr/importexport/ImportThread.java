@@ -6,7 +6,7 @@ import cz.vutbr.fit.gja.gjaddr.importexport.exception.ImportException;
 import org.slf4j.LoggerFactory;
 
 /**
- * Thread for contacts import.
+ * Thread for contacts import from a service.
  *
  * @author Bc. Drahomira Herrmannova <xherrm01@stud.fit.vutbr.cz>
  */
@@ -15,7 +15,7 @@ public abstract class ImportThread extends Thread {
     /**
      * Contacts group for import. Can be a new or existing group.
      */
-	private String group = null;
+	protected String group = null;
     
     /**
      * Success status.
@@ -76,11 +76,10 @@ public abstract class ImportThread extends Thread {
     /**
      * Run the import method.
      * 
-     * @param group
      * @return
      * @throws ImportException 
      */
-	public abstract int runImport(String group) throws ImportException;
+	public abstract int runImport() throws ImportException;
 	
     /**
      * Run the thread.
@@ -89,7 +88,7 @@ public abstract class ImportThread extends Thread {
 	public void run() {
 		try {
             LoggerFactory.getLogger(this.getClass()).info("Running import thread: {}", this.getClass().getCanonicalName());
-            int imported = runImport(this.group);
+            int imported = runImport();
 			ImportWindow.performChanges(imported);
 		} catch (ImportException ex) {
 			LoggerFactory.getLogger(this.getClass()).error(ex.toString());

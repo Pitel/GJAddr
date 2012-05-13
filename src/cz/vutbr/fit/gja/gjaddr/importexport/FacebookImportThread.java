@@ -13,14 +13,13 @@ public class FacebookImportThread extends ImportThread {
     /**
      * Run import.
      * 
-     * @param group
      * @return
      * @throws FacebookImportException 
      */
 	@Override
-	public int runImport(String group) throws FacebookImportException {
+	public int runImport() throws FacebookImportException {
 		FacebookImport fi = new FacebookImport();
-		return fi.importContacts(group);
+		return fi.importContacts(this.group);
 	}
 	
 }

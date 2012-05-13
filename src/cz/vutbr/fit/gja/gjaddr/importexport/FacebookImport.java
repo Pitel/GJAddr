@@ -3,6 +3,7 @@ package cz.vutbr.fit.gja.gjaddr.importexport;
 import com.restfb.Connection;
 import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
+import com.restfb.exception.FacebookOAuthException;
 import com.restfb.types.User;
 import cz.vutbr.fit.gja.gjaddr.gui.StatusBar;
 import cz.vutbr.fit.gja.gjaddr.importexport.exception.FacebookImportException;
@@ -132,7 +133,14 @@ public class FacebookImport {
 		}
 
 		// fetch user friends
-		Connection<User> userFriends = this.client.fetchConnection("me/friends", User.class);
+        Connection<User> userFriends;
+        try {
+            userFriends = this.client.fetchConnection("me/friends", User.class);
+        } catch (FacebookOAuthException ex) {
+            throw new FacebookImportException("You need to connect to Facebook before importing.\n"
+					+ "Please go to Preferences and setup connection to Facebook.");
+        }
+        
 		// create list with contacts to import
 		List<Contact> contactsToImport = new ArrayList<Contact>();
         // count how many contacts are there to import

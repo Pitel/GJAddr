@@ -13,8 +13,14 @@ import javax.swing.JProgressBar;
  */
 public class StatusBar extends JPanel {
     
+    /**
+     * Status bar message.
+     */
     private static JLabel label = new JLabel();
     
+    /**
+     * Progress bar.
+     */
     private static JProgressBar progressBar = new JProgressBar(0, 100);
     
     /**
@@ -22,16 +28,30 @@ public class StatusBar extends JPanel {
      */
     public StatusBar() {
         super();
-        this.add(StatusBar.progressBar, BorderLayout.WEST);
-        this.add(StatusBar.label, BorderLayout.WEST);
+        this.setLayout(new BorderLayout());
+        JPanel innerPanel = new JPanel();
+        innerPanel.add(StatusBar.progressBar);
+        innerPanel.add(StatusBar.label);
+        this.add(innerPanel, BorderLayout.LINE_START);
         StatusBar.setMessage("Ready");
         StatusBar.progressBar.setVisible(false);
     }
     
+    /**
+     * Set status bar message.
+     * 
+     * @param message 
+     */
     public static void setMessage(String message) {
         StatusBar.label.setText(message);   
     }
     
+    /**
+     * Create progress bar with given bounds.
+     * 
+     * @param min
+     * @param max 
+     */
     public static void setProgressBounds(int min, int max) {
         StatusBar.progressBar.setVisible(true);
         StatusBar.progressBar.setStringPainted(true);
@@ -39,10 +59,18 @@ public class StatusBar extends JPanel {
         StatusBar.progressBar.setMaximum(max);
     }
     
+    /**
+     * Update progress bar value.
+     * 
+     * @param value 
+     */
     public static void setProgressValue(int value) {
         StatusBar.progressBar.setValue(value);
     }
     
+    /**
+     * Hide progress bar.
+     */
     public static void setProgressFinished() {
         StatusBar.setMessage("Ready");
         StatusBar.progressBar.setVisible(false);

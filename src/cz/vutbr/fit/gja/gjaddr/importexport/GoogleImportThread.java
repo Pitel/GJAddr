@@ -13,13 +13,13 @@ public class GoogleImportThread extends ImportThread {
     /**
      * Run import.
      * 
-     * @param group
      * @return 
+     * @throws GoogleImportException
      */
 	@Override
-	public int runImport(String group) throws GoogleImportException {
+	public int runImport() throws GoogleImportException {
 		GoogleImport gi = new GoogleImport();
-		return gi.importContacts(group);
+		return gi.importContacts(this.group);
 	}
     
 }

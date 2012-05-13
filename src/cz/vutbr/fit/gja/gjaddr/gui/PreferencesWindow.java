@@ -7,12 +7,16 @@ import cz.vutbr.fit.gja.gjaddr.persistancelayer.AuthToken;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Settings;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.ServicesEnum;
-import java.awt.BorderLayout;
+import cz.vutbr.fit.gja.gjaddr.util.LoggerUtil;
 import java.awt.Cursor;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import org.slf4j.LoggerFactory;
 
@@ -48,6 +52,31 @@ public class PreferencesWindow extends JFrame implements ActionListener {
 	 * Service buttons.
 	 */
 	private JButton fbButton, googButton;
+    
+    /**
+     * Constructor with setting which window should be opened after preferences.
+     * 
+     * @param cameFrom 
+     */
+    public PreferencesWindow(final String cameFrom) {
+        this();
+        
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                try {
+                    Class c = Class.forName(cameFrom);
+                    c.newInstance();
+                } catch (ClassNotFoundException ex) {
+                    LoggerFactory.getLogger(this.getClass()).error(LoggerUtil.getStackTrace(ex));
+                } catch (InstantiationException ex) {
+                    LoggerFactory.getLogger(this.getClass()).error(LoggerUtil.getStackTrace(ex));
+                } catch (IllegalAccessException ex) {
+                    LoggerFactory.getLogger(this.getClass()).error(LoggerUtil.getStackTrace(ex));
+                }
+            }
+        });
+    }
 
 	/**
 	 * Constructor. Initializes the window.
@@ -73,26 +102,26 @@ public class PreferencesWindow extends JFrame implements ActionListener {
 		// main header
 		this.add(this.createMainHeader());
     
-    // name order header and radio button group
-    this.add(this.createNameOrderHeader());
-    this.add(this.createNameOrderRadionButtons());      
-    
-    // persistance header and radio button group
-    this.add(this.createPersistanceHeader());
-    this.add(this.createPersistanceRadioButtons());     
-    
-    // services header
-		this.add(this.createServicesHeader());
+        // name order header and radio button group
+        this.add(this.createNameOrderHeader());
+        this.add(this.createNameOrderRadionButtons());      
 
-		// action buttons
-		this.add(this.createFacebookActionButton());
-		this.add(this.createGoogleActionButton());
+        // persistance header and radio button group
+        this.add(this.createPersistanceHeader());
+        this.add(this.createPersistanceRadioButtons());     
 
-		// make window visible
-		this.setResizable(false);
-		this.setLocationRelativeTo(null);
-		this.pack();
-		this.setVisible(true);
+        // services header
+        this.add(this.createServicesHeader());
+
+        // action buttons
+        this.add(this.createFacebookActionButton());
+        this.add(this.createGoogleActionButton());
+
+        // make window visible
+        this.setResizable(false);
+        this.setLocationRelativeTo(null);
+        this.pack();
+        this.setVisible(true);
 	}
 
 	/**
@@ -385,7 +414,7 @@ public class PreferencesWindow extends JFrame implements ActionListener {
 	 * 
 	 * @param ae
 	 */
-  @Override
+    @Override
 	public void actionPerformed(ActionEvent ae) {
 		// facebook button pressed
 		if (ae.getSource() == this.fbButton) {
@@ -405,13 +434,13 @@ public class PreferencesWindow extends JFrame implements ActionListener {
 				this.googleDisconnect();
 			}
 		}
-    // persistance changed
-    else if (ae.getActionCommand().equals("bin") || ae.getActionCommand().equals("xml"))  {
-      Settings.instance().changePersistance();
-    }
-    // name order changed
-    else if (ae.getActionCommand().equals("firstName") || ae.getActionCommand().equals("surName"))  {
-      Settings.instance().changeNameOrder();
-    }    
+        // persistance changed
+        else if (ae.getActionCommand().equals("bin") || ae.getActionCommand().equals("xml"))  {
+            Settings.instance().changePersistance();
+        }
+        // name order changed
+        else if (ae.getActionCommand().equals("firstName") || ae.getActionCommand().equals("surName"))  {
+            Settings.instance().changeNameOrder();
+        }    
 	}
 }

@@ -530,7 +530,7 @@ public class ImportWindow extends JFrame implements ActionListener {
     public static void showErrorMessage(String message) {
         JOptionPane.showMessageDialog(null, message, "Import unsuccessful",
                 JOptionPane.INFORMATION_MESSAGE);
-        new PreferencesWindow();
+        new PreferencesWindow(ImportWindow.class.getName());
     }
 
 	/**
