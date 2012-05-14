@@ -33,6 +33,11 @@ public class Settings {
   private String PROPERTIES_FILENAME = new File(getPropertiesDir(), "gjaddr.properties").toString();
   
   /**
+   * File with czech name days.
+   */
+  private String NAME_DAYS_FILE = new File("res", "svatky.xml").toString();
+  
+  /**
    * Get data directory according to user home dir.
    * @return 
    */  
@@ -60,7 +65,18 @@ public class Settings {
 		}
 		
 		return propertiesDir.getPath();
-	}   
+	}
+
+    /**
+     * Get name of file with name days.
+     * 
+     * @return 
+     */
+    public String getNameDaysFile() {
+        return NAME_DAYS_FILE;
+    }
+  
+    
 
   /**
    * Current properties.
