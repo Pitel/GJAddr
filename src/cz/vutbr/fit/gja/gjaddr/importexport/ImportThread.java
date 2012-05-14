@@ -3,6 +3,7 @@ package cz.vutbr.fit.gja.gjaddr.importexport;
 
 import cz.vutbr.fit.gja.gjaddr.gui.ImportWindow;
 import cz.vutbr.fit.gja.gjaddr.importexport.exception.ImportException;
+import java.util.concurrent.Semaphore;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -26,6 +27,33 @@ public abstract class ImportThread extends Thread {
      * True if import thread was interrupted.
      */
 	protected static boolean interrupted = false;
+    
+    /**
+     * Maximum number of imports that can run at a time.
+     */
+    private static final Integer MAX_IMPORTS = 1;
+    
+    /**
+     * Semaphore for import threads.
+     */
+    private static final Semaphore importSemaphore = new Semaphore(MAX_IMPORTS, true);
+    
+    /**
+     * Try to acquire import permit.
+     * 
+     * @return
+     * @throws InterruptedException 
+     */
+    private boolean requestImport() throws InterruptedException {
+        return importSemaphore.tryAcquire();
+    }
+    
+    /**
+     * Release import permit.
+     */
+    private void finishImport() {
+        importSemaphore.release();
+    }
 	
     /**
      * Was thread interrupted?
@@ -85,12 +113,19 @@ public abstract class ImportThread extends Thread {
 	@Override
 	public void run() {
 		try {
+            if (!this.requestImport()) {
+                ImportWindow.showErrorMessage("Another contacts import is already running.");
+                return;
+            }
             LoggerFactory.getLogger(this.getClass()).info("Running import thread: {}", this.getClass().getCanonicalName());
             int imported = runImport();
 			ImportWindow.performChanges(imported);
 		} catch (ImportException ex) {
 			LoggerFactory.getLogger(this.getClass()).error(ex.toString());
-            ImportWindow.showErrorMessage(ex.getMessage());
-		}
+            ImportWindow.showErrorMessageAndOpenPreferences(ex.getMessage());
+		} catch (InterruptedException ex) {
+            LoggerFactory.getLogger(this.getClass()).error(ex.toString());
+            ImportWindow.showErrorMessage("Another contacts import is already running.");
+        }
 	}
 }

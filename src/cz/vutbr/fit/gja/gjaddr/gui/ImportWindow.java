@@ -555,6 +555,16 @@ public class ImportWindow extends JFrame implements ActionListener {
     public static void showErrorMessage(String message) {
         JOptionPane.showMessageDialog(null, message, "Import unsuccessful",
                 JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    /**
+     * Show error message.
+     * 
+     * @param message 
+     */
+    public static void showErrorMessageAndOpenPreferences(String message) {
+        JOptionPane.showMessageDialog(null, message, "Import unsuccessful",
+                JOptionPane.INFORMATION_MESSAGE);
         new PreferencesWindow(ImportWindow.class.getName());
     }
 
