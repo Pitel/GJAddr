@@ -5,6 +5,7 @@ import cz.vutbr.fit.gja.gjaddr.importexport.FacebookOauth;
 import cz.vutbr.fit.gja.gjaddr.importexport.GoogleOauth;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.AuthToken;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.Group;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Settings;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.ServicesEnum;
 import cz.vutbr.fit.gja.gjaddr.util.LoggerUtil;
@@ -66,7 +67,16 @@ public class PreferencesWindow extends JFrame implements ActionListener {
             public void windowClosing(WindowEvent e) {
                 try {
                     Class c = Class.forName(cameFrom);
-                    c.newInstance();
+                    if (cameFrom.contains("ImportWindow")) {
+                        Group[] selectedGroups = GroupsPanel.getSelectedGroups();
+                        if (selectedGroups.length == 1) {
+                            new ImportWindow(selectedGroups[0]);
+                        } else {
+                            new ImportWindow(null);
+                        }
+                    } else {
+                        c.newInstance();
+                    }
                 } catch (ClassNotFoundException ex) {
                     LoggerFactory.getLogger(this.getClass()).error(LoggerUtil.getStackTrace(ex));
                 } catch (InstantiationException ex) {

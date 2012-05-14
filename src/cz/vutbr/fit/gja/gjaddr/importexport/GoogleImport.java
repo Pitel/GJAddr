@@ -157,8 +157,6 @@ public class GoogleImport {
                 LoggerFactory.getLogger(this.getClass()).error(LoggerUtil.getStackTrace(ex));
             } 
         }
-		// TODO photo
-		// https://developers.google.com/google-apps/contacts/v3/#retrieving_a_contacts_photo
 
 		// nickname
 		if (entry.hasNickname()) {
@@ -210,9 +208,16 @@ public class GoogleImport {
             LoggerFactory.getLogger(this.getClass()).error(LoggerUtil.getStackTrace(ex));
             throw new GoogleImportException("Import was unsuccessful due to application error. Please try again.");
         }
+        
+        boolean end = false;
 
 		// get contacts
 		while (feedUrl != null) {
+            // if thread was interrupted --> finish
+            if (GoogleImportThread.isThreadInterrupted()) {
+                break;
+            }
+            
 			LoggerFactory.getLogger(this.getClass()).info("Sending request to : " + feedUrl.toString());
 			ContactFeed resultFeed;
 
@@ -230,10 +235,19 @@ public class GoogleImport {
 
 			// add all contacts to list
 			for (ContactEntry entry : resultFeed.getEntries()) {
+                // if thread was interrupted --> finish
+                if (GoogleImportThread.isThreadInterrupted()) {
+                    end = true;
+                    break;
+                }
 				contacts.add(this.fetchContact(entry));
                 this.processed++;
                 StatusBar.setProgressValue(this.processed);
 			}
+            
+            if (end) {
+                break;
+            }
 
 			// get link to next page with contacts
 			if (resultFeed.getNextLink() != null) {
@@ -246,7 +260,7 @@ public class GoogleImport {
                 }
 			} else {
 				feedUrl = null;
-			}
+			}            
 		}
 
 		return contacts;

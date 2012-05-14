@@ -189,9 +189,14 @@ public class FacebookImport {
         }
         StatusBar.setProgressBounds(0, total);
         StatusBar.setMessage("Importing contacts...");
+        boolean end = false;
         // facebook returns the list of users in parts
 		for (List<User> userList : userFriends) {
 			for (User user : userList) {
+                if (FacebookImportThread.isThreadInterrupted()) {
+                    end = true;
+                    break;
+                }
 				try {
 					contactsToImport.add(this.fetchContact(user.getId()));
                     this.processed++;
@@ -201,6 +206,9 @@ public class FacebookImport {
 					continue;
 				}
 			}
+            if (end) {
+                break;
+            }
 		}
 		return contactsToImport;
 	}

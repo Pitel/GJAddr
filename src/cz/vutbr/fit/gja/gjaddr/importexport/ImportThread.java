@@ -25,15 +25,15 @@ public abstract class ImportThread extends Thread {
     /**
      * True if import thread was interrupted.
      */
-	private boolean interrupted = false;
+	protected static boolean interrupted = false;
 	
     /**
      * Was thread interrupted?
      * 
      * @return 
      */
-	public boolean getInterrupted() {
-		return this.interrupted;
+	public static boolean isThreadInterrupted() {
+		return ImportThread.interrupted;
 	}
 
     /**
@@ -66,11 +66,9 @@ public abstract class ImportThread extends Thread {
     /**
      * Interrupt thread.
      */
-	@Override
-    public void interrupt() {
-        super.interrupt();
-        this.interrupted = true;
-        LoggerFactory.getLogger(this.getClass()).info("Interrupting thread: " + this.toString());
+    public static void interruptThread() {
+        ImportThread.interrupted = true;
+        LoggerFactory.getLogger(ImportThread.class).info("Interrupting thread.");
     }
 	
     /**
