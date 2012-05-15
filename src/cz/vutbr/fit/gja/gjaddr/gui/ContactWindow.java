@@ -42,6 +42,8 @@ class ContactWindow extends JFrame {
 	private final JTextField otherPhoneField = new JTextField();
 	private final JTextArea noteField = new JTextArea();
 	private final JXDatePicker birthdayPicker = new JXDatePicker();
+	private final JXDatePicker namedayPicker = new JXDatePicker();
+	private final JXDatePicker celebrationPicker = new JXDatePicker();
 
 
 	/**
@@ -72,6 +74,8 @@ class ContactWindow extends JFrame {
 		nicknameField.setText(contact.getNickName());
 		addressField.setText(contact.getAllAddresses());
 		birthdayPicker.setDate(contact.getBirthday() != null ? contact.getBirthday().getDate() : null);
+		namedayPicker.setDate(contact.getNameDay() != null ? contact.getNameDay().getDate() : null);
+		celebrationPicker.setDate(contact.getCelebration() != null ? contact.getCelebration().getDate() : null);
 		noteField.setText(contact.getNote());
 		for (Url u : contact.getUrls()) {
 			if (u.getValue() != null) {
@@ -178,6 +182,20 @@ class ContactWindow extends JFrame {
 		c.gridy++;
 		c.gridx = 0;
 		c.weightx = 0;
+		form.add(new JLabel("Nameday"), c);
+		c.gridx = 1;
+		c.weightx = 1;
+		form.add(namedayPicker, c);
+		c.gridy++;
+		c.gridx = 0;
+		c.weightx = 0;
+		form.add(new JLabel("Celebration"), c);
+		c.gridx = 1;
+		c.weightx = 1;
+		form.add(celebrationPicker, c);
+		c.gridy++;
+		c.gridx = 0;
+		c.weightx = 0;
 		form.add(new JLabel("Work E-mail"), c);
 		c.gridx = 1;
 		c.weightx = 1;
@@ -263,6 +281,8 @@ class ContactWindow extends JFrame {
 			contact.setSurName(surnameField.getText());
 			contact.setNickName(nicknameField.getText());
 			contact.setBirthday(birthdayPicker.getDate());
+			contact.setNameDay(namedayPicker.getDate());
+			contact.setCelebration(celebrationPicker.getDate());
 			contact.setNote(noteField.getText());
 
 			final ArrayList<Address> addresses = new ArrayList<Address>();

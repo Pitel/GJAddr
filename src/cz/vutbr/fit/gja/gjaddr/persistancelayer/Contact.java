@@ -326,6 +326,24 @@ public class Contact implements Serializable {
         this.setEvent(EventsEnum.BIRTHDAY, date);
     }
 
+	/**
+	 * Set contact nameday.
+	 *
+	 * @param date
+	 */
+	public void setNameDay(Date date) {
+		this.setEvent(EventsEnum.NAMEDAY, date);
+	}
+
+	/**
+	 * Set contact celebration date.
+	 *
+	 * @param date
+	 */
+	public void setCelebration(Date date) {
+		this.setEvent(EventsEnum.CELEBRATION, date);
+	}
+
   public String getFullName() {
     StringBuilder fullName = new StringBuilder();
 
