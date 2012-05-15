@@ -111,10 +111,16 @@ public class Database implements IDatabase {
 	}
   
   public int getNumberOfContactsForGroup (Group group) {
+        
+    // main group
+    if (group.getId() == -1) {
+      return this.contacts.getAllContacts().size();
+    }
+    
     List<Group> groupList = new ArrayList<Group>();
     groupList.add(group);
-    List<Integer> contactsId = this.groupsContacts.getContactsIdAssignToGroups(groupList);			
-    return contactsId.size();   
+    
+    return this.groupsContacts.getContactsIdAssignToGroups(groupList).size();			
   }
 
 	/**

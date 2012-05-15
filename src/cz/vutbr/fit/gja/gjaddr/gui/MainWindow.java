@@ -29,7 +29,7 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 	private DetailPanel detailPanel;
     private StatusBar statusBar;
 
-	static final String ROOT_GROUP = "My_Contacts";
+	static final String ROOT_GROUP = "My contacts";
 
 	public UserActions actions = new UserActions();
 
