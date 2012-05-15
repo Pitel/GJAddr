@@ -33,16 +33,16 @@ class DetailPanel extends JPanel {
 	private final JLabel nameIcon = new JLabel();
 	private final PhotoButton photo = new PhotoButton();
 	private final JLabel groups = new JLabel();
-	private final JLabel nicknameLabel = new JLabel("<html><b>Nickname:</b></html>");
-	private final JLabel addressLabel = new JLabel("<html><b>Address:</b></html>");
-	private final JLabel emailLabel = new JLabel("<html><b>Email:</b></html>");
-	private final JLabel phoneLabel = new JLabel("<html><b>Phone:</b></html>");
-	private final JLabel websLabel = new JLabel("<html><b>Webs:</b></html>");
-	private final JLabel birthdayLabel = new JLabel("<html><b>Birthday:</b></html>");
-	private final JLabel namedayLabel = new JLabel("<html><b>Nameday:</b></html>");
-	private final JLabel celebrationLabel = new JLabel("<html><b>Celebration:</b></html>");
-	private final JLabel noteLabel = new JLabel("<html><b>Note:</b></html>");
-	private final JLabel groupsLabel = new JLabel("<html><b>Groups:</b></html>");
+	private final JLabel nicknameLabel = new JLabel("<html><b>Nickname: </b></html>");
+	private final JLabel addressLabel = new JLabel("<html><b>Address: </b></html>");
+	private final JLabel emailLabel = new JLabel("<html><b>Email: </b></html>");
+	private final JLabel phoneLabel = new JLabel("<html><b>Phone: </b></html>");
+	private final JLabel websLabel = new JLabel("<html><b>Webs: </b></html>");
+	private final JLabel birthdayLabel = new JLabel("<html><b>Birthday: </b></html>");
+	private final JLabel namedayLabel = new JLabel("<html><b>Nameday: </b></html>");
+	private final JLabel celebrationLabel = new JLabel("<html><b>Celebration: </b></html>");
+	private final JLabel noteLabel = new JLabel("<html><b>Note: </b></html>");
+	private final JLabel groupsLabel = new JLabel("<html><b>Groups: </b></html>");
 	private JScrollPane detailScrollPane;
 
 	/**

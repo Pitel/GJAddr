@@ -68,6 +68,7 @@
 			<test name="${package}.persistancelayer.DatabaseTest" />
 			<test name="${package}.persistancelayer.AuthTokenTest" />
 			<test name="${package}.importexport.VCardImportExportTest" />
+			<test name="${package}.gui.GJAddrGuiTest" />
 		</junit>
 	</target>
 
