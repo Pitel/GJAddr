@@ -301,7 +301,7 @@ public class Contact implements Serializable {
      */
     private void setEvent(EventsEnum type, Date date) {
         if (this.dates == null) {
-            return;
+            this.dates = new ArrayList<Event>();
         }
         Event e = null;
         for (Event event : this.dates) {
@@ -310,11 +310,13 @@ public class Contact implements Serializable {
             }
         }
         if (e == null) {
-            return;
+            e = new Event(type, date);
+            this.dates.add(e);
+        } else {
+            this.dates.remove(e);
+            e.setDate(date);
+            this.dates.add(e);
         }
-        this.dates.remove(e);
-        e.setDate(date);
-        this.dates.add(e);
     }
     
     /**

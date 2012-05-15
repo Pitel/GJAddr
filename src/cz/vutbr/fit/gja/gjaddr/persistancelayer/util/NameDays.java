@@ -2,6 +2,7 @@
 package cz.vutbr.fit.gja.gjaddr.persistancelayer.util;
 
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Settings;
+import cz.vutbr.fit.gja.gjaddr.util.LangUtil;
 import cz.vutbr.fit.gja.gjaddr.util.LoggerUtil;
 import java.io.File;
 import java.io.IOException;
@@ -33,6 +34,11 @@ public class NameDays {
      * HashMap of name days.
      */
     private static HashMap<String, Calendar> nameDays = new HashMap<String, Calendar>();
+    
+    /**
+     * Name days without diacritic marks.
+     */
+    private static HashMap<String, Calendar> noDiacritics = new HashMap<String, Calendar>();
     
     /**
      * Says if name days were successfully loaded from XML.
@@ -84,6 +90,7 @@ public class NameDays {
               date.set(Calendar.MONTH, month - 1);
               date.set(Calendar.DAY_OF_MONTH, day);
               NameDays.nameDays.put(name, date);
+              NameDays.noDiacritics.put(LangUtil.removeDiacritics(name), date);
            }
         }
     }
@@ -108,10 +115,19 @@ public class NameDays {
      * @return 
      */
     public Calendar getNameDay(String name) {
+        System.out.println("getting name day : " + name);
+        if (name == null) {
+            return null;
+        }
         if (!NameDays.loaded) {
             return null;
         }
-        return NameDays.nameDays.get(name);
+        Calendar nameDay = NameDays.nameDays.get(name);
+        if (nameDay == null) {
+            return NameDays.noDiacritics.get(LangUtil.removeDiacritics(name));
+        } else {
+            return nameDay;
+        }
     }
     
     /**

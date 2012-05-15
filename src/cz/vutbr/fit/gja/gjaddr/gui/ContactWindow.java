@@ -1,7 +1,9 @@
 package cz.vutbr.fit.gja.gjaddr.gui;
 
+import com.google.gdata.util.LoggableInputStream;
 import cz.vutbr.fit.gja.gjaddr.gui.util.Validators;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.*;
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.NameDays;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.TypesEnum;
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
@@ -10,6 +12,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.swing.*;
 import org.jdesktop.swingx.JXDatePicker;
@@ -281,7 +284,12 @@ class ContactWindow extends JFrame {
 			contact.setSurName(surnameField.getText());
 			contact.setNickName(nicknameField.getText());
 			contact.setBirthday(birthdayPicker.getDate());
-			contact.setNameDay(namedayPicker.getDate());
+            if (namedayPicker.getDate() != null) {
+                contact.setNameDay(namedayPicker.getDate());
+            } else {
+                Date nameDay = NameDays.getInstance().getNameDay(contact.getFirstName()).getTime();
+                contact.setNameDay(nameDay);
+            }
 			contact.setCelebration(celebrationPicker.getDate());
 			contact.setNote(noteField.getText());
 
