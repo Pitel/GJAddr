@@ -1,6 +1,7 @@
 package cz.vutbr.fit.gja.gjaddr.persistancelayer;
 
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.EventsEnum;
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.NameDays;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -231,6 +232,24 @@ public class Contact implements Serializable {
     }
     
     /**
+     * Get contact name day.
+     * 
+     * @return 
+     */
+    public Event getNameDay() {
+        return this.getEvent(EventsEnum.NAMEDAY);
+    }
+    
+    /**
+     * Get contact celebration.
+     * 
+     * @return 
+     */
+    public Event getCelebration() {
+        return this.getEvent(EventsEnum.CELEBRATION);
+    }
+    
+    /**
      * Disable showing of some event.
      * 
      * @param type 
@@ -258,6 +277,20 @@ public class Contact implements Serializable {
      */
     public void disableBirthdayShowing() {
         this.disableEventShowing(EventsEnum.BIRTHDAY);
+    }
+    
+    /**
+     * Disable showing of name day.
+     */
+    public void disableNameDayShowing() {
+        this.disableEventShowing(EventsEnum.NAMEDAY);
+    }
+    
+    /**
+     * Disable showing of celebration.
+     */
+    public void disableCelebrationShowing() {
+        this.disableEventShowing(EventsEnum.CELEBRATION);
     }
     
     /**
@@ -389,17 +422,17 @@ public class Contact implements Serializable {
     this.firstName = firstName;
     this.surName = surName;
     this.nickName = nickName;
-    this.note = nickName;
+    this.note = note;
+    Calendar nameDay = NameDays.getInstance().getNameDay(firstName);
+    if (nameDay != null) {
+        this.dates.add(new Event(EventsEnum.NAMEDAY, nameDay.getTime()));
+    }
   }
 
   public Contact(String firstName, String surName, String nickName,
           String note, List<Messenger> messenger, List<Url> urls, List<Address> adresses,
           List<PhoneNumber> phoneNumbers, List<Email> emails, List<Custom> customs) {
-      this();
-    this.firstName = firstName;
-    this.surName = surName;
-    this.nickName = nickName;
-    this.note = note;
+      this(firstName, surName, nickName, note);
     this.messenger = messenger;
     this.urls = urls;
     this.adresses = adresses;
