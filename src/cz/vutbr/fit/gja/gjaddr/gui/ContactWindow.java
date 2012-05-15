@@ -71,7 +71,7 @@ class ContactWindow extends JFrame {
 		surnameField.setText(contact.getSurName());
 		nicknameField.setText(contact.getNickName());
 		addressField.setText(contact.getAllAddresses());
-		birthdayPicker.setDate(contact.getDateOfBirth());
+		birthdayPicker.setDate(contact.getBirthday() != null ? contact.getBirthday().getDate() : null);
 		noteField.setText(contact.getNote());
 		for (Url u : contact.getUrls()) {
 			if (u.getValue() != null) {
@@ -262,7 +262,7 @@ class ContactWindow extends JFrame {
 			contact.setFirstName(nameField.getText());
 			contact.setSurName(surnameField.getText());
 			contact.setNickName(nicknameField.getText());
-			contact.setDateOfBirth(birthdayPicker.getDate());
+			contact.setBirthday(birthdayPicker.getDate());
 			contact.setNote(noteField.getText());
 
 			final ArrayList<Address> addresses = new ArrayList<Address>();

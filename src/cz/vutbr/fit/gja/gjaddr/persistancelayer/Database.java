@@ -302,27 +302,19 @@ public class Database implements IDatabase {
 	 * 
 	 * @return
 	 */
-  @Override
+    @Override
 	public List<Contact> getContactsWithBirtday() {
 		List<Contact> all = this.contacts.getAllContacts();
 		List<Contact> csWithBday = new ArrayList<Contact>();
-		// date today
-		Calendar today = Calendar.getInstance();
-		today.add(Calendar.DAY_OF_YEAR, -1);
-		// date within one month
-		Calendar month = Calendar.getInstance();
-		month.add(Calendar.DAY_OF_YEAR, +30);
-		// birthday of contact
-		Calendar bday = Calendar.getInstance();
 		for (Contact c : all) {
-			if (c.getDateOfBirth() != null && !c.isBdayShowingDisabled()) {
-				bday.setTime(c.getDateOfBirth());
-				bday.set(Calendar.YEAR, 2012);
-				// retrieve contacts with birtday within one month
-				if (bday.after(today) && bday.before(month)) {
-					csWithBday.add(c);
-				}
-			}
+            if (c.getDates() == null) {
+                continue;
+            }
+            for (Event e : c.getDates()) {
+                if (e.getDate() != null && !e.isShowingDisabled() && e.isBirthday() && e.isWithinMonth()) {
+                    csWithBday.add(c);
+                }
+            }
 		}
 		return csWithBday;
 	}

@@ -103,7 +103,7 @@ public class NotificationsWindow extends JFrame implements ActionListener {
 		JPanel panel = new JPanel(new GridLayout());
 		Format formatter = new SimpleDateFormat("d.M.yyyy");
 		JLabel name = new JLabel(c.getFullName());
-		JLabel bday = new JLabel(formatter.format(c.getDateOfBirth()));
+		JLabel bday = new JLabel(formatter.format(c.getBirthday().getDate()));
 		panel.add(name);
 		panel.add(bday);
 		panel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
@@ -144,7 +144,7 @@ public class NotificationsWindow extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent ae) {
 		if (ae.getSource() == this.noShowButton) {
 			for (Contact c : this.contacts) {
-				c.disableBdayShowing();
+				c.disableBirthdayShowing();
 				this.db.updateContact(c);
 			}
 			this.dispose();

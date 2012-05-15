@@ -205,10 +205,10 @@ class DetailPanel extends JPanel {
 				phones.setVisible(false);
 			}
 
-			if (contact.getDateOfBirth() != null) {
+			if (contact.getBirthday() != null && contact.getBirthday().getDate() != null) {
 				birthday.setVisible(true);
 				birthdayLabel.setVisible(true);
-				birthday.setText(DateFormat.getDateInstance().format(contact.getDateOfBirth()));
+				birthday.setText(DateFormat.getDateInstance().format(contact.getBirthday().getDate()));
 			} else {
 				birthday.setVisible(false);
 				birthdayLabel.setVisible(false);

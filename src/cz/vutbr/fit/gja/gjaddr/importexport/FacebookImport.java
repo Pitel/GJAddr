@@ -8,6 +8,7 @@ import com.restfb.types.User;
 import cz.vutbr.fit.gja.gjaddr.gui.StatusBar;
 import cz.vutbr.fit.gja.gjaddr.importexport.exception.FacebookImportException;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.*;
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.EventsEnum;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.ServicesEnum;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.TypesEnum;
 import cz.vutbr.fit.gja.gjaddr.util.LoggerUtil;
@@ -92,6 +93,7 @@ public class FacebookImport {
 		List<Email> emails = new ArrayList<Email>();
 		List<Url> urls = new ArrayList<Url>();
 		List<Custom> customFields = new ArrayList<Custom>();
+        List<Event> events = new ArrayList<Event>();
 
 		Contact contact = new Contact(user.getFirstName(), user.getLastName(), user.getUsername(), user.getAbout());
 
@@ -114,7 +116,8 @@ public class FacebookImport {
 
 		// set birthday
 		if (user.getBirthdayAsDate() != null) {
-			contact.setDateOfBirth(user.getBirthdayAsDate());
+            events.add(new Event(EventsEnum.BIRTHDAY, user.getBirthdayAsDate()));
+            contact.setDates(events);
 		}
         
         // download photo

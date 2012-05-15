@@ -127,5 +127,6 @@ public abstract class ImportThread extends Thread {
             LoggerFactory.getLogger(this.getClass()).error(ex.toString());
             ImportWindow.showErrorMessage("Another contacts import is already running.");
         }
+        this.finishImport();
 	}
 }

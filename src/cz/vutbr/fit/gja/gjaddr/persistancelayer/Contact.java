@@ -1,5 +1,6 @@
 package cz.vutbr.fit.gja.gjaddr.persistancelayer;
 
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.EventsEnum;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -16,50 +17,11 @@ public class Contact implements Serializable {
 
   static private final long serialVersionUID = 6L;
 
-  /**
-   * Class for simpler working with contact birthday.
-   */
-  public class Birthday implements Serializable {
-
-    private Date dateOfBirth;
-    private Integer yearShowingDisabled;
-
-    public Birthday() {
-      this.dateOfBirth = null;
-      this.yearShowingDisabled = null;
-    }
-
-    public Date getDateOfBirth() {
-      return dateOfBirth;
-    }
-
-    public void setDateOfBirth(Date dateOfBirth) {
-      this.dateOfBirth = dateOfBirth;
-    }
-
-    public boolean isShowingDisabled() {
-      return this.yearShowingDisabled != null
-              && this.yearShowingDisabled == Calendar.getInstance().get(Calendar.YEAR);
-    }
-
-    public Integer getYearShowingDisabled() {
-      return yearShowingDisabled;
-    }
-
-    public void setYearShowingDisabled(Integer yearShowingDisabled) {
-      this.yearShowingDisabled = yearShowingDisabled;
-    }
-  }
   // not visible for GUI, only for DB usage
   int id = -1;
   private String firstName;
   private String surName;
   private String nickName;
-  /**
-   * DO NOT USE - use dates collection with event types
-   */
-  @Deprecated
-  private Birthday birthday;
   private ImageIcon Photo;
   private String note;
   private List<Event> dates;
@@ -162,22 +124,6 @@ public class Contact implements Serializable {
     this.note = note;
   }
 
-  public Date getDateOfBirth() {
-    return this.birthday.getDateOfBirth();
-  }
-
-  public void setDateOfBirth(Date dateOfBirth) {
-    this.birthday.setDateOfBirth(dateOfBirth);
-  }
-
-  public void disableBdayShowing() {
-    this.birthday.setYearShowingDisabled(Calendar.getInstance().get(Calendar.YEAR));
-  }
-
-  public boolean isBdayShowingDisabled() {
-    return this.birthday.isShowingDisabled();
-  }
-
   public ImageIcon getPhoto() {
     return Photo;
   }
@@ -185,32 +131,167 @@ public class Contact implements Serializable {
   public void setPhoto(ImageIcon photo) {
     this.Photo = photo;
   }
+  
+    /**
+     * Check if contact has any event today.
+     * 
+     * @param type
+     * @return 
+     */
+    private boolean hasEvent(EventsEnum type) {
+        if (this.getDates() == null) {
+            return false;
+        }
+        for (Event e : this.getDates()) {
+            if (e.getType().equals(type)) {
+                if (e.getDate() == null) {
+                    return false;
+                }
+                // date today
+                Calendar today = Calendar.getInstance();
+                today.add(Calendar.DAY_OF_YEAR, -1);
+                // date within one month
+                Calendar month = Calendar.getInstance();
+                month.add(Calendar.DAY_OF_YEAR, 0);
+                // birthday of contact
+                Calendar bday = Calendar.getInstance();
+                bday.setTime(e.getDate());
+                bday.set(Calendar.YEAR, 2012);
+                if (bday.after(today) && bday.before(month)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
+        return false;
+    }
 
-  /**
-   * Return true if contact has birthday within one month.
-   *
-   * @return
-   */
-  public boolean hasBirthday() {
-    if (this.birthday.getDateOfBirth() == null) {
-      return false;
+    /**
+     * Return true if contact has birthday within one month.
+     *
+     * @return
+     */
+    public boolean hasBirthday() {
+        return this.hasEvent(EventsEnum.BIRTHDAY);
     }
-    // date today
-    Calendar today = Calendar.getInstance();
-    today.add(Calendar.DAY_OF_YEAR, -1);
-    // date within one month
-    Calendar month = Calendar.getInstance();
-    month.add(Calendar.DAY_OF_YEAR, 0);
-    // birthday of contact
-    Calendar bday = Calendar.getInstance();
-    bday.setTime(this.birthday.getDateOfBirth());
-    bday.set(Calendar.YEAR, 2012);
-    if (bday.after(today) && bday.before(month)) {
-      return true;
-    } else {
-      return false;
+    
+    /**
+     * Return true if contact has name day within one month.
+     *
+     * @return
+     */
+    public boolean hasNameDay() {
+        return this.hasEvent(EventsEnum.NAMEDAY);
     }
-  }
+    
+    /**
+     * Return true if contact has celebration within one month.
+     *
+     * @return
+     */
+    public boolean hasCelebration() {
+        return this.hasEvent(EventsEnum.CELEBRATION);
+    }
+    
+    /**
+     * Return true if contact has any other event within one month.
+     *
+     * @return
+     */
+    public boolean hasOtherEvent() {
+        return this.hasEvent(EventsEnum.OTHER);
+    }
+    
+    /**
+     * Get event by type.
+     * 
+     * @param type
+     * @return 
+     */
+    private Event getEvent(EventsEnum type) {
+        if (this.getDates() == null) {
+            return null;
+        }
+        for (Event e : this.getDates()) {
+            if (e.getType().equals(type)) {
+                return e;
+            }
+        }
+        return null;
+    }
+    
+    /**
+     * Get contact birthday.
+     * 
+     * @return 
+     */
+    public Event getBirthday() {
+        return this.getEvent(EventsEnum.BIRTHDAY);
+    }
+    
+    /**
+     * Disable showing of some event.
+     * 
+     * @param type 
+     */
+    private void disableEventShowing(EventsEnum type) {
+        if (this.dates == null) {
+            return;
+        }
+        Event e = null;
+        for (Event event : this.dates) {
+            if (event.getType().equals(type)) {
+                e = event;
+            }
+        }
+        if (e == null) {
+            return;
+        }
+        this.dates.remove(e);
+        e.setYearShowingDisabled();
+        this.dates.add(e);
+    }
+    
+    /**
+     * Disable showing of birthday.
+     */
+    public void disableBirthdayShowing() {
+        this.disableEventShowing(EventsEnum.BIRTHDAY);
+    }
+    
+    /**
+     * Set event to specified date.
+     * 
+     * @param type
+     * @param date 
+     */
+    private void setEvent(EventsEnum type, Date date) {
+        if (this.dates == null) {
+            return;
+        }
+        Event e = null;
+        for (Event event : this.dates) {
+            if (event.getType().equals(type)) {
+                e = event;
+            }
+        }
+        if (e == null) {
+            return;
+        }
+        this.dates.remove(e);
+        e.setDate(date);
+        this.dates.add(e);
+    }
+    
+    /**
+     * Set contact birthday.
+     * 
+     * @param date 
+     */
+    public void setBirthday(Date date) {
+        this.setEvent(EventsEnum.BIRTHDAY, date);
+    }
 
   public String getFullName() {
     StringBuilder fullName = new StringBuilder();
@@ -298,27 +379,26 @@ public class Contact implements Serializable {
 
     return links.toString();
   }  
-
+  
   public Contact() {
-    this.birthday = new Birthday();
+      this.dates = new ArrayList<Event>();
   }
 
   public Contact(String firstName, String surName, String nickName, String note) {
-    this();
+      this();
     this.firstName = firstName;
     this.surName = surName;
     this.nickName = nickName;
     this.note = nickName;
   }
 
-  public Contact(String firstName, String surName, String nickName, Date dateOfBirth,
+  public Contact(String firstName, String surName, String nickName,
           String note, List<Messenger> messenger, List<Url> urls, List<Address> adresses,
           List<PhoneNumber> phoneNumbers, List<Email> emails, List<Custom> customs) {
-    this();
+      this();
     this.firstName = firstName;
     this.surName = surName;
     this.nickName = nickName;
-    this.birthday.setDateOfBirth(dateOfBirth);
     this.note = note;
     this.messenger = messenger;
     this.urls = urls;
