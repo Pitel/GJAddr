@@ -30,7 +30,9 @@ class DetailPanel extends JPanel {
 	private final JLabel nameday = new JLabel();
 	private final JLabel celebration = new JLabel();
 	private final JLabel note = new JLabel();
-	private final JLabel nameIcon = new JLabel();
+	private final JLabel bdayIcon = new JLabel();
+    private final JLabel namedayIcon = new JLabel();
+    private final JLabel celebrationIcon = new JLabel();
 	private final PhotoButton photo = new PhotoButton();
 	private final JLabel groups = new JLabel();
 	private final JLabel nicknameLabel = new JLabel("<html><b>Nickname: </b></html>");
@@ -58,10 +60,18 @@ class DetailPanel extends JPanel {
 		// create panel with name and with birthday icon
 		final JPanel namePanel = new JPanel();
 		namePanel.setLayout(new BoxLayout(namePanel, BoxLayout.LINE_AXIS));
-		nameIcon.setIcon(new ImageIcon(getClass().getResource("/res/present.png")));
-		nameIcon.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
-		nameIcon.setVisible(false);
-		namePanel.add(nameIcon);
+		bdayIcon.setIcon(new ImageIcon(getClass().getResource("/res/present.png")));
+		bdayIcon.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
+		bdayIcon.setVisible(false);
+        namedayIcon.setIcon(new ImageIcon(getClass().getResource("/res/nameday.png")));
+		namedayIcon.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
+		namedayIcon.setVisible(false);
+        celebrationIcon.setIcon(new ImageIcon(getClass().getResource("/res/celebration.png")));
+		celebrationIcon.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
+		celebrationIcon.setVisible(false);
+		namePanel.add(bdayIcon);
+        namePanel.add(namedayIcon);
+        namePanel.add(celebrationIcon);
 		namePanel.add(name);
 		photo.setVisible(false);
 		namePanel.add(photo);
@@ -151,10 +161,20 @@ class DetailPanel extends JPanel {
 	void show(Contact contact) {
 		if (contact != null) {
 			if (contact.hasBirthday()) {
-				nameIcon.setVisible(true);
+				bdayIcon.setVisible(true);
 			} else {
-				nameIcon.setVisible(false);
+				bdayIcon.setVisible(false);
 			}
+            if (contact.hasNameDay()) {
+                this.namedayIcon.setVisible(true);
+            } else {
+                this.namedayIcon.setVisible(false);
+            }
+            if (contact.hasCelebration()) {
+                this.celebrationIcon.setVisible(true);
+            } else {
+                this.celebrationIcon.setVisible(false);
+            }
 			photo.setContact(contact);
 			photo.setVisible(true);
 			name.setText(String.format("<html><h1>" + contact.getFullName() + "</h1></html>"));

@@ -30,6 +30,8 @@
 	<copy file="res/plus_g.png" todir="build/classes/res"/>
 	<copy file="res/preferences.png" todir="build/classes/res"/>	
 	<copy file="res/present.png" todir="build/classes/res"/>
+    <copy file="res/nameday.png" todir="build/classes/res"/>
+    <copy file="res/celebration.png" todir="build/classes/res"/>
 	<copy file="res/logback.xml" todir="build/classes"/>
     <!--
 

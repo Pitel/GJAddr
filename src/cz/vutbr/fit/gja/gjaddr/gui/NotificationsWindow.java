@@ -44,7 +44,7 @@ public class NotificationsWindow extends JFrame implements ActionListener {
 		super("Import");
 		LoggerFactory.getLogger(this.getClass()).debug("Opening notifications window.");
 
-		// save the list of contacts with bday
+		// save the list of contacts with event
 		this.contacts = contacts;
 
 		// set window apearance
@@ -66,7 +66,18 @@ public class NotificationsWindow extends JFrame implements ActionListener {
 
 		// add all contacts
 		for (Contact c : contacts) {
-			this.add(this.createLine(c));
+            JPanel panelBday = this.createLineBday(c);
+            if (panelBday != null) {
+                this.add(panelBday);
+            }
+            JPanel panelNameday = this.createLineNameday(c);
+            if (panelNameday != null) {
+                this.add(panelNameday);
+            }
+            JPanel panelCeleb = this.createLineCelebration(c);
+            if (panelCeleb != null) {
+                this.add(panelCeleb);
+            }
 		}
 
 		// add buttons
@@ -87,26 +98,81 @@ public class NotificationsWindow extends JFrame implements ActionListener {
 	 */
 	private JPanel createMainHeader() {
 		JPanel mainHeaderPanel = new JPanel(new GridLayout());
-		JLabel mainHeader = new JLabel("<html><h3>People with birthday<br />next month</h3></html>", JLabel.LEFT);
+		JLabel mainHeader = new JLabel("<html><h3>People with events<br />next month</h3></html>", JLabel.LEFT);
 		mainHeaderPanel.add(mainHeader);
 		mainHeaderPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
 		return mainHeaderPanel;
 	}
 
 	/**
-	 * Create line consisting of name and bday.
+	 * Create line consisting of name and event.
 	 * 
 	 * @param c
 	 * @return
 	 */
-	private JPanel createLine(Contact c) {
+	private JPanel createLineBday(Contact c) {
+        if (c.getBirthday() == null) {
+            return null;
+        }
 		JPanel panel = new JPanel(new GridLayout());
 		Format formatter = new SimpleDateFormat("d.M.yyyy");
 		JLabel name = new JLabel(c.getFullName());
-		JLabel bday = new JLabel(formatter.format(c.getBirthday().getDate()));
-		panel.add(name);
-		panel.add(bday);
-		panel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
+        panel.add(name);
+        panel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
+        JLabel event = new JLabel(formatter.format(c.getBirthday().getDate()));
+        JLabel type = new JLabel("(birthday)");
+        panel.add(event);
+        panel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
+        panel.add(type);
+        panel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
+		return panel;
+	}
+    
+    /**
+	 * Create line consisting of name and event.
+	 * 
+	 * @param c
+	 * @return
+	 */
+	private JPanel createLineNameday(Contact c) {
+        if (c.getNameDay() == null) {
+            return null;
+        }
+		JPanel panel = new JPanel(new GridLayout());
+		Format formatter = new SimpleDateFormat("d.M.yyyy");
+		JLabel name = new JLabel(c.getFullName());
+        panel.add(name);
+        panel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
+        JLabel event = new JLabel(formatter.format(c.getNameDay().getDate()));
+        JLabel type = new JLabel("(nameday)");
+        panel.add(event);
+        panel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
+        panel.add(type);
+        panel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
+		return panel;
+	}
+    
+    /**
+	 * Create line consisting of name and event.
+	 * 
+	 * @param c
+	 * @return
+	 */
+	private JPanel createLineCelebration(Contact c) {
+        if (c.getCelebration() == null) {
+            return null;
+        }
+		JPanel panel = new JPanel(new GridLayout());
+		Format formatter = new SimpleDateFormat("d.M.yyyy");
+		JLabel name = new JLabel(c.getFullName());
+        panel.add(name);
+        panel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
+        JLabel event = new JLabel(formatter.format(c.getCelebration().getDate()));
+        JLabel type = new JLabel("(anniversary)");
+        panel.add(event);
+        panel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
+        panel.add(type);
+        panel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
 		return panel;
 	}
 

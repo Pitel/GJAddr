@@ -110,6 +110,8 @@ public interface IDatabase {
 	void removeToken(Integer service);
 	void removeToken(ServicesEnum service);
 
-	// BDAY
+	// EVENTS
 	List<Contact> getContactsWithBirtday();
+    List<Contact> getContactsWithNameDay();
+    List<Contact> getContactsWithCelebration();
 }

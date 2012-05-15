@@ -154,7 +154,7 @@ public class GoogleImport {
                 }
                 icon = new ImageIcon(out.toByteArray());                
             } catch (IOException ex) {
-                LoggerFactory.getLogger(this.getClass()).error(LoggerUtil.getStackTrace(ex));
+                // photo simply doesn't exist -- no need to log anything
             } 
         }
 

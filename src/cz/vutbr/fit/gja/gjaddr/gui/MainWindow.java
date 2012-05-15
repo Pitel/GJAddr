@@ -82,9 +82,11 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		setLocationRelativeTo(null);
 
 		// open window with notifications
-		List<Contact> contactsWithBirtday = this.db.getContactsWithBirtday();
-		if (contactsWithBirtday.size() > 0) {
-			new NotificationsWindow(contactsWithBirtday);
+		List<Contact> contactsWithEvent = this.db.getContactsWithBirtday();
+        contactsWithEvent.addAll(this.db.getContactsWithNameDay());
+        contactsWithEvent.addAll(this.db.getContactsWithCelebration());
+		if (contactsWithEvent.size() > 0) {
+			new NotificationsWindow(contactsWithEvent);
 		}
 	}
 

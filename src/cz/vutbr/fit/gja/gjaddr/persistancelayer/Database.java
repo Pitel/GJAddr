@@ -301,7 +301,7 @@ public class Database implements IDatabase {
 		this.removeToken(service.getCode());
 	}
 
-	/* birthday ***************************************************************/
+	/* events ***************************************************************/
 
 	/**
 	 * Retrieve contacts with birthday within one month.
@@ -323,6 +323,50 @@ public class Database implements IDatabase {
             }
 		}
 		return csWithBday;
+	}
+    
+    /**
+	 * Retrieve contacts with birthday within one month.
+	 * 
+	 * @return
+	 */
+    @Override
+	public List<Contact> getContactsWithNameDay() {
+		List<Contact> all = this.contacts.getAllContacts();
+		List<Contact> csWithNameDay = new ArrayList<Contact>();
+		for (Contact c : all) {
+            if (c.getDates() == null) {
+                continue;
+            }
+            for (Event e : c.getDates()) {
+                if (e.getDate() != null && !e.isShowingDisabled() && e.isNameDay() && e.isWithinMonth()) {
+                    csWithNameDay.add(c);
+                }
+            }
+		}
+		return csWithNameDay;
+	}
+    
+    /**
+	 * Retrieve contacts with birthday within one month.
+	 * 
+	 * @return
+	 */
+    @Override
+	public List<Contact> getContactsWithCelebration() {
+		List<Contact> all = this.contacts.getAllContacts();
+		List<Contact> csWithCelebration = new ArrayList<Contact>();
+		for (Contact c : all) {
+            if (c.getDates() == null) {
+                continue;
+            }
+            for (Event e : c.getDates()) {
+                if (e.getDate() != null && !e.isShowingDisabled() && e.isCelebration() && e.isWithinMonth()) {
+                    csWithCelebration.add(c);
+                }
+            }
+		}
+		return csWithCelebration;
 	}
   
   /**

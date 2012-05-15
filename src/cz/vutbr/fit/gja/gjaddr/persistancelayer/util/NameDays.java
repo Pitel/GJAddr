@@ -115,7 +115,6 @@ public class NameDays {
      * @return 
      */
     public Calendar getNameDay(String name) {
-        System.out.println("getting name day : " + name);
         if (name == null) {
             return null;
         }
