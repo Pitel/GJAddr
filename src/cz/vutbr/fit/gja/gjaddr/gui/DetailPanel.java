@@ -27,6 +27,8 @@ class DetailPanel extends JPanel {
 	private final JLabel phones = new JLabel();
 	private final JPanel webs = new JPanel();
 	private final JLabel birthday = new JLabel();
+	private final JLabel nameday = new JLabel();
+	private final JLabel celebration = new JLabel();
 	private final JLabel note = new JLabel();
 	private final JLabel nameIcon = new JLabel();
 	private final PhotoButton photo = new PhotoButton();
@@ -37,6 +39,8 @@ class DetailPanel extends JPanel {
 	private final JLabel phoneLabel = new JLabel("<html><b>Phone:</b></html>");
 	private final JLabel websLabel = new JLabel("<html><b>Webs:</b></html>");
 	private final JLabel birthdayLabel = new JLabel("<html><b>Birthday:</b></html>");
+	private final JLabel namedayLabel = new JLabel("<html><b>Nameday:</b></html>");
+	private final JLabel celebrationLabel = new JLabel("<html><b>Celebration:</b></html>");
 	private final JLabel noteLabel = new JLabel("<html><b>Note:</b></html>");
 	private final JLabel groupsLabel = new JLabel("<html><b>Groups:</b></html>");
 	private JScrollPane detailScrollPane;
@@ -111,6 +115,18 @@ class DetailPanel extends JPanel {
 		c.gridx = 1;
 		birthday.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
 		detailPanel.add(birthday, c);
+		c.gridx = 0;
+		c.gridy++;
+		detailPanel.add(namedayLabel, c);
+		c.gridx = 1;
+		birthday.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
+		detailPanel.add(nameday, c);
+		c.gridx = 0;
+		c.gridy++;
+		detailPanel.add(celebrationLabel, c);
+		c.gridx = 1;
+		birthday.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
+		detailPanel.add(celebration, c);
 		c.gridx = 0;
 		c.gridy++;
 		detailPanel.add(noteLabel, c);
@@ -212,6 +228,24 @@ class DetailPanel extends JPanel {
 			} else {
 				birthday.setVisible(false);
 				birthdayLabel.setVisible(false);
+			}
+
+			if (contact.getNameDay() != null && contact.getNameDay().getDate() != null) {
+				nameday.setVisible(true);
+				namedayLabel.setVisible(true);
+				nameday.setText(DateFormat.getDateInstance().format(contact.getNameDay().getDate()));
+			} else {
+				nameday.setVisible(false);
+				namedayLabel.setVisible(false);
+			}
+
+			if (contact.getCelebration() != null && contact.getCelebration().getDate() != null) {
+				celebration.setVisible(true);
+				celebrationLabel.setVisible(true);
+				celebration.setText(DateFormat.getDateInstance().format(contact.getCelebration().getDate()));
+			} else {
+				celebration.setVisible(false);
+				celebrationLabel.setVisible(false);
 			}
 
 			if (contact.getNote() != null && !contact.getNote().isEmpty()) {
