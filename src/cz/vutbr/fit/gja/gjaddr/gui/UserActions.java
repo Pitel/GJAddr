@@ -226,7 +226,7 @@ public class UserActions {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			ContactsPanel.removeContact();
+			ContactsPanel.removeContacts();
 		}
 	}
 

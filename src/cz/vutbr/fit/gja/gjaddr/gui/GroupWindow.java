@@ -23,36 +23,47 @@ public final class GroupWindow extends JFrame{
 	public GroupWindow(Action action) {
 
 		boolean update = false;
+    while (!update) {
+      switch(action) {
+        case NEW:
+          update = this.addNewGroup();
+          break;
+        case RENAME:
+          update = this.renameGroup();
+          break;
+        case REMOVE:
+          update = this.removeGroups();
+          break;
+      }
+    }
 
-		switch(action) {
-			case NEW:
-				update = this.addNewGroup();
-				break;
-			case RENAME:
-				update = this.renameGroup();
-				break;
-			case REMOVE:
-				update = this.removeGroups();
-				break;
-		}
-
-		if (update) {
-			GroupsPanel.fillList();
-		}
+		GroupsPanel.fillList();
 	}
-
+  
+  /**
+   * Display user info, that group with the same name exists.
+   */
 	private void showGroupExistsDialog(String name) {
 		JOptionPane.showMessageDialog(this,
 			"Group with name \" "+ name + "\" is already exists!",
 			"Group exists",
 			JOptionPane.WARNING_MESSAGE);
 	}
+  
+  /**
+   * Display user info, that can't create or update group with empty name.
+   */
+	private void showEmptyNameDialog() {
+		JOptionPane.showMessageDialog(this,
+			"Can't create group with empty name, please enter the name",
+			"Empty group name",
+			JOptionPane.WARNING_MESSAGE);
+	}  
 
 	/**
 	 * Function for adding new group
 	 */
-	boolean addNewGroup() {
-		boolean update = false;
+	private boolean addNewGroup() {
 		String name = (String) JOptionPane.showInputDialog(
 			this,
 			"Group name:",
@@ -68,19 +79,21 @@ public final class GroupWindow extends JFrame{
 			List<Group> result = this.db.addNewGroup(name);
 			if (result == null) {
 				this.showGroupExistsDialog(name);
+        return false;
 			}
-
-			update = true;
 		}
+    else  {
+      this.showEmptyNameDialog();
+      return false;
+    }
 
-		return update;
+		return true;
 	}
 
 	/**
 	 * Function for rename group
 	 */
-	boolean renameGroup() {
-		boolean update = false;
+	private boolean renameGroup() {
 		Group[] groups = GroupsPanel.getSelectedGroups();
 		String name = (String) JOptionPane.showInputDialog(
 			this,
@@ -97,19 +110,21 @@ public final class GroupWindow extends JFrame{
 			List<Group> result = this.db.renameGroup(groups[0], name);
 			if (result == null) {
 				this.showGroupExistsDialog(name);
+        return false;
 			}
-
-			update = true;
 		}
+    else  {
+      this.showEmptyNameDialog();
+      return false;
+    }
 
-
-		return update;
+		return true;
 	}
 
 	/**
 	 * Function for removing group
 	 */
-	 boolean removeGroups() {
+	 private boolean removeGroups() {
 		Group[] groups = GroupsPanel.getSelectedGroups();
 		int delete = JOptionPane.showConfirmDialog(
 			this,

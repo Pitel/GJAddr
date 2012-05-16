@@ -112,16 +112,42 @@ public class ContactsPanel extends JPanel implements KeyListener {
 		}
 		return contacts;
 	}
+  
+  /**
+   * Method for creating contacts string for msg box
+   * @param contacts array of contacts
+   * @return string with contacts full names
+   */
+  private static String getContactsString(Contact[] contacts) {
+    if (contacts.length == 1 ) {
+      return contacts[0].getFullName(); 
+    }
+    
+    StringBuilder sb = new StringBuilder();
+    sb.append("[");
+    int length = contacts.length;
+		for (int i = 0; i < length; i++) {
+      sb.append(contacts[i].getFullName());
+			if (i != length-1) {
+        sb.append(", ");
+      }
+    }
+    
+    sb.append("]");
+    
+    return sb.toString();
+  }
 
 	/**
-	 * Method for removing contact
+	 * Method for removing contacts
 	 */
-	static boolean removeContact() {
-		final Contact contact = getSelectedContact();
-
+	static boolean removeContacts() {
+		final Contact[] contacts = getSelectedContacts();
+    final String msg = getContactsString(contacts);
+    
 		final int delete = JOptionPane.showConfirmDialog(
 			null,
-			"Delete contact " + contact.getFullName() + "?",
+			"Delete contact(s) " + msg + "?",
 			"Delete contact",
 			JOptionPane.YES_NO_OPTION,
 			JOptionPane.QUESTION_MESSAGE,
@@ -130,7 +156,7 @@ public class ContactsPanel extends JPanel implements KeyListener {
 
 		if (delete == 0) {
 			List<Contact> contactToRemove = new ArrayList<Contact>();
-			contactToRemove.add(contact);
+      contactToRemove.addAll(Arrays.asList(contacts));
 			db.removeContacts(contactToRemove);
 			ContactsPanel.fillTable(false);
 			GroupsPanel.fillList();
@@ -159,7 +185,7 @@ public class ContactsPanel extends JPanel implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_DELETE 
 			  && this.mainWindowHandle.actions.actionDeleteContact.isEnabled()) {
-			removeContact();
+			removeContacts();
 		}
 	}
 
