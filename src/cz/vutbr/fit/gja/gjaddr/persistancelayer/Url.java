@@ -35,8 +35,14 @@ public class Url implements Serializable {
 
 	public Url (TypesEnum type, String value) {
 		this.type = type;
-		
+		    
 		try {
+        if (!value.isEmpty()
+            && !value.startsWith("http://") 
+            && !value.startsWith("https://")) {
+        value = "http://" + value;
+      }
+      
 			this.value = new URL(value);
 		}
 		catch (MalformedURLException e) {
