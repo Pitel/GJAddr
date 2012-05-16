@@ -17,6 +17,11 @@ public class Validators {
    * Url adress regex pattern.
    */  
   private static String urlPattern = "^http(s{0,1})://[a-zA-Z0-9_/\\-\\.]+\\.([A-Za-z/]{2,5})[a-zA-Z0-9_/\\&\\?\\=\\-\\.\\~\\%]*";
+  
+    /**
+   * Phone number regex pattern.
+   */  
+  private static String phonePattern = "\\+?[0-9]+";
 
   /**
    * Checks whether the given email address is valid.
@@ -55,26 +60,20 @@ public class Validators {
   }
   
   /**
-   * Checks whether the given phone number is valid.
+   * Checks whether the given phone phone is valid.
    *
    * @param url represents the website address.
    * @return true if the email is valid, false otherwise.
    */
-  public static boolean isPhoneNumberValid(String number) {
-    if (number == null) {
+  public static boolean isPhoneNumberValid(String phone) {
+    if (phone == null) {
       return false;
     }
     
-    if (number.isEmpty()) {
+    if (phone.isEmpty()) {
       return true;
     }      
     
-    try {
-      Integer ret = Integer.parseInt(number);
-      return true;
-    } 
-    catch (NumberFormatException e) {
-      return false;
-    } 
+    return phone.matches(phonePattern);
   }
 }
