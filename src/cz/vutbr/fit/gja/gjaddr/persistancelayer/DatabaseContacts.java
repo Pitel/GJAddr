@@ -25,12 +25,14 @@ public class DatabaseContacts {
 	void addNew(List<Contact> newContacts) {
 		
 		for (Contact contact: newContacts) {
+      this.removeEmptyValues(contact);
 			contact.id = ++this.idCounter;
 			this.contacts.add(contact);
 		}			
 	}
 
 	void update(Contact contact) {
+    this.removeEmptyValues(contact);    
 		Contact updatedContact = this.filterItem(contact.getId());
 		int index = this.contacts.indexOf(updatedContact);
 
@@ -38,6 +40,62 @@ public class DatabaseContacts {
 			this.contacts.set(index, contact);
 		}			
 	}
+  
+  /**
+   * Removes empty entries from contact.
+   * @param contact
+   * @return 
+   */
+  private void removeEmptyValues(Contact contact) {
+       
+    /*
+     * TODO
+        private List<Messenger> messenger;
+        private List<Custom> customs;
+     */        
+    
+    List<Event> datesToRemove = new ArrayList<Event>();        
+    List<Address> adressesToRemove = new ArrayList<Address>();
+    List<Email> emailsToRemove = new ArrayList<Email>();    
+    List<Url> urlsToRemove = new ArrayList<Url>();   
+    List<PhoneNumber> phonesToRemove = new ArrayList<PhoneNumber>();           
+    
+    for (Event event : contact.getDates()) {
+      if (event.getDate() == null) {
+        datesToRemove.add(event);
+      }
+    }        
+    
+    for (Address addr : contact.getAdresses()) {
+      if (addr.getAddress().isEmpty()) {
+        adressesToRemove.add(addr);
+      }
+    }
+    
+    for (Url url : contact.getUrls()) {
+      if (url.getValue() == null) {
+        urlsToRemove.add(url);
+      }
+    }      
+    
+    for (Email email : contact.getEmails()) {
+      if (email.getEmail().isEmpty()) {
+        emailsToRemove.add(email);
+      }
+    }  
+    
+    for (PhoneNumber phone : contact.getPhoneNumbers()) {
+      if (phone.getNumber().isEmpty()) {
+        phonesToRemove.add(phone);
+      }
+    }        
+    
+    contact.getDates().removeAll(datesToRemove);    
+    contact.getAdresses().removeAll(adressesToRemove);
+    contact.getEmails().removeAll(emailsToRemove);   
+    contact.getUrls().removeAll(urlsToRemove);       
+    contact.getPhoneNumbers().removeAll(phonesToRemove);      
+  }  
 	
 	void remove(List<Contact> contactsToRemove) {		
 		this.contacts.removeAll(contactsToRemove);

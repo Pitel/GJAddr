@@ -40,7 +40,7 @@ public class Url implements Serializable {
 			this.value = new URL(value);
 		}
 		catch (MalformedURLException e) {
-			// TODO
+			this.value = null;
 		}
 	}
 

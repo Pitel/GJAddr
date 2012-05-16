@@ -1,9 +1,13 @@
 
 package cz.vutbr.fit.gja.gjaddr.persistancelayer;
 
+import com.google.gdata.data.Kind;
+import com.google.gdata.data.Kind.Adaptor;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.ServicesEnum;
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.TypesEnum;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.List;
 import org.slf4j.LoggerFactory;
 
@@ -242,6 +246,7 @@ public class Database implements IDatabase {
     this.log("DB: Get all contacts from group " + group.toString());   		
 		return this.getAllContactsFromGroups(requiredGroups);
 	}
+ 
 
 	/* tokens management ******************************************************/
 
