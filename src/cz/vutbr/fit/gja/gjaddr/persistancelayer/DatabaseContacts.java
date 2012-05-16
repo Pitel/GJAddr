@@ -44,7 +44,6 @@ public class DatabaseContacts {
   /**
    * Removes empty entries from contact.
    * @param contact
-   * @return 
    */
   private void removeEmptyValues(Contact contact) {
        
