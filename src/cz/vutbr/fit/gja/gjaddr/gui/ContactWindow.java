@@ -1,6 +1,5 @@
 package cz.vutbr.fit.gja.gjaddr.gui;
 
-import com.google.gdata.util.LoggableInputStream;
 import cz.vutbr.fit.gja.gjaddr.gui.util.Validators;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.*;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.NameDays;
@@ -16,6 +15,7 @@ import java.util.Date;
 import java.util.List;
 import javax.swing.*;
 import org.jdesktop.swingx.JXDatePicker;
+import org.slf4j.LoggerFactory;
 
 /**
  * Contact editing window.
@@ -60,6 +60,7 @@ class ContactWindow extends JFrame {
 		button.addActionListener(new NewContactActionListener());
 		contact = new Contact();
 		prepare();
+    log("Opening new contact window.");    
 	}
 
 	/**
@@ -122,6 +123,7 @@ class ContactWindow extends JFrame {
 			}
 		}
 		prepare();
+    log("Opening edit contact window.");        
 	}
 
 	/**
@@ -367,13 +369,14 @@ class ContactWindow extends JFrame {
 	private class NewContactActionListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if (resolvecontact()) {
+			if (resolvecontact()) {         
 				List<Contact> newContacts = new ArrayList<Contact>();
 				newContacts.add(contact);
 				db.addNewContacts(newContacts);
 				// update tables
 				ContactsPanel.fillTable(false);
-				GroupsPanel.fillList();
+				GroupsPanel.fillList();        
+        log("Closing new contact window.");         
 				dispose();
 			}
 		}
@@ -385,11 +388,20 @@ class ContactWindow extends JFrame {
 	private class EditContactActionListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if (resolvecontact()) {
-				db.updateContact(contact);
-				ContactsPanel.fillTable(false);
+			if (resolvecontact()) {    
+        db.updateContact(contact);
+				ContactsPanel.fillTable(true);         
+        log("Closing edit contact window.");         
 				dispose();
 			}
 		}
 	}
+  
+  /**
+   * Method for messages logging.
+   * @param msg message to log
+   */
+  private void log(String msg) {
+    LoggerFactory.getLogger(this.getClass()).info(msg);
+  }    
 }

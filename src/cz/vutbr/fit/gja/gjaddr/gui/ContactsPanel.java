@@ -62,13 +62,14 @@ public class ContactsPanel extends JPanel implements KeyListener {
 		final RowFilter filter = sorter.getRowFilter();	//Warnings!
 
     int[] selRows = null;
+    
     if (rememberSelection) {
      selRows = table.getSelectedRows();
     }
 
 		Group[] groups = GroupsPanel.getSelectedGroups();
 		List<Group> selectedGroups = Arrays.asList(groups);
-		final List<Contact> contacts = db.getAllContactsFromGroups(selectedGroups);
+		final List<Contact> contacts = db.getAllContactsFromGroups(selectedGroups);        
 
 		sorter.setRowFilter(null);
 		table.clear();

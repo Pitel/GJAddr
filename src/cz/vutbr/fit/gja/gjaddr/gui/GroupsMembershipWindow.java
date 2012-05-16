@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
 import javax.swing.*;
+import org.slf4j.LoggerFactory;
 
 /**
  * Dialog for adding contact to the group.
@@ -36,6 +37,8 @@ class GroupsMembershipWindow extends JFrame {
 		setLocationRelativeTo(null);		
 		pack();		
 		setVisible(true);	
+    
+    log("Opening related groups window.");  
 	}
 
 	public GroupsMembershipWindow(Group group) {
@@ -49,7 +52,9 @@ class GroupsMembershipWindow extends JFrame {
 		
 		setLocationRelativeTo(null);		
 		pack();		
-		setVisible(true);			
+		setVisible(true);		
+    
+    log("Opening related contacts window.");    
 	}
 
 	private void prepareWindow() {
@@ -165,6 +170,7 @@ class GroupsMembershipWindow extends JFrame {
 	class ManageContactGroupsListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
+      
 			List<Group> selectedGroups = getSelectedGroups();
 			List<Contact> contacts = new ArrayList<Contact>();
 			contacts.add(editedContact);
@@ -173,6 +179,8 @@ class GroupsMembershipWindow extends JFrame {
 
 			ContactsPanel.fillTable(false);
 			GroupsPanel.fillList();
+      
+      log("Closing related groups window.");        
 
 			dispose();
 		}
@@ -180,7 +188,8 @@ class GroupsMembershipWindow extends JFrame {
 	
 	class ManageGroupContactsListener implements ActionListener {
 		@Override
-		public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(ActionEvent e) {            
+      
 			List<Contact> selectedContacts = getSelectedContacts();
 			List<Group> groups = new ArrayList<Group>();
 			groups.add(editedGroup);
@@ -190,6 +199,8 @@ class GroupsMembershipWindow extends JFrame {
 			ContactsPanel.fillTable(false);
 			GroupsPanel.fillList();
 
+      log("Closing related contacts window.");        
+      
 			dispose();
 		}
 	}	
@@ -207,4 +218,12 @@ class GroupsMembershipWindow extends JFrame {
                                             Contact[].class);
 		return Arrays.asList(contactsArray);
 	}	
+  
+  /**
+   * Method for messages logging.
+   * @param msg message to log
+   */
+  private void log(String msg) {
+    LoggerFactory.getLogger(this.getClass()).info(msg);
+  }    
 }

@@ -5,6 +5,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.UIManager;
+import org.slf4j.LoggerFactory;
 
 /**
  * About window.
@@ -37,5 +38,6 @@ class AboutWindow extends JFrame {
 		setLocationRelativeTo(null);
 		pack();
 		setVisible(true);
+    LoggerFactory.getLogger(this.getClass()).info("Opening about window.");
 	}
 }

@@ -85,7 +85,7 @@ public class PreferencesWindow extends JFrame implements ActionListener {
                     LoggerFactory.getLogger(this.getClass()).error(LoggerUtil.getStackTrace(ex));
                 }
             }
-        });
+        });        
     }
 
 	/**
@@ -112,26 +112,28 @@ public class PreferencesWindow extends JFrame implements ActionListener {
 		// main header
 		this.add(this.createMainHeader());
     
-        // name order header and radio button group
-        this.add(this.createNameOrderHeader());
-        this.add(this.createNameOrderRadionButtons());      
+    // name order header and radio button group
+    this.add(this.createNameOrderHeader());
+    this.add(this.createNameOrderRadionButtons());      
 
-        // persistance header and radio button group
-        this.add(this.createPersistanceHeader());
-        this.add(this.createPersistanceRadioButtons());     
+    // persistance header and radio button group
+    this.add(this.createPersistanceHeader());
+    this.add(this.createPersistanceRadioButtons());     
 
-        // services header
-        this.add(this.createServicesHeader());
+    // services header
+    this.add(this.createServicesHeader());
 
-        // action buttons
-        this.add(this.createFacebookActionButton());
-        this.add(this.createGoogleActionButton());
+    // action buttons
+    this.add(this.createFacebookActionButton());
+    this.add(this.createGoogleActionButton());
 
-        // make window visible
-        this.setResizable(false);
-        this.setLocationRelativeTo(null);
-        this.pack();
-        this.setVisible(true);
+    // make window visible
+    this.setResizable(false);
+    this.setLocationRelativeTo(null);
+    this.pack();
+    this.setVisible(true);
+    
+    LoggerFactory.getLogger(this.getClass()).info("Opening preferences window.");    
 	}
 
 	/**
