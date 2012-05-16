@@ -228,7 +228,7 @@ class DetailPanel extends JPanel {
 					JLabelButton lb = new JLabelButton(u.getValue().toString());
 					lb.setCursor(new Cursor(Cursor.HAND_CURSOR));
 					lb.addActionListener(new WebListener());
-					emails.add(lb);
+					webs.add(lb);
 				}
 			}
 
