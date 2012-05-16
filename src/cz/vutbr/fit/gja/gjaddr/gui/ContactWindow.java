@@ -284,12 +284,12 @@ class ContactWindow extends JFrame {
 			contact.setSurName(surnameField.getText());
 			contact.setNickName(nicknameField.getText());
 			contact.setBirthday(birthdayPicker.getDate());
-            if (namedayPicker.getDate() != null) {
-                contact.setNameDay(namedayPicker.getDate());
-            } else {
-                Date nameDay = NameDays.getInstance().getNameDay(contact.getFirstName()).getTime();
-                contact.setNameDay(nameDay);
-            }
+			if (namedayPicker.getDate() != null) {
+				contact.setNameDay(namedayPicker.getDate());
+			} else {
+				Date nameDay = NameDays.getInstance().getNameDay(contact.getFirstName()).getTime();
+				contact.setNameDay(nameDay);
+			}
 			contact.setCelebration(celebrationPicker.getDate());
 			contact.setNote(noteField.getText());
 
