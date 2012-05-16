@@ -177,7 +177,7 @@ class GroupsMembershipWindow extends JFrame {
 
 			db.updateContactsGroup(contacts, selectedGroups);
 
-			ContactsPanel.fillTable(false);
+			ContactsPanel.fillTable(false, false);
 			GroupsPanel.fillList();
       
       log("Closing related groups window.");        
@@ -196,7 +196,7 @@ class GroupsMembershipWindow extends JFrame {
 			
 			db.updateGroupsContacts(groups, selectedContacts);
 
-			ContactsPanel.fillTable(false);
+			ContactsPanel.fillTable(false, false);
 			GroupsPanel.fillList();
 
       log("Closing related contacts window.");        

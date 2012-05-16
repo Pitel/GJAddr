@@ -190,7 +190,7 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		@Override
 		public void valueChanged(ListSelectionEvent e) {
 			if (!e.getValueIsAdjusting()) {	//React only on final choice
-				ContactsPanel.fillTable(false);
+				ContactsPanel.fillTable(false, false);
 				handleGroupActionsVisibility();
 			}
 		}

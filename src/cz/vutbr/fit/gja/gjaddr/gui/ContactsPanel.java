@@ -42,7 +42,7 @@ public class ContactsPanel extends JPanel implements KeyListener {
 		label.setAlignmentX(CENTER_ALIGNMENT);
 		add(label);
 
-		fillTable(false);
+		fillTable(false, false);
 		this.mainWindowHandle.handleContactActionsVisibility();
 
 		table.getSelectionModel().addListSelectionListener(listSelectionListener);
@@ -58,7 +58,7 @@ public class ContactsPanel extends JPanel implements KeyListener {
 	/**
 	 * Fill table with data from list
 	 */
-	public static void fillTable(boolean rememberSelection) {
+	public static void fillTable(boolean rememberSelection, boolean newContact) {
 		final RowFilter filter = sorter.getRowFilter();	//Warnings!
 
     int[] selRows = null;
@@ -78,8 +78,13 @@ public class ContactsPanel extends JPanel implements KeyListener {
     
     if (rememberSelection) {
       for (int row : selRows) {
-      table.setRowSelectionInterval(row, row);
+         table.setRowSelectionInterval(row, row);
       }
+    }
+    
+    if (newContact) {
+      int last = contacts.size() - 1;
+      table.setRowSelectionInterval(last, last);
     }
 	}
 
@@ -158,7 +163,7 @@ public class ContactsPanel extends JPanel implements KeyListener {
 			List<Contact> contactToRemove = new ArrayList<Contact>();
       contactToRemove.addAll(Arrays.asList(contacts));
 			db.removeContacts(contactToRemove);
-			ContactsPanel.fillTable(false);
+			ContactsPanel.fillTable(false, false);
 			GroupsPanel.fillList();
 			return true;
 		}

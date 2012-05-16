@@ -543,7 +543,7 @@ public class ImportWindow extends JFrame implements ActionListener {
 				"Import success", JOptionPane.INFORMATION_MESSAGE);
 		
 		// update changes in the lists
-		ContactsPanel.fillTable(false);
+		ContactsPanel.fillTable(false, false);
 		GroupsPanel.fillList();		
 	}
     

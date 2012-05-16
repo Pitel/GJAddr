@@ -124,7 +124,7 @@ public class Settings {
     log("Order changed to " + newValue + " first.");      
     this.save();
     
-    ContactsPanel.fillTable(true);
+    ContactsPanel.fillTable(true, false);
   }  
   
   /** 
