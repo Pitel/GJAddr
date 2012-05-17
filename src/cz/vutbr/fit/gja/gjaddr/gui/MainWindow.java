@@ -74,7 +74,7 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		final JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, contactsPanel, detailPanel);
 		splitPane.setResizeWeight(1);
 		splitPane.setContinuousLayout(true);
-		splitPane.setPreferredSize(new Dimension(800, 300));
+		splitPane.setPreferredSize(new Dimension(800, 500));
 		add(splitPane);
 
 		this.statusBar = new StatusBar();
