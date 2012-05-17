@@ -109,6 +109,13 @@ public class Event implements Serializable {
     public void setYearShowingDisabled() {
         this.setYearShowingDisabled(Calendar.getInstance().get(Calendar.YEAR));
     }
+    
+    /**
+     * Enable showing of this event.
+     */
+    public void setShowingEnabled() {
+        this.yearShowingDisabled = null;
+    }
 
     /**
      * Is this event birthday?

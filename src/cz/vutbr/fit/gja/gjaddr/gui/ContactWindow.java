@@ -11,6 +11,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.swing.*;
@@ -293,8 +294,10 @@ class ContactWindow extends JFrame {
 				contact.setNameDay(namedayPicker.getDate());
 			} else {
 				if (!contact.getFirstName().isEmpty()) {
-					Date nameDay = NameDays.getInstance().getNameDay(contact.getFirstName()).getTime();
-					contact.setNameDay(nameDay);
+					Calendar nameDay = NameDays.getInstance().getNameDay(contact.getFirstName());
+                    if (nameDay != null) {
+                        contact.setNameDay(nameDay.getTime());
+                    }
 				}
 			}
 			contact.setCelebration(celebrationPicker.getDate());

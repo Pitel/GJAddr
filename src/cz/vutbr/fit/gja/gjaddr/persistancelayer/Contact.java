@@ -294,6 +294,50 @@ public class Contact implements Serializable {
     }
     
     /**
+     * Enable showing of event.
+     * 
+     * @param type 
+     */
+    private void enableEventShowing(EventsEnum type) {
+        if (this.dates == null) {
+            return;
+        }
+        Event e = null;
+        for (Event event : this.dates) {
+            if (event.getType().equals(type)) {
+                e = event;
+            }
+        }
+        if (e == null) {
+            return;
+        }
+        this.dates.remove(e);
+        e.setShowingEnabled();
+        this.dates.add(e);
+    }
+    
+    /**
+     * Enable showing of birthday.
+     */
+    public void enableBirthdayShowing() {
+        this.enableEventShowing(EventsEnum.BIRTHDAY);
+    }
+    
+    /**
+     * Enable name day showing.
+     */
+    public void enableNamedayShowing() {
+        this.enableEventShowing(EventsEnum.NAMEDAY);
+    }
+    
+    /**
+     * Enable celebration showing.
+     */
+    public void enableCelebrationShowing() {
+        this.enableEventShowing(EventsEnum.CELEBRATION);
+    }
+    
+    /**
      * Set event to specified date.
      * 
      * @param type
