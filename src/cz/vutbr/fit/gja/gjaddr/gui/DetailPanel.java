@@ -221,6 +221,7 @@ class DetailPanel extends JPanel {
 					emailLabel.setVisible(true);
 					JLabelButton lb = new JLabelButton(e.getEmail());
 					lb.setCursor(new Cursor(Cursor.HAND_CURSOR));
+					lb.setForeground(Color.BLUE);
 					lb.setToolTipText("Write an email");
 					lb.addActionListener(new EmailListener());
 					emails.add(lb);
@@ -235,6 +236,7 @@ class DetailPanel extends JPanel {
 					JLabelButton lb = new JLabelButton(u.getValue().toString());
 					lb.setCursor(new Cursor(Cursor.HAND_CURSOR));
 					lb.setToolTipText("Go to the website");
+					lb.setForeground(Color.BLUE);
 					lb.addActionListener(new WebListener());
 					webs.add(lb);
 				}
