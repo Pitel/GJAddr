@@ -60,30 +60,31 @@ class DetailPanel extends JPanel {
 		// create panel with name and with birthday icon
 		final JPanel namePanel = new JPanel();
 		namePanel.setLayout(new BoxLayout(namePanel, BoxLayout.LINE_AXIS));
+		photo.setVisible(false);
+		photo.setToolTipText("Change user photo");
+		namePanel.add(photo);
+		name.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
+		namePanel.add(name);
+		add(namePanel);
+
+		final JPanel iconPanel = new JPanel();
+		iconPanel.setLayout(new BoxLayout(iconPanel, BoxLayout.LINE_AXIS));
 		bdayIcon.setIcon(new ImageIcon(getClass().getResource("/res/present.png")));
-    bdayIcon.setToolTipText("User has birthday today");    
+		bdayIcon.setToolTipText("User has birthday today");
 		bdayIcon.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
 		bdayIcon.setVisible(false);
 		namedayIcon.setIcon(new ImageIcon(getClass().getResource("/res/nameday.png")));
-    namedayIcon.setToolTipText("User has nameday today");
+		namedayIcon.setToolTipText("User has nameday today");
 		namedayIcon.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
 		namedayIcon.setVisible(false);
 		celebrationIcon.setIcon(new ImageIcon(getClass().getResource("/res/celebration.png")));
-    celebrationIcon.setToolTipText("User has celebration today");        
+		celebrationIcon.setToolTipText("User has celebration today");
 		celebrationIcon.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
 		celebrationIcon.setVisible(false);
-		namePanel.add(bdayIcon);
-		namePanel.add(namedayIcon);
-		namePanel.add(celebrationIcon);
-		namePanel.add(name);
-		photo.setVisible(false);
-    photo.setToolTipText("Change user photo");
-		namePanel.add(photo);
-		/*
-		namePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		namePanel.setAlignmentY(Component.TOP_ALIGNMENT);
-		*/
-		add(namePanel);
+		iconPanel.add(bdayIcon);
+		iconPanel.add(namedayIcon);
+		iconPanel.add(celebrationIcon);
+		add(iconPanel);
 
 		final JPanel detailPanel = new JPanel(new GridBagLayout());
 		final GridBagConstraints c = new GridBagConstraints();
@@ -201,7 +202,7 @@ class DetailPanel extends JPanel {
 					l.setHorizontalTextPosition(JLabel.CENTER);
 					l.setAlignmentX(Component.LEFT_ALIGNMENT);
 					l.setCursor(new Cursor(Cursor.HAND_CURSOR));
-          l.setToolTipText("Show location at Google Maps");
+					l.setToolTipText("Show location at Google Maps");
 					l.setText(a.getAddress());
 					try {
 						l.setIcon(new ImageIcon(new URL("http://maps.google.com/maps/api/staticmap?size=128x128&sensor=false&markers=" + URLEncoder.encode(l.getText(), "utf8"))));
@@ -220,7 +221,7 @@ class DetailPanel extends JPanel {
 					emailLabel.setVisible(true);
 					JLabelButton lb = new JLabelButton(e.getEmail());
 					lb.setCursor(new Cursor(Cursor.HAND_CURSOR));
-          lb.setToolTipText("Write an email");         
+					lb.setToolTipText("Write an email");
 					lb.addActionListener(new EmailListener());
 					emails.add(lb);
 				}
@@ -233,7 +234,7 @@ class DetailPanel extends JPanel {
 					websLabel.setVisible(true);
 					JLabelButton lb = new JLabelButton(u.getValue().toString());
 					lb.setCursor(new Cursor(Cursor.HAND_CURSOR));
-          lb.setToolTipText("Go to the website");
+					lb.setToolTipText("Go to the website");
 					lb.addActionListener(new WebListener());
 					webs.add(lb);
 				}
