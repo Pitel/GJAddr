@@ -14,6 +14,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import org.slf4j.LoggerFactory;
 
 /**
  * Main application window.
@@ -82,9 +83,7 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		setLocationRelativeTo(null);
 
 		// open window with notifications
-		List<Contact> contactsWithEvent = this.db.getContactsWithBirtday();
-        contactsWithEvent.addAll(this.db.getContactsWithNameDay());
-        contactsWithEvent.addAll(this.db.getContactsWithCelebration());
+		List<Contact> contactsWithEvent = this.db.getContactsWithEvent();
 		if (contactsWithEvent.size() > 0) {
 			new NotificationsWindow(contactsWithEvent);
 		}

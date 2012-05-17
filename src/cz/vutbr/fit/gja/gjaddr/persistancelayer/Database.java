@@ -1,13 +1,8 @@
 
 package cz.vutbr.fit.gja.gjaddr.persistancelayer;
 
-import com.google.gdata.data.Kind;
-import com.google.gdata.data.Kind.Adaptor;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.ServicesEnum;
-import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.TypesEnum;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
 import java.util.List;
 import org.slf4j.LoggerFactory;
 
@@ -256,7 +251,7 @@ public class Database implements IDatabase {
 	 * @param service
 	 * @return
 	 */
-  @Override
+    @Override
 	public AuthToken getToken(ServicesEnum service) {
 		return this.tokens.get(service.getCode());
 	}
@@ -267,7 +262,7 @@ public class Database implements IDatabase {
 	 * @param service
 	 * @return
 	 */
-  @Override
+    @Override
 	public AuthToken getToken(Integer service) {
 		return this.tokens.get(service);
 	}
@@ -278,7 +273,7 @@ public class Database implements IDatabase {
 	 * @param token
 	 * @return
 	 */
-  @Override
+    @Override
 	public AuthToken addToken(AuthToken token) {
 		this.tokens.add(token);
 		this.commitChanges(TableType.AUTH);
@@ -290,7 +285,7 @@ public class Database implements IDatabase {
 	 * 
 	 * @param service
 	 */
-  @Override
+    @Override
 	public void removeToken(Integer service) {
 		this.tokens.remove(this.tokens.get(service));
 		this.commitChanges(TableType.AUTH);
@@ -301,7 +296,7 @@ public class Database implements IDatabase {
 	 *
 	 * @param service
 	 */
-  @Override
+    @Override
 	public void removeToken(ServicesEnum service) {
 		this.removeToken(service.getCode());
 	}
@@ -372,6 +367,30 @@ public class Database implements IDatabase {
             }
 		}
 		return csWithCelebration;
+	}
+    
+    /**
+	 * Retrieve contacts with any event within some time.
+	 * 
+	 * @return
+	 */
+    @Override
+	public List<Contact> getContactsWithEvent() {
+		List<Contact> all = this.contacts.getAllContacts();
+		List<Contact> csWithEvent = new ArrayList<Contact>();
+		for (Contact c : all) {
+            if (c.getDates() == null) {
+                continue;
+            }
+            for (Event e : c.getDates()) {
+                if (e.getDate() != null && !e.isShowingDisabled() && e.isWithinMonth()) {
+                    if (!csWithEvent.contains(c)) {
+                        csWithEvent.add(c);
+                    }
+                }
+            }
+		}
+		return csWithEvent;
 	}
   
   /**
