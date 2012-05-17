@@ -41,7 +41,7 @@ public class NotificationsWindow extends JFrame implements ActionListener {
 	 * @param contacts
 	 */
 	public NotificationsWindow(List<Contact> contacts) {
-		super("Import");
+		super("Notifications");
 		LoggerFactory.getLogger(this.getClass()).debug("Opening notifications window.");
 
 		// save the list of contacts with event
