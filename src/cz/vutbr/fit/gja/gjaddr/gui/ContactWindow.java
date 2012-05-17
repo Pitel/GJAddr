@@ -123,7 +123,7 @@ class ContactWindow extends JFrame {
 			}
 		}
 		prepare();
-    log("Opening edit contact window.");
+		log("Opening edit contact window.");
 	}
 
 	/**
@@ -183,6 +183,7 @@ class ContactWindow extends JFrame {
 		form.add(new JLabel("Birthday"), c);
 		c.gridx = 1;
 		c.weightx = 1;
+		birthdayPicker.setFormats(new String[] {"d. M. yyyy"});
 		form.add(birthdayPicker, c);
 		c.gridy++;
 		c.gridx = 0;
@@ -190,6 +191,7 @@ class ContactWindow extends JFrame {
 		form.add(new JLabel("Nameday"), c);
 		c.gridx = 1;
 		c.weightx = 1;
+		namedayPicker.setFormats(new String[] {"d. M."});
 		form.add(namedayPicker, c);
 		c.gridy++;
 		c.gridx = 0;
@@ -197,6 +199,7 @@ class ContactWindow extends JFrame {
 		form.add(new JLabel("Celebration"), c);
 		c.gridx = 1;
 		c.weightx = 1;
+		celebrationPicker.setFormats(new String[] {"d. M. yyyy"});
 		form.add(celebrationPicker, c);
 		c.gridy++;
 		c.gridx = 0;
