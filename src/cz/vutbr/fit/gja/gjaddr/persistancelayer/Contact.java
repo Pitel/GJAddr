@@ -394,15 +394,21 @@ public class Contact implements Serializable {
     StringBuilder fullName = new StringBuilder();
 
     try {
-      if (Settings.instance().isNameFirst()) {
-        fullName.append(this.firstName);
-        fullName.append(" ");
-        fullName.append(this.surName);
-      } else {
-        fullName.append(this.surName);
-        fullName.append(" ");
-        fullName.append(this.firstName);
-      }
+        if ((this.firstName == null || this.firstName.isEmpty()) && (this.surName == null || this.surName.isEmpty())) {
+            fullName.append(this.nickName);
+        } else if (Settings.instance().isNameFirst()) {
+            if (this.firstName != null && !this.firstName.isEmpty()) {
+                fullName.append(this.firstName);
+                fullName.append(" ");
+            }
+            fullName.append(this.surName);
+        } else {
+            if (this.surName != null && !this.surName.isEmpty()) {
+                fullName.append(this.surName);
+                fullName.append(" ");
+            }
+            fullName.append(this.firstName);
+        }
     } catch (NullPointerException e) {
       return "";
     }
