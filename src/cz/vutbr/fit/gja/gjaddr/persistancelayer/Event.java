@@ -4,6 +4,7 @@ import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.EventsEnum;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
+import org.slf4j.LoggerFactory;
 
 /**
  * Class for one date record.
@@ -174,13 +175,30 @@ public class Event implements Serializable {
      * 
      * @return 
      */
-    public boolean isWithinMonth() {
+    public boolean shouldBeNotified() {
+        // is showing disabled?
+        if (this.isShowingDisabled()) {
+            return false;
+        }
         // date today
 		Calendar today = Calendar.getInstance();
 		today.add(Calendar.DAY_OF_YEAR, -1);
 		// date within one month
 		Calendar month = Calendar.getInstance();
-		month.add(Calendar.DAY_OF_YEAR, +30);
+        switch (Settings.instance().getNotificationsSettings()) {
+            case MONTH:
+                month.add(Calendar.DAY_OF_YEAR, +30);
+                break;
+            case WEEK:
+                month.add(Calendar.DAY_OF_YEAR, +7);
+                break;
+            case DAY:
+                month.add(Calendar.DAY_OF_YEAR, +1);
+                break;
+            default:
+                return false;
+        }
+		
 		// birthday of contact
 		Calendar bday = Calendar.getInstance();
         bday.setTime(this.date);

@@ -317,7 +317,7 @@ public class Database implements IDatabase {
                 continue;
             }
             for (Event e : c.getDates()) {
-                if (e.getDate() != null && !e.isShowingDisabled() && e.isBirthday() && e.isWithinMonth()) {
+                if (e.getDate() != null && !e.isShowingDisabled() && e.isBirthday() && e.shouldBeNotified()) {
                     csWithBday.add(c);
                 }
             }
@@ -339,7 +339,7 @@ public class Database implements IDatabase {
                 continue;
             }
             for (Event e : c.getDates()) {
-                if (e.getDate() != null && !e.isShowingDisabled() && e.isNameDay() && e.isWithinMonth()) {
+                if (e.getDate() != null && !e.isShowingDisabled() && e.isNameDay() && e.shouldBeNotified()) {
                     csWithNameDay.add(c);
                 }
             }
@@ -361,7 +361,7 @@ public class Database implements IDatabase {
                 continue;
             }
             for (Event e : c.getDates()) {
-                if (e.getDate() != null && !e.isShowingDisabled() && e.isCelebration() && e.isWithinMonth()) {
+                if (e.getDate() != null && !e.isShowingDisabled() && e.isCelebration() && e.shouldBeNotified()) {
                     csWithCelebration.add(c);
                 }
             }
@@ -383,7 +383,7 @@ public class Database implements IDatabase {
                 continue;
             }
             for (Event e : c.getDates()) {
-                if (e.getDate() != null && !e.isShowingDisabled() && e.isWithinMonth()) {
+                if (e.getDate() != null && !e.isShowingDisabled() && e.shouldBeNotified()) {
                     if (!csWithEvent.contains(c)) {
                         csWithEvent.add(c);
                     }

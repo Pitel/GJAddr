@@ -6,6 +6,7 @@ import cz.vutbr.fit.gja.gjaddr.persistancelayer.AuthToken;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Group;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Settings;
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.NotificationsEnum;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.ServicesEnum;
 import cz.vutbr.fit.gja.gjaddr.util.LoggerUtil;
 import java.awt.Cursor;
@@ -106,9 +107,10 @@ public class PreferencesWindow extends JFrame implements ActionListener {
        
         // create tabs
         JTabbedPane tabs = new JTabbedPane();
-        tabs.addTab("Display Settings", null, this.createDisplaySettingsPanel(), "Name order settings");
-        tabs.addTab("Persistance Settings", null, this.createPersistenceSettingsPanel(), "Persistance Layer Settings");
-        tabs.addTab("Services Connection", null, this.createServicesSettingsPanel(), "Connect to Services");
+        tabs.addTab("Services Connection", this.createServicesSettingsPanel());
+        tabs.addTab("Notification Settings", this.createNotificationSettingsPanel());
+        tabs.addTab("Display Settings", this.createDisplaySettingsPanel());
+        tabs.addTab("Persistance Settings", this.createPersistenceSettingsPanel());
         this.add(tabs);
         
         // enable scrolling tabs
@@ -161,6 +163,19 @@ public class PreferencesWindow extends JFrame implements ActionListener {
         servicesSettingsPanel.add(this.createFacebookActionButton());
         servicesSettingsPanel.add(this.createGoogleActionButton());
         return servicesSettingsPanel;
+    }
+    
+    /**
+     * Create persistence settings panel.
+     * 
+     * @return 
+     */
+    private JPanel createNotificationSettingsPanel() {
+        JPanel notifSettingsPanel = new JPanel();
+        notifSettingsPanel.setLayout(new BoxLayout(notifSettingsPanel, BoxLayout.PAGE_AXIS));
+        notifSettingsPanel.add(this.createNotificationSettingsHeader());
+        notifSettingsPanel.add(this.createNotificationSettingsOptions());
+        return notifSettingsPanel;
     }
 
     /**
@@ -243,6 +258,64 @@ public class PreferencesWindow extends JFrame implements ActionListener {
 
         firstNameButton.setSelected(Settings.instance().isNameFirst());
         surNameButton.setSelected(!Settings.instance().isNameFirst());
+
+        return radioPanel;
+    }
+    
+    /**
+     * Create notification settings header.
+     *
+     * @return
+     */
+    private JPanel createNotificationSettingsHeader() {
+        JPanel notifHeader = new JPanel(new GridLayout());
+        JLabel firstHeader = new JLabel("<html><h2>Display Notifications</h2></html>", JLabel.LEFT);
+        notifHeader.add(firstHeader);
+        notifHeader.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
+
+        return notifHeader;
+    }
+    /**
+     * Create notification settings radio buttons.
+     *
+     * @return
+     */
+    private JPanel createNotificationSettingsOptions() {
+        JRadioButton monthButton = new JRadioButton("Month in advance");
+        monthButton.setActionCommand("month");
+        monthButton.addActionListener(this);
+
+        JRadioButton weekButton = new JRadioButton("Week in advance");
+        weekButton.setActionCommand("week");
+        weekButton.addActionListener(this);
+        
+        JRadioButton dayButton = new JRadioButton("Day in advance");
+        dayButton.setActionCommand("day");
+        dayButton.addActionListener(this);
+        
+        JRadioButton neverButton = new JRadioButton("Never");
+        neverButton.setActionCommand("never");
+        neverButton.addActionListener(this);
+
+        ButtonGroup bg = new ButtonGroup();
+        bg.add(monthButton);
+        bg.add(weekButton);
+        bg.add(dayButton);
+
+        JPanel radioPanel = new JPanel(new GridLayout(0, 1));
+        radioPanel.add(monthButton);
+        radioPanel.add(weekButton);
+        radioPanel.add(dayButton);
+        radioPanel.add(neverButton);
+
+        monthButton.setSelected(NotificationsEnum.MONTH.equals(Settings.instance().getNotificationsSettings()));
+        monthButton.setFocusPainted(NotificationsEnum.MONTH.equals(Settings.instance().getNotificationsSettings()));
+        weekButton.setSelected(NotificationsEnum.WEEK.equals(Settings.instance().getNotificationsSettings()));
+        weekButton.setFocusPainted(NotificationsEnum.WEEK.equals(Settings.instance().getNotificationsSettings()));
+        dayButton.setSelected(NotificationsEnum.DAY.equals(Settings.instance().getNotificationsSettings()));
+        dayButton.setFocusPainted(NotificationsEnum.DAY.equals(Settings.instance().getNotificationsSettings()));
+        neverButton.setSelected(NotificationsEnum.NEVER.equals(Settings.instance().getNotificationsSettings()));
+        neverButton.setFocusPainted(NotificationsEnum.NEVER.equals(Settings.instance().getNotificationsSettings()));
 
         return radioPanel;
     }
@@ -460,6 +533,18 @@ public class PreferencesWindow extends JFrame implements ActionListener {
         } // name order changed
         else if (ae.getActionCommand().equals("firstName") || ae.getActionCommand().equals("surName")) {
             Settings.instance().changeNameOrder();
+        }
+        else if (ae.getActionCommand().equals("month")) {
+            Settings.instance().setNotificationsSettings(NotificationsEnum.MONTH);
+        }
+        else if (ae.getActionCommand().equals("week")) {
+            Settings.instance().setNotificationsSettings(NotificationsEnum.WEEK);
+        }
+        else if (ae.getActionCommand().equals("day")) {
+            Settings.instance().setNotificationsSettings(NotificationsEnum.DAY);
+        }
+        else if (ae.getActionCommand().equals("never")) {
+            Settings.instance().setNotificationsSettings(NotificationsEnum.NEVER);
         }
     }
 }

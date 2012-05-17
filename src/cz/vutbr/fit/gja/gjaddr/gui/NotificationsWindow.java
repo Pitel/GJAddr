@@ -179,7 +179,7 @@ public class NotificationsWindow extends JFrame implements ActionListener {
 	 * @return
 	 */
 	private JPanel createLineBday(Contact c) {
-        if (c.getBirthday() == null || !c.getBirthday().isWithinMonth() || c.getBirthday().isShowingDisabled()) {
+        if (c.getBirthday() == null || !c.getBirthday().shouldBeNotified() || c.getBirthday().isShowingDisabled()) {
             return null;
         }
 		JPanel panel = new JPanel(new GridLayout());
@@ -200,7 +200,7 @@ public class NotificationsWindow extends JFrame implements ActionListener {
 	 * @return
 	 */
 	private JPanel createLineNameday(Contact c) {
-        if (c.getNameDay() == null || !c.getNameDay().isWithinMonth() || c.getNameDay().isShowingDisabled()) {
+        if (c.getNameDay() == null || !c.getNameDay().shouldBeNotified() || c.getNameDay().isShowingDisabled()) {
             return null;
         }
 		JPanel panel = new JPanel(new GridLayout());
@@ -221,7 +221,7 @@ public class NotificationsWindow extends JFrame implements ActionListener {
 	 * @return
 	 */
 	private JPanel createLineCelebration(Contact c) {
-        if (c.getCelebration() == null || !c.getCelebration().isWithinMonth() || c.getCelebration().isShowingDisabled()) {
+        if (c.getCelebration() == null || !c.getCelebration().shouldBeNotified() || c.getCelebration().isShowingDisabled()) {
             return null;
         }
 		JPanel panel = new JPanel(new GridLayout());
@@ -270,13 +270,13 @@ public class NotificationsWindow extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent ae) {
 		if (ae.getSource() == this.noShowButton) {
 			for (Contact c : this.contacts) {
-                if (c.getBirthday() != null && c.getBirthday().isWithinMonth()) {
+                if (c.getBirthday() != null && c.getBirthday().shouldBeNotified()) {
                     c.disableBirthdayShowing();
                 }
-                if (c.getNameDay() != null && c.getNameDay().isWithinMonth()) {
+                if (c.getNameDay() != null && c.getNameDay().shouldBeNotified()) {
                     c.disableNameDayShowing();
                 }
-                if (c.getCelebration() != null && c.getCelebration().isWithinMonth()) {
+                if (c.getCelebration() != null && c.getCelebration().shouldBeNotified()) {
                     c.disableCelebrationShowing();
                 }
 				this.db.updateContact(c);
