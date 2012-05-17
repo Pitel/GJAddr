@@ -21,7 +21,7 @@ public class Validators {
     /**
    * Phone number regex pattern.
    */  
-  private static String phonePattern = "\\+?[0-9]+";
+  private static String phonePattern = "\\+?[0-9\\s]+";
 
   /**
    * Checks whether the given email address is valid.
