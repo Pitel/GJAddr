@@ -18,6 +18,7 @@
 	<copy file="res/edit_g.png" todir="build/classes/res"/>	
 	<copy file="res/export.png" todir="build/classes/res"/>
 	<copy file="res/facebook.png" todir="build/classes/res"/>
+	<copy file="res/find.png" todir="build/classes/res"/>	
 	<copy file="res/fbconn.gif" todir="build/classes/res"/>
 	<copy file="res/folder.png" todir="build/classes/res"/>
 	<copy file="res/google.png" todir="build/classes/res"/>

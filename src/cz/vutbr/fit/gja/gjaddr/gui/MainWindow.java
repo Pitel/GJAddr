@@ -3,11 +3,8 @@ package cz.vutbr.fit.gja.gjaddr.gui;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Contact;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Group;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
+import java.awt.*;
+import java.awt.event.*;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -31,6 +28,7 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 	private StatusBar statusBar;
 
 	static final String ROOT_GROUP = "My contacts";
+  private final String SEARCH_BUTTON_TOOLTIP = "... filter contacts";   
 
 	public UserActions actions = new UserActions();
 
@@ -61,9 +59,30 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		toolbar.add(actions.actionPreferences);
 		toolbar.addSeparator();
 
-		searchField = new JTextField();
-		searchField.getDocument().addDocumentListener(this);
-		toolbar.add(searchField);
+    Image img = new ImageIcon(getClass().getResource("/res/find.png")).getImage();
+    JLabel findLabel = new JLabel(new ImageIcon(img));
+    findLabel.setBorder(BorderFactory.createCompoundBorder(
+                          findLabel.getBorder(), 
+                          BorderFactory.createEmptyBorder(5, 30, 5, 5)));  
+    toolbar.add(findLabel);
+
+    searchField = new JTextField();
+    searchField.setForeground(Color.GRAY);
+    searchField.setText(SEARCH_BUTTON_TOOLTIP);
+    
+    Font font = new Font(searchField.getFont().getFontName(), Font.BOLD, 11);  
+    searchField.setFont(font);
+    searchField.setToolTipText("Contacts filter");    
+    searchField.setBorder(BorderFactory.createCompoundBorder(
+                          searchField.getBorder(), 
+                          BorderFactory.createEmptyBorder(5, 5, 5, 5)));    
+
+    searchField.getDocument().addDocumentListener(this);
+    searchField.addFocusListener(new SearchFieldListener());
+
+    toolbar.add(searchField);
+    
+    
 		add(toolbar, BorderLayout.NORTH);
 
 		add(new GroupsPanel(this, new GroupSelectionListener()), BorderLayout.WEST);
@@ -128,13 +147,20 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 
 	@Override
 	public void removeUpdate(DocumentEvent e) {
-		contactsPanel.filter(searchField.getText());
+		this.filterContacts();
 	}
 
 	@Override
 	public void insertUpdate(DocumentEvent e) {
-		contactsPanel.filter(searchField.getText());
+		this.filterContacts();
 	}
+  
+  private void filterContacts() {
+    String text = searchField.getText();
+    if (!text.equals(SEARCH_BUTTON_TOOLTIP)) {
+      contactsPanel.filter(text);      
+    }
+  }
 
 	/**
 	 * Method binding functionality to close window.
@@ -210,4 +236,30 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 			}
 		}
 	}
+  
+  /**
+   * Search field listener, implement focus actions for tooltip.
+   */
+  private class SearchFieldListener implements FocusListener {
+
+    @Override
+    public void focusGained(FocusEvent e) {
+      searchField.setForeground(Color.BLACK);
+      String text = searchField.getText();
+      
+      if (text.equals(SEARCH_BUTTON_TOOLTIP)) {
+        searchField.setText("");
+      }
+    }
+
+    @Override
+    public void focusLost(FocusEvent e) {
+      searchField.setForeground(Color.GRAY);
+      String text = searchField.getText();
+      
+      if (text.equals(SEARCH_BUTTON_TOOLTIP) || text.isEmpty()) {
+        searchField.setText(SEARCH_BUTTON_TOOLTIP);
+      }
+    }
+  }	  
 }
