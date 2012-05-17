@@ -71,19 +71,19 @@ class DetailPanel extends JPanel {
 		iconPanel.setLayout(new BoxLayout(iconPanel, BoxLayout.LINE_AXIS));
 		bdayIcon.setIcon(new ImageIcon(getClass().getResource("/res/present.png")));
 		bdayIcon.setToolTipText("User has birthday today");
-		bdayIcon.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
+		bdayIcon.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 20));
 		bdayIcon.setVisible(false);
 		namedayIcon.setIcon(new ImageIcon(getClass().getResource("/res/nameday.png")));
 		namedayIcon.setToolTipText("User has nameday today");
-		namedayIcon.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
+		namedayIcon.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 20));
 		namedayIcon.setVisible(false);
 		celebrationIcon.setIcon(new ImageIcon(getClass().getResource("/res/celebration.png")));
 		celebrationIcon.setToolTipText("User has celebration today");
-		celebrationIcon.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
 		celebrationIcon.setVisible(false);
 		iconPanel.add(bdayIcon);
 		iconPanel.add(namedayIcon);
 		iconPanel.add(celebrationIcon);
+		iconPanel.add(Box.createHorizontalGlue());
 		add(iconPanel);
 
 		final JPanel detailPanel = new JPanel(new GridBagLayout());
