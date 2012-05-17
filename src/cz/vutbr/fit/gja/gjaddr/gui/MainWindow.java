@@ -86,7 +86,7 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		// open window with notifications
 		List<Contact> contactsWithEvent = this.db.getContactsWithEvent();
 		if (contactsWithEvent.size() > 0) {
-            LoggerFactory.getLogger(this.getClass()).info("Opening notifications window.");
+			LoggerFactory.getLogger(this.getClass()).info("Opening notifications window.");
 			new NotificationsWindow(contactsWithEvent);
 		}
 	}
