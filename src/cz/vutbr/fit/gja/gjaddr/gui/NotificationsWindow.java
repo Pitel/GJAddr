@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
 import org.slf4j.LoggerFactory;
@@ -63,22 +64,50 @@ public class NotificationsWindow extends JFrame implements ActionListener {
 
 		// main header
 		this.add(this.createMainHeader());
+        
+        List<JPanel> birthdays = new ArrayList<JPanel>();
+        List<JPanel> namedays = new ArrayList<JPanel>();
+        List<JPanel> celebrations  = new ArrayList<JPanel>();
 
 		// add all contacts
 		for (Contact c : contacts) {
             JPanel panelBday = this.createLineBday(c);
             if (panelBday != null) {
-                this.add(panelBday);
+                birthdays.add(panelBday);
             }
             JPanel panelNameday = this.createLineNameday(c);
             if (panelNameday != null) {
-                this.add(panelNameday);
+                namedays.add(panelNameday);
             }
             JPanel panelCeleb = this.createLineCelebration(c);
             if (panelCeleb != null) {
-                this.add(panelCeleb);
+                celebrations.add(panelCeleb);
             }
 		}
+        
+        // add birthdays
+        if (!birthdays.isEmpty()) {
+            this.add(this.createBdayHeader());
+            for (JPanel p : birthdays) {
+                this.add(p);
+            }
+        }
+        
+        // add namedays
+        if (!namedays.isEmpty()) {
+            this.add(this.createNdayHeader());
+            for (JPanel p : namedays) {
+                this.add(p);
+            }
+        }
+        
+        // add celebrations
+        if (!celebrations.isEmpty()) {
+            this.add(this.createCelebHeader());
+            for (JPanel p : celebrations) {
+                this.add(p);
+            }
+        }
 
 		// add buttons
 		this.add(this.createButtonPanel());
@@ -98,10 +127,49 @@ public class NotificationsWindow extends JFrame implements ActionListener {
 	 */
 	private JPanel createMainHeader() {
 		JPanel mainHeaderPanel = new JPanel(new GridLayout());
-		JLabel mainHeader = new JLabel("<html><h3>People with events<br />next month</h3></html>", JLabel.LEFT);
+		JLabel mainHeader = new JLabel("<html><h3>Notifications</h3></html>", JLabel.LEFT);
 		mainHeaderPanel.add(mainHeader);
 		mainHeaderPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
 		return mainHeaderPanel;
+	}
+    
+    /**
+	 * Create birthday header.
+	 *
+	 * @return
+	 */
+	private JPanel createBdayHeader() {
+		JPanel bdayHeaderPanel = new JPanel(new GridLayout());
+		JLabel bdayHeader = new JLabel("<html><h4>Birthdays</h4></html>", JLabel.LEFT);
+		bdayHeaderPanel.add(bdayHeader);
+		bdayHeaderPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
+		return bdayHeaderPanel;
+	}
+    
+    /**
+	 * Create nameday header.
+	 *
+	 * @return
+	 */
+	private JPanel createNdayHeader() {
+		JPanel namedayHeaderPanel = new JPanel(new GridLayout());
+		JLabel namedayHeader = new JLabel("<html><h4>Name days</h4></html>", JLabel.LEFT);
+		namedayHeaderPanel.add(namedayHeader);
+		namedayHeaderPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
+		return namedayHeaderPanel;
+	}
+    
+    /**
+	 * Create birthday header.
+	 *
+	 * @return
+	 */
+	private JPanel createCelebHeader() {
+		JPanel celebHeaderPanel = new JPanel(new GridLayout());
+		JLabel celebHeader = new JLabel("<html><h4>Anniversaries</h4></html>", JLabel.LEFT);
+		celebHeaderPanel.add(celebHeader);
+		celebHeaderPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
+		return celebHeaderPanel;
 	}
 
 	/**
@@ -111,7 +179,7 @@ public class NotificationsWindow extends JFrame implements ActionListener {
 	 * @return
 	 */
 	private JPanel createLineBday(Contact c) {
-        if (c.getBirthday() == null) {
+        if (c.getBirthday() == null || !c.getBirthday().isWithinMonth()) {
             return null;
         }
 		JPanel panel = new JPanel(new GridLayout());
@@ -120,10 +188,7 @@ public class NotificationsWindow extends JFrame implements ActionListener {
         panel.add(name);
         panel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
         JLabel event = new JLabel(formatter.format(c.getBirthday().getDate()));
-        JLabel type = new JLabel("(birthday)");
         panel.add(event);
-        panel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
-        panel.add(type);
         panel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
 		return panel;
 	}
@@ -135,19 +200,16 @@ public class NotificationsWindow extends JFrame implements ActionListener {
 	 * @return
 	 */
 	private JPanel createLineNameday(Contact c) {
-        if (c.getNameDay() == null) {
+        if (c.getNameDay() == null || !c.getNameDay().isWithinMonth()) {
             return null;
         }
 		JPanel panel = new JPanel(new GridLayout());
-		Format formatter = new SimpleDateFormat("d.M.yyyy");
+		Format formatter = new SimpleDateFormat("d.M.");
 		JLabel name = new JLabel(c.getFullName());
         panel.add(name);
         panel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
         JLabel event = new JLabel(formatter.format(c.getNameDay().getDate()));
-        JLabel type = new JLabel("(nameday)");
         panel.add(event);
-        panel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
-        panel.add(type);
         panel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
 		return panel;
 	}
@@ -159,7 +221,7 @@ public class NotificationsWindow extends JFrame implements ActionListener {
 	 * @return
 	 */
 	private JPanel createLineCelebration(Contact c) {
-        if (c.getCelebration() == null) {
+        if (c.getCelebration() == null || !c.getCelebration().isWithinMonth()) {
             return null;
         }
 		JPanel panel = new JPanel(new GridLayout());
@@ -168,10 +230,7 @@ public class NotificationsWindow extends JFrame implements ActionListener {
         panel.add(name);
         panel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
         JLabel event = new JLabel(formatter.format(c.getCelebration().getDate()));
-        JLabel type = new JLabel("(anniversary)");
         panel.add(event);
-        panel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
-        panel.add(type);
         panel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
 		return panel;
 	}
