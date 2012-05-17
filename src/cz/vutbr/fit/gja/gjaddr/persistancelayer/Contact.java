@@ -17,6 +17,12 @@ import javax.swing.ImageIcon;
 public class Contact implements Serializable {
 
   static private final long serialVersionUID = 6L;
+  
+  /**
+   * Maximum lenght for method getFullName(). If is the string larger, returns
+   * 30 characters and three dots.
+   */
+  private final int FULLNAME_MAX_LENGTH = 30;
 
   // not visible for GUI, only for DB usage
   int id = -1;
@@ -390,6 +396,10 @@ public class Contact implements Serializable {
 		this.setEvent(EventsEnum.CELEBRATION, date);
 	}
 
+  /**
+   * Gets the fullname for user (no trimmed).
+   * @return 
+   */
   public String getFullName() {
     StringBuilder fullName = new StringBuilder();
 
@@ -412,8 +422,23 @@ public class Contact implements Serializable {
     } catch (NullPointerException e) {
       return "";
     }
-
+    
     return fullName.toString();
+  }
+  
+  /**
+   * Gets the trimmed fullname. Max name lenght is specified 
+   * in constant FULLNAME_MAX_LENGHT.
+   * @return 
+   */  
+  public String getFullNameForDetail() {   
+    String fullname = this.getFullName();
+    
+    if (fullname.length() > FULLNAME_MAX_LENGTH) {
+      return fullname.substring(0, FULLNAME_MAX_LENGTH - 1) + " ...";
+    }    
+    
+    return fullname;
   }
 
   public String getAllAddresses() {

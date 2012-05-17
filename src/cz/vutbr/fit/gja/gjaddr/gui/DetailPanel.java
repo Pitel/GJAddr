@@ -184,7 +184,7 @@ class DetailPanel extends JPanel {
 			}
 			photo.setContact(contact);
 			photo.setVisible(true);
-			name.setText(String.format("<html><h1>" + contact.getFullName() + "</h1></html>"));
+			name.setText(String.format("<html><h1>" + contact.getFullNameForDetail() + "</h1></html>"));
 			if (contact.getNickName() != null && !contact.getNickName().isEmpty()) {
 				nicknameLabel.setVisible(true);
 				nickname.setVisible(true);

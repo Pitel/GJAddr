@@ -155,6 +155,9 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		this.filterContacts();
 	}
   
+  /**
+   * Filter contacts.
+   */
   private void filterContacts() {
     String text = searchField.getText();
     if (!text.equals(SEARCH_BUTTON_TOOLTIP)) {
