@@ -60,7 +60,7 @@ class ContactWindow extends JFrame {
 		button.addActionListener(new NewContactActionListener());
 		contact = new Contact();
 		prepare();
-    log("Opening new contact window.");    
+		log("Opening new contact window.");
 	}
 
 	/**
@@ -123,7 +123,7 @@ class ContactWindow extends JFrame {
 			}
 		}
 		prepare();
-    log("Opening edit contact window.");        
+		log("Opening edit contact window.");
 	}
 
 	/**
@@ -183,6 +183,7 @@ class ContactWindow extends JFrame {
 		form.add(new JLabel("Birthday"), c);
 		c.gridx = 1;
 		c.weightx = 1;
+		birthdayPicker.setFormats(new String[] {"d. M. yyyy"});
 		form.add(birthdayPicker, c);
 		c.gridy++;
 		c.gridx = 0;
@@ -190,6 +191,7 @@ class ContactWindow extends JFrame {
 		form.add(new JLabel("Nameday"), c);
 		c.gridx = 1;
 		c.weightx = 1;
+		namedayPicker.setFormats(new String[] {"d. M."});
 		form.add(namedayPicker, c);
 		c.gridy++;
 		c.gridx = 0;
@@ -197,6 +199,7 @@ class ContactWindow extends JFrame {
 		form.add(new JLabel("Celebration"), c);
 		c.gridx = 1;
 		c.weightx = 1;
+		celebrationPicker.setFormats(new String[] {"d. M. yyyy"});
 		form.add(celebrationPicker, c);
 		c.gridy++;
 		c.gridx = 0;
@@ -288,12 +291,11 @@ class ContactWindow extends JFrame {
 			contact.setBirthday(birthdayPicker.getDate());
 			if (namedayPicker.getDate() != null) {
 				contact.setNameDay(namedayPicker.getDate());
-			} 
-      else {
-        if (!contact.getFirstName().isEmpty()) {
-          Date nameDay = NameDays.getInstance().getNameDay(contact.getFirstName()).getTime();
-          contact.setNameDay(nameDay);
-        }
+			} else {
+				if (!contact.getFirstName().isEmpty()) {
+					Date nameDay = NameDays.getInstance().getNameDay(contact.getFirstName()).getTime();
+					contact.setNameDay(nameDay);
+				}
 			}
 			contact.setCelebration(celebrationPicker.getDate());
 			contact.setNote(noteField.getText());
@@ -372,14 +374,14 @@ class ContactWindow extends JFrame {
 	private class NewContactActionListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if (resolvecontact()) {         
+			if (resolvecontact()) {
 				List<Contact> newContacts = new ArrayList<Contact>();
 				newContacts.add(contact);
 				db.addNewContacts(newContacts);
 				// update tables
 				ContactsPanel.fillTable(false, true);
-				GroupsPanel.fillList();        
-        log("Closing new contact window.");         
+				GroupsPanel.fillList();
+				log("Closing new contact window.");
 				dispose();
 			}
 		}
@@ -391,20 +393,20 @@ class ContactWindow extends JFrame {
 	private class EditContactActionListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if (resolvecontact()) {    
-        db.updateContact(contact);
-				ContactsPanel.fillTable(true, false);         
-        log("Closing edit contact window.");         
+			if (resolvecontact()) {
+				db.updateContact(contact);
+				ContactsPanel.fillTable(true, false);
+				log("Closing edit contact window.");
 				dispose();
 			}
 		}
 	}
-  
-  /**
-   * Method for messages logging.
-   * @param msg message to log
-   */
-  private void log(String msg) {
-    LoggerFactory.getLogger(this.getClass()).info(msg);
-  }    
+
+	/**
+	 * Method for messages logging.
+	 * @param msg message to log
+	 */
+	private void log(String msg) {
+		LoggerFactory.getLogger(this.getClass()).info(msg);
+	}
 }
