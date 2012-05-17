@@ -1,3 +1,4 @@
+
 package cz.vutbr.fit.gja.gjaddr.gui;
 
 import cz.vutbr.fit.gja.gjaddr.gui.util.Validators;
@@ -12,7 +13,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import javax.swing.*;
 import org.jdesktop.swingx.JXDatePicker;
@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
  * Contact editing window.
  *
  * @author Bc. Jan Kaláb <xkalab00@stud.fit,vutbr.cz>
+ * @author Bc. Radek Gajdusek <xgajdu07@stud.fit,vutbr.cz>
  */
 class ContactWindow extends JFrame {
 	static final long serialVersionUID = 0;
@@ -282,6 +283,10 @@ class ContactWindow extends JFrame {
 		setVisible(true);
 	}
 
+  /**
+   * Resolving contact data from user form input.
+   * @return true if is all correct, in error case returns false
+   */
 	private boolean resolvecontact() {
 		boolean valid = this.validateData();
 		if (valid) {
@@ -335,6 +340,13 @@ class ContactWindow extends JFrame {
 	private boolean validateData() {
 		StringBuilder message = new StringBuilder();
 
+    // required entry is one of these - nick, name, surname
+    if (nameField.getText().isEmpty() && 
+        surnameField.getText().isEmpty() &&
+        nicknameField.getText().isEmpty()) {
+      message.append("Name, Surname or Nickname shouldn't be empty. Please fill at least one item.");
+    }
+    
 		if (!Validators.isEmailValid(workEmailField.getText())) {
 			message.append("Work email address is not valid\r\n");
 		}

@@ -1,3 +1,4 @@
+
 package cz.vutbr.fit.gja.gjaddr.gui;
 
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
@@ -9,17 +10,31 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
+ * Window for manipulating with groups.
  *
- * @author Ragaj
+ * @author Bc. Radek Gajdusek <xgajdu07@stud.fit,vutbr.cz>
  */
 public final class GroupWindow extends JFrame{
+  
 	static final long serialVersionUID = 0;
+  
+  /**
+   * Instance of database.
+   */
 	private Database db = Database.getInstance();
 
+  /**
+   * Possible actions with groups.
+   */
 	static enum Action {
     NEW, RENAME, REMOVE
 	}
 
+  /**
+   * 
+   * Constructor for new window.
+   * @param action type of action, that should be done.
+   */
 	public GroupWindow(Action action) {
 
 		boolean update = false;
@@ -61,7 +76,7 @@ public final class GroupWindow extends JFrame{
 	}  
 
 	/**
-	 * Function for adding new group
+	 * Method for adding new group
 	 */
 	private boolean addNewGroup() {
 		String name = (String) JOptionPane.showInputDialog(
@@ -73,73 +88,78 @@ public final class GroupWindow extends JFrame{
 			null,
 			""
 		);
+    
+    // user click to cancel button
+    if (name == null) {
+      return true;
+    }    
 
-		if (name != null && !name.isEmpty()) {
-
-			List<Group> result = this.db.addNewGroup(name);
-			if (result == null) {
-				this.showGroupExistsDialog(name);
-        return false;
-			}
-		}
-    else  {
+		if (name.isEmpty()) {
       this.showEmptyNameDialog();
+      return false;
+    }
+
+    List<Group> result = this.db.addNewGroup(name);
+    if (result == null) {
+      this.showGroupExistsDialog(name);
       return false;
     }
 
 		return true;
 	}
 
-	/**
-	 * Function for rename group
-	 */
-	private boolean renameGroup() {
-		Group[] groups = GroupsPanel.getSelectedGroups();
-		String name = (String) JOptionPane.showInputDialog(
-			this,
-			"Group name:",
-			"Rename group",
-			JOptionPane.QUESTION_MESSAGE,
-			new ImageIcon(getClass().getResource("/res/edit_g.png"), "e"),
-			null,
-			groups[0].getName()
-		);
+  /**
+   * Method for renaming group.
+   */
+  private boolean renameGroup() {
+    Group[] groups = GroupsPanel.getSelectedGroups();
+    String name = (String) JOptionPane.showInputDialog(
+            this,
+            "Group name:",
+            "Rename group",
+            JOptionPane.QUESTION_MESSAGE,
+            new ImageIcon(getClass().getResource("/res/edit_g.png"), "e"),
+            null,
+            groups[0].getName());
 
-		if (name != null && !name.isEmpty()) {
+    // user click to cancel button
+    if (name == null) {
+      return true;
+    }
 
-			List<Group> result = this.db.renameGroup(groups[0], name);
-			if (result == null) {
-				this.showGroupExistsDialog(name);
-        return false;
-			}
-		}
-    else  {
+    // empty result - show info -> empty is not allowed
+    if (name.isEmpty()) {
       this.showEmptyNameDialog();
       return false;
     }
+    
+    List<Group> result = this.db.renameGroup(groups[0], name);
+    if (result == null) {
+      this.showGroupExistsDialog(name);
+      return false;
+    }
 
-		return true;
-	}
+    return true;
+  }
 
-	/**
-	 * Function for removing group
-	 */
-	 private boolean removeGroups() {
-		Group[] groups = GroupsPanel.getSelectedGroups();
-		int delete = JOptionPane.showConfirmDialog(
-			this,
-			"Delete groups " + Arrays.toString(groups) + "?",
-			"Delete groups",
-			JOptionPane.YES_NO_OPTION,
-			JOptionPane.QUESTION_MESSAGE,
-			new ImageIcon(getClass().getResource("/res/minus_g.png"), "-")
-		);
+  /**
+   * Method for removing group.
+   */
+  private boolean removeGroups() {
+    Group[] groups = GroupsPanel.getSelectedGroups();
+    int delete = JOptionPane.showConfirmDialog(
+            this,
+            "Delete groups " + Arrays.toString(groups) + "?",
+            "Delete groups",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE,
+            new ImageIcon(getClass().getResource("/res/minus_g.png"), "-"));
 
-		if (delete == 0) {
-			db.removeGroups(Arrays.asList(groups));
-			return true;
-		}
+    if (delete == 0) {
+      db.removeGroups(Arrays.asList(groups));
+      return true;
+    }
 
-		return false;
-	}
+    return false;
+  }
 }
