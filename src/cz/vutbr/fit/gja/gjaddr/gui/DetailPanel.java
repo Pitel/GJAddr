@@ -62,6 +62,7 @@ class DetailPanel extends JPanel {
 		namePanel.setLayout(new BoxLayout(namePanel, BoxLayout.LINE_AXIS));
 		photo.setVisible(false);
 		photo.setToolTipText("Change user photo");
+		photo.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createRaisedBevelBorder(), BorderFactory.createLoweredBevelBorder()));
 		namePanel.add(photo);
 		name.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
 		namePanel.add(name);
