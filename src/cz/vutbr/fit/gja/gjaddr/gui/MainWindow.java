@@ -27,7 +27,7 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 	private JTextField searchField;
 	private ContactsPanel contactsPanel;
 	private DetailPanel detailPanel;
-    private StatusBar statusBar;
+	private StatusBar statusBar;
 
 	static final String ROOT_GROUP = "My contacts";
 
@@ -67,24 +67,25 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 
 		add(new GroupsPanel(this, new GroupSelectionListener()), BorderLayout.WEST);
 		contactsPanel = new ContactsPanel(this, new ContactSelectionListener());
-		//contactsPanel.setMinimumSize(new Dimension(300, 300));
+		contactsPanel.setMinimumSize(new Dimension(300, 300));
 		detailPanel = new DetailPanel();
 		detailPanel.setMinimumSize(new Dimension(300, 300));
 		final JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, contactsPanel, detailPanel);
 		splitPane.setResizeWeight(1);
 		splitPane.setContinuousLayout(true);
+		splitPane.setPreferredSize(new Dimension(800, 300));
 		add(splitPane);
 
-        this.statusBar = new StatusBar();
-        add(this.statusBar, BorderLayout.SOUTH);
+		this.statusBar = new StatusBar();
+		add(this.statusBar, BorderLayout.SOUTH);
 
 		pack();
 		setLocationRelativeTo(null);
 
 		// open window with notifications
 		List<Contact> contactsWithEvent = this.db.getContactsWithBirtday();
-        contactsWithEvent.addAll(this.db.getContactsWithNameDay());
-        contactsWithEvent.addAll(this.db.getContactsWithCelebration());
+		contactsWithEvent.addAll(this.db.getContactsWithNameDay());
+		contactsWithEvent.addAll(this.db.getContactsWithCelebration());
 		if (contactsWithEvent.size() > 0) {
 			new NotificationsWindow(contactsWithEvent);
 		}
@@ -204,7 +205,7 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 		public void valueChanged(ListSelectionEvent e) {
 			//React only on final choice
 			if (!e.getValueIsAdjusting()) {
-				detailPanel.show(contactsPanel.getSelectedContact());
+				detailPanel.show(ContactsPanel.getSelectedContact());
 				handleContactActionsVisibility();
 			}
 		}

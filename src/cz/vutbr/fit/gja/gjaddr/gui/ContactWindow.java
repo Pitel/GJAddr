@@ -60,7 +60,7 @@ class ContactWindow extends JFrame {
 		button.addActionListener(new NewContactActionListener());
 		contact = new Contact();
 		prepare();
-    log("Opening new contact window.");    
+		log("Opening new contact window.");
 	}
 
 	/**
@@ -123,7 +123,7 @@ class ContactWindow extends JFrame {
 			}
 		}
 		prepare();
-    log("Opening edit contact window.");        
+    log("Opening edit contact window.");
 	}
 
 	/**
@@ -288,12 +288,11 @@ class ContactWindow extends JFrame {
 			contact.setBirthday(birthdayPicker.getDate());
 			if (namedayPicker.getDate() != null) {
 				contact.setNameDay(namedayPicker.getDate());
-			} 
-      else {
-        if (!contact.getFirstName().isEmpty()) {
-          Date nameDay = NameDays.getInstance().getNameDay(contact.getFirstName()).getTime();
-          contact.setNameDay(nameDay);
-        }
+			} else {
+				if (!contact.getFirstName().isEmpty()) {
+					Date nameDay = NameDays.getInstance().getNameDay(contact.getFirstName()).getTime();
+					contact.setNameDay(nameDay);
+				}
 			}
 			contact.setCelebration(celebrationPicker.getDate());
 			contact.setNote(noteField.getText());
@@ -372,14 +371,14 @@ class ContactWindow extends JFrame {
 	private class NewContactActionListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if (resolvecontact()) {         
+			if (resolvecontact()) {
 				List<Contact> newContacts = new ArrayList<Contact>();
 				newContacts.add(contact);
 				db.addNewContacts(newContacts);
 				// update tables
 				ContactsPanel.fillTable(false, true);
-				GroupsPanel.fillList();        
-        log("Closing new contact window.");         
+				GroupsPanel.fillList();
+				log("Closing new contact window.");
 				dispose();
 			}
 		}
@@ -391,20 +390,20 @@ class ContactWindow extends JFrame {
 	private class EditContactActionListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if (resolvecontact()) {    
-        db.updateContact(contact);
-				ContactsPanel.fillTable(true, false);         
-        log("Closing edit contact window.");         
+			if (resolvecontact()) {
+				db.updateContact(contact);
+				ContactsPanel.fillTable(true, false);
+				log("Closing edit contact window.");
 				dispose();
 			}
 		}
 	}
-  
-  /**
-   * Method for messages logging.
-   * @param msg message to log
-   */
-  private void log(String msg) {
-    LoggerFactory.getLogger(this.getClass()).info(msg);
-  }    
+
+	/**
+	 * Method for messages logging.
+	 * @param msg message to log
+	 */
+	private void log(String msg) {
+		LoggerFactory.getLogger(this.getClass()).info(msg);
+	}
 }
