@@ -90,7 +90,6 @@ class PhotoButton extends JButton {
 				File f = photochooser.getSelectedFile();
 				try {
 					final BufferedImage image = ImageIO.read(f);
-					final int w = 100;
 					final ImageIcon photo = new ImageIcon(image.getScaledInstance(50, 50, BufferedImage.SCALE_DEFAULT));
 					setIcon(photo);
 					contact.setPhoto(photo);
