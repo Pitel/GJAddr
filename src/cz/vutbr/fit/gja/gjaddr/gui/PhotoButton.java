@@ -15,18 +15,28 @@ import javax.swing.filechooser.FileFilter;
 
 /**
  * Button for changin contact photo
+ *
+ * @author Bc. Jan Kaláb <xkalab00@stud.fit,vutbr.cz>
  */
 class PhotoButton extends JButton {
 	static final long serialVersionUID = 0;
 	private Contact contact;
 	private final JFileChooser photochooser = new JFileChooser();
 
+	/**
+	 * Constructor
+	 * Creates button with plaeholder image
+	 */
 	PhotoButton() {
 		super();
 		setIcon(new ImageIcon(getClass().getResource("/res/photo.png")));
 		init();
 	}
 
+	/**
+	 * Constructor with contact
+	 * Assigns contact to button and shows it's photo
+	 */
 	PhotoButton(Contact contact) {
 		super();
 		setContact(contact);

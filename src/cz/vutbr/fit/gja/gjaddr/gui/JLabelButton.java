@@ -14,31 +14,49 @@ import javax.swing.border.EmptyBorder;
 public class JLabelButton extends JButton {
 	static final long serialVersionUID = 0;
 
+	/**
+	 * Constructor
+	 */
 	public JLabelButton() {
 		super();
 		LookLikeLabel();
 	}
 
+	/**
+	 * Constructor
+	 */
 	public JLabelButton(Action a) {
 		super(a);
 		LookLikeLabel();
 	}
 
+	/**
+	 * Constructor
+	 */
 	public JLabelButton(Icon icon) {
 		super(icon);
 		LookLikeLabel();
 	}
 
+	/**
+	 * Constructor
+	 */
 	public JLabelButton(String text) {
 		super(text);
 		LookLikeLabel();
 	}
 
+	/**
+	 * Constructor
+	 */
 	public JLabelButton(String text, Icon icon) {
 		super(text, icon);
 		LookLikeLabel();
 	}
 
+	/**
+	 * Make the botton look like label
+	 */
 	private void LookLikeLabel() {
 		setFocusPainted(false);
 		setMargin(new Insets(0, 0, 0, 0));
