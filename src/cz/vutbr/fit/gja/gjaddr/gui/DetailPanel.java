@@ -136,13 +136,13 @@ class DetailPanel extends JPanel {
 		c.gridy++;
 		detailPanel.add(namedayLabel, c);
 		c.gridx = 1;
-		birthday.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
+		nameday.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
 		detailPanel.add(nameday, c);
 		c.gridx = 0;
 		c.gridy++;
 		detailPanel.add(celebrationLabel, c);
 		c.gridx = 1;
-		birthday.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
+		celebration.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
 		detailPanel.add(celebration, c);
 		c.gridx = 0;
 		c.gridy++;
