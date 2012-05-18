@@ -1,5 +1,6 @@
 package cz.vutbr.fit.gja.gjaddr.gui;
 
+import cz.vutbr.fit.gja.gjaddr.gui.util.EscapeKeyHandler;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Contact;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
 import java.awt.Dimension;
@@ -110,6 +111,9 @@ public class NotificationsWindow extends JFrame implements ActionListener {
     // add buttons
     this.add(this.createButtonPanel());
 
+    // make window escapable
+    EscapeKeyHandler.setEscapeAction(this);
+    
     // make window visible
     this.setAlwaysOnTop(true);
     this.setResizable(false);

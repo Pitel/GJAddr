@@ -1,5 +1,6 @@
 package cz.vutbr.fit.gja.gjaddr.gui;
 
+import cz.vutbr.fit.gja.gjaddr.gui.util.EscapeKeyHandler;
 import cz.vutbr.fit.gja.gjaddr.importexport.*;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Group;
@@ -161,6 +162,9 @@ public class ImportWindow extends JFrame implements ActionListener {
 
     // button panel
     this.add(createButtonPanel());
+    
+    // make window escapable
+    EscapeKeyHandler.setEscapeAction(this);    
 
     // make window visible
     this.setResizable(false);

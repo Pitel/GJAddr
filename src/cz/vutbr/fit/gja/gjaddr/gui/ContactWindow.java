@@ -1,5 +1,6 @@
 package cz.vutbr.fit.gja.gjaddr.gui;
 
+import cz.vutbr.fit.gja.gjaddr.gui.util.EscapeKeyHandler;
 import cz.vutbr.fit.gja.gjaddr.gui.util.Validators;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.*;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.MessengersEnum;
@@ -67,6 +68,7 @@ class ContactWindow extends JFrame {
     button.setText("Add contact");
     button.addActionListener(new NewContactActionListener());
     contact = new Contact();
+    EscapeKeyHandler.setEscapeAction(this);
     prepare();
     log("Opening new contact window.");
   }
@@ -145,10 +147,12 @@ class ContactWindow extends JFrame {
         }
       }
     }
+    
+    EscapeKeyHandler.setEscapeAction(this);
     prepare();
     log("Opening edit contact window.");
   }
-
+  
   /**
    * Method for creating window content layout.
    */

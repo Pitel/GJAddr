@@ -1,5 +1,6 @@
 package cz.vutbr.fit.gja.gjaddr.gui;
 
+import cz.vutbr.fit.gja.gjaddr.gui.util.EscapeKeyHandler;
 import javax.swing.*;
 import org.slf4j.LoggerFactory;
 
@@ -33,6 +34,10 @@ class AboutWindow extends JFrame {
     add(authors);
     setResizable(false);
     setLocationRelativeTo(null);
+    
+    // make window escapable
+    EscapeKeyHandler.setEscapeAction(this);    
+    
     pack();
     setVisible(true);
     LoggerFactory.getLogger(this.getClass()).info("Opening about window.");

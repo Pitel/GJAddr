@@ -155,8 +155,8 @@ public final class GroupWindow extends JFrame {
             new ImageIcon(getClass().getResource("/res/minus_g.png"), "-"));
 
 
-    // user click to cancel button
-    if (delete == 1) {
+    // user click to cancel button or pressed ESC
+    if (delete == 1 || delete == -1) {
       return true;
     }    
     

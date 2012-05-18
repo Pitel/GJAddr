@@ -1,5 +1,6 @@
 package cz.vutbr.fit.gja.gjaddr.gui;
 
+import cz.vutbr.fit.gja.gjaddr.gui.util.EscapeKeyHandler;
 import cz.vutbr.fit.gja.gjaddr.importexport.FacebookOauth;
 import cz.vutbr.fit.gja.gjaddr.importexport.GoogleOauth;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.AuthToken;
@@ -122,6 +123,9 @@ public class PreferencesWindow extends JFrame implements ActionListener {
     // enable scrolling tabs
     tabs.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
+    // make window escapable
+    EscapeKeyHandler.setEscapeAction(this);
+    
     // make window visible
     this.setResizable(false);
     this.setLocationRelativeTo(null);

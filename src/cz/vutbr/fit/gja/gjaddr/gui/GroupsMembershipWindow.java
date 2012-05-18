@@ -1,5 +1,6 @@
 package cz.vutbr.fit.gja.gjaddr.gui;
 
+import cz.vutbr.fit.gja.gjaddr.gui.util.EscapeKeyHandler;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Contact;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Group;
@@ -55,7 +56,7 @@ class GroupsMembershipWindow extends JFrame {
 
     this.prepareWindow();
     this.fillGroups();
-
+    
     setLocationRelativeTo(null);
     pack();
     setVisible(true);
@@ -91,8 +92,8 @@ class GroupsMembershipWindow extends JFrame {
     final JPanel form = new JPanel();
     final JScrollPane listScrollPane = new JScrollPane(list);
 
-    //list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);		
-
+    EscapeKeyHandler.setEscapeAction(this);
+    
     add(form, BorderLayout.CENTER);
     add(button, BorderLayout.PAGE_END);
     add(listScrollPane);
