@@ -1,4 +1,3 @@
-
 package cz.vutbr.fit.gja.gjaddr.gui;
 
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
@@ -14,32 +13,33 @@ import javax.swing.JOptionPane;
  *
  * @author Bc. Radek Gajdusek <xgajdu07@stud.fit,vutbr.cz>
  */
-public final class GroupWindow extends JFrame{
-  
-	static final long serialVersionUID = 0;
-  
+public final class GroupWindow extends JFrame {
+
+  static final long serialVersionUID = 0;
   /**
    * Instance of database.
    */
-	private Database db = Database.getInstance();
+  private Database db = Database.getInstance();
 
   /**
    * Possible actions with groups.
    */
-	static enum Action {
+  static enum Action {
+
     NEW, RENAME, REMOVE
-	}
+  }
 
   /**
-   * 
+   *
    * Constructor for new window.
+   *
    * @param action type of action, that should be done.
    */
-	public GroupWindow(Action action) {
+  public GroupWindow(Action action) {
 
-		boolean update = false;
+    boolean update = false;
     while (!update) {
-      switch(action) {
+      switch (action) {
         case NEW:
           update = this.addNewGroup();
           break;
@@ -52,49 +52,48 @@ public final class GroupWindow extends JFrame{
       }
     }
 
-		GroupsPanel.fillList();
-	}
-  
+    GroupsPanel.fillList();
+  }
+
   /**
    * Display user info, that group with the same name exists.
    */
-	private void showGroupExistsDialog(String name) {
-		JOptionPane.showMessageDialog(this,
-			"Group with name \" "+ name + "\" is already exists!",
-			"Group exists",
-			JOptionPane.WARNING_MESSAGE);
-	}
-  
+  private void showGroupExistsDialog(String name) {
+    JOptionPane.showMessageDialog(this,
+            "Group with name \" " + name + "\" is already exists!",
+            "Group exists",
+            JOptionPane.WARNING_MESSAGE);
+  }
+
   /**
    * Display user info, that can't create or update group with empty name.
    */
-	private void showEmptyNameDialog() {
-		JOptionPane.showMessageDialog(this,
-			"Can't create group with empty name, please enter the name",
-			"Empty group name",
-			JOptionPane.WARNING_MESSAGE);
-	}  
+  private void showEmptyNameDialog() {
+    JOptionPane.showMessageDialog(this,
+            "Can't create group with empty name, please enter the name",
+            "Empty group name",
+            JOptionPane.WARNING_MESSAGE);
+  }
 
-	/**
-	 * Method for adding new group
-	 */
-	private boolean addNewGroup() {
-		String name = (String) JOptionPane.showInputDialog(
-			this,
-			"Group name:",
-			"Add group",
-			JOptionPane.QUESTION_MESSAGE,
-			new ImageIcon(getClass().getResource("/res/plus_g.png"), "+"),
-			null,
-			""
-		);
-    
+  /**
+   * Method for adding new group
+   */
+  private boolean addNewGroup() {
+    String name = (String) JOptionPane.showInputDialog(
+            this,
+            "Group name:",
+            "Add group",
+            JOptionPane.QUESTION_MESSAGE,
+            new ImageIcon(getClass().getResource("/res/plus_g.png"), "+"),
+            null,
+            "");
+
     // user click to cancel button
     if (name == null) {
       return true;
-    }    
+    }
 
-		if (name.isEmpty()) {
+    if (name.isEmpty()) {
       this.showEmptyNameDialog();
       return false;
     }
@@ -105,8 +104,8 @@ public final class GroupWindow extends JFrame{
       return false;
     }
 
-		return true;
-	}
+    return true;
+  }
 
   /**
    * Method for renaming group.
@@ -132,7 +131,7 @@ public final class GroupWindow extends JFrame{
       this.showEmptyNameDialog();
       return false;
     }
-    
+
     List<Group> result = this.db.renameGroup(groups[0], name);
     if (result == null) {
       this.showGroupExistsDialog(name);

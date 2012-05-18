@@ -1,10 +1,14 @@
 package cz.vutbr.fit.gja.gjaddr.persistancelayer.util;
 
 /**
- * List of supported messengers.
+ * List of supported messenger types.
  *
- * @author Bc. Jan Kaláb <xkalab00@stud.fit.vutbr.cz>
+ * @author Bc. Radek Gajdusek <xgajdu07@stud.fit.vutbr.cz>
  */
 public enum MessengersEnum {
-	ICQ, JABBER, SKYPE;
+
+  ICQ,
+  SKYPE,
+  JABBER,
+  OTHER;
 }

@@ -1,4 +1,3 @@
-
 package cz.vutbr.fit.gja.gjaddr.importexport;
 
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.*;
@@ -27,273 +26,273 @@ import org.slf4j.LoggerFactory;
  */
 public class VCardImportExport {
 
-	/**
-	 * Application database.
-	 */
-	private Database database = Database.getInstance();
+  /**
+   * Application database.
+   */
+  private Database database = Database.getInstance();
 
-	/**
-	 * Read all contents of file as string.
-	 * 
-	 * @param filePath
-	 * @return
-	 * @throws IOException
-	 */
-	private String readFileAsString(String filePath) throws IOException {
-		byte[] buffer = new byte[(int) new File(filePath).length()];
-		FileInputStream f = new FileInputStream(filePath);
-		f.read(buffer);
-		return new String(buffer);
-	}
+  /**
+   * Read all contents of file as string.
+   *
+   * @param filePath
+   * @return
+   * @throws IOException
+   */
+  private String readFileAsString(String filePath) throws IOException {
+    byte[] buffer = new byte[(int) new File(filePath).length()];
+    FileInputStream f = new FileInputStream(filePath);
+    f.read(buffer);
+    return new String(buffer);
+  }
 
-	/**
-	 * Split vcard file to single vcards.
-	 * 
-	 * @param file
-	 * @return
-	 * @throws IOException
-	 */
-	private String[] splitVcardFile(File file) throws IOException {
-		List<String> parts = new ArrayList<String>();
-		String fileAsString = this.readFileAsString(file.getAbsolutePath());
-		while (fileAsString != null && fileAsString.contains("END:VCARD")) {
-			parts.add(fileAsString.substring(0, fileAsString.indexOf("END:VCARD") + "END:VCARD".length()));
-			fileAsString = fileAsString.substring(fileAsString.indexOf("END:VCARD") + "END:VCARD".length(),
-					fileAsString.length());
-		}
-		return parts.toArray(new String[parts.size()]);
-	}
+  /**
+   * Split vcard file to single vcards.
+   *
+   * @param file
+   * @return
+   * @throws IOException
+   */
+  private String[] splitVcardFile(File file) throws IOException {
+    List<String> parts = new ArrayList<String>();
+    String fileAsString = this.readFileAsString(file.getAbsolutePath());
+    while (fileAsString != null && fileAsString.contains("END:VCARD")) {
+      parts.add(fileAsString.substring(0, fileAsString.indexOf("END:VCARD") + "END:VCARD".length()));
+      fileAsString = fileAsString.substring(fileAsString.indexOf("END:VCARD") + "END:VCARD".length(),
+              fileAsString.length());
+    }
+    return parts.toArray(new String[parts.size()]);
+  }
 
-	/**
-	 * Get group by it's name.
-	 * 
-	 * @param groupName
-	 * @return
-	 */
-	private Group getGroupByName(String groupName) {
-		for (Group g : this.database.getAllGroups()) {
-			if (g.getName().equals(groupName)) {
-				return g;
-			}
-		}
-		return null;
-	}
-	
-	/**
-	 * Import vCard file.
-	 * 
-	 * @param file
-	 * @throws VCardException
-	 */
-	public int importContacts(File file) throws IOException {
-		return this.importContacts(file, null);
-	}
+  /**
+   * Get group by it's name.
+   *
+   * @param groupName
+   * @return
+   */
+  private Group getGroupByName(String groupName) {
+    for (Group g : this.database.getAllGroups()) {
+      if (g.getName().equals(groupName)) {
+        return g;
+      }
+    }
+    return null;
+  }
 
-	/**
-	 * Import contacts from vCard file to group (specified by it's name).
-	 *
-	 * @param file
-	 * @param group Name of group to import to.
-	 * @throws VCardException
-	 */
-	public int importContacts(File file, String group) throws IOException {
-		String[] vcardStrings = this.splitVcardFile(file);
-		VCardEngine vcardEngine = new VCardEngine();
-		VCard[] vcards = vcardEngine.parse(vcardStrings);
-	
-		// list of contacts to be imported to database
-		List<Contact> contacts = new ArrayList<Contact>();
+  /**
+   * Import vCard file.
+   *
+   * @param file
+   * @throws VCardException
+   */
+  public int importContacts(File file) throws IOException {
+    return this.importContacts(file, null);
+  }
 
-		// cycle through all nodes of the vcard and build contacts
-		for (VCard vcard : vcards) {
-			// get name
-			NameFeature name = vcard.getName();
+  /**
+   * Import contacts from vCard file to group (specified by it's name).
+   *
+   * @param file
+   * @param group Name of group to import to.
+   * @throws VCardException
+   */
+  public int importContacts(File file, String group) throws IOException {
+    String[] vcardStrings = this.splitVcardFile(file);
+    VCardEngine vcardEngine = new VCardEngine();
+    VCard[] vcards = vcardEngine.parse(vcardStrings);
 
-			// get nickname
-			NicknameFeature nicknames = vcard.getNicknames();
-			String nickname = null;
-			if (nicknames != null) {
-				Iterator<String> nicknamesIterator = nicknames.getNicknames();
-				nickname = nicknamesIterator.hasNext() ? nicknamesIterator.next() : null;
-			}
-			
-			// get note
-			Iterator<NoteFeature> notesIterator = vcard.getNotes();
-			String note = null;
-			if (notesIterator != null) {
-				note = notesIterator.hasNext() ? notesIterator.next().getNote() : null;
-			}
+    // list of contacts to be imported to database
+    List<Contact> contacts = new ArrayList<Contact>();
 
-			// get addresses
-			Iterator<AddressFeature> addressesIterator = vcard.getAddresses();
-			List<Address> addresses = new ArrayList<Address>();
-			while (addressesIterator != null && addressesIterator.hasNext()) {
-				AddressFeature af = addressesIterator.next();
-                String address = "";
-                if (af.getStreetAddress() != null && !af.getStreetAddress().isEmpty()) {
-                    address += af.getStreetAddress() + ", ";
-                }
-                if (af.getRegion() != null && !af.getRegion().isEmpty()) {
-                    address += af.getRegion() + ", ";
-                }
-                if (af.getPostalCode() != null && !af.getPostalCode().isEmpty()) {
-                    address += af.getPostalCode() + ", ";
-                }
-                if (af.getCountryName() != null && !af.getCountryName().isEmpty()) {
-                    address += af.getCountryName() + ", ";
-                }
-				addresses.add(new Address(TypesEnum.HOME, address));
-			}
-			
-			// get emails
-			Iterator<EmailFeature> emailsIterator = vcard.getEmails();
-			List<Email> emails = new ArrayList<Email>();
-			while (emailsIterator != null && emailsIterator.hasNext()) {
-				emails.add(new Email(TypesEnum.HOME, emailsIterator.next().getEmail()));
-			}
-			
-			// get phones
-			Iterator<TelephoneFeature> telephoneNumbersIterator = vcard.getTelephoneNumbers();
-			List<PhoneNumber> phones = new ArrayList<PhoneNumber>();
-			while (telephoneNumbersIterator != null && telephoneNumbersIterator.hasNext()) {
-				phones.add(new PhoneNumber(TypesEnum.HOME, telephoneNumbersIterator.next().getTelephone()));
-			}
-			
-			// get URLs
-			Iterator<URLFeature> urlsIterator = vcard.getURLs();
-			List<Url> urls = new ArrayList<Url>();
-			while (urlsIterator != null && urlsIterator.hasNext()) {
-				urls.add(new Url(TypesEnum.HOME, urlsIterator.next().getURL()));
-			}
+    // cycle through all nodes of the vcard and build contacts
+    for (VCard vcard : vcards) {
+      // get name
+      NameFeature name = vcard.getName();
 
-			// build new contact
-			Contact dbContact = new Contact(name.getGivenName(), name.getFamilyName(), nickname, note);
-			dbContact.setEmails(emails);
-			dbContact.setAdresses(addresses);
-			dbContact.setPhoneNumbers(phones);
-			dbContact.setUrls(urls);
+      // get nickname
+      NicknameFeature nicknames = vcard.getNicknames();
+      String nickname = null;
+      if (nicknames != null) {
+        Iterator<String> nicknamesIterator = nicknames.getNicknames();
+        nickname = nicknamesIterator.hasNext() ? nicknamesIterator.next() : null;
+      }
 
-			// add contact to list
-			contacts.add(dbContact);
-			LoggerFactory.getLogger(this.getClass()).debug("Adding contact [" 
-					+ name.getGivenName() + " " + name.getFamilyName() + "].");
-		}
+      // get note
+      Iterator<NoteFeature> notesIterator = vcard.getNotes();
+      String note = null;
+      if (notesIterator != null) {
+        note = notesIterator.hasNext() ? notesIterator.next().getNote() : null;
+      }
 
-		// save contacts in database
-		if (group == null || group.isEmpty()) {
-			LoggerFactory.getLogger(this.getClass()).debug("Group is empty.");
-		} else {
-			LoggerFactory.getLogger(this.getClass()).debug("Adding contacts to : " + group);
-		}
+      // get addresses
+      Iterator<AddressFeature> addressesIterator = vcard.getAddresses();
+      List<Address> addresses = new ArrayList<Address>();
+      while (addressesIterator != null && addressesIterator.hasNext()) {
+        AddressFeature af = addressesIterator.next();
+        String address = "";
+        if (af.getStreetAddress() != null && !af.getStreetAddress().isEmpty()) {
+          address += af.getStreetAddress() + ", ";
+        }
+        if (af.getRegion() != null && !af.getRegion().isEmpty()) {
+          address += af.getRegion() + ", ";
+        }
+        if (af.getPostalCode() != null && !af.getPostalCode().isEmpty()) {
+          address += af.getPostalCode() + ", ";
+        }
+        if (af.getCountryName() != null && !af.getCountryName().isEmpty()) {
+          address += af.getCountryName() + ", ";
+        }
+        addresses.add(new Address(TypesEnum.HOME, address));
+      }
 
-		// first add contacts to database
-		this.database.addNewContacts(contacts);
+      // get emails
+      Iterator<EmailFeature> emailsIterator = vcard.getEmails();
+      List<Email> emails = new ArrayList<Email>();
+      while (emailsIterator != null && emailsIterator.hasNext()) {
+        emails.add(new Email(TypesEnum.HOME, emailsIterator.next().getEmail()));
+      }
 
-		// then add to group
-		if (group != null) {
-			this.database.addNewGroup(group);
-			Group dbGroup = this.getGroupByName(group);
-			if (dbGroup != null) {
-				this.database.addContactsToGroup(dbGroup, contacts);
-			}
-		}
+      // get phones
+      Iterator<TelephoneFeature> telephoneNumbersIterator = vcard.getTelephoneNumbers();
+      List<PhoneNumber> phones = new ArrayList<PhoneNumber>();
+      while (telephoneNumbersIterator != null && telephoneNumbersIterator.hasNext()) {
+        phones.add(new PhoneNumber(TypesEnum.HOME, telephoneNumbersIterator.next().getTelephone()));
+      }
 
-		return contacts.size();
-	}
+      // get URLs
+      Iterator<URLFeature> urlsIterator = vcard.getURLs();
+      List<Url> urls = new ArrayList<Url>();
+      while (urlsIterator != null && urlsIterator.hasNext()) {
+        urls.add(new Url(TypesEnum.HOME, urlsIterator.next().getURL()));
+      }
 
-	/**
-	 * Export to vCard file
-	 */
-	public void exportContacts(File file, List<Contact> contacts) throws IOException {
+      // build new contact
+      Contact dbContact = new Contact(name.getGivenName(), name.getFamilyName(), nickname, note);
+      dbContact.setEmails(emails);
+      dbContact.setAdresses(addresses);
+      dbContact.setPhoneNumbers(phones);
+      dbContact.setUrls(urls);
 
-		FileOutputStream fos = null;
-		OutputStreamWriter osw = null;
+      // add contact to list
+      contacts.add(dbContact);
+      LoggerFactory.getLogger(this.getClass()).debug("Adding contact ["
+              + name.getGivenName() + " " + name.getFamilyName() + "].");
+    }
 
-		try {
-			fos = new FileOutputStream(file);
-			osw = new OutputStreamWriter(fos);
+    // save contacts in database
+    if (group == null || group.isEmpty()) {
+      LoggerFactory.getLogger(this.getClass()).debug("Group is empty.");
+    } else {
+      LoggerFactory.getLogger(this.getClass()).debug("Adding contacts to : " + group);
+    }
 
-			VCardWriter writer = new VCardWriter();
+    // first add contacts to database
+    this.database.addNewContacts(contacts);
 
-			// create one card for each contact
-			for (Contact c : contacts) {
-				VCard vcard = new VCardImpl();
-				vcard.setVersion(new VersionType(VCardVersion.V3_0));
+    // then add to group
+    if (group != null) {
+      this.database.addNewGroup(group);
+      Group dbGroup = this.getGroupByName(group);
+      if (dbGroup != null) {
+        this.database.addContactsToGroup(dbGroup, contacts);
+      }
+    }
 
-				// set contact name
-				NameType name = new NameType();
-				name.setFamilyName(c.getSurName());
-				name.setGivenName(c.getFirstName());
-				vcard.setName(name);
-				vcard.setFormattedName(new FormattedNameType(c.getFullName()));
+    return contacts.size();
+  }
 
-				// set contact addresses
-				for (Address address : c.getAdresses()) {
-					AddressFeature af = new AddressType();
+  /**
+   * Export to vCard file
+   */
+  public void exportContacts(File file, List<Contact> contacts) throws IOException {
+
+    FileOutputStream fos = null;
+    OutputStreamWriter osw = null;
+
+    try {
+      fos = new FileOutputStream(file);
+      osw = new OutputStreamWriter(fos);
+
+      VCardWriter writer = new VCardWriter();
+
+      // create one card for each contact
+      for (Contact c : contacts) {
+        VCard vcard = new VCardImpl();
+        vcard.setVersion(new VersionType(VCardVersion.V3_0));
+
+        // set contact name
+        NameType name = new NameType();
+        name.setFamilyName(c.getSurName());
+        name.setGivenName(c.getFirstName());
+        vcard.setName(name);
+        vcard.setFormattedName(new FormattedNameType(c.getFullName()));
+
+        // set contact addresses
+        for (Address address : c.getAdresses()) {
+          AddressFeature af = new AddressType();
 //					af.setCountryName(address.getCountry());
 //					af.setLocality(address.getCity());
 //					af.setStreetAddress(address.getStreet() + " " + address.getNumber());
 //					af.setPostalCode(address.getPostCodeAsString());
-					af.setExtendedAddress(address.getAddress());
-					// TODO set type
-					vcard.addAddress(af);
-				}
+          af.setExtendedAddress(address.getAddress());
+          // TODO set type
+          vcard.addAddress(af);
+        }
 
-				// set contact emails
-				for (Email email : c.getEmails()) {
-					EmailFeature ef = new EmailType();
-					ef.setEmail(email.getEmail());
-					// TODO set type
-					vcard.addEmail(ef);
-				}
+        // set contact emails
+        for (Email email : c.getEmails()) {
+          EmailFeature ef = new EmailType();
+          ef.setEmail(email.getEmail());
+          // TODO set type
+          vcard.addEmail(ef);
+        }
 
-				// set contact note
-				if (c.getNote() != null && !c.getNote().isEmpty()) {
-					NoteFeature note = new NoteType();
-					note.setNote(c.getNote());
-					vcard.addNote(note);
-				}
+        // set contact note
+        if (c.getNote() != null && !c.getNote().isEmpty()) {
+          NoteFeature note = new NoteType();
+          note.setNote(c.getNote());
+          vcard.addNote(note);
+        }
 
-				// set contact phones
-				for (PhoneNumber phone : c.getPhoneNumbers()) {
-					TelephoneFeature tf = new TelephoneType();
-					tf.setTelephone(phone.getNumber());
-					vcard.addTelephoneNumber(tf);
-				}
+        // set contact phones
+        for (PhoneNumber phone : c.getPhoneNumbers()) {
+          TelephoneFeature tf = new TelephoneType();
+          tf.setTelephone(phone.getNumber());
+          vcard.addTelephoneNumber(tf);
+        }
 
-				// set contact URLs
-				for (Url url : c.getUrls()) {
-					vcard.addURL(new URLType(url.getValue()));
-				}
+        // set contact URLs
+        for (Url url : c.getUrls()) {
+          vcard.addURL(new URLType(url.getValue()));
+        }
 
-				//create vCard representation
-				writer.setVCard(vcard);
-				String vcardString = writer.buildVCardString();
+        //create vCard representation
+        writer.setVCard(vcard);
+        String vcardString = writer.buildVCardString();
 
-				//write vCard to the output stream
-				osw.write(vcardString);
-				osw.write("\n"); //add empty lines between contacts
-			}
-		} finally {
-			try {
-				osw.close();
-			} finally {
-				fos.close();
-			}
-		}
-	}
+        //write vCard to the output stream
+        osw.write(vcardString);
+        osw.write("\n"); //add empty lines between contacts
+      }
+    } finally {
+      try {
+        osw.close();
+      } finally {
+        fos.close();
+      }
+    }
+  }
 
-	/**
-	 * Test the class.
-	 * 
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		try {
-			VCardImportExport vc = new VCardImportExport();
-			vc.importContacts(new File("/Users/damirah/Downloads/contacts.vcf"));
-		} catch (IOException ex) {
-			Logger.getLogger(VCardImportExport.class.getName()).log(Level.SEVERE, null, ex);
-		}
-	}
+  /**
+   * Test the class.
+   *
+   * @param args
+   */
+  public static void main(String[] args) {
+    try {
+      VCardImportExport vc = new VCardImportExport();
+      vc.importContacts(new File("/Users/damirah/Downloads/contacts.vcf"));
+    } catch (IOException ex) {
+      Logger.getLogger(VCardImportExport.class.getName()).log(Level.SEVERE, null, ex);
+    }
+  }
 }

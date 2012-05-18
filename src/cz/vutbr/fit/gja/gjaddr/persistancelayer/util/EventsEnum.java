@@ -6,5 +6,9 @@ package cz.vutbr.fit.gja.gjaddr.persistancelayer.util;
  * @author Bc. Radek Gajdusek <xgajdu07@stud.fit.vutbr.cz>
  */
 public enum EventsEnum {
-	NAMEDAY, BIRTHDAY, CELEBRATION, OTHER;
+
+  NAMEDAY,
+  BIRTHDAY,
+  CELEBRATION,
+  OTHER;
 }

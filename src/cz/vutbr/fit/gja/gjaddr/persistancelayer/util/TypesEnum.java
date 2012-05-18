@@ -6,5 +6,6 @@ package cz.vutbr.fit.gja.gjaddr.persistancelayer.util;
  * @author Bc. Radek Gajdusek <xgajdu07@stud.fit.vutbr.cz>
  */
 public enum TypesEnum {
-	WORK, HOME, OTHER;
+
+  WORK, HOME, OTHER;
 }

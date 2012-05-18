@@ -11,22 +11,41 @@ import java.io.Serializable;
 public class Address implements Serializable {
 
   static private final long serialVersionUID = 6L;
-  
+  /**
+   * Adress type.
+   */
   private TypesEnum type;
+  /**
+   * Adress string.
+   */
   private String address;
 
+  /**
+   * Get adress type
+   */
   public TypesEnum getType() {
     return type;
   }
 
+  /**
+   * Set type of adress.
+   *
+   * @param type type from enum.
+   */
   public void setType(TypesEnum type) {
     this.type = type;
   }
 
+  /**
+   * Get adress.
+   */
   public String getAddress() {
     return this.address;
   }
 
+  /**
+   * Set adress.
+   */
   public void setAddress(String address) {
     this.address = address;
   }
@@ -42,6 +61,9 @@ public class Address implements Serializable {
     this.address = address;
   }
 
+  /**
+   * Custom equals implementation.
+   */
   @Override
   public boolean equals(Object obj) {
     if (obj == null) {
@@ -60,6 +82,9 @@ public class Address implements Serializable {
     return true;
   }
 
+  /**
+   * Custom toString method implementation.
+   */
   @Override
   public String toString() {
     return "Address{" + "type=" + type + ", address=" + address + '}';

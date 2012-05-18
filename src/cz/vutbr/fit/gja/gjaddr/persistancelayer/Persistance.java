@@ -1,4 +1,3 @@
-
 package cz.vutbr.fit.gja.gjaddr.persistancelayer;
 
 import com.thoughtworks.xstream.XStream;
@@ -10,7 +9,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Class for data binary serialization. Following class is used in two parts -
- * import/export and database persistance.
+ * import/export and database persistence.
  *
  * @author Bc. Radek Gajdušek <xgajdu07@stud.fit.vutbr.cz>
  */
@@ -20,22 +19,21 @@ public class Persistance {
    * Default extesion for XML persistance.
    */
   private final String XML_EXT = ".xml";
-  
   /**
    * Default extesion for BIN persistance.
    */
   private final String BIN_EXT = ".gja";
-  
   /**
    * Binary persistance indicator.
    */
   private boolean binary = Settings.instance().isBinPersistance();
-  
+
   /**
-  * Stores data to the persistance according to current persistance settings.
-  * @param filename source filename
-  * @param dataToSave data to save
-  */
+   * Stores data to the persistance according to current persistance settings.
+   *
+   * @param filename source filename
+   * @param dataToSave data to save
+   */
   public void saveData(String filename, List dataToSave) {
 
     if (dataToSave == null || dataToSave.isEmpty()) {
@@ -44,16 +42,16 @@ public class Persistance {
 
     if (binary) {
       saveToBin(filename + BIN_EXT, dataToSave);
-    } 
-    else {
+    } else {
       saveToXml(filename + XML_EXT, dataToSave);
     }
-  }  
-  
+  }
+
   /**
    * Loads data from persistance according to current persistance settings.
+   *
    * @param filename source filename
-   * @return list of loaded data 
+   * @return list of loaded data
    */
   public List loadData(String filename) {
     if (binary) {
@@ -68,7 +66,7 @@ public class Persistance {
    *
    * @param filename target filename
    * @param dataToSave list of dates, that will be stored
-   */  
+   */
   private void saveToBin(String filename, List dataToSave) {
 
     try {
@@ -78,19 +76,16 @@ public class Persistance {
       try {
         objstr.writeObject(dataToSave);
         objstr.flush();
-        this.log(this.getType(filename) + ": data saved to persistance.");          
-      } 
-      finally {
+        this.log(this.getType(filename) + ": data saved to persistance.");
+      } finally {
         try {
           objstr.close();
-        } 
-        finally {
+        } finally {
           flotpt.close();
         }
       }
-    } 
-    catch (IOException ioe) {
-      this.log(this.getType(filename) + ": data NOT saved to persistance.");  
+    } catch (IOException ioe) {
+      this.log(this.getType(filename) + ": data NOT saved to persistance.");
     }
   }
 
@@ -107,10 +102,9 @@ public class Persistance {
     try {
       FileOutputStream fs = new FileOutputStream(filename);
       xs.toXML(dataToSave, fs);
-      this.log(this.getType(filename) + ": data saved to persistance.");           
-    } 
-    catch (FileNotFoundException ex) {
-      this.log(this.getType(filename) + ": data NOT saved to persistance.");    
+      this.log(this.getType(filename) + ": data saved to persistance.");
+    } catch (FileNotFoundException ex) {
+      this.log(this.getType(filename) + ": data NOT saved to persistance.");
     }
   }
 
@@ -127,24 +121,20 @@ public class Persistance {
     try {
       FileInputStream flinpstr = new FileInputStream(filename);
       ObjectInputStream objinstr = new ObjectInputStream(flinpstr);
-      this.log(this.getType(filename) + ": loaded from persistance.");    
+      this.log(this.getType(filename) + ": loaded from persistance.");
 
       try {
         return (ArrayList) objinstr.readObject();
-      } 
-      finally {
+      } finally {
         try {
           objinstr.close();
-        } 
-        finally {
+        } finally {
           flinpstr.close();
         }
       }
-    } 
-    catch (IOException ioe) {
-      this.log(this.getType(filename) + ": NOT loaded from persistance - EMPTY.");  
-    } 
-    catch (ClassNotFoundException cnfe) {
+    } catch (IOException ioe) {
+      this.log(this.getType(filename) + ": NOT loaded from persistance - EMPTY.");
+    } catch (ClassNotFoundException cnfe) {
       cnfe.printStackTrace();
     }
 
@@ -164,17 +154,17 @@ public class Persistance {
     try {
       FileInputStream fis = new FileInputStream(filename);
       loadedData = (List<Object>) xs.fromXML(fis);
-      this.log(this.getType(filename) + ": loaded from persistance.");         
-    } 
-    catch (FileNotFoundException ex) {
-      this.log(this.getType(filename) + ": NOT loaded from persistance - EMPTY.");    
+      this.log(this.getType(filename) + ": loaded from persistance.");
+    } catch (FileNotFoundException ex) {
+      this.log(this.getType(filename) + ": NOT loaded from persistance - EMPTY.");
     }
 
     return loadedData;
   }
-  
+
   /**
    * Imports data from BIN file.
+   *
    * @param filename source filename
    * @return list of read data
    */
@@ -184,6 +174,7 @@ public class Persistance {
 
   /**
    * Exports data to BIN file.
+   *
    * @param filename target filename
    * @param dataToSave data to save
    */
@@ -194,26 +185,36 @@ public class Persistance {
     }
 
     saveToBin(filename, dataToSave);
-  }  
-  
+  }
+
   /**
    * Method for logging actions.
+   *
    * @param msg message to log
    */
   private void log(String msg) {
     LoggerFactory.getLogger(this.getClass()).info(msg);
   }
-  
+
   /**
    * Resolving type of filename, using for logger.
+   *
    * @param filename filename
    * @return string with type
    */
   private String getType(String filename) {
-    if (filename.contains("contacts.")) return "Contacts";
-    if (filename.contains("groups.")) return "Groups";    
-    if (filename.contains("groupsContacts.")) return "Groups-contacts";    
-    if (filename.contains("auth")) return "Auth";  
+    if (filename.contains("contacts.")) {
+      return "Contacts";
+    }
+    if (filename.contains("groups.")) {
+      return "Groups";
+    }
+    if (filename.contains("groupsContacts.")) {
+      return "Groups-contacts";
+    }
+    if (filename.contains("auth")) {
+      return "Auth";
+    }
     return "unknown";
   }
 }
