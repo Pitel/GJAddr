@@ -407,13 +407,13 @@ public class UserActions {
 
     static final long serialVersionUID = 0;
     private static final String name = "Help";
-    // private static final String icon = "/res/help.png";
+    private static final String icon = "/res/help.png";
     private final Integer mnemonic = KeyEvent.VK_H;
     private final KeyStroke accelerator = KeyStroke.getKeyStroke("F1");
 
     public HelpAction() {
       super(name);
-      //putValue(SMALL_ICON, new ImageIcon(getClass().getResource(icon), name));
+      putValue(SMALL_ICON, new ImageIcon(getClass().getResource(icon), name));
       putValue(MNEMONIC_KEY, mnemonic);
       putValue(ACCELERATOR_KEY, accelerator);
     }
@@ -437,13 +437,13 @@ public class UserActions {
 
     static final long serialVersionUID = 0;
     private static final String name = "About";
-    // private static final String icon = "/res/about.png";
+    private static final String icon = "/res/about.png";
     private final Integer mnemonic = KeyEvent.VK_A;
     private final KeyStroke accelerator = KeyStroke.getKeyStroke(mnemonic, ActionEvent.CTRL_MASK);
 
     public AboutAction() {
       super(name);
-      //putValue(SMALL_ICON, new ImageIcon(getClass().getResource(icon), name));
+      putValue(SMALL_ICON, new ImageIcon(getClass().getResource(icon), name));
       putValue(MNEMONIC_KEY, mnemonic);
       putValue(ACCELERATOR_KEY, accelerator);
     }

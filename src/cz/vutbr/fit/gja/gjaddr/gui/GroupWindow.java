@@ -154,6 +154,12 @@ public final class GroupWindow extends JFrame {
             JOptionPane.QUESTION_MESSAGE,
             new ImageIcon(getClass().getResource("/res/minus_g.png"), "-"));
 
+
+    // user click to cancel button
+    if (delete == 1) {
+      return true;
+    }    
+    
     if (delete == 0) {
       db.removeGroups(Arrays.asList(groups));
       return true;

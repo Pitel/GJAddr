@@ -158,7 +158,8 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
     fileMenu.addSeparator();
 
     menuItemClose = new JMenuItem("Quit", KeyEvent.VK_Q);
-    menuItemClose.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK));
+    menuItemClose.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK));   
+    menuItemClose.setIcon(new ImageIcon(getClass().getResource("/res/quit.png")));
     menuItemClose.addActionListener(this);
     fileMenu.add(this.menuItemClose);
 
