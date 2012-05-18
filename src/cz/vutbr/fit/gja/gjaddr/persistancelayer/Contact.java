@@ -10,129 +10,245 @@ import java.util.List;
 import javax.swing.ImageIcon;
 
 /**
- * Contact object representation.
+ * Contact entry representation.
  *
  * @author Bc. Radek Gajdušek <xgajdu07@stud.fit.vutbr.cz>
  */
 public class Contact implements Serializable {
 
   static private final long serialVersionUID = 6L;
+  
   /**
    * Maximum lenght for method getFullName(). If is the string larger, returns 30
    * characters and three dots.
    */
   private final int FULLNAME_MAX_LENGTH = 30;
-  // not visible for GUI, only for DB usage
+  /**
+   * Contact id - not visible for GUI, only for DB usage
+   */
   int id = -1;
+  /**
+   * First name.
+   */
   private String firstName;
+  /**
+   * Surname
+   */
   private String surName;
+  /**
+   * Nickname
+   */
   private String nickName;
+  /**
+   * Photo.
+   */
   private ImageIcon Photo;
+  /**
+   * Note
+   */
   private String note;
+  /**
+   * List of dates.
+   */
   private List<Event> dates;
+  /**
+   * List of messengers.
+   */
   private List<Messenger> messenger;
+  /**
+   * List or urls.
+   */
   private List<Url> urls;
+  /**
+   * List of addresses.
+   */
   private List<Address> adresses;
+  /**
+   * List of phone numbers.
+   */
   private List<PhoneNumber> phoneNumbers;
+  /**
+   * List of emails.
+   */
   private List<Email> emails;
+  /**
+   * List of customs.
+   */
   private List<Custom> customs;
 
+  /**
+   * Get contact id
+   *
+   * @return
+   */
   public int getId() {
     return id;
   }
 
+  /**
+   * Get dates.
+   */
   public List<Event> getDates() {
     return dates;
   }
 
+  /**
+   * Set dates.
+   */
   public void setDates(List<Event> dates) {
     this.dates = dates;
   }
 
+  /**
+   * Get messengers.
+   */
   public List<Messenger> getMessenger() {
     return (messenger != null) ? messenger : new ArrayList<Messenger>();
   }
 
+  /**
+   * Set messengers.
+   */
   public void setMessenger(List<Messenger> messenger) {
     this.messenger = messenger;
   }
 
+  /**
+   * Get urls.
+   */
   public List<Url> getUrls() {
     return (urls != null) ? urls : new ArrayList<Url>();
   }
 
+  /**
+   * Set urls.
+   */
   public void setUrls(List<Url> urls) {
     this.urls = urls;
   }
 
+  /**
+   * Get addresses.
+   */
   public List<Address> getAdresses() {
     return (adresses != null) ? this.adresses : new ArrayList<Address>();
   }
 
+  /**
+   * Set addresses.
+   */
   public void setAdresses(List<Address> adresses) {
     this.adresses = adresses;
   }
 
+  /**
+   * Get phone numbers.
+   */
   public List<PhoneNumber> getPhoneNumbers() {
     return (phoneNumbers != null) ? this.phoneNumbers : new ArrayList<PhoneNumber>();
   }
 
+  /**
+   * Set phone numbers.
+   */
   public void setPhoneNumbers(List<PhoneNumber> phoneNumbers) {
     this.phoneNumbers = phoneNumbers;
   }
 
+  /**
+   * Get emails.
+   */
   public List<Email> getEmails() {
     return (emails != null) ? emails : new ArrayList<Email>();
   }
 
+  /**
+   * Set emails.
+   */
   public void setEmails(List<Email> emails) {
     this.emails = emails;
   }
 
+  /**
+   * Get customs.
+   */
   public List<Custom> getCustoms() {
     return (customs != null) ? customs : new ArrayList<Custom>();
   }
 
+  /**
+   * Set customs.
+   */
   public void setCustoms(List<Custom> customs) {
     this.customs = customs;
   }
 
+  /**
+   * Get first name.
+   */
   public String getFirstName() {
     return firstName;
   }
 
+  /**
+   * Set first name.
+   */
   public void setFirstName(String firstName) {
     this.firstName = firstName;
   }
 
+  /**
+   * Get nickname.
+   */
   public String getNickName() {
     return nickName;
   }
 
+  /**
+   * Set nickname.
+   */
   public void setNickName(String nickName) {
     this.nickName = nickName;
   }
 
+  /**
+   * Get surname.
+   */
   public String getSurName() {
     return surName;
   }
 
+  /**
+   * Set surname.
+   */
   public void setSurName(String surName) {
     this.surName = surName;
   }
 
+  /**
+   * Get note.
+   */
   public String getNote() {
     return note;
   }
 
+  /**
+   * Set note.
+   */
   public void setNote(String note) {
     this.note = note;
   }
 
+  /**
+   * Get photo.
+   */
   public ImageIcon getPhoto() {
     return Photo;
   }
 
+  /**
+   * Set photo.
+   */
   public void setPhoto(ImageIcon photo) {
     this.Photo = photo;
   }
@@ -441,6 +557,11 @@ public class Contact implements Serializable {
     return fullname;
   }
 
+  /**
+   * Get all addresses string.
+   *
+   * @return string with addresses.
+   */
   public String getAllAddresses() {
     String separator = "";
     StringBuilder addresses = new StringBuilder();
@@ -458,6 +579,11 @@ public class Contact implements Serializable {
     return addresses.toString();
   }
 
+  /**
+   * Get all phones string.
+   *
+   * @return string with phones.
+   */
   public String getAllPhones() {
     String separator = "";
     final StringBuilder phones = new StringBuilder();
@@ -474,6 +600,11 @@ public class Contact implements Serializable {
     return phones.toString();
   }
 
+  /**
+   * Get all emails string.
+   *
+   * @return string with emails.
+   */
   public String getAllEmails() {
     String separator = "";
     final StringBuilder emails = new StringBuilder();
@@ -491,6 +622,11 @@ public class Contact implements Serializable {
     return emails.toString();
   }
 
+  /**
+   * Get all urls string.
+   *
+   * @return string with urls.
+   */
   public String getAllUrls() {
     String separator = "";
     StringBuilder links = new StringBuilder();
@@ -508,10 +644,21 @@ public class Contact implements Serializable {
     return links.toString();
   }
 
+  /**
+   * Empty constructor.
+   */
   public Contact() {
     this.dates = new ArrayList<Event>();
   }
 
+  /**
+   * Contact short constructor.
+   *
+   * @param firstName
+   * @param surName
+   * @param nickName
+   * @param note
+   */
   public Contact(String firstName, String surName, String nickName, String note) {
     this();
     this.firstName = firstName;
@@ -524,6 +671,20 @@ public class Contact implements Serializable {
     }
   }
 
+  /**
+   * Contact large constructor.
+   *
+   * @param firstName
+   * @param surName
+   * @param nickName
+   * @param note
+   * @param messenger
+   * @param urls
+   * @param adresses
+   * @param phoneNumbers
+   * @param emails
+   * @param customs
+   */
   public Contact(String firstName, String surName, String nickName,
           String note, List<Messenger> messenger, List<Url> urls, List<Address> adresses,
           List<PhoneNumber> phoneNumbers, List<Email> emails, List<Custom> customs) {
@@ -536,6 +697,9 @@ public class Contact implements Serializable {
     this.customs = customs;
   }
 
+  /**
+   * Custom equals implementation.
+   */
   @Override
   public boolean equals(Object obj) {
     if (obj == null) {
@@ -584,6 +748,9 @@ public class Contact implements Serializable {
     return true;
   }
 
+  /**
+   * Custom toString method implementation.
+   */
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
