@@ -17,13 +17,11 @@ import javax.swing.ImageIcon;
 public class Contact implements Serializable {
 
   static private final long serialVersionUID = 6L;
-  
   /**
-   * Maximum lenght for method getFullName(). If is the string larger, returns
-   * 30 characters and three dots.
+   * Maximum lenght for method getFullName(). If is the string larger, returns 30
+   * characters and three dots.
    */
   private final int FULLNAME_MAX_LENGTH = 30;
-
   // not visible for GUI, only for DB usage
   int id = -1;
   private String firstName;
@@ -138,306 +136,308 @@ public class Contact implements Serializable {
   public void setPhoto(ImageIcon photo) {
     this.Photo = photo;
   }
-  
-    /**
-     * Check if contact has any event today.
-     * 
-     * @param type
-     * @return 
-     */
-    private boolean hasEvent(EventsEnum type) {
-        if (this.getDates() == null) {
-            return false;
-        }
-        for (Event e : this.getDates()) {
-            if (e.getType().equals(type)) {
-                if (e.getDate() == null) {
-                    return false;
-                }
-                // date today
-                Calendar today = Calendar.getInstance();
-                today.add(Calendar.DAY_OF_YEAR, -1);
-                // date within one month
-                Calendar month = Calendar.getInstance();
-                month.add(Calendar.DAY_OF_YEAR, 0);
-                // birthday of contact
-                Calendar bday = Calendar.getInstance();
-                bday.setTime(e.getDate());
-                bday.set(Calendar.YEAR, 2012);
-                if (bday.after(today) && bday.before(month)) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        }
-        return false;
-    }
 
-    /**
-     * Return true if contact has birthday within one month.
-     *
-     * @return
-     */
-    public boolean hasBirthday() {
-        return this.hasEvent(EventsEnum.BIRTHDAY);
+  /**
+   * Check if contact has any event today.
+   *
+   * @param type
+   * @return
+   */
+  private boolean hasEvent(EventsEnum type) {
+    if (this.getDates() == null) {
+      return false;
     }
-    
-    /**
-     * Return true if contact has name day within one month.
-     *
-     * @return
-     */
-    public boolean hasNameDay() {
-        return this.hasEvent(EventsEnum.NAMEDAY);
-    }
-    
-    /**
-     * Return true if contact has celebration within one month.
-     *
-     * @return
-     */
-    public boolean hasCelebration() {
-        return this.hasEvent(EventsEnum.CELEBRATION);
-    }
-    
-    /**
-     * Return true if contact has any other event within one month.
-     *
-     * @return
-     */
-    public boolean hasOtherEvent() {
-        return this.hasEvent(EventsEnum.OTHER);
-    }
-    
-    /**
-     * Get event by type.
-     * 
-     * @param type
-     * @return 
-     */
-    private Event getEvent(EventsEnum type) {
-        if (this.getDates() == null) {
-            return null;
+    for (Event e : this.getDates()) {
+      if (e.getType().equals(type)) {
+        if (e.getDate() == null) {
+          return false;
         }
-        for (Event e : this.getDates()) {
-            if (e.getType().equals(type)) {
-                return e;
-            }
-        }
-        return null;
-    }
-    
-    /**
-     * Get contact birthday.
-     * 
-     * @return 
-     */
-    public Event getBirthday() {
-        return this.getEvent(EventsEnum.BIRTHDAY);
-    }
-    
-    /**
-     * Get contact name day.
-     * 
-     * @return 
-     */
-    public Event getNameDay() {
-        return this.getEvent(EventsEnum.NAMEDAY);
-    }
-    
-    /**
-     * Get contact celebration.
-     * 
-     * @return 
-     */
-    public Event getCelebration() {
-        return this.getEvent(EventsEnum.CELEBRATION);
-    }
-    
-    /**
-     * Disable showing of some event.
-     * 
-     * @param type 
-     */
-    private void disableEventShowing(EventsEnum type) {
-        if (this.dates == null) {
-            return;
-        }
-        Event e = null;
-        for (Event event : this.dates) {
-            if (event.getType().equals(type)) {
-                e = event;
-            }
-        }
-        if (e == null) {
-            return;
-        }
-        this.dates.remove(e);
-        e.setYearShowingDisabled();
-        this.dates.add(e);
-    }
-    
-    /**
-     * Disable showing of birthday.
-     */
-    public void disableBirthdayShowing() {
-        this.disableEventShowing(EventsEnum.BIRTHDAY);
-    }
-    
-    /**
-     * Disable showing of name day.
-     */
-    public void disableNameDayShowing() {
-        this.disableEventShowing(EventsEnum.NAMEDAY);
-    }
-    
-    /**
-     * Disable showing of celebration.
-     */
-    public void disableCelebrationShowing() {
-        this.disableEventShowing(EventsEnum.CELEBRATION);
-    }
-    
-    /**
-     * Enable showing of event.
-     * 
-     * @param type 
-     */
-    private void enableEventShowing(EventsEnum type) {
-        if (this.dates == null) {
-            return;
-        }
-        Event e = null;
-        for (Event event : this.dates) {
-            if (event.getType().equals(type)) {
-                e = event;
-            }
-        }
-        if (e == null) {
-            return;
-        }
-        this.dates.remove(e);
-        e.setShowingEnabled();
-        this.dates.add(e);
-    }
-    
-    /**
-     * Enable showing of birthday.
-     */
-    public void enableBirthdayShowing() {
-        this.enableEventShowing(EventsEnum.BIRTHDAY);
-    }
-    
-    /**
-     * Enable name day showing.
-     */
-    public void enableNamedayShowing() {
-        this.enableEventShowing(EventsEnum.NAMEDAY);
-    }
-    
-    /**
-     * Enable celebration showing.
-     */
-    public void enableCelebrationShowing() {
-        this.enableEventShowing(EventsEnum.CELEBRATION);
-    }
-    
-    /**
-     * Set event to specified date.
-     * 
-     * @param type
-     * @param date 
-     */
-    private void setEvent(EventsEnum type, Date date) {
-        if (this.dates == null) {
-            this.dates = new ArrayList<Event>();
-        }
-        Event e = null;
-        for (Event event : this.dates) {
-            if (event.getType().equals(type)) {
-                e = event;
-            }
-        }
-        if (e == null) {
-            e = new Event(type, date);
-            this.dates.add(e);
+        // date today
+        Calendar today = Calendar.getInstance();
+        today.add(Calendar.DAY_OF_YEAR, -1);
+        // date within one month
+        Calendar month = Calendar.getInstance();
+        month.add(Calendar.DAY_OF_YEAR, 0);
+        // birthday of contact
+        Calendar bday = Calendar.getInstance();
+        bday.setTime(e.getDate());
+        bday.set(Calendar.YEAR, 2012);
+        if (bday.after(today) && bday.before(month)) {
+          return true;
         } else {
-            this.dates.remove(e);
-            e.setDate(date);
-            this.dates.add(e);
+          return false;
         }
+      }
     }
-    
-    /**
-     * Set contact birthday.
-     * 
-     * @param date 
-     */
-    public void setBirthday(Date date) {
-        this.setEvent(EventsEnum.BIRTHDAY, date);
+    return false;
+  }
+
+  /**
+   * Return true if contact has birthday within one month.
+   *
+   * @return
+   */
+  public boolean hasBirthday() {
+    return this.hasEvent(EventsEnum.BIRTHDAY);
+  }
+
+  /**
+   * Return true if contact has name day within one month.
+   *
+   * @return
+   */
+  public boolean hasNameDay() {
+    return this.hasEvent(EventsEnum.NAMEDAY);
+  }
+
+  /**
+   * Return true if contact has celebration within one month.
+   *
+   * @return
+   */
+  public boolean hasCelebration() {
+    return this.hasEvent(EventsEnum.CELEBRATION);
+  }
+
+  /**
+   * Return true if contact has any other event within one month.
+   *
+   * @return
+   */
+  public boolean hasOtherEvent() {
+    return this.hasEvent(EventsEnum.OTHER);
+  }
+
+  /**
+   * Get event by type.
+   *
+   * @param type
+   * @return
+   */
+  private Event getEvent(EventsEnum type) {
+    if (this.getDates() == null) {
+      return null;
     }
+    for (Event e : this.getDates()) {
+      if (e.getType().equals(type)) {
+        return e;
+      }
+    }
+    return null;
+  }
 
-	/**
-	 * Set contact nameday.
-	 *
-	 * @param date
-	 */
-	public void setNameDay(Date date) {
-		this.setEvent(EventsEnum.NAMEDAY, date);
-	}
+  /**
+   * Get contact birthday.
+   *
+   * @return
+   */
+  public Event getBirthday() {
+    return this.getEvent(EventsEnum.BIRTHDAY);
+  }
 
-	/**
-	 * Set contact celebration date.
-	 *
-	 * @param date
-	 */
-	public void setCelebration(Date date) {
-		this.setEvent(EventsEnum.CELEBRATION, date);
-	}
+  /**
+   * Get contact name day.
+   *
+   * @return
+   */
+  public Event getNameDay() {
+    return this.getEvent(EventsEnum.NAMEDAY);
+  }
+
+  /**
+   * Get contact celebration.
+   *
+   * @return
+   */
+  public Event getCelebration() {
+    return this.getEvent(EventsEnum.CELEBRATION);
+  }
+
+  /**
+   * Disable showing of some event.
+   *
+   * @param type
+   */
+  private void disableEventShowing(EventsEnum type) {
+    if (this.dates == null) {
+      return;
+    }
+    Event e = null;
+    for (Event event : this.dates) {
+      if (event.getType().equals(type)) {
+        e = event;
+      }
+    }
+    if (e == null) {
+      return;
+    }
+    this.dates.remove(e);
+    e.setYearShowingDisabled();
+    this.dates.add(e);
+  }
+
+  /**
+   * Disable showing of birthday.
+   */
+  public void disableBirthdayShowing() {
+    this.disableEventShowing(EventsEnum.BIRTHDAY);
+  }
+
+  /**
+   * Disable showing of name day.
+   */
+  public void disableNameDayShowing() {
+    this.disableEventShowing(EventsEnum.NAMEDAY);
+  }
+
+  /**
+   * Disable showing of celebration.
+   */
+  public void disableCelebrationShowing() {
+    this.disableEventShowing(EventsEnum.CELEBRATION);
+  }
+
+  /**
+   * Enable showing of event.
+   *
+   * @param type
+   */
+  private void enableEventShowing(EventsEnum type) {
+    if (this.dates == null) {
+      return;
+    }
+    Event e = null;
+    for (Event event : this.dates) {
+      if (event.getType().equals(type)) {
+        e = event;
+      }
+    }
+    if (e == null) {
+      return;
+    }
+    this.dates.remove(e);
+    e.setShowingEnabled();
+    this.dates.add(e);
+  }
+
+  /**
+   * Enable showing of birthday.
+   */
+  public void enableBirthdayShowing() {
+    this.enableEventShowing(EventsEnum.BIRTHDAY);
+  }
+
+  /**
+   * Enable name day showing.
+   */
+  public void enableNamedayShowing() {
+    this.enableEventShowing(EventsEnum.NAMEDAY);
+  }
+
+  /**
+   * Enable celebration showing.
+   */
+  public void enableCelebrationShowing() {
+    this.enableEventShowing(EventsEnum.CELEBRATION);
+  }
+
+  /**
+   * Set event to specified date.
+   *
+   * @param type
+   * @param date
+   */
+  private void setEvent(EventsEnum type, Date date) {
+    if (this.dates == null) {
+      this.dates = new ArrayList<Event>();
+    }
+    Event e = null;
+    for (Event event : this.dates) {
+      if (event.getType().equals(type)) {
+        e = event;
+      }
+    }
+    if (e == null) {
+      e = new Event(type, date);
+      this.dates.add(e);
+    } else {
+      this.dates.remove(e);
+      e.setDate(date);
+      this.dates.add(e);
+    }
+  }
+
+  /**
+   * Set contact birthday.
+   *
+   * @param date
+   */
+  public void setBirthday(Date date) {
+    this.setEvent(EventsEnum.BIRTHDAY, date);
+  }
+
+  /**
+   * Set contact nameday.
+   *
+   * @param date
+   */
+  public void setNameDay(Date date) {
+    this.setEvent(EventsEnum.NAMEDAY, date);
+  }
+
+  /**
+   * Set contact celebration date.
+   *
+   * @param date
+   */
+  public void setCelebration(Date date) {
+    this.setEvent(EventsEnum.CELEBRATION, date);
+  }
 
   /**
    * Gets the fullname for user (no trimmed).
-   * @return 
+   *
+   * @return
    */
   public String getFullName() {
     StringBuilder fullName = new StringBuilder();
 
     try {
-        if ((this.firstName == null || this.firstName.isEmpty()) && (this.surName == null || this.surName.isEmpty())) {
-            fullName.append(this.nickName);
-        } else if (Settings.instance().isNameFirst()) {
-            if (this.firstName != null && !this.firstName.isEmpty()) {
-                fullName.append(this.firstName);
-                fullName.append(" ");
-            }
-            fullName.append(this.surName);
-        } else {
-            if (this.surName != null && !this.surName.isEmpty()) {
-                fullName.append(this.surName);
-                fullName.append(" ");
-            }
-            fullName.append(this.firstName);
+      if ((this.firstName == null || this.firstName.isEmpty()) && (this.surName == null || this.surName.isEmpty())) {
+        fullName.append(this.nickName);
+      } else if (Settings.instance().isNameFirst()) {
+        if (this.firstName != null && !this.firstName.isEmpty()) {
+          fullName.append(this.firstName);
+          fullName.append(" ");
         }
+        fullName.append(this.surName);
+      } else {
+        if (this.surName != null && !this.surName.isEmpty()) {
+          fullName.append(this.surName);
+          fullName.append(" ");
+        }
+        fullName.append(this.firstName);
+      }
     } catch (NullPointerException e) {
       return "";
     }
-    
+
     return fullName.toString();
   }
-  
+
   /**
-   * Gets the trimmed fullname. Max name lenght is specified 
-   * in constant FULLNAME_MAX_LENGHT.
-   * @return 
-   */  
-  public String getFullNameForDetail() {   
+   * Gets the trimmed fullname. Max name lenght is specified in constant
+   * FULLNAME_MAX_LENGHT.
+   *
+   * @return
+   */
+  public String getFullNameForDetail() {
     String fullname = this.getFullName();
-    
+
     if (fullname.length() > FULLNAME_MAX_LENGTH) {
       return fullname.substring(0, FULLNAME_MAX_LENGTH - 1) + " ...";
-    }    
-    
+    }
+
     return fullname;
   }
 
@@ -490,7 +490,7 @@ public class Contact implements Serializable {
 
     return emails.toString();
   }
-  
+
   public String getAllUrls() {
     String separator = "";
     StringBuilder links = new StringBuilder();
@@ -506,28 +506,28 @@ public class Contact implements Serializable {
     }
 
     return links.toString();
-  }  
-  
+  }
+
   public Contact() {
-      this.dates = new ArrayList<Event>();
+    this.dates = new ArrayList<Event>();
   }
 
   public Contact(String firstName, String surName, String nickName, String note) {
-      this();
+    this();
     this.firstName = firstName;
     this.surName = surName;
     this.nickName = nickName;
     this.note = note;
     Calendar nameDay = NameDays.getInstance().getNameDay(firstName);
     if (nameDay != null) {
-        this.dates.add(new Event(EventsEnum.NAMEDAY, nameDay.getTime()));
+      this.dates.add(new Event(EventsEnum.NAMEDAY, nameDay.getTime()));
     }
   }
 
   public Contact(String firstName, String surName, String nickName,
           String note, List<Messenger> messenger, List<Url> urls, List<Address> adresses,
           List<PhoneNumber> phoneNumbers, List<Email> emails, List<Custom> customs) {
-      this(firstName, surName, nickName, note);
+    this(firstName, surName, nickName, note);
     this.messenger = messenger;
     this.urls = urls;
     this.adresses = adresses;

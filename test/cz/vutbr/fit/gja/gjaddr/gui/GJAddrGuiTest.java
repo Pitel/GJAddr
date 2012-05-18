@@ -10,34 +10,40 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
- * GUI tests using FEST
+ * GUI tests using FEST - TODO
  *
  * @author Bc. Jan Kaláb <kalab00@stud.fit.vutbr.cz>
  */
 public class GJAddrGuiTest {
-	private FrameFixture window;
 
-	@BeforeClass public static void setUpOnce() {
-		FailOnThreadViolationRepaintManager.install();
-	}
+  private FrameFixture window;
 
-	@Before public void setUp() {
-		MainWindow frame = GuiActionRunner.execute(new GuiQuery<MainWindow>() {
-				protected MainWindow executeInEDT() {
-					return new MainWindow();
-				}
-		});
-		window = new FrameFixture(frame);
-		window.show(); // shows the frame to test
-	}
+  @BeforeClass
+  public static void setUpOnce() {
+    FailOnThreadViolationRepaintManager.install();
+  }
 
-	@Test public void shouldCopyTextInLabelWhenClickingButton() {
-		window.textBox("textToCopy").enterText("Some random text");
-		window.button("copyButton").click();
-		window.label("copiedText").requireText("Some random text");
-	}
+  @Before
+  public void setUp() {
+    MainWindow frame = GuiActionRunner.execute(new GuiQuery<MainWindow>() {
 
-	@After public void tearDown() {
-		window.cleanUp();
-	}
+      protected MainWindow executeInEDT() {
+        return new MainWindow();
+      }
+    });
+    window = new FrameFixture(frame);
+    window.show(); // shows the frame to test
+  }
+
+  @Test
+  public void shouldCopyTextInLabelWhenClickingButton() {
+    window.textBox("textToCopy").enterText("Some random text");
+    window.button("copyButton").click();
+    window.label("copiedText").requireText("Some random text");
+  }
+
+  @After
+  public void tearDown() {
+    window.cleanUp();
+  }
 }
