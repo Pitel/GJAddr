@@ -4,6 +4,7 @@ package cz.vutbr.fit.gja.gjaddr.gui;
 import cz.vutbr.fit.gja.gjaddr.gui.util.Validators;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.*;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.NameDays;
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.MessengersEnum;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.TypesEnum;
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
@@ -45,6 +46,9 @@ class ContactWindow extends JFrame {
 	private final JTextField workPhoneField = new JTextField();
 	private final JTextField homePhoneField = new JTextField();
 	private final JTextField otherPhoneField = new JTextField();
+	private final JTextField icqField = new JTextField();
+	private final JTextField jabberField = new JTextField();
+	private final JTextField skypeField = new JTextField();
 	private final JTextArea noteField = new JTextArea();
 	private final JXDatePicker birthdayPicker = new JXDatePicker();
 	private final JXDatePicker namedayPicker = new JXDatePicker();
@@ -57,7 +61,7 @@ class ContactWindow extends JFrame {
 	public ContactWindow() {
 		super("Add contact");
 		setIconImage(new ImageIcon(getClass().getResource("/res/plus.png"), "+").getImage());
-		photo.setIcon(new ImageIcon(getClass().getResource("/res/photo.png"), ":)"));
+		//photo.setIcon(new ImageIcon(getClass().getResource("/res/photo.png"), ":)"));
 		button.setText("Add contact");
 		button.addActionListener(new NewContactActionListener());
 		contact = new Contact();
@@ -122,6 +126,21 @@ class ContactWindow extends JFrame {
 				case OTHER:
 					otherPhoneField.setText(p.getNumber());
 					break;
+			}
+		}
+		for (Messenger m : contact.getMessenger()) {
+			if (m.getValue() != null) {
+				switch (m.getType()) {
+					case ICQ:
+						icqField.setText(m.getValue());
+						break;
+					case JABBER:
+						jabberField.setText(m.getValue());
+						break;
+					case SKYPE:
+						skypeField.setText(m.getValue());
+						break;
+				}
 			}
 		}
 		prepare();
@@ -269,6 +288,27 @@ class ContactWindow extends JFrame {
 		c.gridy++;
 		c.gridx = 0;
 		c.weightx = 0;
+		form.add(new JLabel("ICQ"), c);
+		c.gridx = 1;
+		c.weightx = 1;
+		form.add(icqField, c);
+		c.gridy++;
+		c.gridx = 0;
+		c.weightx = 0;
+		form.add(new JLabel("Jabber"), c);
+		c.gridx = 1;
+		c.weightx = 1;
+		form.add(jabberField, c);
+		c.gridy++;
+		c.gridx = 0;
+		c.weightx = 0;
+		form.add(new JLabel("Skype"), c);
+		c.gridx = 1;
+		c.weightx = 1;
+		form.add(skypeField, c);
+		c.gridy++;
+		c.gridx = 0;
+		c.weightx = 0;
 		form.add(new JLabel("Note"), c);
 		c.gridx = 1;
 		c.weightx = 1;
@@ -283,14 +323,13 @@ class ContactWindow extends JFrame {
 		setVisible(true);
 	}
 
-  /**
-   * Resolving contact data from user form input.
-   * @return true if is all correct, in error case returns false
-   */
+	/**
+	 * Resolving contact data from user form input.
+	 * @return true if is all correct, in error case returns false
+	 */
 	private boolean resolvecontact() {
 		boolean valid = this.validateData();
 		if (valid) {
-			contact.setPhoto((ImageIcon) photo.getIcon());
 			contact.setFirstName(nameField.getText());
 			contact.setSurName(surnameField.getText());
 			contact.setNickName(nicknameField.getText());
@@ -300,9 +339,9 @@ class ContactWindow extends JFrame {
 			} else {
 				if (!contact.getFirstName().isEmpty()) {
 					Calendar nameDay = NameDays.getInstance().getNameDay(contact.getFirstName());
-                    if (nameDay != null) {
-                        contact.setNameDay(nameDay.getTime());
-                    }
+					if (nameDay != null) {
+						contact.setNameDay(nameDay.getTime());
+					}
 				}
 			}
 			contact.setCelebration(celebrationPicker.getDate());
@@ -329,6 +368,12 @@ class ContactWindow extends JFrame {
 			emails.add(new Email(TypesEnum.HOME, homeEmailField.getText()));
 			emails.add(new Email(TypesEnum.OTHER, otherEmailField.getText()));
 			contact.setEmails(emails);
+
+			final ArrayList<Messenger> messengers = new ArrayList<Messenger>();
+			messengers.add(new Messenger(MessengersEnum.ICQ, icqField.getText()));
+			messengers.add(new Messenger(MessengersEnum.JABBER, jabberField.getText()));
+			messengers.add(new Messenger(MessengersEnum.SKYPE, skypeField.getText()));
+			contact.setMessenger(messengers);
 		}
 		return valid;
 	}
@@ -339,14 +384,10 @@ class ContactWindow extends JFrame {
 	 */
 	private boolean validateData() {
 		StringBuilder message = new StringBuilder();
-
-    // required entry is one of these - nick, name, surname
-    if (nameField.getText().isEmpty() && 
-        surnameField.getText().isEmpty() &&
-        nicknameField.getText().isEmpty()) {
-      message.append("Name, Surname or Nickname shouldn't be empty. Please fill at least one item.");
-    }
-    
+		// required entry is one of these - nick, name, surname
+		if (nameField.getText().isEmpty() && surnameField.getText().isEmpty() && nicknameField.getText().isEmpty()) {
+			message.append("Name, Surname or Nickname shouldn't be empty. Please fill at least one item.");
+		}
 		if (!Validators.isEmailValid(workEmailField.getText())) {
 			message.append("Work email address is not valid\r\n");
 		}
