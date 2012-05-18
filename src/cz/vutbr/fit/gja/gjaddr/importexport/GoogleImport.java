@@ -13,6 +13,7 @@ import com.google.gdata.util.ServiceException;
 import cz.vutbr.fit.gja.gjaddr.gui.StatusBar;
 import cz.vutbr.fit.gja.gjaddr.importexport.exception.GoogleImportException;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.*;
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.MessengersEnum;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.ServicesEnum;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.TypesEnum;
 import cz.vutbr.fit.gja.gjaddr.util.LoggerUtil;
@@ -107,10 +108,10 @@ public class GoogleImport {
       emails.add(new cz.vutbr.fit.gja.gjaddr.persistancelayer.Email(TypesEnum.HOME, email.getAddress()));
     }
 
-    // get messengers
+    // get messengers - TODO get messenger type
     List<Messenger> messengers = new ArrayList<Messenger>();
     for (Im im : entry.getImAddresses()) {
-      messengers.add(new Messenger(TypesEnum.HOME, im.getAddress()));
+      messengers.add(new Messenger(MessengersEnum.OTHER, im.getAddress()));
     }
 
     // phone numbers

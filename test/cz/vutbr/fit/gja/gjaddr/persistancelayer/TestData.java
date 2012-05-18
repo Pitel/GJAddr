@@ -1,6 +1,7 @@
 package cz.vutbr.fit.gja.gjaddr.persistancelayer;
 
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.EventsEnum;
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.MessengersEnum;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.TypesEnum;
 import java.util.ArrayList;
 import java.util.Date;
@@ -41,8 +42,8 @@ public class TestData {
 		contact1.setPhoneNumbers(new ArrayList<PhoneNumber>(phones));
 		urls.add(new Url(TypesEnum.HOME, "http://www.lahvators.cz"));
 		contact1.setUrls(new ArrayList<Url>(urls));
-		messengers.add(new Messenger(TypesEnum.HOME, "ragaj@jabber.org"));
-		messengers.add(new Messenger(TypesEnum.WORK, "278456123"));
+		messengers.add(new Messenger(MessengersEnum.JABBER, "ragaj@jabber.org"));
+		messengers.add(new Messenger(MessengersEnum.ICQ, "278456123"));
 		contact1.setMessenger(new ArrayList<Messenger>(messengers));
 		customs.add(new Custom("test", "123"));
 		contact1.setCustoms(new ArrayList<Custom>(customs));
@@ -84,8 +85,8 @@ public class TestData {
 		urls.add(new Url(TypesEnum.WORK, "http://www.seznam.cz"));
 		urls.add(new Url(TypesEnum.WORK, "http://www.idos.cz"));		
 		contact3.setUrls(new ArrayList<Url>(urls));		
-		messengers.add(new Messenger(TypesEnum.HOME, "test@jabbim.cz"));
-		messengers.add(new Messenger(TypesEnum.WORK, "147896321"));
+		messengers.add(new Messenger(MessengersEnum.JABBER, "test@jabbim.cz"));
+		messengers.add(new Messenger(MessengersEnum.ICQ, "147896321"));
 		contact3.setMessenger(new ArrayList<Messenger>(messengers));		
 		Email email4 = new Email(TypesEnum.WORK, "pokus@seznam.cz");	
 		emails.add(new Email(TypesEnum.WORK, "pokus@seznam.cz"));

@@ -1,61 +1,93 @@
 package cz.vutbr.fit.gja.gjaddr.persistancelayer;
 
-import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.TypesEnum;
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.MessengersEnum;
 import java.io.Serializable;
 
 /**
+ * One messenger entry.
  *
- * @author Ragaj
+ * @author Bc. Radek Gajdušek <xgajdu07@stud.fit.vutbr.cz>
  */
 public class Messenger implements Serializable {
-	
-	static private final long serialVersionUID = 6L;	
-	
-	private TypesEnum type;
-	private String value;	
 
-	public TypesEnum getType() {
-		return type;
-	}
+  static private final long serialVersionUID = 6L;
+  /**
+   * Messenger type.
+   */
+  private MessengersEnum type;
+  /**
+   * Messenger value.
+   */
+  private String value;
 
-	public void setType(TypesEnum type) {
-		this.type = type;
-	}
+  /**
+   * Get messenger type.
+   */
+  public MessengersEnum getType() {
+    return type;
+  }
 
-	public String getValue() {
-		return value;
-	}
+  /**
+   * Set messenger type.
+   */
+  public void setType(MessengersEnum type) {
+    this.type = type;
+  }
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+  /**
+   * Get messenger value.
+   *
+   * @return
+   */
+  public String getValue() {
+    return value;
+  }
 
-	public Messenger(TypesEnum type, String value) {
-		this.type = type;
-		this.value = value;
-	}
+  /**
+   * Set messenger value.
+   */
+  public void setValue(String value) {
+    this.value = value;
+  }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		final Messenger other = (Messenger) obj;
+  /**
+   * Messenger constructor.
+   *
+   * @param type type from enum
+   * @param value value
+   */
+  public Messenger(MessengersEnum type, String value) {
+    this.type = type;
+    this.value = value;
+  }
 
-		if (this.type != other.type) {
-			return false;
-		}
-		if ((this.value == null) ? (other.value != null) : !this.value.equals(other.value)) {
-			return false;
-		}
-		return true;
-	}
+  /**
+   * Custom equals implementation.
+   */
+  @Override
+  public boolean equals(Object obj) {
+    if (obj == null) {
+      return false;
+    }
+    if (getClass() != obj.getClass()) {
+      return false;
+    }
+    final Messenger other = (Messenger) obj;
 
-	@Override
-	public String toString() {
-		return "Messenger{type=" + type + ", value=" + value + '}';
-	}
+    if (this.type != other.type) {
+      return false;
+    }
+    if ((this.value == null) ? (other.value != null) : !this.value.equals(other.value)) {
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * Custom toString method implementation.
+   */
+  @Override
+  public String toString() {
+    return "Messenger{type=" + type + ", value=" + value + '}';
+  }
 }
