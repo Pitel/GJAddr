@@ -36,7 +36,12 @@ public class Settings {
     /**
      * When to display notifications.
      */
-    private String NOTIFICATION_SETTINGS = "notificationSettings";
+    private final String NOTIFICATION_SETTINGS = "notificationSettings";
+    
+    /**
+     * Application folder.
+     */
+    private final String APPLICATION_FOLDER = "applicationFolder";
 
     /**
      * Get data directory according to user home dir.
@@ -44,8 +49,16 @@ public class Settings {
      * @return
      */
     public String getDataDir() {
+        if (this.properties == null) {
+            this.setDefaultProperties();
+        }
+        
+        String folder = this.properties.getProperty(this.APPLICATION_FOLDER);
+        if (folder == null) {
+            folder = this.USER_HOME_DIR;
+        }
 
-        File dataDir = new File(USER_HOME_DIR, "/.gjaddr/data");
+        File dataDir = new File(folder, "/.gjaddr/data");
 
         if (!dataDir.exists()) {
             dataDir.mkdirs();
@@ -60,8 +73,16 @@ public class Settings {
      * @return
      */
     public String getPropertiesDir() {
+        if (this.properties == null) {
+            this.setDefaultProperties();
+        }
+        
+        String folder = this.properties.getProperty(this.APPLICATION_FOLDER);
+        if (folder == null) {
+            folder = this.USER_HOME_DIR;
+        }
 
-        File propertiesDir = new File(USER_HOME_DIR, "/.gjaddr/settings");
+        File propertiesDir = new File(folder, "/.gjaddr/settings");
 
         if (!propertiesDir.exists()) {
             propertiesDir.mkdirs();
@@ -163,9 +184,11 @@ public class Settings {
      * Sets the default properties values, if properties file missing.
      */
     private void setDefaultProperties() {
+        this.properties = new Properties();
         this.properties.setProperty(BIN_PERSISTANCE, "true");
         this.properties.setProperty(NAME_ORDER, "false");
-        this.properties.setProperty("NOTIFICATION_SETTINGS", NotificationsEnum.MONTH.toString());
+        this.properties.setProperty(NOTIFICATION_SETTINGS, NotificationsEnum.MONTH.toString());
+        this.properties.setProperty(APPLICATION_FOLDER, USER_HOME_DIR);
     }
 
     /**
@@ -219,5 +242,57 @@ public class Settings {
         } else {
             return NotificationsEnum.NEVER;
         }
+    }
+    
+    /**
+     * Set application folder.
+     * 
+     * @param folder 
+     */
+    public void setApplicationFolder(String folder) {
+        LoggerFactory.getLogger(this.getClass()).info("Setting application forlder to " + folder + ".");
+        File newFolder = new File(folder);
+
+        if (!newFolder.exists()) {
+            LoggerFactory.getLogger(this.getClass()).warn("Application folder couldn't be changed.");
+            return;
+        }
+        
+        this.properties.setProperty(this.APPLICATION_FOLDER, folder);
+        this.save();
+    }
+    
+    /**
+     * Set default application folder (user.home).
+     */
+    public void setDefaultApplicationFolder() {
+        LoggerFactory.getLogger(this.getClass()).info("Setting application forlder to default.");
+        this.properties.setProperty(this.APPLICATION_FOLDER, this.USER_HOME_DIR);
+        this.save();
+    }
+    
+    /**
+     * Is application folder set to default?
+     * 
+     * @return 
+     */
+    public boolean isDefaultAppFolder() {
+        String folder = this.properties.getProperty(this.APPLICATION_FOLDER);
+        if (folder == null) {
+            return true;
+        } else if (folder.equals(this.USER_HOME_DIR)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    /**
+     * Get path to application folder.
+     * 
+     * @return 
+     */
+    public String getAppFolder() {
+        return this.properties.getProperty(this.APPLICATION_FOLDER);
     }
 }

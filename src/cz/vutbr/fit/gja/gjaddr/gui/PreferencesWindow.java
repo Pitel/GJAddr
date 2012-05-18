@@ -16,6 +16,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import javax.swing.*;
 import org.slf4j.LoggerFactory;
 
@@ -51,6 +52,11 @@ public class PreferencesWindow extends JFrame implements ActionListener {
      * Service buttons.
      */
     private JButton fbButton, googButton;
+    
+    /**
+     * Radio button for folder selection.
+     */
+    private JRadioButton folder;
 
     /**
      * Constructor with setting which window should be opened after preferences.
@@ -111,6 +117,7 @@ public class PreferencesWindow extends JFrame implements ActionListener {
         tabs.addTab("Notification Settings", this.createNotificationSettingsPanel());
         tabs.addTab("Display Settings", this.createDisplaySettingsPanel());
         tabs.addTab("Persistance Settings", this.createPersistenceSettingsPanel());
+        tabs.addTab("Application Folder", this.createAppFolderSettingsPanel());
         this.add(tabs);
         
         // enable scrolling tabs
@@ -176,6 +183,19 @@ public class PreferencesWindow extends JFrame implements ActionListener {
         notifSettingsPanel.add(this.createNotificationSettingsHeader());
         notifSettingsPanel.add(this.createNotificationSettingsOptions());
         return notifSettingsPanel;
+    }
+    
+    /**
+     * Create persistence settings panel.
+     * 
+     * @return 
+     */
+    private JPanel createAppFolderSettingsPanel() {
+        JPanel folderSettingsPanel = new JPanel();
+        folderSettingsPanel.setLayout(new BoxLayout(folderSettingsPanel, BoxLayout.PAGE_AXIS));
+        folderSettingsPanel.add(this.createFolderSettingHeader());
+        folderSettingsPanel.add(this.createFolderSettginsOptions());
+        return folderSettingsPanel;
     }
 
     /**
@@ -258,6 +278,54 @@ public class PreferencesWindow extends JFrame implements ActionListener {
 
         firstNameButton.setSelected(Settings.instance().isNameFirst());
         surNameButton.setSelected(!Settings.instance().isNameFirst());
+
+        return radioPanel;
+    }
+    
+    /**
+     * Create name order header.
+     *
+     * @return
+     */
+    private JPanel createFolderSettingHeader() {
+        JPanel folderHeader = new JPanel(new GridLayout());
+        JLabel firstHeader = new JLabel("<html><h2>Application Folder</h2></html>", JLabel.LEFT);
+        folderHeader.add(firstHeader);
+        folderHeader.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
+
+        return folderHeader;
+    }
+
+    /**
+     * Create name order radion buttons.
+     *
+     * @return
+     */
+    private JPanel createFolderSettginsOptions() {
+        JRadioButton homeFolder = new JRadioButton("Default folder (user.home)");
+        homeFolder.setActionCommand("default");
+        homeFolder.addActionListener(this);
+
+        String title = "Custom folder";
+        if (!Settings.instance().isDefaultAppFolder()) {
+            title += " (" + Settings.instance().getAppFolder() + ")";
+        }
+        this.folder = new JRadioButton(title);
+        this.folder.setActionCommand("custom");
+        this.folder.addActionListener(this);
+
+        ButtonGroup bg = new ButtonGroup();
+        bg.add(homeFolder);
+        bg.add(this.folder);
+
+        JPanel radioPanel = new JPanel(new GridLayout(0, 1));
+        radioPanel.add(homeFolder);
+        radioPanel.add(this.folder);
+
+        homeFolder.setSelected(Settings.instance().isDefaultAppFolder());
+        homeFolder.setFocusPainted(Settings.instance().isDefaultAppFolder());
+        this.folder.setSelected(!Settings.instance().isDefaultAppFolder());
+        this.folder.setFocusPainted(!Settings.instance().isDefaultAppFolder());
 
         return radioPanel;
     }
@@ -545,6 +613,22 @@ public class PreferencesWindow extends JFrame implements ActionListener {
         }
         else if (ae.getActionCommand().equals("never")) {
             Settings.instance().setNotificationsSettings(NotificationsEnum.NEVER);
+        }
+        else if (ae.getActionCommand().equals("default")) {
+            Settings.instance().setDefaultApplicationFolder();
+        }
+        else if (ae.getActionCommand().equals("custom")) {
+            JFileChooser chooser = new JFileChooser();
+            chooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+            chooser.setDialogTitle("Select Application Folder");
+            chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            chooser.setAcceptAllFileFilterUsed(false);
+            if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+                Settings.instance().setApplicationFolder(chooser.getSelectedFile().toString());
+                this.folder.setText("Custom folder (" + chooser.getSelectedFile().toString() + ")");
+            } else {
+                LoggerFactory.getLogger(this.getClass()).info("Action was canceled by user.");
+            }
         }
     }
 }
