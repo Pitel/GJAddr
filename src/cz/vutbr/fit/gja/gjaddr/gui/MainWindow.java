@@ -107,8 +107,6 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
     searchField.addFocusListener(new SearchFieldListener());
 
     toolbar.add(searchField);
-
-
     add(toolbar, BorderLayout.NORTH);
 
     add(new GroupsPanel(this, new GroupSelectionListener()), BorderLayout.WEST);
@@ -124,7 +122,7 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 
     this.statusBar = new StatusBar();
     add(this.statusBar, BorderLayout.SOUTH);
-
+    
     pack();
     setLocationRelativeTo(null);
 
@@ -150,7 +148,9 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
     JMenu helpMenu = new JMenu("Help");
     helpMenu.setMnemonic(KeyEvent.VK_H);
     menuBar.add(helpMenu);
-
+    fileMenu.add(this.actions.actionNewContact);
+    fileMenu.add(this.actions.actionNewGroup);
+    fileMenu.addSeparator();
     fileMenu.add(this.actions.actionImport);
     fileMenu.add(this.actions.actionExport);
     fileMenu.addSeparator();
@@ -209,7 +209,7 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
    */
   @Override
   public void actionPerformed(ActionEvent e) {
-    if (e.getSource() == menuItemClose) {
+    if (e.getSource() == menuItemClose) {      
       dispose();
     }
   }

@@ -196,13 +196,32 @@ public class ContactsPanel extends JPanel implements KeyListener {
   }
 
   /**
-   * Handle delete button pressed.
+   * Handle delete button pressed and shortcuts.
    */
   @Override
   public void keyPressed(KeyEvent e) {
-    if (e.getKeyCode() == KeyEvent.VK_DELETE
-            && this.mainWindowHandle.actions.actionDeleteContact.isEnabled()) {
-      removeContacts();
+
+    switch (e.getKeyCode()) {
+      case KeyEvent.VK_DELETE:
+        if (this.mainWindowHandle.actions.actionDeleteContact.isEnabled()) {
+          removeContacts();
+        }
+        break;
+    }
+
+    if (e.getModifiersEx() == KeyEvent.CTRL_DOWN_MASK) {
+      switch (e.getKeyCode()) {
+        case KeyEvent.VK_E:
+          if (this.mainWindowHandle.actions.actionEditContact.isEnabled()) {
+            new ContactWindow(ContactsPanel.getSelectedContact());
+          }
+          break;
+        case KeyEvent.VK_M:
+          if (this.mainWindowHandle.actions.actionManageContactGroups.isEnabled()) {
+            new GroupsMembershipWindow(ContactsPanel.getSelectedContact());
+          }
+          break;
+      }
     }
   }
 

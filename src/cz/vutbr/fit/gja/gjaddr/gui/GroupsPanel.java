@@ -120,9 +120,28 @@ class GroupsPanel extends JPanel implements KeyListener {
    */
   @Override
   public void keyPressed(KeyEvent e) {
-    if (e.getKeyCode() == KeyEvent.VK_DELETE
-            && this.mainWindowHandle.actions.actionDeleteGroup.isEnabled()) {
-      new GroupWindow(GroupWindow.Action.REMOVE);
+
+    switch (e.getKeyCode()) {
+      case KeyEvent.VK_DELETE:
+        if (this.mainWindowHandle.actions.actionDeleteGroup.isEnabled()) {
+          new GroupWindow(GroupWindow.Action.REMOVE);
+        }
+        break;
+    }
+
+    if (e.getModifiersEx() == KeyEvent.CTRL_DOWN_MASK) {
+      switch (e.getKeyCode()) {
+        case KeyEvent.VK_R:
+          if (this.mainWindowHandle.actions.actionRenameGroup.isEnabled()) {
+            new GroupWindow(GroupWindow.Action.RENAME);
+          }
+          break;
+        case KeyEvent.VK_M:
+          if (this.mainWindowHandle.actions.actionManageGroup.isEnabled()) {
+            new GroupsMembershipWindow(GroupsPanel.getSelectedGroup());
+          }
+          break;
+      }
     }
   }
 

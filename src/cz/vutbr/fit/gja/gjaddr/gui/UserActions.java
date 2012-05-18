@@ -253,13 +253,11 @@ public class UserActions {
     private static final String name = "Delete contact";
     private static final String icon = "/res/minus.png";
     private static final String tooltip = "Delete contact";
-    private final Integer mnemonic = KeyEvent.VK_D;
     private final KeyStroke accelerator = KeyStroke.getKeyStroke("DELETE");
 
     public DeleteContactAction() {
       super(name);
       putValue(SMALL_ICON, new ImageIcon(getClass().getResource(icon), name));
-      putValue(MNEMONIC_KEY, mnemonic);
       putValue(ACCELERATOR_KEY, accelerator);
       putValue(SHORT_DESCRIPTION, tooltip);
     }
@@ -357,13 +355,11 @@ public class UserActions {
     private static final String name = "Delete group";
     private static final String icon = "/res/minus_g.png";
     private static final String tooltip = "Delete group";
-    private final Integer mnemonic = KeyEvent.VK_D;
     private final KeyStroke accelerator = KeyStroke.getKeyStroke("DELETE");
 
     public DeleteGroupAction() {
       super(name);
       putValue(SMALL_ICON, new ImageIcon(getClass().getResource(icon), name));
-      putValue(MNEMONIC_KEY, mnemonic);
       putValue(ACCELERATOR_KEY, accelerator);
       putValue(SHORT_DESCRIPTION, tooltip);
     }
