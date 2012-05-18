@@ -91,7 +91,7 @@ class PhotoButton extends JButton {
 				try {
 					final BufferedImage image = ImageIO.read(f);
 					final int w = 100;
-					final ImageIcon photo = new ImageIcon(image.getScaledInstance(w, (int) (w * 1.33), BufferedImage.SCALE_DEFAULT));
+					final ImageIcon photo = new ImageIcon(image.getScaledInstance(50, 50, BufferedImage.SCALE_DEFAULT));
 					setIcon(photo);
 					contact.setPhoto(photo);
 				} catch (IOException ex) {
