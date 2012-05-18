@@ -15,8 +15,17 @@ import java.util.List;
  */
 public class BinImportExport {
 
+  /**
+   * Database instance.
+   */
   private Database database = Database.getInstance();
 
+  /**
+   * Get group by name.
+   *
+   * @param groupName name of group
+   * @return group object
+   */
   private Group getGroupByName(String groupName) {
     for (Group g : this.database.getAllGroups()) {
       if (g.getName().equals(groupName)) {
