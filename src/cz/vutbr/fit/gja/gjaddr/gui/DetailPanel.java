@@ -34,6 +34,9 @@ class DetailPanel extends JPanel {
   private final JLabel bdayIcon = new JLabel();
   private final JLabel namedayIcon = new JLabel();
   private final JLabel celebrationIcon = new JLabel();
+  private final JLabel icq = new JLabel();
+  private final JLabel jabber = new JLabel();
+  private final JLabel skype = new JLabel();
   private final PhotoButton photo = new PhotoButton();
   private final JLabel groups = new JLabel();
   private final JLabel nicknameLabel = new JLabel("<html><b>Nickname: </b></html>");
@@ -46,6 +49,9 @@ class DetailPanel extends JPanel {
   private final JLabel celebrationLabel = new JLabel("<html><b>Celebration: </b></html>");
   private final JLabel noteLabel = new JLabel("<html><b>Note: </b></html>");
   private final JLabel groupsLabel = new JLabel("<html><b>Groups: </b></html>");
+  private final JLabel icqLabel = new JLabel("<html><b>ICQ: </b></html>");
+  private final JLabel jabberLabel = new JLabel("<html><b>Jabber: </b></html>");
+  private final JLabel skypeLabel = new JLabel("<html><b>Skype: </b></html>");
   private JScrollPane detailScrollPane;
 
   /**
@@ -127,6 +133,24 @@ class DetailPanel extends JPanel {
     webs.setLayout(new BoxLayout(webs, BoxLayout.PAGE_AXIS));
     webs.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
     detailPanel.add(webs, c);
+    c.gridx = 0;
+    c.gridy++;
+    detailPanel.add(icqLabel, c);
+    c.gridx = 1;
+    icq.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
+    detailPanel.add(icq, c);
+    c.gridx = 0;
+    c.gridy++;
+    detailPanel.add(jabberLabel, c);
+    c.gridx = 1;
+    jabber.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
+    detailPanel.add(jabber, c);
+    c.gridx = 0;
+    c.gridy++;
+    detailPanel.add(skypeLabel, c);
+    c.gridx = 1;
+    skype.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
+    detailPanel.add(skype, c);
     c.gridx = 0;
     c.gridy++;
     detailPanel.add(birthdayLabel, c);
@@ -247,6 +271,34 @@ class DetailPanel extends JPanel {
           lb.setForeground(Color.BLUE);
           lb.addActionListener(new WebListener());
           webs.add(lb);
+        }
+      }
+
+      icqLabel.setVisible(false);
+      jabberLabel.setVisible(false);
+      skypeLabel.setVisible(false);
+      icq.setVisible(false);
+      jabber.setVisible(false);
+      skype.setVisible(false);
+      for (Messenger m : contact.getMessenger()) {
+        if (m.getValue() != null) {
+          switch (m.getType()) {
+            case ICQ:
+              icq.setText(m.getValue());
+              icqLabel.setVisible(true);
+              icq.setVisible(true);
+              break;
+            case JABBER:
+              jabber.setText(m.getValue());
+              jabberLabel.setVisible(true);
+              jabber.setVisible(true);
+              break;
+            case SKYPE:
+              skype.setText(m.getValue());
+              skypeLabel.setVisible(true);
+              skype.setVisible(true);
+              break;
+          }
         }
       }
 
