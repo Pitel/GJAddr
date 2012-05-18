@@ -1,6 +1,7 @@
 package cz.vutbr.fit.gja.gjaddr.gui;
 
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Contact;
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -93,6 +94,8 @@ class PhotoButton extends JButton {
 					final ImageIcon photo = new ImageIcon(image.getScaledInstance(50, 50, BufferedImage.SCALE_DEFAULT));
 					setIcon(photo);
 					contact.setPhoto(photo);
+					final Database db = Database.getInstance();
+					db.updateContact(contact);
 				} catch (IOException ex) {
 					System.err.println(ex);
 				}
