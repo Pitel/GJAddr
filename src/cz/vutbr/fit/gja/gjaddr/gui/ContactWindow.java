@@ -2,9 +2,9 @@ package cz.vutbr.fit.gja.gjaddr.gui;
 
 import cz.vutbr.fit.gja.gjaddr.gui.util.Validators;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.*;
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.MessengersEnum;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.NameDays;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.TypesEnum;
-import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.MessengersEnum;
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -422,7 +422,19 @@ class ContactWindow extends JFrame {
     if (!Validators.isPhoneNumberValid(otherPhoneField.getText())) {
       message.append("Other phone is not valid\r\n");
     }
-
+    if (!Validators.isPhoneNumberValid(otherPhoneField.getText())) {
+      message.append("Other phone is not valid\r\n");
+    }
+    if (!Validators.isIcqValid(icqField.getText())) {
+      message.append("Icq number is not valid\r\n");
+    }    
+    if (!Validators.isJabberValid(jabberField.getText())) {
+      message.append("Jabber acount is not valid\r\n");
+    }   
+    if (!Validators.isSkypeValid(skypeField.getText())) {
+      message.append("Skype acount is not valid\r\n");
+    }       
+        
     // display message if is there same error
     if (message.length() > 0) {
       JOptionPane.showMessageDialog(this, message, "Validation failed!", JOptionPane.WARNING_MESSAGE);

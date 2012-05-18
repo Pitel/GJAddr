@@ -19,6 +19,10 @@ public class Validators {
    * Phone number regex pattern.
    */
   private static String phonePattern = "\\+?[0-9\\s]+";
+  /**
+   * Icq number regex pattern.
+   */
+  private static String icqPattern = "\\+?[0-9\\s-]+";  
 
   /**
    * Checks whether the given email address is valid.
@@ -73,4 +77,43 @@ public class Validators {
 
     return phone.matches(phonePattern);
   }
+  
+  /**
+   * Checks whether the given icq number is valid.
+   * @param icq 
+   * @return true if icq is valid, otherwise false.
+   */
+  public static boolean isIcqValid(String icq) {
+    if (icq == null) {
+      return false;
+    }
+
+    if (icq.isEmpty()) {
+      return true;
+    }
+
+    return icq.matches(icqPattern);
+  }
+  
+  /**
+   * Checks whether the given jabber is valid.
+   * @param jabber 
+   * @return true if is jabber valid, otherwise false.
+   */
+  public static boolean isJabberValid(String jabber) {
+    return isEmailValid(jabber);
+  }  
+  
+  /**
+   * Checks whether the given skype account is valid.
+   * @param skype 
+   * @return true if skype is valid, otherwise false.
+   */
+  public static boolean isSkypeValid(String skype) {
+    if (skype == null) {
+      return false;
+    }
+
+    return true;
+  }  
 }

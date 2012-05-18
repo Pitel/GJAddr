@@ -68,15 +68,12 @@ public class DatabaseContacts {
    */
   private void removeEmptyValues(Contact contact) {
 
-    /*
-     * TODO private List<Messenger> messenger; private List<Custom> customs;
-     */
-
     List<Event> datesToRemove = new ArrayList<Event>();
     List<Address> adressesToRemove = new ArrayList<Address>();
     List<Email> emailsToRemove = new ArrayList<Email>();
     List<Url> urlsToRemove = new ArrayList<Url>();
     List<PhoneNumber> phonesToRemove = new ArrayList<PhoneNumber>();
+    List<Messenger> messengersToRemove = new ArrayList<Messenger>(); 
 
     for (Event event : contact.getDates()) {
       if (event.getDate() == null) {
@@ -107,12 +104,31 @@ public class DatabaseContacts {
         phonesToRemove.add(phone);
       }
     }
+    
+    for (Messenger messenger : contact.getMessenger()) {
+      if (messenger.getValue().isEmpty()) {
+        messengersToRemove.add(messenger);
+      }
+    }  
+    
+    // Custom are currently not supported - null value
+    List<Custom> customsToRemove = new ArrayList<Custom>();  
+    List<Custom> customs = contact.getCustoms();
+    if (customs != null) {
+      for (Custom custom : contact.getCustoms()) {
+        if (custom.getValue().isEmpty()) {
+          customsToRemove.add(custom);
+        }
+      }
+      contact.getCustoms().removeAll(customsToRemove);
+    }
 
     contact.getDates().removeAll(datesToRemove);
     contact.getAdresses().removeAll(adressesToRemove);
     contact.getEmails().removeAll(emailsToRemove);
     contact.getUrls().removeAll(urlsToRemove);
     contact.getPhoneNumbers().removeAll(phonesToRemove);
+    contact.getMessenger().removeAll(messengersToRemove);   
   }
 
   /**
