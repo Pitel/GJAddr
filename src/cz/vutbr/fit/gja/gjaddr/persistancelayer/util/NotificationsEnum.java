@@ -1,4 +1,3 @@
-
 package cz.vutbr.fit.gja.gjaddr.persistancelayer.util;
 
 /**
@@ -7,5 +6,6 @@ package cz.vutbr.fit.gja.gjaddr.persistancelayer.util;
  * @author Bc. Drahomira Herrmannova <xherrm01@stud.fit.vutbr.cz>
  */
 public enum NotificationsEnum {
-    MONTH, WEEK, DAY, NEVER;
+
+  MONTH, WEEK, DAY, NEVER;
 }
