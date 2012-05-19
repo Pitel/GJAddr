@@ -146,6 +146,7 @@ public class PreferencesWindow extends JFrame implements ActionListener {
         displaySettingsPanel.setLayout(new BoxLayout(displaySettingsPanel, BoxLayout.PAGE_AXIS));
         displaySettingsPanel.add(this.createNameOrderHeader());
         displaySettingsPanel.add(this.createNameOrderRadionButtons());
+        displaySettingsPanel.add(Box.createVerticalGlue());
         return displaySettingsPanel;
     }
 
@@ -159,6 +160,7 @@ public class PreferencesWindow extends JFrame implements ActionListener {
         persistenceSettingsPanel.setLayout(new BoxLayout(persistenceSettingsPanel, BoxLayout.PAGE_AXIS));
         persistenceSettingsPanel.add(this.createPersistanceHeader());
         persistenceSettingsPanel.add(this.createPersistanceRadioButtons());
+        persistenceSettingsPanel.add(Box.createVerticalGlue());
         return persistenceSettingsPanel;
     }
 
@@ -173,6 +175,7 @@ public class PreferencesWindow extends JFrame implements ActionListener {
         servicesSettingsPanel.add(this.createServicesHeader());
         servicesSettingsPanel.add(this.createFacebookActionButton());
         servicesSettingsPanel.add(this.createGoogleActionButton());
+        servicesSettingsPanel.add(Box.createVerticalGlue());
         return servicesSettingsPanel;
     }
 
@@ -186,6 +189,7 @@ public class PreferencesWindow extends JFrame implements ActionListener {
         notifSettingsPanel.setLayout(new BoxLayout(notifSettingsPanel, BoxLayout.PAGE_AXIS));
         notifSettingsPanel.add(this.createNotificationSettingsHeader());
         notifSettingsPanel.add(this.createNotificationSettingsOptions());
+        notifSettingsPanel.add(Box.createVerticalGlue());
         return notifSettingsPanel;
     }
 
@@ -199,6 +203,7 @@ public class PreferencesWindow extends JFrame implements ActionListener {
         folderSettingsPanel.setLayout(new BoxLayout(folderSettingsPanel, BoxLayout.PAGE_AXIS));
         folderSettingsPanel.add(this.createFolderSettingHeader());
         folderSettingsPanel.add(this.createFolderSettginsOptions());
+        folderSettingsPanel.add(Box.createVerticalGlue());
         return folderSettingsPanel;
     }
 
@@ -237,6 +242,7 @@ public class PreferencesWindow extends JFrame implements ActionListener {
         JPanel radioPanel = new JPanel(new GridLayout(0, 1));
         radioPanel.add(binaryButton);
         radioPanel.add(xmlButton);
+        radioPanel.add(Box.createVerticalGlue());
 
         binaryButton.setSelected(Settings.instance().isBinPersistance());
         xmlButton.setSelected(!Settings.instance().isBinPersistance());
@@ -279,6 +285,7 @@ public class PreferencesWindow extends JFrame implements ActionListener {
         JPanel radioPanel = new JPanel(new GridLayout(0, 1));
         radioPanel.add(firstNameButton);
         radioPanel.add(surNameButton);
+        radioPanel.add(Box.createVerticalGlue());
 
         firstNameButton.setSelected(Settings.instance().isNameFirst());
         surNameButton.setSelected(!Settings.instance().isNameFirst());
@@ -325,6 +332,7 @@ public class PreferencesWindow extends JFrame implements ActionListener {
         JPanel radioPanel = new JPanel(new GridLayout(0, 1));
         radioPanel.add(homeFolder);
         radioPanel.add(this.folder);
+        radioPanel.add(Box.createVerticalGlue());
 
         homeFolder.setSelected(Settings.instance().isDefaultAppFolder());
         homeFolder.setFocusPainted(Settings.instance().isDefaultAppFolder());
@@ -380,6 +388,7 @@ public class PreferencesWindow extends JFrame implements ActionListener {
         radioPanel.add(weekButton);
         radioPanel.add(dayButton);
         radioPanel.add(neverButton);
+        radioPanel.add(Box.createVerticalGlue());
 
         monthButton.setSelected(NotificationsEnum.MONTH.equals(Settings.instance().getNotificationsSettings()));
         monthButton.setFocusPainted(NotificationsEnum.MONTH.equals(Settings.instance().getNotificationsSettings()));
