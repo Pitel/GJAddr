@@ -26,9 +26,10 @@ public class Settings {
    */
   private final String USER_HOME_DIR = System.getProperty("user.home");
   /**
-   * Properties file name location.
+   * Properties file location.
    */
-  private String PROPERTIES_FILENAME = new File(getPropertiesDir(), "gjaddr.properties").toString();
+  private final String PROPERTY_FILE = new File(System.getProperty("user.home"),
+                                       "/.gjaddr/gjaddr.properties").getPath();
   /**
    * File with czech name days.
    */
@@ -48,46 +49,13 @@ public class Settings {
    * @return
    */
   public String getDataDir() {
-    if (this.properties == null) {
-      this.setDefaultProperties();
-    }
-
-    String folder = this.properties.getProperty(this.APPLICATION_FOLDER);
-    if (folder == null) {
-      folder = this.USER_HOME_DIR;
-    }
-
-    File dataDir = new File(folder, "/.gjaddr/data");
+    File dataDir = new File(this.properties.getProperty(this.APPLICATION_FOLDER), "/.gjaddr/data");
 
     if (!dataDir.exists()) {
       dataDir.mkdirs();
     }
 
     return dataDir.getPath();
-  }
-
-  /**
-   * Get properties directory according to user home dir.
-   *
-   * @return
-   */
-  public String getPropertiesDir() {
-    if (this.properties == null) {
-      this.setDefaultProperties();
-    }
-
-    String folder = this.properties.getProperty(this.APPLICATION_FOLDER);
-    if (folder == null) {
-      folder = this.USER_HOME_DIR;
-    }
-
-    File propertiesDir = new File(folder, "/.gjaddr/settings");
-
-    if (!propertiesDir.exists()) {
-      propertiesDir.mkdirs();
-    }
-
-    return propertiesDir.getPath();
   }
 
   /**
@@ -159,12 +127,12 @@ public class Settings {
   private Settings() {
     try {
       this.properties = new Properties();
-      InputStream source = new FileInputStream(new File(PROPERTIES_FILENAME));
+      InputStream source = new FileInputStream(new File(PROPERTY_FILE));
       this.properties.load(source);
       log("Properties file loaded.");
     } catch (Exception e) {
+      log("Properties file missing - create default properties.");
       this.setDefaultProperties();
-      log("Properties file missing - using default properties.");
     }
   }
 
@@ -188,6 +156,7 @@ public class Settings {
     this.properties.setProperty(NAME_ORDER, "false");
     this.properties.setProperty(NOTIFICATION_SETTINGS, NotificationsEnum.MONTH.toString());
     this.properties.setProperty(APPLICATION_FOLDER, USER_HOME_DIR);
+    this.save();
   }
 
   /**
@@ -195,7 +164,7 @@ public class Settings {
    */
   public void save() {
     try {
-      OutputStream output = new FileOutputStream(new File(PROPERTIES_FILENAME));
+      OutputStream output = new FileOutputStream(PROPERTY_FILE);
       this.properties.store(output, "GJAddr 2012");
       log("Properties file saved.");
     } catch (Exception e) {
@@ -249,25 +218,26 @@ public class Settings {
    * @param folder
    */
   public void setApplicationFolder(String folder) {
-    LoggerFactory.getLogger(this.getClass()).info("Setting application forlder to " + folder + ".");
     File newFolder = new File(folder);
 
     if (!newFolder.exists()) {
-      LoggerFactory.getLogger(this.getClass()).warn("Application folder couldn't be changed.");
-      return;
+      newFolder.mkdirs();
     }
 
+    LoggerFactory.getLogger(this.getClass()).info("Changed application folder to " + folder + ".");
     this.properties.setProperty(this.APPLICATION_FOLDER, folder);
     this.save();
+    Database.getInstance().saveAllData();
   }
 
   /**
    * Set default application folder (user.home).
    */
   public void setDefaultApplicationFolder() {
-    LoggerFactory.getLogger(this.getClass()).info("Setting application forlder to default.");
+    LoggerFactory.getLogger(this.getClass()).info("Changed application folder to default.");
     this.properties.setProperty(this.APPLICATION_FOLDER, this.USER_HOME_DIR);
     this.save();
+    Database.getInstance().saveAllData();
   }
 
   /**

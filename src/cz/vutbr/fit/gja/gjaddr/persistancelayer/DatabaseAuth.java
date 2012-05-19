@@ -13,10 +13,6 @@ public class DatabaseAuth {
   /**
    *
    */
-  private final String FILENAME = new File(Settings.instance().getDataDir(), "auth").toString();
-  /**
-   *
-   */
   private ArrayList<AuthToken> tokens;
 
   /**
@@ -27,11 +23,18 @@ public class DatabaseAuth {
   }
 
   /**
+   * Get current persistance filename.
+   */
+  private String getFilename() {
+    return new File(Settings.instance().getDataDir(), "auth").getPath();
+  }
+
+  /**
    * Initialize database.
    */
   private void load() {
     Persistance per = new Persistance();
-    this.tokens = (ArrayList<AuthToken>) per.loadData(FILENAME);
+    this.tokens = (ArrayList<AuthToken>) per.loadData(this.getFilename());
   }
 
   /**
@@ -39,7 +42,7 @@ public class DatabaseAuth {
    */
   void save() {
     Persistance per = new Persistance();
-    per.saveData(FILENAME, this.tokens);
+    per.saveData(this.getFilename(), this.tokens);
   }
 
   /**
