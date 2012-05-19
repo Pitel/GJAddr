@@ -52,7 +52,7 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
   /**
    * Constant for default tooltip string for search field.
    */
-  private final String SEARCH_BUTTON_TOOLTIP = "... filter contacts";
+  private final String SEARCH_BUTTON_TOOLTIP = "filter contacts…";
   /**
    * Holds all possible user actions.
    */
@@ -85,11 +85,8 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
     toolbar.add(actions.actionPreferences);
     toolbar.addSeparator();
 
-    Image img = new ImageIcon(getClass().getResource("/res/find.png")).getImage();
-    JLabel findLabel = new JLabel(new ImageIcon(img));
-    findLabel.setBorder(BorderFactory.createCompoundBorder(
-            findLabel.getBorder(),
-            BorderFactory.createEmptyBorder(5, 30, 5, 5)));
+    final JLabel findLabel = new JLabel(new ImageIcon(getClass().getResource("/res/find.png")));
+    findLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
     toolbar.add(findLabel);
 
     searchField = new JTextField();
@@ -122,7 +119,7 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
 
     this.statusBar = new StatusBar();
     add(this.statusBar, BorderLayout.SOUTH);
-    
+
     pack();
     setLocationRelativeTo(null);
 
@@ -158,7 +155,7 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
     fileMenu.addSeparator();
 
     menuItemClose = new JMenuItem("Quit", KeyEvent.VK_Q);
-    menuItemClose.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK));   
+    menuItemClose.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK));
     menuItemClose.setIcon(new ImageIcon(getClass().getResource("/res/quit.png")));
     menuItemClose.addActionListener(this);
     fileMenu.add(this.menuItemClose);
@@ -209,7 +206,7 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
    */
   @Override
   public void actionPerformed(ActionEvent e) {
-    if (e.getSource() == menuItemClose) {      
+    if (e.getSource() == menuItemClose) {
       dispose();
     }
   }
