@@ -9,15 +9,15 @@ import cz.vutbr.fit.gja.gjaddr.importexport.exception.GoogleImportException;
  */
 public class GoogleImportThread extends ImportThread {
 
-  /**
-   * Run import.
-   *
-   * @return
-   * @throws GoogleImportException
-   */
-  @Override
-  public int runImport() throws GoogleImportException {
-    GoogleImport gi = new GoogleImport();
-    return gi.importContacts(this.group);
-  }
+    /**
+     * Run import.
+     *
+     * @return
+     * @throws GoogleImportException
+     */
+    @Override
+    public int runImport() throws GoogleImportException {
+        GoogleImport gi = new GoogleImport();
+        return gi.importContacts(this.group);
+    }
 }
