@@ -96,6 +96,7 @@ public class PreferencesWindow extends JFrame implements ActionListener {
      */
     public PreferencesWindow() {
         super("Preferences");
+        super.setLayout(new BorderLayout());
         this.setPreferredSize(new Dimension(800, 250));
         this.setResizable(true);
         LoggerFactory.getLogger(this.getClass()).debug("Opening preferences window.");
@@ -169,16 +170,9 @@ public class PreferencesWindow extends JFrame implements ActionListener {
     private JPanel createServicesSettingsPanel() {
         JPanel servicesSettingsPanel = new JPanel();
         servicesSettingsPanel.setLayout(new BoxLayout(servicesSettingsPanel, BoxLayout.PAGE_AXIS));
-        servicesSettingsPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        JPanel servicesHeader = this.createServicesHeader();
-        servicesHeader.setAlignmentX(Component.LEFT_ALIGNMENT);
-        servicesSettingsPanel.add(servicesHeader);
-        JPanel facebookActionButton = this.createFacebookActionButton();
-        facebookActionButton.setAlignmentX(Component.LEFT_ALIGNMENT);
-        servicesSettingsPanel.add(facebookActionButton);
-        JPanel googleActionButton = this.createGoogleActionButton();
-        googleActionButton.setAlignmentX(Component.LEFT_ALIGNMENT);
-        servicesSettingsPanel.add(googleActionButton);
+        servicesSettingsPanel.add(this.createServicesHeader());
+        servicesSettingsPanel.add(this.createFacebookActionButton());
+        servicesSettingsPanel.add(this.createGoogleActionButton());
         return servicesSettingsPanel;
     }
 
@@ -419,29 +413,25 @@ public class PreferencesWindow extends JFrame implements ActionListener {
      */
     private JPanel createFacebookActionButton() {
         JPanel facebookPanel = new JPanel();
+        facebookPanel.setLayout(new BoxLayout(facebookPanel, BoxLayout.X_AXIS));
         // check if facebook token is valid
         boolean valid = new FacebookOauth().isTokenValid();
         // offer connection to facebook
         if (!valid) {
             this.fbButton = new JButton("Connect to Facebook");
-            this.fbButton.setIcon(new ImageIcon(this.getClass().getResource("/res/facebook.png")));
-            this.fbButton.setIconTextGap(10);
-            this.fbButton.addActionListener(this);
-            this.fbButton.setSelected(false);
             this.fbButton.setActionCommand(ActionCommands.FACEBOOK_CONNECT.toString());
-            this.fbButton.setHorizontalAlignment(SwingConstants.LEFT);
-            facebookPanel.add(this.fbButton);
         } // if user is connected, he can invalidate the token
         else {
             this.fbButton = new JButton("Disconnect from Facebook");
-            this.fbButton.setIcon(new ImageIcon(this.getClass().getResource("/res/facebook.png")));
-            this.fbButton.setIconTextGap(10);
-            this.fbButton.addActionListener(this);
-            this.fbButton.setSelected(false);
             this.fbButton.setActionCommand(ActionCommands.FACEBOOK_DISCONNECT.toString());
-            this.fbButton.setHorizontalAlignment(SwingConstants.LEFT);
-            facebookPanel.add(this.fbButton);
         }
+        this.fbButton.setIcon(new ImageIcon(this.getClass().getResource("/res/facebook.png")));
+        this.fbButton.setIconTextGap(10);
+        this.fbButton.addActionListener(this);
+        this.fbButton.setSelected(false);
+        this.fbButton.setHorizontalAlignment(SwingConstants.LEFT);
+        facebookPanel.add(this.fbButton);
+        facebookPanel.add(Box.createHorizontalGlue());
         facebookPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
         return facebookPanel;
     }
@@ -453,29 +443,25 @@ public class PreferencesWindow extends JFrame implements ActionListener {
      */
     private JPanel createGoogleActionButton() {
         JPanel googlePanel = new JPanel();
+        googlePanel.setLayout(new BoxLayout(googlePanel, BoxLayout.X_AXIS));
         // check if the token is valid
         boolean valid = new GoogleOauth().isTokenValid();
         // if user is connected, he can invalidate the token
         if (valid) {
             this.googButton = new JButton("Disconnect from Google");
-            this.googButton.setIcon(new ImageIcon(this.getClass().getResource("/res/google.png")));
-            this.googButton.setIconTextGap(10);
-            this.googButton.addActionListener(this);
-            this.googButton.setSelected(false);
             this.googButton.setActionCommand(ActionCommands.GOOGLE_DISCONNECT.toString());
-            this.googButton.setHorizontalAlignment(SwingConstants.LEFT);
-            googlePanel.add(this.googButton);
         } // offer connection to google
         else {
             this.googButton = new JButton("Connect to Google");
-            this.googButton.setIcon(new ImageIcon(this.getClass().getResource("/res/google.png")));
-            this.googButton.setIconTextGap(10);
-            this.googButton.addActionListener(this);
-            this.googButton.setSelected(false);
             this.googButton.setActionCommand(ActionCommands.GOOGLE_CONNECT.toString());
-            this.googButton.setHorizontalAlignment(SwingConstants.LEFT);
-            googlePanel.add(this.googButton);
         }
+        this.googButton.setIcon(new ImageIcon(this.getClass().getResource("/res/google.png")));
+        this.googButton.setIconTextGap(10);
+        this.googButton.addActionListener(this);
+        this.googButton.setSelected(false);
+        this.googButton.setHorizontalAlignment(SwingConstants.LEFT);
+        googlePanel.add(this.googButton);
+        googlePanel.add(Box.createHorizontalGlue());
         googlePanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
         return googlePanel;
     }
