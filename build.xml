@@ -8,13 +8,173 @@
 		<mkdir dir="build/classes" />
 	</target>
 
+	<target name="libs">
+		<mkdir dir="lib/test" />
+
+		<!-- CardMe -->
+		<get src="http://ignum.dl.sourceforge.net/project/cardme/Cardme/Card%20Me%20Version%200.3.3/cardme-0.3.3.jar" dest="lib/cardme.jar" verbose="true" usetimestamp="true" />
+
+		<!-- Apache Commons Codec -->
+		<get src="http://apache.mirror.dkm.cz/pub/apache//commons/codec/binaries/commons-codec-1.6-bin.tar.gz" dest="lib/commons-codec.tar.gz" verbose="true" usetimestamp="true" />
+		<untar src="lib/commons-codec.tar.gz" dest="lib" compression="gzip">
+			<patternset>
+				<include name="**/commons-codec*.jar" />
+				<exclude name="**/*javadoc*" />
+				<exclude name="**/*sources*" />
+				<exclude name="**/*tests*" />
+			</patternset>
+			<flattenmapper/>
+		</untar>
+
+		<!-- Google Data Java Client Library -->
+		<get src="https://gdata-java-client.googlecode.com/files/gdata-src.java-1.47.1.zip" dest="lib/gdata.zip" verbose="true" usetimestamp="true" />
+		<unzip src="lib/gdata.zip" dest="lib">
+			<patternset>
+				<include name="**/gdata-client*.jar" />
+				<include name="**/gdata-contacts*.jar" />
+				<include name="**/gdata-core*.jar" />
+				<exclude name="**/*meta*" />
+			</patternset>
+			<flattenmapper/>
+		</unzip>
+
+		<!-- Google Collections Library -->
+		<get src="https://google-collections.googlecode.com/files/google-collect-1.0-rc1.zip" dest="lib/google-collect.zip" verbose="true" usetimestamp="true" />
+		<unzip src="lib/google-collect.zip" dest="lib">
+			<patternset>
+				<include name="**/google-collect*.jar" />
+				<exclude name="**/*testfw*" />
+			</patternset>
+			<flattenmapper/>
+		</unzip>
+
+		<!-- Google Gson -->
+		<get src="https://google-gson.googlecode.com/files/google-gson-2.2.1-release.zip" dest="lib/google-gson.zip" verbose="true" usetimestamp="true" />
+		<unzip src="lib/google-gson.zip" dest="lib">
+			<patternset>
+				<include name="**/gson*.jar" />
+				<exclude name="**/*javadoc*" />
+				<exclude name="**/*sources*" />
+			</patternset>
+			<flattenmapper/>
+		</unzip>
+
+		<!-- kXML 2 -->
+		<get src="http://ignum.dl.sourceforge.net/project/kxml/kxml2/2.3.0/kxml2-min-2.3.0.jar" dest="lib/kxml2.jar" verbose="true" usetimestamp="true" />
+
+		<!-- Logback -->
+		<get src="http://logback.qos.ch/dist/logback-1.0.3.tar.gz" dest="lib/logback.tar.gz" verbose="true" usetimestamp="true" />
+		<untar src="lib/logback.tar.gz" dest="lib" compression="gzip">
+			<patternset>
+				<include name="**/logback-classic*.jar" />
+				<include name="**/logback-core*.jar" />
+				<exclude name="**/*sources*" />
+			</patternset>
+			<flattenmapper/>
+		</untar>
+
+		<!-- opencsv -->
+		<get src="http://ignum.dl.sourceforge.net/project/opencsv/opencsv/2.3/opencsv-2.3-src-with-libs.tar.gz" dest="lib/opencsv.tar.gz" verbose="true" usetimestamp="true" />
+		<untar src="lib/opencsv.tar.gz" dest="lib" compression="gzip">
+			<patternset>
+				<include name="**/opencsv*.jar" />
+			</patternset>
+			<flattenmapper/>
+		</untar>
+
+		<!-- RestFB -->
+		<get src="https://restfb.googlecode.com/files/restfb-1.6.9.zip" dest="lib/restfb.zip" verbose="true" usetimestamp="true" />
+		<unzip src="lib/restfb.zip" dest="lib">
+			<patternset>
+				<include name="**/restfb*.jar" />
+			</patternset>
+			<flattenmapper/>
+		</unzip>
+
+		<!-- SLF4J -->
+		<get src="http://www.slf4j.org/dist/slf4j-1.6.4.tar.gz" dest="lib/slf4j.tar.gz" verbose="true" usetimestamp="true" />
+		<untar src="lib/slf4j.tar.gz" dest="lib" compression="gzip">
+			<patternset>
+				<include name="**/slf4j-api-1.6.4.jar" />
+				<exclude name="**/*sources*" />
+			</patternset>
+			<flattenmapper/>
+		</untar>
+
+		<!-- SwingX -->
+		<get src="http://java.net/projects/swingx/downloads/download/releases/swingx-all-1.6.3.jar" dest="lib/swingx.jar" verbose="true" usetimestamp="true" />
+
+		<!-- XStream -->
+		<get src="https://nexus.codehaus.org/content/repositories/releases/com/thoughtworks/xstream/xstream-distribution/1.4.2/xstream-distribution-1.4.2-bin.zip" dest="lib/xstream.zip" verbose="true" usetimestamp="true" />
+		<unzip src="lib/xstream.zip" dest="lib">
+			<patternset>
+				<include name="**/xstream*.jar" />
+				<exclude name="**/*benchmark*" />
+				<exclude name="**/*hibernate*" />
+			</patternset>
+			<flattenmapper/>
+		</unzip>
+
+		<!-- JUnit -->
+		<get src="http://cloud.github.com/downloads/KentBeck/junit/junit-4.10.jar" dest="lib/test/junit.jar" verbose="true" usetimestamp="true" />
+
+		<!-- Hamcrest -->
+		<get src="https://hamcrest.googlecode.com/files/hamcrest-all-1.2.jar" dest="lib/test/hamcrest.jar" verbose="true" usetimestamp="true" />
+
+		<!-- FEST -->
+		<get src="https://fest.googlecode.com/files/fest-swing-1.2.zip" dest="lib/test/fest-swing.zip" verbose="true" usetimestamp="true" />
+		<unzip src="lib/test/fest-swing.zip" dest="lib/test">
+			<patternset>
+				<include name="**/fest-swing*.jar" />
+				<include name="**/fest-util*.jar" />
+				<exclude name="**/*junit*" />
+				<exclude name="**/*testng*" />
+				<exclude name="**/*sources*" />
+			</patternset>
+			<flattenmapper/>
+		</unzip>
+		<get src="https://fest.googlecode.com/files/fest-assert-1.4.zip" dest="lib/test/fest-assert.zip" verbose="true" usetimestamp="true" />
+		<unzip src="lib/test/fest-assert.zip" dest="lib/test">
+			<patternset>
+				<include name="**/fest-assert*.jar" />
+				<exclude name="**/*javadoc*" />
+				<exclude name="**/*sources*" />
+			</patternset>
+			<flattenmapper/>
+		</unzip>
+		<get src="https://fest.googlecode.com/files/fest-reflect-1.2.zip" dest="lib/test/fest-reflect.zip" verbose="true" usetimestamp="true" />
+		<unzip src="lib/test/fest-reflect.zip" dest="lib/test">
+			<patternset>
+				<include name="**/fest-reflect*.jar" />
+				<exclude name="**/*sources*" />
+			</patternset>
+			<flattenmapper/>
+		</unzip>
+		<get src="https://fest.googlecode.com/files/fest-mocks-1.0.zip" dest="lib/test/fest-mocks.zip" verbose="true" usetimestamp="true" />
+		<unzip src="lib/test/fest-mocks.zip" dest="lib/test">
+			<patternset>
+				<include name="**/fest-mocks*.jar" />
+				<exclude name="**/*sources*" />
+			</patternset>
+			<flattenmapper/>
+		</unzip>
+
+		<!--
+		<delete includeemptydirs="true">
+			<fileset dir="lib" includes="*.zip"/>
+			<fileset dir="lib" includes="*.tar.gz"/>
+		</delete>
+		-->
+	</target>
+
 	<target name="clean" description="clean compiled files">
 		<delete dir="build" />
+		<delete dir="lib" />
 		<delete dir="doc/javadoc" />
 		<delete file="xlogin00.zip" />
 	</target>
 
-	<target name="compile" depends="init">
+	<target name="compile" depends="init,libs">
 		<javac srcdir="src" destdir="build/classes" encoding="UTF-8" debug="on">
 			<compilerarg value="-Xlint" />
 			<classpath>
@@ -88,7 +248,6 @@
 			<fileset file="README.md" />
 			<fileset file="nbbuild.xml" />
 			<fileset dir="." includes="src/**" />
-			<fileset dir="." includes="lib/**" />
 			<fileset dir="." includes="res/**" />
 			<fileset dir="." includes="test/**" />
 			<fileset dir="doc" includes="javadoc/**" />
