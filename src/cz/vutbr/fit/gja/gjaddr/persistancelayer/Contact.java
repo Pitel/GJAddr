@@ -635,7 +635,7 @@ public class Contact implements Serializable {
       for (Url url : this.urls) {
         links.append(separator);
         links.append(url.getValue());
-        separator = "; ";
+        separator = ", ";
       }
     } catch (NullPointerException e) {
       return "";
@@ -643,6 +643,52 @@ public class Contact implements Serializable {
 
     return links.toString();
   }
+  
+    /**
+     * Get all messengers as single string.
+     *
+     * @return
+     */
+    public String getAllMessengers() {
+        String separator = "";
+        StringBuilder ims = new StringBuilder();
+
+        try {
+            for (Messenger m : this.messenger) {
+                ims.append(separator);
+                ims.append(m.getValue());
+                separator = ", ";
+            }
+        } catch (NullPointerException e) {
+            return "";
+        }
+
+        return ims.toString();
+    }
+    
+    /**
+     * Get all messengers as single string.
+     *
+     * @return
+     */
+    public String getAllMessengersWithType() {
+        String separator = "";
+        StringBuilder ims = new StringBuilder();
+
+        try {
+            for (Messenger m : this.messenger) {
+                ims.append(separator);
+                ims.append(m.getType());
+                ims.append(": ");
+                ims.append(m.getValue());
+                separator = ", ";
+            }
+        } catch (NullPointerException e) {
+            return "";
+        }
+
+        return ims.toString();
+    }
 
   /**
    * Empty constructor.

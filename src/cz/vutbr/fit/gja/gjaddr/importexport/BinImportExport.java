@@ -15,69 +15,69 @@ import java.util.List;
  */
 public class BinImportExport {
 
-  /**
-   * Database instance.
-   */
-  private Database database = Database.getInstance();
+    /**
+     * Database instance.
+     */
+    private Database database = Database.getInstance();
 
-  /**
-   * Get group by name.
-   *
-   * @param groupName name of group
-   * @return group object
-   */
-  private Group getGroupByName(String groupName) {
-    for (Group g : this.database.getAllGroups()) {
-      if (g.getName().equals(groupName)) {
-        return g;
-      }
-    }
-    return null;
-  }
-
-  /**
-   * Import contacts from BIN file.
-   *
-   * @param file
-   */
-  public int importContacts(File file) throws IOException {
-    return this.importContacts(file, null);
-  }
-
-  /**
-   * Import contacts from BIN file to specific group.
-   *
-   * @param file
-   * @param group
-   */
-  public int importContacts(File file, String group) {
-
-    Persistance per = new Persistance();
-    List<Contact> contacts = per.importFromBin(file.getAbsolutePath());
-
-    // first add contacts to database
-    this.database.addNewContacts(contacts);
-
-    // then add to group
-    if (group != null) {
-      this.database.addNewGroup(group);
-      Group dbGroup = this.getGroupByName(group);
-      if (dbGroup != null) {
-        this.database.addContactsToGroup(dbGroup, contacts);
-      }
+    /**
+     * Get group by name.
+     *
+     * @param groupName name of group
+     * @return group object
+     */
+    private Group getGroupByName(String groupName) {
+        for (Group g : this.database.getAllGroups()) {
+            if (g.getName().equals(groupName)) {
+                return g;
+            }
+        }
+        return null;
     }
 
-    return contacts.size();
-  }
+    /**
+     * Import contacts from BIN file.
+     *
+     * @param file
+     */
+    public int importContacts(File file) throws IOException {
+        return this.importContacts(file, null);
+    }
 
-  /**
-   * Export contacts to BIN file.
-   *
-   * @param file
-   * @param contacts
-   */
-  public void exportContacts(File file, List<Contact> contacts) {
-    Persistance per = new Persistance();
-    per.exportToBin(file.getAbsolutePath(), contacts);
-  }
+    /**
+     * Import contacts from BIN file to specific group.
+     *
+     * @param file
+     * @param group
+     */
+    public int importContacts(File file, String group) {
+
+        Persistance per = new Persistance();
+        List<Contact> contacts = per.importFromBin(file.getAbsolutePath());
+
+        // first add contacts to database
+        this.database.addNewContacts(contacts);
+
+        // then add to group
+        if (group != null) {
+            this.database.addNewGroup(group);
+            Group dbGroup = this.getGroupByName(group);
+            if (dbGroup != null) {
+                this.database.addContactsToGroup(dbGroup, contacts);
+            }
+        }
+
+        return contacts.size();
+    }
+
+    /**
+     * Export contacts to BIN file.
+     *
+     * @param file
+     * @param contacts
+     */
+    public void exportContacts(File file, List<Contact> contacts) {
+        Persistance per = new Persistance();
+        per.exportToBin(file.getAbsolutePath(), contacts);
+    }
 }
