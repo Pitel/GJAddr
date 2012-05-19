@@ -11,6 +11,7 @@
 	<target name="clean" description="clean compiled files">
 		<delete dir="build" />
 		<delete dir="doc/javadoc" />
+		<delete file="xlogin00.zip" />
 	</target>
 
 	<target name="compile" depends="init">
@@ -79,5 +80,18 @@
 				<fileset refid="libs" />
 			</classpath>
 		</javadoc>
+	</target>
+
+	<target name="zip" depends="doc" description="creates zip archive">
+		<zip destfile="xlogin00.zip" level="9">
+			<fileset file="build.xml" />
+			<fileset file="README.md" />
+			<fileset file="nbbuild.xml" />
+			<fileset dir="." includes="src/**" />
+			<fileset dir="." includes="lib/**" />
+			<fileset dir="." includes="res/**" />
+			<fileset dir="." includes="test/**" />
+			<fileset dir="doc" includes="javadoc/**" />
+		</zip>
 	</target>
 </project>
