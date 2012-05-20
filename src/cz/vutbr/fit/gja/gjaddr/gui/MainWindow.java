@@ -109,7 +109,7 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
     contactsPanel = new ContactsPanel(this, new ContactSelectionListener());
     contactsPanel.setMinimumSize(new Dimension(300, 300));
     detailPanel = new DetailPanel();
-    detailPanel.setMinimumSize(new Dimension(300, 300));
+    detailPanel.setMinimumSize(new Dimension(350, 300));
     final JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, contactsPanel, detailPanel);
     splitPane.setBorder(null);
     splitPane.setResizeWeight(1);
