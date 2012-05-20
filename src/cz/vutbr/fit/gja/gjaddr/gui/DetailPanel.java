@@ -20,8 +20,8 @@ import javax.swing.*;
  */
 class DetailPanel extends JPanel {
 
-    private String styleStart = "<font face=\"arial\" color=\"#999999\">";
-    private String styleEnd = "</font>";
+    private static final String styleStart = "<font face=\"arial\" color=\"#999999\">";
+    private static final String styleEnd = "</font>";
     static final long serialVersionUID = 0;
     private final Database db = Database.getInstance();
     private final JLabel name = new JLabel();
@@ -85,14 +85,14 @@ class DetailPanel extends JPanel {
         photo.setHorizontalAlignment(SwingConstants.RIGHT);
         photoWrapper.add(photo);
         namePanel.add(photoWrapper, gbc);
-        
+
         // name
         gbc.gridx = 1;
         gbc.weightx = 1.0;
         gbc.gridheight = 1;
         name.setVerticalAlignment(SwingConstants.TOP);
         namePanel.add(name, gbc);
-        
+
         // icon panel
         gbc.gridy++;
         final JPanel iconPanel = new JPanel();
@@ -114,7 +114,7 @@ class DetailPanel extends JPanel {
         iconPanel.add(celebrationIcon);
         iconPanel.add(Box.createHorizontalGlue());
         namePanel.add(iconPanel, gbc);
-       
+
         // nickname
         gbc.gridx = 0;
         gbc.gridy++;
@@ -130,7 +130,7 @@ class DetailPanel extends JPanel {
         nickname.setHorizontalAlignment(SwingConstants.LEFT);
         nickname.setVisible(false);
         namePanel.add(nickname, gbc);
-         
+
         // addresses
         gbc.gridx = 0;
         gbc.gridy++;
@@ -148,8 +148,8 @@ class DetailPanel extends JPanel {
         addPanel.add(Box.createHorizontalGlue());
         addPanel.setVisible(false);
         namePanel.add(addPanel, gbc);
-        
-        
+
+
         // email
         gbc.gridx = 0;
         gbc.gridy++;
@@ -164,7 +164,7 @@ class DetailPanel extends JPanel {
         emails.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
         emails.setVisible(false);
         namePanel.add(emails, gbc);
-      
+
         // phone
         gbc.gridx = 0;
         gbc.gridy++;
@@ -178,7 +178,7 @@ class DetailPanel extends JPanel {
         phones.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
         phones.setVisible(false);
         namePanel.add(phones, gbc);
-        
+
         // webs
         gbc.gridx = 0;
         gbc.gridy++;
@@ -193,7 +193,7 @@ class DetailPanel extends JPanel {
         webs.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
         webs.setVisible(false);
         namePanel.add(webs, gbc);
-          
+
         // icq
         gbc.gridx = 0;
         gbc.gridy++;
@@ -207,7 +207,7 @@ class DetailPanel extends JPanel {
         icq.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
         icq.setVisible(false);
         namePanel.add(icq, gbc);
-       
+
         // jabber
         gbc.gridx = 0;
         gbc.gridy++;
@@ -221,7 +221,7 @@ class DetailPanel extends JPanel {
         jabber.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
         jabber.setVisible(false);
         namePanel.add(jabber, gbc);
-        
+
         // skype
         gbc.gridx = 0;
         gbc.gridy++;
@@ -235,7 +235,7 @@ class DetailPanel extends JPanel {
         skype.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
         skype.setVisible(false);
         namePanel.add(skype, gbc);
-      
+
         // birthday
         gbc.gridx = 0;
         gbc.gridy++;
@@ -249,7 +249,7 @@ class DetailPanel extends JPanel {
         birthday.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
         birthday.setVisible(false);
         namePanel.add(birthday, gbc);
-           
+
         // nameday
         gbc.gridx = 0;
         gbc.gridy++;
@@ -263,7 +263,7 @@ class DetailPanel extends JPanel {
         nameday.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
         nameday.setVisible(false);
         namePanel.add(nameday, gbc);
-     
+
         // celebration
         gbc.gridx = 0;
         gbc.gridy++;
@@ -277,7 +277,7 @@ class DetailPanel extends JPanel {
         celebration.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
         celebration.setVisible(false);
         namePanel.add(celebration, gbc);
-          
+
         // note
         gbc.gridx = 0;
         gbc.gridy++;
@@ -291,7 +291,7 @@ class DetailPanel extends JPanel {
         note.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
         note.setVisible(false);
         namePanel.add(note, gbc);
-        
+
         // groups
         gbc.gridx = 0;
         gbc.gridy++;
@@ -305,13 +305,13 @@ class DetailPanel extends JPanel {
         groups.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
         groups.setVisible(false);
         namePanel.add(groups, gbc);
-        
+
         // map
         gbc.gridy++;
         this.maps.setLayout(new BoxLayout(this.maps, BoxLayout.PAGE_AXIS));
         this.maps.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
         namePanel.add(this.maps, gbc);
-        
+
         // finish
         gbc.gridy++;
         gbc.weighty = 1;
@@ -486,7 +486,7 @@ class DetailPanel extends JPanel {
                 separator = ", ";
             }
             groups.setText(groupstring.toString());
-            
+
             this.maps.removeAll();
             for (Address a : contact.getAdresses()) {
                 if (!a.getAddress().isEmpty()) {
@@ -537,7 +537,7 @@ class DetailPanel extends JPanel {
         public void actionPerformed(ActionEvent ev) {
             final JButton b = (JButton) ev.getSource();
             try {
-                Desktop.getDesktop().browse(new URI("http://maps.google.com/maps?q=" + URLEncoder.encode(b.getText(), "utf8")));
+                Desktop.getDesktop().browse(new URI("http://maps.google.com/maps?q=" + URLEncoder.encode(b.getText().replaceAll("\\<.*?>", ""), "utf8")));
             } catch (URISyntaxException ex) {
                 System.err.println(ex);
             } catch (IOException ex) {
