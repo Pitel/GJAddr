@@ -6,10 +6,7 @@ import cz.vutbr.fit.gja.gjaddr.persistancelayer.*;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.MessengersEnum;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.NameDays;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.TypesEnum;
-import java.awt.BorderLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -24,6 +21,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author Bc. Jan Kaláb <xkalab00@stud.fit,vutbr.cz>
  * @author Bc. Radek Gajdusek <xgajdu07@stud.fit,vutbr.cz>
+ * @author Bc. Drahomira Herrmannova <xherrm01@stud.fit.vutbr.cz>
  */
 class ContactWindow extends JFrame {
 
@@ -63,7 +61,8 @@ class ContactWindow extends JFrame {
    * Constructor for adding new contact
    */
   public ContactWindow() {
-    super("Add contact");
+    super("Add contact");   
+    super.setPreferredSize(new Dimension(480, 480));
     setIconImage(new ImageIcon(getClass().getResource("/res/plus.png"), "+").getImage());
     button.setText("Add contact");
     button.addActionListener(new NewContactActionListener());
@@ -78,6 +77,7 @@ class ContactWindow extends JFrame {
    */
   public ContactWindow(Contact contact) {
     super("Edit contact");
+    super.setPreferredSize(new Dimension(480, 480));
     this.contact = contact;
     setIconImage(new ImageIcon(getClass().getResource("/res/edit.png"), "Edit").getImage());
     photo.setContact(contact);
@@ -162,22 +162,37 @@ class ContactWindow extends JFrame {
     } catch (Exception e) {
       System.err.println(e);
     }
+    
     final JPanel form = new JPanel(new GridBagLayout());
     form.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     final GridBagConstraints c = new GridBagConstraints();
+    
+    final JPanel formContact = new JPanel(new GridBagLayout());
+    formContact.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+    final GridBagConstraints cDetails = new GridBagConstraints();
+    
+    final JPanel formNote = new JPanel(new GridBagLayout());
+    formNote.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+    final GridBagConstraints cNote = new GridBagConstraints();
+    
+    final JPanel formPhoto = new JPanel(new GridBagLayout());
+    formPhoto.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+    final GridBagConstraints cPhoto = new GridBagConstraints();
+    
+    // create tabs
+    JTabbedPane tabs = new JTabbedPane();
+    tabs.addTab("Basic details", form);
+    tabs.addTab("Contact details", formContact);
+    tabs.addTab("Notes", formNote);
+    tabs.addTab("Photo", formPhoto);
+    
+    // basic details
     c.fill = GridBagConstraints.HORIZONTAL;
     c.insets = new Insets(1, 1, 1, 1);
     c.weightx = 0;
     c.anchor = GridBagConstraints.NORTHWEST;
     c.gridx = 0;
     c.gridy = 0;
-    form.add(new JLabel("Photo"), c);
-    c.gridx = 1;
-    c.weightx = 1;
-    form.add(photo, c);
-    c.gridy++;
-    c.gridx = 0;
-    c.weightx = 0;
     form.add(new JLabel("Name"), c);
     c.gridx = 1;
     c.weightx = 1;
@@ -222,106 +237,146 @@ class ContactWindow extends JFrame {
     c.gridy++;
     c.gridx = 0;
     c.weightx = 0;
-    form.add(new JLabel("Celebration"), c);
+    form.add(new JLabel("Anniversary"), c);
     c.gridx = 1;
     c.weightx = 1;
     celebrationPicker.setFormats(new String[]{"d. M. yyyy"});
     form.add(celebrationPicker, c);
     c.gridy++;
-    c.gridx = 0;
-    c.weightx = 0;
-    form.add(new JLabel("Work E-mail"), c);
-    c.gridx = 1;
-    c.weightx = 1;
-    form.add(workEmailField, c);
-    c.gridy++;
-    c.gridx = 0;
-    c.weightx = 0;
-    form.add(new JLabel("Home E-mail"), c);
-    c.gridx = 1;
-    c.weightx = 1;
-    form.add(homeEmailField, c);
-    c.gridy++;
-    c.gridx = 0;
-    c.weightx = 0;
-    form.add(new JLabel("Other E-mail"), c);
-    c.gridx = 1;
-    c.weightx = 1;
-    form.add(otherEmailField, c);
-    c.gridy++;
-    c.gridx = 0;
-    c.weightx = 0;
-    form.add(new JLabel("Work URL"), c);
-    c.gridx = 1;
-    c.weightx = 1;
-    form.add(workUrlField, c);
-    c.gridy++;
-    c.gridx = 0;
-    c.weightx = 0;
-    form.add(new JLabel("Home URL"), c);
-    c.gridx = 1;
-    c.weightx = 1;
-    form.add(homeUrlField, c);
-    c.gridy++;
-    c.gridx = 0;
-    c.weightx = 0;
-    form.add(new JLabel("Other URL"), c);
-    c.gridx = 1;
-    c.weightx = 1;
-    form.add(otherUrlField, c);
-    c.gridy++;
-    c.gridx = 0;
-    c.weightx = 0;
-    form.add(new JLabel("Work Phone"), c);
-    c.gridx = 1;
-    c.weightx = 1;
-    form.add(workPhoneField, c);
-    c.gridy++;
-    c.gridx = 0;
-    c.weightx = 0;
-    form.add(new JLabel("Home Phone"), c);
-    c.gridx = 1;
-    c.weightx = 1;
-    form.add(homePhoneField, c);
-    c.gridy++;
-    c.gridx = 0;
-    c.weightx = 0;
-    form.add(new JLabel("Other Phone"), c);
-    c.gridx = 1;
-    c.weightx = 1;
-    form.add(otherPhoneField, c);
-    c.gridy++;
-    c.gridx = 0;
-    c.weightx = 0;
-    form.add(new JLabel("ICQ"), c);
-    c.gridx = 1;
-    c.weightx = 1;
-    form.add(icqField, c);
-    c.gridy++;
-    c.gridx = 0;
-    c.weightx = 0;
-    form.add(new JLabel("Jabber"), c);
-    c.gridx = 1;
-    c.weightx = 1;
-    form.add(jabberField, c);
-    c.gridy++;
-    c.gridx = 0;
-    c.weightx = 0;
-    form.add(new JLabel("Skype"), c);
-    c.gridx = 1;
-    c.weightx = 1;
-    form.add(skypeField, c);
-    c.gridy++;
-    c.gridx = 0;
-    c.weightx = 0;
-    form.add(new JLabel("Note"), c);
-    c.gridx = 1;
-    c.weightx = 1;
+    c.weighty = 1.0;
+    form.add(Box.createHorizontalGlue(), c);
+    
+    // contact details
+    cDetails.fill = GridBagConstraints.HORIZONTAL;
+    cDetails.insets = new Insets(1, 1, 1, 1);
+    cDetails.weightx = 0;
+    cDetails.anchor = GridBagConstraints.NORTHWEST;
+    cDetails.gridy = 0;
+    cDetails.gridx = 0;
+    cDetails.weightx = 0;
+    formContact.add(new JLabel("Work E-mail"), cDetails);
+    cDetails.gridx = 1;
+    cDetails.weightx = 1;
+    formContact.add(workEmailField, cDetails);
+    cDetails.gridy++;
+    cDetails.gridx = 0;
+    cDetails.weightx = 0;
+    formContact.add(new JLabel("Home E-mail"), cDetails);
+    cDetails.gridx = 1;
+    cDetails.weightx = 1;
+    formContact.add(homeEmailField, cDetails);
+    cDetails.gridy++;
+    cDetails.gridx = 0;
+    cDetails.weightx = 0;
+    formContact.add(new JLabel("Other E-mail"), cDetails);
+    cDetails.gridx = 1;
+    cDetails.weightx = 1;
+    formContact.add(otherEmailField, cDetails);
+    cDetails.gridy++;
+    cDetails.gridx = 0;
+    cDetails.weightx = 0;
+    formContact.add(new JLabel("Work URL"), cDetails);
+    cDetails.gridx = 1;
+    cDetails.weightx = 1;
+    formContact.add(workUrlField, cDetails);
+    cDetails.gridy++;
+    cDetails.gridx = 0;
+    cDetails.weightx = 0;
+    formContact.add(new JLabel("Home URL"), cDetails);
+    cDetails.gridx = 1;
+    cDetails.weightx = 1;
+    formContact.add(homeUrlField, cDetails);
+    cDetails.gridy++;
+    cDetails.gridx = 0;
+    cDetails.weightx = 0;
+    formContact.add(new JLabel("Other URL"), cDetails);
+    cDetails.gridx = 1;
+    cDetails.weightx = 1;
+    formContact.add(otherUrlField, cDetails);
+    cDetails.gridy++;
+    cDetails.gridx = 0;
+    cDetails.weightx = 0;
+    formContact.add(new JLabel("Work Phone"), cDetails);
+    cDetails.gridx = 1;
+    cDetails.weightx = 1;
+    formContact.add(workPhoneField, cDetails);
+    cDetails.gridy++;
+    cDetails.gridx = 0;
+    cDetails.weightx = 0;
+    formContact.add(new JLabel("Home Phone"), cDetails);
+    cDetails.gridx = 1;
+    cDetails.weightx = 1;
+    formContact.add(homePhoneField, cDetails);
+    cDetails.gridy++;
+    cDetails.gridx = 0;
+    cDetails.weightx = 0;
+    formContact.add(new JLabel("Other Phone"), cDetails);
+    cDetails.gridx = 1;
+    cDetails.weightx = 1;
+    formContact.add(otherPhoneField, cDetails);
+    cDetails.gridy++;
+    cDetails.gridx = 0;
+    cDetails.weightx = 0;
+    formContact.add(new JLabel("ICQ"), cDetails);
+    cDetails.gridx = 1;
+    cDetails.weightx = 1;
+    formContact.add(icqField, cDetails);
+    cDetails.gridy++;
+    cDetails.gridx = 0;
+    cDetails.weightx = 0;
+    formContact.add(new JLabel("Jabber"), cDetails);
+    cDetails.gridx = 1;
+    cDetails.weightx = 1;
+    formContact.add(jabberField, cDetails);
+    cDetails.gridy++;
+    cDetails.gridx = 0;
+    cDetails.weightx = 0;
+    formContact.add(new JLabel("Skype"), cDetails);
+    cDetails.gridx = 1;
+    cDetails.weightx = 1;
+    formContact.add(skypeField, cDetails);
+    
+    // note
+    cNote.fill = GridBagConstraints.HORIZONTAL;
+    cNote.insets = new Insets(1, 1, 1, 1);
+    cNote.weightx = 0;
+    cNote.anchor = GridBagConstraints.NORTHWEST;
+    cNote.gridy = 0;
+    cNote.gridx = 0;
+    cNote.weightx = 0;
+    JLabel nl = new JLabel("Note");
+    nl.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
+    formNote.add(nl, cNote);
+    cNote.gridx = 1;
+    cNote.weightx = 1;
     noteField.setLineWrap(true);
     noteField.setWrapStyleWord(true);
-    noteField.setRows(3);
-    form.add(noteField, c);
-    add(form, BorderLayout.CENTER);
+    noteField.setRows(10);
+    noteField.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+    formNote.add(noteField, cNote);
+    cNote.weighty = 1.0;
+    cNote.gridy++;
+    formNote.add(Box.createHorizontalGlue(), cNote);
+    
+    // photo
+    cPhoto.insets = new Insets(1, 1, 1, 1);
+    cPhoto.weightx = 0;
+    cPhoto.anchor = GridBagConstraints.NORTHWEST;
+    cPhoto.gridy = 0;
+    cPhoto.gridx = 0;
+    cPhoto.weightx = 0;
+    JLabel pl = new JLabel("Photo");
+    pl.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
+    formPhoto.add(pl, cPhoto);
+    cPhoto.gridx = 1;
+    cPhoto.weightx = 1;
+    formPhoto.add(photo, cPhoto);
+    cPhoto.weighty = 1.0;
+    cPhoto.gridy++;
+    formPhoto.add(Box.createHorizontalGlue(), cPhoto);
+    
+    // finish
+    add(tabs, BorderLayout.CENTER);
     add(button, BorderLayout.PAGE_END);
     setLocationRelativeTo(null);
     pack();

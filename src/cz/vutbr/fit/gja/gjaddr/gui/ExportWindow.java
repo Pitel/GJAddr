@@ -20,9 +20,7 @@ import javax.swing.*;
 import org.slf4j.LoggerFactory;
 
 /**
- * Window for export management.
- *
- * TODO - messages in case of errors
+ * Window for export management
  *
  * @author Bc. Drahomira Herrmannova <xherrm01@stud.fit.vutbr.cz>
  */

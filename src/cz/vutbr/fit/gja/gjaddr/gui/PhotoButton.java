@@ -2,12 +2,14 @@ package cz.vutbr.fit.gja.gjaddr.gui;
 
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Contact;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -29,6 +31,9 @@ class PhotoButton extends JButton {
 	 */
 	PhotoButton() {
 		super();
+        this.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+        this.setFocusPainted(false);
+        this.setFocusable(false);
 		setIcon(new ImageIcon(getClass().getResource("/res/photo.png")));
 		init();
 	}
@@ -39,6 +44,9 @@ class PhotoButton extends JButton {
 	 */
 	PhotoButton(Contact contact) {
 		super();
+        this.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+        this.setFocusPainted(false);
+        this.setFocusable(false);
 		setContact(contact);
 		init();
 	}

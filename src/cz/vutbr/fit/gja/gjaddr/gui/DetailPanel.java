@@ -16,6 +16,7 @@ import javax.swing.*;
  * Panel with contact detail
  *
  * @author Bc. Jan Kaláb <xkalab00@stud.fit,vutbr.cz>
+ * @author Bc. Drahomira Herrmannova <xherrm01@stud.fit.vutbr.cz>
  */
 class DetailPanel extends JPanel {
 
@@ -55,7 +56,6 @@ class DetailPanel extends JPanel {
     private final JLabel icqLabel = new JLabel("<html><b>" + styleStart + "ICQ" + styleEnd + "</b></html>");
     private final JLabel jabberLabel = new JLabel("<html><b>" + styleStart + "Jabber" + styleEnd + "</b></html>");
     private final JLabel skypeLabel = new JLabel("<html><b>" + styleStart + "Skype" + styleEnd + "</b></html>");
-    private final JLabel messengerLabel = new JLabel("<html><b>" + styleStart + "messenger" + styleEnd + "</b></html>");
     private JScrollPane detailScrollPane;
 
     /**
