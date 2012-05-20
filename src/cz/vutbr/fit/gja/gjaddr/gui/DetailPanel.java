@@ -19,6 +19,8 @@ import javax.swing.*;
  */
 class DetailPanel extends JPanel {
 
+    private String styleStart = "<font face=\"arial\" color=\"#999999\">";
+    private String styleEnd = "</font>";
     static final long serialVersionUID = 0;
     private final Database db = Database.getInstance();
     private final JLabel name = new JLabel();
@@ -40,19 +42,20 @@ class DetailPanel extends JPanel {
     private final JLabel skype = new JLabel();
     private final PhotoButton photo = new PhotoButton();
     private final JLabel groups = new JLabel();
-    private final JLabel nicknameLabel = new JLabel("<html><b>Nickname: </b></html>");
-    private final JLabel addressLabel = new JLabel("<html><b>Address: </b></html>");
-    private final JLabel emailLabel = new JLabel("<html><b>Email: </b></html>");
-    private final JLabel phoneLabel = new JLabel("<html><b>Phone: </b></html>");
-    private final JLabel websLabel = new JLabel("<html><b>Webs: </b></html>");
-    private final JLabel birthdayLabel = new JLabel("<html><b>Birthday: </b></html>");
-    private final JLabel namedayLabel = new JLabel("<html><b>Nameday: </b></html>");
-    private final JLabel celebrationLabel = new JLabel("<html><b>Celebration: </b></html>");
-    private final JLabel noteLabel = new JLabel("<html><b>Note: </b></html>");
-    private final JLabel groupsLabel = new JLabel("<html><b>Groups: </b></html>");
-    private final JLabel icqLabel = new JLabel("<html><b>ICQ: </b></html>");
-    private final JLabel jabberLabel = new JLabel("<html><b>Jabber: </b></html>");
-    private final JLabel skypeLabel = new JLabel("<html><b>Skype: </b></html>");
+    private final JLabel nicknameLabel = new JLabel("<html><b>" + styleStart + "nickname" + styleEnd + "</b></html>");
+    private final JLabel addressLabel = new JLabel("<html><b>" + styleStart + "address" + styleEnd + "</b></html>");
+    private final JLabel emailLabel = new JLabel("<html><b>" + styleStart + "email" + styleEnd + "</b></html>");
+    private final JLabel phoneLabel = new JLabel("<html><b>" + styleStart + "phone" + styleEnd + "</b></html>");
+    private final JLabel websLabel = new JLabel("<html><b>" + styleStart + "webs" + styleEnd + "</b></html>");
+    private final JLabel birthdayLabel = new JLabel("<html><b>" + styleStart + "birthday" + styleEnd + "</b></html>");
+    private final JLabel namedayLabel = new JLabel("<html><b>" + styleStart + "name day" + styleEnd + "</b></html>");
+    private final JLabel celebrationLabel = new JLabel("<html><b>" + styleStart + "anniversary" + styleEnd + "</b></html>");
+    private final JLabel noteLabel = new JLabel("<html><b>" + styleStart + "note" + styleEnd + "</b></html>");
+    private final JLabel groupsLabel = new JLabel("<html><b>" + styleStart + "groups" + styleEnd + "</b></html>");
+    private final JLabel icqLabel = new JLabel("<html><b>" + styleStart + "ICQ" + styleEnd + "</b></html>");
+    private final JLabel jabberLabel = new JLabel("<html><b>" + styleStart + "Jabber" + styleEnd + "</b></html>");
+    private final JLabel skypeLabel = new JLabel("<html><b>" + styleStart + "Skype" + styleEnd + "</b></html>");
+    private final JLabel messengerLabel = new JLabel("<html><b>" + styleStart + "messenger" + styleEnd + "</b></html>");
     private JScrollPane detailScrollPane;
 
     /**
@@ -60,140 +63,255 @@ class DetailPanel extends JPanel {
      */
     public DetailPanel() {
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-        setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
-        final JLabel label = new JLabel("Detail");
-        label.setAlignmentX(CENTER_ALIGNMENT);
-        add(label);
+        setBorder(BorderFactory.createEmptyBorder(15, 0, 0, 10));
 
-        // create panel with name and with birthday icon
         final JPanel namePanel = new JPanel();
-        namePanel.setLayout(new BoxLayout(namePanel, BoxLayout.LINE_AXIS));
+        namePanel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        // photo
+        gbc.anchor = GridBagConstraints.PAGE_START;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 0.2;
+        gbc.gridheight = 2;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        JPanel photoWrapper = new JPanel();
+        photoWrapper.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
         photo.setVisible(false);
         photo.setToolTipText("Change user photo");
-        photo.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createRaisedBevelBorder(), BorderFactory.createLoweredBevelBorder()));
-        namePanel.add(photo);
-        name.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
-        namePanel.add(name);
-        add(namePanel);
-
+        photo.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
+        photo.setHorizontalAlignment(SwingConstants.RIGHT);
+        photoWrapper.add(photo);
+        namePanel.add(photoWrapper, gbc);
+        
+        // name
+        gbc.gridx = 1;
+        gbc.weightx = 1.0;
+        gbc.gridheight = 1;
+        name.setVerticalAlignment(SwingConstants.TOP);
+        namePanel.add(name, gbc);
+        
+        // icon panel
+        gbc.gridy++;
         final JPanel iconPanel = new JPanel();
         iconPanel.setLayout(new BoxLayout(iconPanel, BoxLayout.LINE_AXIS));
         bdayIcon.setIcon(new ImageIcon(getClass().getResource("/res/present.png")));
         bdayIcon.setToolTipText("User has birthday today");
-        bdayIcon.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 20));
+        bdayIcon.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
         bdayIcon.setVisible(false);
         namedayIcon.setIcon(new ImageIcon(getClass().getResource("/res/nameday.png")));
         namedayIcon.setToolTipText("User has nameday today");
-        namedayIcon.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 20));
+        namedayIcon.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
         namedayIcon.setVisible(false);
         celebrationIcon.setIcon(new ImageIcon(getClass().getResource("/res/celebration.png")));
         celebrationIcon.setToolTipText("User has celebration today");
-        celebrationIcon.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+        celebrationIcon.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
         celebrationIcon.setVisible(false);
         iconPanel.add(bdayIcon);
         iconPanel.add(namedayIcon);
         iconPanel.add(celebrationIcon);
         iconPanel.add(Box.createHorizontalGlue());
-        add(iconPanel);
-
-        final JPanel detailPanel = new JPanel(new GridBagLayout());
-        final GridBagConstraints c = new GridBagConstraints();
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.weightx = 1;
-        c.anchor = GridBagConstraints.PAGE_START;
-        c.gridx = 0;
-        c.gridy = 0;
-        detailPanel.add(nicknameLabel, c);
-        c.gridx = 1;
+        namePanel.add(iconPanel, gbc);
+       
+        // nickname
+        gbc.gridx = 0;
+        gbc.gridy++;
+        gbc.weightx = 0.2;
+        nicknameLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 10));
+        nicknameLabel.setVisible(false);
+        nicknameLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        namePanel.add(nicknameLabel, gbc);
+        gbc.gridx = 1;
+        gbc.weightx = 1.0;
+        nickname.setLayout(new BoxLayout(nickname, BoxLayout.PAGE_AXIS));
         nickname.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
-        detailPanel.add(nickname, c);
-        c.gridx = 0;
-        c.gridy++;
-        detailPanel.add(addressLabel, c);
-        c.gridx = 1;
+        nickname.setHorizontalAlignment(SwingConstants.LEFT);
+        nickname.setVisible(false);
+        namePanel.add(nickname, gbc);
+         
+        // addresses
+        gbc.gridx = 0;
+        gbc.gridy++;
+        gbc.weightx = 0.2;
+        addressLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 10));
+        addressLabel.setVisible(false);
+        addressLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        namePanel.add(addressLabel, gbc);
+        gbc.gridx = 1;
+        gbc.weightx = 1.0;
         address.setLayout(new BoxLayout(address, BoxLayout.PAGE_AXIS));
         address.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
-        detailPanel.add(address, c);
-        c.gridx = 0;
-        c.gridy++;
-        detailPanel.add(emailLabel, c);
-        c.gridx = 1;
+        address.setVisible(false);
+        namePanel.add(address, gbc);
+        
+        // email
+        gbc.gridx = 0;
+        gbc.gridy++;
+        gbc.weightx = 0.2;
+        emailLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 10));
+        emailLabel.setVisible(false);
+        emailLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        namePanel.add(emailLabel, gbc);
+        gbc.gridx = 1;
+        gbc.weightx = 1.0;
         emails.setLayout(new BoxLayout(emails, BoxLayout.PAGE_AXIS));
         emails.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
-        detailPanel.add(emails, c);
-        c.gridx = 0;
-        c.gridy++;
-        detailPanel.add(phoneLabel, c);
-        c.gridx = 1;
+        emails.setVisible(false);
+        namePanel.add(emails, gbc);
+      
+        // phone
+        gbc.gridx = 0;
+        gbc.gridy++;
+        gbc.weightx = 0.2;
+        phoneLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 10));
+        phoneLabel.setVisible(false);
+        phoneLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        namePanel.add(phoneLabel, gbc);
+        gbc.gridx = 1;
+        gbc.weightx = 1.0;
         phones.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
-        detailPanel.add(phones, c);
-        c.gridx = 0;
-        c.gridy++;
-        detailPanel.add(websLabel, c);
-        c.gridx = 1;
+        phones.setVisible(false);
+        namePanel.add(phones, gbc);
+        
+        // webs
+        gbc.gridx = 0;
+        gbc.gridy++;
+        gbc.weightx = 0.2;
+        websLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 10));
+        websLabel.setVisible(false);
+        websLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        namePanel.add(websLabel, gbc);
+        gbc.gridx = 1;
+        gbc.weightx = 1.0;
         webs.setLayout(new BoxLayout(webs, BoxLayout.PAGE_AXIS));
         webs.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
-        detailPanel.add(webs, c);
-        c.gridx = 0;
-        c.gridy++;
-        detailPanel.add(icqLabel, c);
-        c.gridx = 1;
+        webs.setVisible(false);
+        namePanel.add(webs, gbc);
+          
+        // icq
+        gbc.gridx = 0;
+        gbc.gridy++;
+        gbc.weightx = 0.2;
+        icqLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 10));
+        icqLabel.setVisible(false);
+        icqLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        namePanel.add(icqLabel, gbc);
+        gbc.gridx = 1;
+        gbc.weightx = 1.0;
         icq.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
-        detailPanel.add(icq, c);
-        c.gridx = 0;
-        c.gridy++;
-        detailPanel.add(jabberLabel, c);
-        c.gridx = 1;
+        icq.setVisible(false);
+        namePanel.add(icq, gbc);
+       
+        // jabber
+        gbc.gridx = 0;
+        gbc.gridy++;
+        gbc.weightx = 0.2;
+        jabberLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 10));
+        jabberLabel.setVisible(false);
+        jabberLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        namePanel.add(jabberLabel, gbc);
+        gbc.gridx = 1;
+        gbc.weightx = 1.0;
         jabber.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
-        detailPanel.add(jabber, c);
-        c.gridx = 0;
-        c.gridy++;
-        detailPanel.add(skypeLabel, c);
-        c.gridx = 1;
+        jabber.setVisible(false);
+        namePanel.add(jabber, gbc);
+        
+        // skype
+        gbc.gridx = 0;
+        gbc.gridy++;
+        gbc.weightx = 0.2;
+        skypeLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 10));
+        skypeLabel.setVisible(false);
+        skypeLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        namePanel.add(skypeLabel, gbc);
+        gbc.gridx = 1;
+        gbc.weightx = 1.0;
         skype.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
-        detailPanel.add(skype, c);
-        c.gridx = 0;
-        c.gridy++;
-        detailPanel.add(birthdayLabel, c);
-        c.gridx = 1;
+        skype.setVisible(false);
+        namePanel.add(skype, gbc);
+      
+        // birthday
+        gbc.gridx = 0;
+        gbc.gridy++;
+        gbc.weightx = 0.2;
+        birthdayLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 10));
+        birthdayLabel.setVisible(false);
+        birthdayLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        namePanel.add(birthdayLabel, gbc);
+        gbc.gridx = 1;
+        gbc.weightx = 1.0;
         birthday.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
-        detailPanel.add(birthday, c);
-        c.gridx = 0;
-        c.gridy++;
-        detailPanel.add(namedayLabel, c);
-        c.gridx = 1;
+        birthday.setVisible(false);
+        namePanel.add(birthday, gbc);
+           
+        // nameday
+        gbc.gridx = 0;
+        gbc.gridy++;
+        gbc.weightx = 0.2;
+        namedayLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 10));
+        namedayLabel.setVisible(false);
+        namedayLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        namePanel.add(namedayLabel, gbc);
+        gbc.gridx = 1;
+        gbc.weightx = 1.0;
         nameday.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
-        detailPanel.add(nameday, c);
-        c.gridx = 0;
-        c.gridy++;
-        detailPanel.add(celebrationLabel, c);
-        c.gridx = 1;
+        nameday.setVisible(false);
+        namePanel.add(nameday, gbc);
+     
+        // celebration
+        gbc.gridx = 0;
+        gbc.gridy++;
+        gbc.weightx = 0.2;
+        celebrationLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 10));
+        celebrationLabel.setVisible(false);
+        celebrationLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        namePanel.add(celebrationLabel, gbc);
+        gbc.gridx = 1;
+        gbc.weightx = 1.0;
         celebration.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
-        detailPanel.add(celebration, c);
-        c.gridx = 0;
-        c.gridy++;
-        detailPanel.add(noteLabel, c);
-        c.gridx = 1;
+        celebration.setVisible(false);
+        namePanel.add(celebration, gbc);
+          
+        // note
+        gbc.gridx = 0;
+        gbc.gridy++;
+        gbc.weightx = 0.2;
+        noteLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 10));
+        noteLabel.setVisible(false);
+        noteLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        namePanel.add(noteLabel, gbc);
+        gbc.gridx = 1;
+        gbc.weightx = 1.0;
         note.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
-        detailPanel.add(note, c);
-        c.gridx = 0;
-        c.gridy++;
-        detailPanel.add(groupsLabel, c);
-        c.gridx = 1;
-        //groups.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));	//Last without margin
-        detailPanel.add(groups, c);
-        c.gridy++;
-        c.gridx = 1;
+        note.setVisible(false);
+        namePanel.add(note, gbc);
+        
+        // groups
+        gbc.gridx = 0;
+        gbc.gridy++;
+        gbc.weightx = 0.2;
+        groupsLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 10));
+        groupsLabel.setVisible(false);
+        groupsLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        namePanel.add(groupsLabel, gbc);
+        gbc.gridx = 1;
+        gbc.weightx = 1.0;
+        groups.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
+        groups.setVisible(false);
+        namePanel.add(groups, gbc);
+        
+        // map
+        gbc.gridy++;
         this.maps.setLayout(new BoxLayout(this.maps, BoxLayout.PAGE_AXIS));
         this.maps.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
-        detailPanel.add(this.maps, c);
-        c.gridy++;
-        c.weighty = 1;
-        detailPanel.add(Box.createVerticalGlue(), c);
-        detailScrollPane = new JScrollPane(detailPanel);
-        detailScrollPane.setBorder(BorderFactory.createEmptyBorder());
-        detailScrollPane.setVisible(false);
-        add(detailScrollPane);
+        namePanel.add(this.maps, gbc);
+        
+        // finish
+        gbc.gridy++;
+        gbc.weighty = 1;
+        namePanel.add(Box.createVerticalGlue(), gbc);
+        add(namePanel);
     }
 
     /**
@@ -220,7 +338,8 @@ class DetailPanel extends JPanel {
             }
             photo.setContact(contact);
             photo.setVisible(true);
-            name.setText(String.format("<html><h1>" + contact.getFullNameForDetail() + "</h1></html>"));
+            name.setVisible(true);
+            name.setText(String.format("<html><h2>" + contact.getFullNameForDetail() + "</h2></html>"));
             if (contact.getNickName() != null && !contact.getNickName().isEmpty()) {
                 nicknameLabel.setVisible(true);
                 nickname.setVisible(true);
@@ -235,6 +354,7 @@ class DetailPanel extends JPanel {
             for (Address a : contact.getAdresses()) {
                 if (!a.getAddress().isEmpty()) {
                     addressLabel.setVisible(true);
+                    address.setVisible(true);
                     JLabelButton l = new JLabelButton("<html><p>" + a.getAddress() + "</p></html>");
                     l.setCursor(new Cursor(Cursor.HAND_CURSOR));
                     l.setToolTipText("Show location at Google Maps");
@@ -248,6 +368,7 @@ class DetailPanel extends JPanel {
             for (Email e : contact.getEmails()) {
                 if (!e.getEmail().isEmpty()) {
                     emailLabel.setVisible(true);
+                    emails.setVisible(true);
                     JLabelButton lb = new JLabelButton(e.getEmail());
                     lb.setCursor(new Cursor(Cursor.HAND_CURSOR));
                     lb.setForeground(Color.BLUE);
@@ -262,6 +383,7 @@ class DetailPanel extends JPanel {
             for (Url u : contact.getUrls()) {
                 if (u.getValue() != null) {
                     websLabel.setVisible(true);
+                    webs.setVisible(true);
                     JLabelButton lb = new JLabelButton(u.getValue().toString());
                     lb.setCursor(new Cursor(Cursor.HAND_CURSOR));
                     lb.setToolTipText("Go to the website");
@@ -376,7 +498,7 @@ class DetailPanel extends JPanel {
                 }
             }
 
-            detailScrollPane.setVisible(true);
+            //detailScrollPane.setVisible(true);
         }
     }
 
