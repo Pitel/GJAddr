@@ -64,7 +64,7 @@ class DetailPanel extends JPanel {
      */
     public DetailPanel() {
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-        setBorder(BorderFactory.createEmptyBorder(15, 0, 0, 10));
+        setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 10));
 
         final JPanel namePanel = new JPanel();
         namePanel.setLayout(new GridBagLayout());
