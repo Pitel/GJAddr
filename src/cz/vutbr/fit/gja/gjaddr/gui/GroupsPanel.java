@@ -55,9 +55,9 @@ class GroupsPanel extends JPanel implements KeyListener {
     this.mainWindowHandle = handle;
 
     setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-    JLabel label = new JLabel("Groups");
-    label.setAlignmentX(CENTER_ALIGNMENT);
-    add(label);
+//    JLabel label = new JLabel("Groups");
+//    label.setAlignmentX(CENTER_ALIGNMENT);
+//    add(label);
 
     // fill list and enable/disable buttons
     fillList();

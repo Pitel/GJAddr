@@ -89,6 +89,7 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
     findLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
     toolbar.add(findLabel);
 
+    JPanel wrapper = new JPanel(new GridLayout());
     searchField = new JTextField();
     searchField.setForeground(Color.GRAY);
     searchField.setText(SEARCH_BUTTON_TOOLTIP);
@@ -96,14 +97,12 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
     Font font = new Font(searchField.getFont().getFontName(), Font.BOLD, 11);
     searchField.setFont(font);
     searchField.setToolTipText("Contacts filter");
-    searchField.setBorder(BorderFactory.createCompoundBorder(
-            searchField.getBorder(),
-            BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 
     searchField.getDocument().addDocumentListener(this);
     searchField.addFocusListener(new SearchFieldListener());
-
-    toolbar.add(searchField);
+    wrapper.add(searchField);
+    
+    toolbar.add(wrapper);
     add(toolbar, BorderLayout.NORTH);
 
     add(new GroupsPanel(this, new GroupSelectionListener()), BorderLayout.WEST);
@@ -112,6 +111,7 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
     detailPanel = new DetailPanel();
     detailPanel.setMinimumSize(new Dimension(300, 300));
     final JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, contactsPanel, detailPanel);
+    splitPane.setBorder(null);
     splitPane.setResizeWeight(1);
     splitPane.setContinuousLayout(true);
     splitPane.setPreferredSize(new Dimension(800, 500));

@@ -45,9 +45,9 @@ public class ContactsPanel extends JPanel implements KeyListener {
     this.mainWindowHandle = handle;
 
     setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-    JLabel label = new JLabel("Contacts");
-    label.setAlignmentX(CENTER_ALIGNMENT);
-    add(label);
+//    JLabel label = new JLabel("Contacts");
+//    label.setAlignmentX(CENTER_ALIGNMENT);
+//    add(label);
 
     fillTable(false, false);
     this.mainWindowHandle.handleContactActionsVisibility();
