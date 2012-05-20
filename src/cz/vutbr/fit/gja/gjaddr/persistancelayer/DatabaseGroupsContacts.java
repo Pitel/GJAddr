@@ -31,7 +31,7 @@ public class DatabaseGroupsContacts {
   }
 
   /**
-   * Add contacts to the group. TODO check if is the number currently not in the list
+   * Add contacts to the group.
    *
    * @param group group
    * @param contactsToAdd list of contacts.

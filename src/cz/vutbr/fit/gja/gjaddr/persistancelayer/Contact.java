@@ -22,7 +22,7 @@ public class Contact implements Serializable {
    * Maximum lenght for method getFullName(). If is the string larger, returns 30
    * characters and three dots.
    */
-  private final int FULLNAME_MAX_LENGTH = 30;
+  private final int MAX_DETAIL_LENGTH = 30;
   /**
    * Contact id - not visible for GUI, only for DB usage
    */
@@ -231,7 +231,7 @@ public class Contact implements Serializable {
   public String getNote() {
     return note;
   }
-
+  
   /**
    * Set note.
    */
@@ -550,8 +550,8 @@ public class Contact implements Serializable {
   public String getFullNameForDetail() {
     String fullname = this.getFullName();
 
-    if (fullname.length() > FULLNAME_MAX_LENGTH) {
-      return fullname.substring(0, FULLNAME_MAX_LENGTH - 1) + " ...";
+    if (fullname.length() > MAX_DETAIL_LENGTH) {
+      return fullname.substring(0, MAX_DETAIL_LENGTH - 1) + " ...";
     }
 
     return fullname;
@@ -649,29 +649,29 @@ public class Contact implements Serializable {
      *
      * @return
      */
-    public String getAllMessengers() {
-        String separator = "";
-        StringBuilder ims = new StringBuilder();
+  public String getAllMessengers() {
+      String separator = "";
+      StringBuilder ims = new StringBuilder();
 
-        try {
-            for (Messenger m : this.messenger) {
-                ims.append(separator);
-                ims.append(m.getValue());
-                separator = ", ";
-            }
-        } catch (NullPointerException e) {
-            return "";
-        }
+      try {
+          for (Messenger m : this.messenger) {
+              ims.append(separator);
+              ims.append(m.getValue());
+              separator = ", ";
+          }
+      } catch (NullPointerException e) {
+          return "";
+      }
 
-        return ims.toString();
-    }
-    
-    /**
-     * Get all messengers as single string.
-     *
-     * @return
-     */
-    public String getAllMessengersWithType() {
+      return ims.toString();
+  }
+
+  /**
+    * Get all messengers as single string.
+    *
+    * @return
+    */
+  public String getAllMessengersWithType() {
         String separator = "";
         StringBuilder ims = new StringBuilder();
 
