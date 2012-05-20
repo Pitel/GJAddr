@@ -14,6 +14,10 @@ import org.slf4j.LoggerFactory;
 public class Settings {
 
   /**
+   * Current program version.
+   */
+  public final String PROGRAM_VERSION = "1.1";
+  /**
    * Key value for name order property.
    */
   private final String NAME_ORDER = "nameOrder";
@@ -29,7 +33,7 @@ public class Settings {
    * Properties file location.
    */
   private final String PROPERTY_FILE = new File(System.getProperty("user.home"),
-                                       "/.gjaddr/gjaddr.properties").getPath();
+          "/.gjaddr/gjaddr.properties").getPath();
   /**
    * File with czech name days.
    */

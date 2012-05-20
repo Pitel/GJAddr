@@ -1,5 +1,6 @@
 package cz.vutbr.fit.gja.gjaddr.gui;
 
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.Settings;
 import java.awt.event.ActionEvent;
 import javax.swing.*;
 import org.slf4j.LoggerFactory;
@@ -25,7 +26,8 @@ class AboutWindow extends JDialog {
         setIconImage(icon.getImage());
         setTitle("About GJAddr");
         setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
-        final JLabel header = new JLabel("<html><h1>GJAddr 1.0</h1></html>", JLabel.CENTER);
+        String programVersion = Settings.instance().PROGRAM_VERSION;
+        final JLabel header = new JLabel("<html><h1>GJAddr " + programVersion + "</h1></html>", JLabel.CENTER);
         header.setAlignmentX(CENTER_ALIGNMENT);
         add(header);
         final JLabel logo = new JLabel(icon, JLabel.CENTER);
