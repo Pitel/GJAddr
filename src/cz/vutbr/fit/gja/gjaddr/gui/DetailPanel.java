@@ -27,6 +27,7 @@ class DetailPanel extends JPanel {
     private final JLabel name = new JLabel();
     private final JLabel nickname = new JLabel();
     private final JPanel address = new JPanel();
+    private final JPanel addPanel = new JPanel();
     private final JPanel maps = new JPanel();
     private final JPanel emails = new JPanel();
     private final JLabel phones = new JLabel();
@@ -140,10 +141,14 @@ class DetailPanel extends JPanel {
         namePanel.add(addressLabel, gbc);
         gbc.gridx = 1;
         gbc.weightx = 1.0;
+        addPanel.setLayout(new GridLayout(1, 2));
         address.setLayout(new BoxLayout(address, BoxLayout.PAGE_AXIS));
         address.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
-        address.setVisible(false);
-        namePanel.add(address, gbc);
+        addPanel.add(address);
+        addPanel.add(Box.createHorizontalGlue());
+        addPanel.setVisible(false);
+        namePanel.add(addPanel, gbc);
+        
         
         // email
         gbc.gridx = 0;
@@ -350,12 +355,12 @@ class DetailPanel extends JPanel {
             }
 
             address.removeAll();
-            address.setVisible(false);
+            addPanel.setVisible(false);
             addressLabel.setVisible(false);
             for (Address a : contact.getAdresses()) {
                 if (!a.getAddress().isEmpty()) {
                     addressLabel.setVisible(true);
-                    address.setVisible(true);
+                    addPanel.setVisible(true);
                     JLabelButton l = new JLabelButton("<html><p>" + a.getAddress() + "</p></html>");
                     l.setCursor(new Cursor(Cursor.HAND_CURSOR));
                     l.setToolTipText("Show location at Google Maps");
