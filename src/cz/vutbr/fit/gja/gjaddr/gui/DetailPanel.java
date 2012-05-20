@@ -350,6 +350,7 @@ class DetailPanel extends JPanel {
             }
 
             address.removeAll();
+            address.setVisible(false);
             addressLabel.setVisible(false);
             for (Address a : contact.getAdresses()) {
                 if (!a.getAddress().isEmpty()) {
@@ -364,6 +365,7 @@ class DetailPanel extends JPanel {
             }
 
             emails.removeAll();
+            emails.setVisible(false);
             emailLabel.setVisible(false);
             for (Email e : contact.getEmails()) {
                 if (!e.getEmail().isEmpty()) {
@@ -379,6 +381,7 @@ class DetailPanel extends JPanel {
             }
 
             webs.removeAll();
+            webs.setVisible(false);
             websLabel.setVisible(false);
             for (Url u : contact.getUrls()) {
                 if (u.getValue() != null) {
