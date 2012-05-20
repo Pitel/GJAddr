@@ -1,6 +1,5 @@
 package cz.vutbr.fit.gja.gjaddr.gui;
 
-import cz.vutbr.fit.gja.gjaddr.gui.util.EscapeKeyHandler;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Contact;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Group;
@@ -16,7 +15,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author Bc. Radek Gajdušek <xgajdu07@stud.fit,vutbr.cz>
  */
-class GroupsMembershipWindow extends JFrame {
+class GroupsMembershipWindow extends JDialog {
 
   static final long serialVersionUID = 0;
   /**
@@ -50,7 +49,9 @@ class GroupsMembershipWindow extends JFrame {
    * @param contact edited contact
    */
   public GroupsMembershipWindow(Contact contact) {
-    super("Related groups");
+    super();
+    super.setTitle("Related groups");
+    super.setModal(true);
     this.editedContact = contact;
     this.button.addActionListener(new ManageContactGroupsListener());
 
@@ -70,7 +71,9 @@ class GroupsMembershipWindow extends JFrame {
    * @param group edited group
    */
   public GroupsMembershipWindow(Group group) {
-    super("Related contacts");
+    super();
+    super.setTitle("Related contacts");
+    super.setModal(true);
 
     this.editedGroup = group;
     this.button.addActionListener(new ManageGroupContactsListener());
@@ -84,6 +87,7 @@ class GroupsMembershipWindow extends JFrame {
 
     log("Opening related contacts window.");
   }
+  
 
   /**
    * Prepare windows layout.
@@ -91,8 +95,6 @@ class GroupsMembershipWindow extends JFrame {
   private void prepareWindow() {
     final JPanel form = new JPanel();
     final JScrollPane listScrollPane = new JScrollPane(list);
-
-    EscapeKeyHandler.setEscapeAction(this);
     
     add(form, BorderLayout.CENTER);
     add(button, BorderLayout.PAGE_END);
@@ -100,6 +102,27 @@ class GroupsMembershipWindow extends JFrame {
     add(list);
   }
 
+    /**
+     * Make window escapable.
+     * 
+     * @return 
+     */
+    @Override
+    protected JRootPane createRootPane() {
+        JRootPane rp = new JRootPane();
+        KeyStroke stroke = KeyStroke.getKeyStroke("ESCAPE");
+        Action actionListener = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                dispose();
+            }
+        };
+        InputMap inputMap = rp.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        inputMap.put(stroke, "ESCAPE");
+        rp.getActionMap().put("ESCAPE", actionListener);
+        return rp;
+    }
+    
   /**
    * Load contacts to the window - group case.
    */

@@ -2,18 +2,17 @@ package cz.vutbr.fit.gja.gjaddr.gui;
 
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Group;
+import java.awt.event.ActionEvent;
 import java.util.Arrays;
 import java.util.List;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
+import javax.swing.*;
 
 /**
  * Window for manipulating with groups.
  *
  * @author Bc. Radek Gajdusek <xgajdu07@stud.fit,vutbr.cz>
  */
-public final class GroupWindow extends JFrame {
+public final class GroupWindow extends JDialog {
 
   static final long serialVersionUID = 0;
   /**
@@ -36,7 +35,7 @@ public final class GroupWindow extends JFrame {
    * @param action type of action, that should be done.
    */
   public GroupWindow(Action action) {
-
+      this.setModal(true);
     boolean update = false;
     while (!update) {
       switch (action) {
@@ -54,6 +53,27 @@ public final class GroupWindow extends JFrame {
 
     GroupsPanel.fillList();
   }
+  
+    /**
+     * Make window escapable.
+     * 
+     * @return 
+     */
+    @Override
+    protected JRootPane createRootPane() {
+        JRootPane rp = new JRootPane();
+        KeyStroke stroke = KeyStroke.getKeyStroke("ESCAPE");
+        javax.swing.Action actionListener = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                dispose();
+            }
+        };
+        InputMap inputMap = rp.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        inputMap.put(stroke, "ESCAPE");
+        rp.getActionMap().put("ESCAPE", actionListener);
+        return rp;
+    }
 
   /**
    * Display user info, that group with the same name exists.
