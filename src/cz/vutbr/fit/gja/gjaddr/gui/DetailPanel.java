@@ -11,6 +11,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.text.DateFormat;
 import javax.swing.*;
+import org.slf4j.LoggerFactory;
 
 /**
  * Panel with contact detail
@@ -26,8 +27,8 @@ class DetailPanel extends JPanel {
     private final Database db = Database.getInstance();
     private final JLabel name = new JLabel();
     private final JLabel nickname = new JLabel();
-    private final JPanel address = new JPanel();
-    private final JPanel addPanel = new JPanel();
+    private final JLabelButton address = new JLabelButton();
+    //private final JPanel addPanel = new JPanel();
     private final JPanel maps = new JPanel();
     private final JPanel emails = new JPanel();
     private final JLabel phones = new JLabel();
@@ -141,13 +142,11 @@ class DetailPanel extends JPanel {
         namePanel.add(addressLabel, gbc);
         gbc.gridx = 1;
         gbc.weightx = 1.0;
-        addPanel.setLayout(new GridLayout(1, 2));
         address.setLayout(new BoxLayout(address, BoxLayout.PAGE_AXIS));
         address.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
-        addPanel.add(address);
-        addPanel.add(Box.createHorizontalGlue());
-        addPanel.setVisible(false);
-        namePanel.add(addPanel, gbc);
+        address.setHorizontalAlignment(SwingConstants.LEFT);
+        address.setVisible(false);
+        namePanel.add(address, gbc);
 
 
         // email
@@ -355,17 +354,17 @@ class DetailPanel extends JPanel {
             }
 
             address.removeAll();
-            addPanel.setVisible(false);
+            address.setVisible(false);
             addressLabel.setVisible(false);
             for (Address a : contact.getAdresses()) {
                 if (!a.getAddress().isEmpty()) {
                     addressLabel.setVisible(true);
-                    addPanel.setVisible(true);
-                    JLabelButton l = new JLabelButton("<html><p>" + a.getAddress() + "</p></html>");
-                    l.setCursor(new Cursor(Cursor.HAND_CURSOR));
-                    l.setToolTipText("Show location at Google Maps");
-                    l.addActionListener(new MapListener());
-                    address.add(l);
+                    address.setVisible(true);
+                    address.setText("<html><p>" + a.getAddress() + "</p></html>");
+                    address.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                    address.setToolTipText("Show location at Google Maps");
+                    address.addActionListener(new MapListener());
+                    break; // we can break here because contact has always only one address
                 }
             }
 
@@ -535,9 +534,8 @@ class DetailPanel extends JPanel {
 
         @Override
         public void actionPerformed(ActionEvent ev) {
-            final JButton b = (JButton) ev.getSource();
             try {
-                Desktop.getDesktop().browse(new URI("http://maps.google.com/maps?q=" + URLEncoder.encode(b.getText().replaceAll("\\<.*?>", ""), "utf8")));
+                Desktop.getDesktop().browse(new URI("http://maps.google.com/maps?q=" + URLEncoder.encode(address.getText().replaceAll("\\<.*?>", ""), "utf8")));
             } catch (URISyntaxException ex) {
                 System.err.println(ex);
             } catch (IOException ex) {
