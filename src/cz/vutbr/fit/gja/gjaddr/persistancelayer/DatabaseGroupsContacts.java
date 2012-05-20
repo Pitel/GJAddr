@@ -12,10 +12,6 @@ import java.util.List;
 public class DatabaseGroupsContacts {
 
   /**
-   * Groups contacts persistance file filename.
-   */
-  private final String FILENAME = new File(Settings.instance().getDataDir(), "groupsContacts").toString();
-  /**
    * GC collection.
    */
   private List<GroupContact> groupsContacts = null;
@@ -28,8 +24,15 @@ public class DatabaseGroupsContacts {
   }
 
   /**
-   * Add contacts to the group.
-   * TODO check if is the number currently not in the list
+   * Get current persistance filename.
+   */
+  private String getFilename() {
+    return new File(Settings.instance().getDataDir(), "groupsContacts").getPath();
+  }
+
+  /**
+   * Add contacts to the group. TODO check if is the number currently not in the list
+   *
    * @param group group
    * @param contactsToAdd list of contacts.
    */
@@ -138,7 +141,7 @@ public class DatabaseGroupsContacts {
    */
   private void load() {
     Persistance per = new Persistance();
-    this.groupsContacts = per.loadData(FILENAME);
+    this.groupsContacts = per.loadData(this.getFilename());
   }
 
   /**
@@ -146,7 +149,7 @@ public class DatabaseGroupsContacts {
    */
   void save() {
     Persistance per = new Persistance();
-    per.saveData(FILENAME, this.groupsContacts);
+    per.saveData(this.getFilename(), this.groupsContacts);
   }
 
   /**

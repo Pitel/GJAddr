@@ -16,10 +16,6 @@ public class DatabaseContacts {
    */
   private int idCounter = 0;
   /**
-   * Persistance filename.
-   */
-  private final String FILENAME = new File(Settings.instance().getDataDir(), "contacts").toString();
-  /**
    * Contacts collection.
    */
   private ArrayList<Contact> contacts = null;
@@ -30,6 +26,13 @@ public class DatabaseContacts {
   public DatabaseContacts() {
     this.load();
     this.setLastIdNumber();
+  }
+
+  /**
+   * Get current persistance filename.
+   */
+  private String getFilename() {
+    return new File(Settings.instance().getDataDir(), "contacts").getPath();
   }
 
   /**
@@ -73,7 +76,7 @@ public class DatabaseContacts {
     List<Email> emailsToRemove = new ArrayList<Email>();
     List<Url> urlsToRemove = new ArrayList<Url>();
     List<PhoneNumber> phonesToRemove = new ArrayList<PhoneNumber>();
-    List<Messenger> messengersToRemove = new ArrayList<Messenger>(); 
+    List<Messenger> messengersToRemove = new ArrayList<Messenger>();
 
     for (Event event : contact.getDates()) {
       if (event.getDate() == null) {
@@ -104,15 +107,15 @@ public class DatabaseContacts {
         phonesToRemove.add(phone);
       }
     }
-    
+
     for (Messenger messenger : contact.getMessenger()) {
       if (messenger.getValue().isEmpty()) {
         messengersToRemove.add(messenger);
       }
-    }  
-    
+    }
+
     // Custom are currently not supported - null value
-    List<Custom> customsToRemove = new ArrayList<Custom>();  
+    List<Custom> customsToRemove = new ArrayList<Custom>();
     List<Custom> customs = contact.getCustoms();
     if (customs != null) {
       for (Custom custom : contact.getCustoms()) {
@@ -128,7 +131,7 @@ public class DatabaseContacts {
     contact.getEmails().removeAll(emailsToRemove);
     contact.getUrls().removeAll(urlsToRemove);
     contact.getPhoneNumbers().removeAll(phonesToRemove);
-    contact.getMessenger().removeAll(messengersToRemove);   
+    contact.getMessenger().removeAll(messengersToRemove);
   }
 
   /**
@@ -154,7 +157,7 @@ public class DatabaseContacts {
    */
   private void load() {
     Persistance per = new Persistance();
-    this.contacts = (ArrayList<Contact>) per.loadData(FILENAME);
+    this.contacts = (ArrayList<Contact>) per.loadData(this.getFilename());
   }
 
   /**
@@ -162,7 +165,7 @@ public class DatabaseContacts {
    */
   void save() {
     Persistance per = new Persistance();
-    per.saveData(FILENAME, this.contacts);
+    per.saveData(this.getFilename(), this.contacts);
   }
 
   /**
