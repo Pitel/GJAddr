@@ -11,7 +11,6 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.text.DateFormat;
 import javax.swing.*;
-import org.slf4j.LoggerFactory;
 
 /**
  * Panel with contact detail
@@ -487,6 +486,7 @@ class DetailPanel extends JPanel {
             groups.setText(groupstring.toString());
 
             this.maps.removeAll();
+            this.maps.setVisible(true);
             for (Address a : contact.getAdresses()) {
                 if (!a.getAddress().isEmpty()) {
                     JLabelButton l = new JLabelButton();
@@ -508,7 +508,45 @@ class DetailPanel extends JPanel {
             //detailScrollPane.setVisible(true);
         }
     }
-
+    
+    /**
+     * Hides contacts detail.
+     */
+    void hideDetail() {     
+        photo.setVisible(false);
+        name.setVisible(false);
+        bdayIcon.setVisible(false);
+        namedayIcon.setVisible(false);
+        celebrationIcon.setVisible(false);
+        nicknameLabel.setVisible(false);
+        nickname.setVisible(false);
+        addressLabel.setVisible(false);
+        address.setVisible(false);
+        emailLabel.setVisible(false);
+        emails.setVisible(false);
+        phoneLabel.setVisible(false);
+        phones.setVisible(false);
+        websLabel.setVisible(false);
+        webs.setVisible(false);
+        icqLabel.setVisible(false);
+        icq.setVisible(false);
+        jabberLabel.setVisible(false);
+        jabber.setVisible(false);
+        skypeLabel.setVisible(false);
+        skype.setVisible(false);
+        birthdayLabel.setVisible(false);
+        birthday.setVisible(false);
+        namedayLabel.setVisible(false);
+        nameday.setVisible(false);
+        celebrationLabel.setVisible(false);
+        celebration.setVisible(false);
+        noteLabel.setVisible(false);
+        note.setVisible(false);
+        groupsLabel.setVisible(false);
+        groups.setVisible(false);
+        maps.setVisible(false);
+    }
+    
     /**
      * Action for opening mail client
      */

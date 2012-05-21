@@ -56,7 +56,11 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
   /**
    * Holds all possible user actions.
    */
-  public UserActions actions = new UserActions();
+  public UserActions actions = new UserActions(this);
+
+  DetailPanel getDetailPanel() {
+    return detailPanel;
+  }
 
   /**
    * Creates the main window.
@@ -280,6 +284,7 @@ public class MainWindow extends JFrame implements ActionListener, DocumentListen
       //React only on final choice
       if (!e.getValueIsAdjusting()) {
         detailPanel.show(ContactsPanel.getSelectedContact());
+        detailPanel.setVisible(true);
         handleContactActionsVisibility();
       }
     }

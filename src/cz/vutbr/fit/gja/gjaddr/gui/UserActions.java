@@ -73,8 +73,18 @@ public class UserActions {
    * About action.
    */
   AboutAction actionAbout;
+  
+  /**
+   * Handle to main window.
+   */
+  private MainWindow mainWindow;
 
-  public UserActions() {
+  /**
+   * Constructor
+   * @param mainWindow 
+   */
+  UserActions(MainWindow mainWindow) {
+    this.mainWindow = mainWindow;
     this.actionNewContact = new AddContactAction();
     this.actionEditContact = new EditContactAction();
     this.actionDeleteContact = new DeleteContactAction();
@@ -91,7 +101,7 @@ public class UserActions {
     this.actionPreferences = new PreferencesAction();
 
     this.actionHelp = new HelpAction();
-    this.actionAbout = new AboutAction();
+    this.actionAbout = new AboutAction();    
   }
 
   /**
@@ -250,7 +260,7 @@ public class UserActions {
   class DeleteContactAction extends AbstractAction {
 
     static final long serialVersionUID = 0;
-    private static final String name = "Delete contact";
+    private static final String name = "Delete contact(s)";
     private static final String icon = "/res/minus.png";
     private static final String tooltip = "Delete contact";
     private final KeyStroke accelerator = KeyStroke.getKeyStroke("DELETE");
@@ -264,7 +274,9 @@ public class UserActions {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-      ContactsPanel.removeContacts();
+      if (ContactsPanel.removeContacts()) {
+        mainWindow.getDetailPanel().hideDetail();
+      }
     }
   }
 
@@ -352,7 +364,7 @@ public class UserActions {
   class DeleteGroupAction extends AbstractAction {
 
     static final long serialVersionUID = 0;
-    private static final String name = "Delete group";
+    private static final String name = "Delete group(s)";
     private static final String icon = "/res/minus_g.png";
     private static final String tooltip = "Delete group";
     private final KeyStroke accelerator = KeyStroke.getKeyStroke("DELETE");

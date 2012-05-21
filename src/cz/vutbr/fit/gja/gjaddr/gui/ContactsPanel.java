@@ -204,7 +204,9 @@ public class ContactsPanel extends JPanel implements KeyListener {
     switch (e.getKeyCode()) {
       case KeyEvent.VK_DELETE:
         if (this.mainWindowHandle.actions.actionDeleteContact.isEnabled()) {
-          removeContacts();
+          if (removeContacts()) {
+            this.mainWindowHandle.getDetailPanel().hideDetail();
+          }
         }
         break;
     }
