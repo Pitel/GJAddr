@@ -33,7 +33,7 @@ class AboutWindow extends JDialog {
         final JLabel logo = new JLabel(icon, JLabel.CENTER);
         logo.setAlignmentX(CENTER_ALIGNMENT);
         add(logo);
-        final JLabel details = new JLabel("<html><center>Projekt do předmětu Grafická uživatelská rozhraní v Javě<br>FIT VUTBR 2012</center><h2>Authors</h2><ul><li>Bc. Radek Gajdušek</li><li>Bc. Drahomíra Herrmannová</li><li>Bc. Jan Kaláb</li></ul></html>", JLabel.CENTER);
+        final JLabel details = new JLabel("<html><center><p>Projekt do předmětu Grafická uživatelská rozhraní v Javě<br>FIT VUTBR 2012</p><h2>Authors</h2>Bc. Radek Gajdušek<br>Bc. Drahomíra Herrmannová<br>Bc. Jan Kaláb</center></html>", JLabel.CENTER);
         details.setAlignmentX(CENTER_ALIGNMENT);
         details.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         add(details);
