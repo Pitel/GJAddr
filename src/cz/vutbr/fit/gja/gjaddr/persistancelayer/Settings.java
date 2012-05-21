@@ -2,7 +2,10 @@ package cz.vutbr.fit.gja.gjaddr.persistancelayer;
 
 import cz.vutbr.fit.gja.gjaddr.gui.ContactsPanel;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.NotificationsEnum;
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.ServicesEnum;
 import java.io.*;
+import java.util.EnumMap;
+import java.util.Map;
 import java.util.Properties;
 import org.slf4j.LoggerFactory;
 
@@ -46,6 +49,26 @@ public class Settings {
    * Application folder.
    */
   private final String APPLICATION_FOLDER = "applicationFolder";
+  
+  /**
+   * Map with application ID. These settings don't need to be saved in properties file 
+   * as they don't change.
+   */
+  private static final Map<ServicesEnum, String> APPLICATIONS_IDS = new EnumMap<ServicesEnum, String>(ServicesEnum.class);
+  static {
+      APPLICATIONS_IDS.put(ServicesEnum.FACEBOOK, "356956731007633");
+      APPLICATIONS_IDS.put(ServicesEnum.GOOGLE, "946930126424.apps.googleusercontent.com");
+  }
+  
+  /**
+   * Map with application secrets. These settings don't need to be saved in properties file 
+   * as they don't change.
+   */
+  private static final Map<ServicesEnum, String> APPLICATION_SECRETS = new EnumMap<ServicesEnum, String>(ServicesEnum.class);
+  static {
+      APPLICATION_SECRETS.put(ServicesEnum.FACEBOOK, null);
+      APPLICATION_SECRETS.put(ServicesEnum.GOOGLE, "9PcfBWb_jYdgyZyHt61JvMdY");
+  }
 
   /**
    * Get data directory according to user home dir.
@@ -267,5 +290,25 @@ public class Settings {
    */
   public String getAppFolder() {
     return this.properties.getProperty(this.APPLICATION_FOLDER);
+  }
+  
+  /**
+   * Get application ID for specified service.
+   * 
+   * @param service
+   * @return 
+   */
+  public String getApplicationId(ServicesEnum service) {
+    return Settings.APPLICATIONS_IDS.get(service);
+  }
+  
+  /**
+   * Get application secret for specified service.
+   * 
+   * @param service
+   * @return 
+   */
+  public String getApplicationSecret(ServicesEnum service) {
+    return Settings.APPLICATION_SECRETS.get(service);
   }
 }

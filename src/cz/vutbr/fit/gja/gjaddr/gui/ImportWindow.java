@@ -19,8 +19,6 @@ import org.slf4j.LoggerFactory;
 /**
  * Window for import management.
  *
- * TODO - messages in case of errors
- *
  * @author Bc. Drahomira Herrmannova <xherrm01@stud.fit.vutbr.cz>
  */
 public class ImportWindow extends JFrame implements ActionListener {

@@ -107,7 +107,7 @@ public class GoogleImport {
             emails.add(new cz.vutbr.fit.gja.gjaddr.persistancelayer.Email(TypesEnum.HOME, email.getAddress()));
         }
 
-        // get messengers - TODO get messenger type
+        // get messengers
         List<Messenger> messengers = new ArrayList<Messenger>();
         for (Im im : entry.getImAddresses()) {
             MessengersEnum type = MessengersEnum.OTHER;

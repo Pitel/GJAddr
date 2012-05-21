@@ -82,9 +82,6 @@ public class CsvImportExportTest {
         assertThat(1, equalTo(c.getEmails().size()));
         assertThat("zborilf@fit.vutbr.cz", equalTo(c.getEmails().get(0).getEmail()));
         assertThat(1, equalTo(c.getAdresses().size()));
-        // TODO URLs
-        // assertThat(1, equalTo(c.getUrls().size()));
-        // import multiple contacts
         System.out.println("2. import multiples contacts");
         this.database.clearAllData();
         file = new File(this.testFile2);

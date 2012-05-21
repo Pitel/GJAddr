@@ -6,6 +6,7 @@ import com.restfb.exception.FacebookOAuthException;
 import com.restfb.types.User;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.AuthToken;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.Settings;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.ServicesEnum;
 import java.awt.Desktop;
 import java.io.IOException;
@@ -17,8 +18,6 @@ import org.slf4j.LoggerFactory;
 /**
  * Do Facebook authentication and save returned authentication token in database.
  *
- * TODO: - read application ID from settings file/table
- *
  * @author Bc. Drahomira Herrmannova <xherrm01@stud.fit.vutbr.cz>
  * @see <https://developers.facebook.com/docs/authentication/>
  */
@@ -27,7 +26,7 @@ public class FacebookOauth {
   /**
    * Application ID/API key.
    */
-  private String appid = "356956731007633";
+  private String appid = Settings.instance().getApplicationId(ServicesEnum.FACEBOOK);
   /**
    * Facebook client for reading contacts.
    */

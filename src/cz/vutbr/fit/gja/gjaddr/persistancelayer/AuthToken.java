@@ -7,9 +7,6 @@ import java.io.Serializable;
 /**
  * Class representing authorization tokens for Facebook and Google services.
  *
- * TODO:
- *  - javadoc
- *
  * @author Bc. Drahomira Herrmannova <xherrm01@stud.fit.vutbr.cz>
  */
 public class AuthToken implements Serializable {
@@ -25,11 +22,12 @@ public class AuthToken implements Serializable {
 	private Integer service;
 
 	/**
-	 *
+	 * Authorization token.
 	 */
 	private String token;
 
 	/**
+     * Constructor. Sets all required parameters.
 	 *
 	 * @param service
 	 * @param token
@@ -39,6 +37,7 @@ public class AuthToken implements Serializable {
 	}
 
 	/**
+     * Constructor. Sets all required parameters. Takes service ID as indentification of service.
 	 * 
 	 * @param service
 	 * @param token
@@ -49,6 +48,9 @@ public class AuthToken implements Serializable {
 	}
 
 	/**
+     * Return service ID.
+     * 
+     * Service IDs are defined in ServicesEnum.
 	 *
 	 * @return
 	 */
@@ -57,6 +59,7 @@ public class AuthToken implements Serializable {
 	}
 
 	/**
+     * Set service using ServicesEnum.
 	 *
 	 * @param service
 	 */
@@ -65,6 +68,9 @@ public class AuthToken implements Serializable {
 	}
 
 	/**
+     * Set service by passing service ID.
+     * 
+     * Service IDs are defined in ServicesEnum.
 	 *
 	 * @param service
 	 */
@@ -77,6 +83,7 @@ public class AuthToken implements Serializable {
 	}
 
 	/**
+     * Get authorization token.
 	 *
 	 * @return
 	 */
@@ -85,6 +92,7 @@ public class AuthToken implements Serializable {
 	}
 
 	/**
+     * Set authorization token.
 	 * 
 	 * @param token
 	 */

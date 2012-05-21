@@ -3,6 +3,7 @@ package cz.vutbr.fit.gja.gjaddr.importexport;
 import com.google.gson.Gson;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.AuthToken;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.Database;
+import cz.vutbr.fit.gja.gjaddr.persistancelayer.Settings;
 import cz.vutbr.fit.gja.gjaddr.persistancelayer.util.ServicesEnum;
 import java.awt.Desktop;
 import java.io.*;
@@ -13,8 +14,6 @@ import org.slf4j.LoggerFactory;
 
 /**
  * OAuth authentication for Google Contacts.
- *
- * TODO: - read settings from settings file/table
  *
  * @author Bc. Drahomira Herrmannova <xherrm01@stud.fit.vutbr.cz>
  */
@@ -71,15 +70,15 @@ public class GoogleOauth {
   /**
    * Application ID/API key.
    */
-  private String appid = "946930126424.apps.googleusercontent.com";
+  private String appid = Settings.instance().getApplicationId(ServicesEnum.GOOGLE);
   /**
    * Application redirect URI.
    */
   private String redirectUri = "urn:ietf:wg:oauth:2.0:oob";
   /**
-   * Application secret. TODO HIDE!!!!
+   * Application secret.
    */
-  private String secret = "9PcfBWb_jYdgyZyHt61JvMdY";
+  private String secret = Settings.instance().getApplicationSecret(ServicesEnum.GOOGLE);
   /**
    * Local database.
    */
