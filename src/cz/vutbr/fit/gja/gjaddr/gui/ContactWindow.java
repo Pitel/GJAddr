@@ -156,14 +156,15 @@ class ContactWindow extends JDialog {
 
     /**
      * Make window escapable.
-     * 
-     * @return 
+     *
+     * @return
      */
     @Override
     protected JRootPane createRootPane() {
         JRootPane rp = new JRootPane();
         KeyStroke stroke = KeyStroke.getKeyStroke("ESCAPE");
         Action actionListener = new AbstractAction() {
+            static final long serialVersionUID = 0;
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 dispose();
@@ -429,6 +430,7 @@ class ContactWindow extends JDialog {
             }
             contact.setCelebration(celebrationPicker.getDate());
             contact.setNote(noteField.getText());
+            contact.setPhoto((ImageIcon) photo.getIcon());
 
             final ArrayList<Address> addresses = new ArrayList<Address>();
             addresses.add(new Address(TypesEnum.HOME, addressField.getText()));
