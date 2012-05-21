@@ -6,13 +6,9 @@
 		<title>GJAddr</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta name="description" content="GJAddr">
-		<link href="css/bootstrap.min.css" rel="stylesheet">
-		<style type="text/css">
-			body {
-				padding-top: 60px;
-			}
-		</style>
+		<link href="css/bootstrap.min.css" rel="stylesheet">		
 		<link href="css/bootstrap-responsive.min.css" rel="stylesheet">
+		<link href="css/style.css" rel="stylesheet">		
 		<!--[if lt IE 9]>
 			<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 		<![endif]-->
@@ -47,9 +43,10 @@
 				<div class="span4">
 					<h2>Přednosti</h2>
 					<ul>
-						<li>Přehledné UI</li>
+						<li>Přehledné GUI</li>
 						<li>Import a export do mnoha formátů a služeb</li>
 						<li>Upozornění na narozeniny</li>
+						<li>Jednoduché a intuitivní ovládání</li>						
 					</ul>
 				</div>
 				<div class="span4">
@@ -68,24 +65,31 @@
 			</div>
 			<div class="row">
 				<div class="span12">
-					<h2 id="usage">Použití</h2>
+					<h2 id="usage">Obsah</h2>
 					<ul>
                         <li><a href="#mainWindow">Hlavní okno aplikace</a></li>
+						<ul>						
+							<li><a href="#detailKontaktu">Detail kontaktu</a></li>
+							<li><a href="#filtrovaniKontaktu">Filtrování kontaktů</a></li>
+						</ul>						
                         <li><a href="#contactManagement">Správa kontaktů</a></li>
                         <li>
                             <ul>
                                 <li><a href="#addContact">Přídání kontaktu</a></li>
                                 <li><a href="#editContact">Editace kontaktu</a></li>
+                                <li><a href="#deleteContact">Smazání kontaktu</a></li>								
                             </ul>
                         </li>
                         <li><a href="#cgroupManagement">Správa skupin</a></li>
                         <li>
                             <ul>
                                 <li><a href="#addGroup">Přídání skupiny</a></li>
+                                <li><a href="#editGroup">Editace skupiny</a></li>
+                                <li><a href="#deleteGroup">Smazání skupiny</a></li>									
                                 <li><a href="#addContactToGroup">Přídání kontaktů do skupiny</a></li>
                             </ul>
                         </li>
-                        <li><a href="#notifications">Notifikace</a></li>
+                        <li><a href="#notifications">Notifikace událostí</a></li>
                         <li><a href="#importExport">Import a Export</a></li>
                         <li>
                             <ul>
@@ -93,58 +97,191 @@
                                 <li><a href="#export">Export</a></li>
                             </ul>
                         </li>
+						<li><a href="#preferences">Nastavení</a></li>							
+						<li><a href="#shortcuts">Seznam klávesových zkratek</a></li>						
                     </ul>
                     <h3 id="mainWindow">Hlavní okno aplikace</h3>
+					<p>
+						Hlavní okno aplikace poskytuje uživateli komfortní práci a správu kontaktů. Levý panel obsahuje seznam skupin, uprostřed se nachází seznam kontaktů a pravá strana obsahuje přehledně údaje o konkrétním kontaktu.
+					</p>
+					<p>
+						Rychlé menu v horní části okna umožňuje globální akce jako je Import/Export kontaktů, nastavení programu a real-time filtrování kontaktů.
+					</p>
+					<p>
+						Rovněž je možno přidat nový kontakt a novou skupinu. Veškeré globální akce se také nachází k hlavní menu aplikace nahoře a lze je také vyvolat pomocí klávesových zkratek.
+					</p>						
                     <img src="img/scr_mainWindow.png" /><br />
+					<h4 id="detailKontaktu">Detail kontaktu</h3>
+						<p>
+							Zvolením skupiny se zobrazí seznam kontaktů v této skupině. Všechny kontakty jsou automaticky členy skupiny "My contacts", bez ohledu na to, zda uživatel používá vlastní skupiny či nikoliv.
+						</p>		
+						<p>
+							Výběrem kontaktu z tabulky uprostřed se zobrazí detail kontaktu, který obsahuje všechny informace o zvoleném kontaktu, jak je vidět na obrázku níže.
+						</p>
                     <img src="img/scr_mainWindowTooltip.png" /><br />
+						<p>
+							Všechny položky detailu kontaktu u nichž to má smysl jsou klikatelné, to znamená, že kliknutím na adresu nebo mapku se zobrazí lokace na Google Maps, poklikáním na URL se otevře prohlížeč s danou adresou a stejně je tomu i u emailu, kdy je otevřen emailový klient.
+						</p>	
+						<p>
+							V detailu lze také provést změnu fotografie kontaktu, které se provádí kliknutím na fotografii, kdy se zobrazí dialog pro výběr nové fotografie.
+						</p>
+						<p>
+							Detail obsahuje veškeré zadané položky, pokud je některá hodnota nezadána, je tento údaj v detailu skryt.
+						</p>						
                     <img src="img/scr_mainWindowTooltip02.png" /><br />
+					<h4 id="filtrovaniKontaktu">Filtrování kontaktu</h3>
+						<p>
+							Uživatel má možnost pomocí filtrovacího pole filtrovat aktuálně zvolenou skupinu kontaktů. Filtrování je prováděno okamžitě, takže uživatel vidí po zadání každého znaku aktuální seznam kontaktů. Při zadávání rovněž nezáleží na velikosti písmen ani diakritice, program toto nerozlišuje.
+						</p>	
                     <img src="img/scr_mainWindowFilter.png" /><br />
                     <h3 id="contactManagement">Správa kontaktů</h3>
+						<p>
+							Správa kontaktů poskytuje uživateli veškeré akce a možnosti, které od adresáře tohoto typu očekává. Pro lepší uživatelovu orientaci je přidání i editace kontaktu rozdělena do záložek s jasně definovanými názvy.
+						</p>						
                     <h4 id="addContact">Přídání kontaktu</h4>
-                    <img src="img/scr_addContact01.png" /><br />
+						<p>
+							Aplikace vyžaduje jako minimální údaj zadání jména, přijmení nebo přezdívku. Pokud uživatele nezadá ani jeden z těchto údajů, není možné kontakt uložit, na což je uživatel upozorněn. Svátek uživatel lze nastavit manuálně nebo jej nechat získat z databáze automaticky. Pokud není svátek zadán, je získáno datum podle zadaného jména.
+						</p>											
                     <img src="img/scr_addContact02.png" /><br />
+						<p>
+							Druhá záložka slouží pro zadávání kontaktních údajů jako je email, telefon, adresa nebo kecálků. Zadané údaje již nejsou povinné, ale každý údaj na této záložce prochází validací a pokud neodpovídá obecně definovaným pravidlům na internetu, není uživateli umožněno uložené do chvíle, než jsou údaje zadány správně.
+						</p>					
                     <img src="img/scr_addContact03.png" /><br />
+						<p>
+							Ke každému uživateli je možno uložit poznámku prakticky neomezené délky, tvaru a stylu.
+						</p>					
                     <img src="img/scr_addContact04.png" /><br />
+						<p>
+							Poslední záložka slouží k uložení fotografie ke kontaktu. Kliknutím na fotografii se zobrazí dialog s možností výběru fotografie, který podporuje výběr fotografie všech známých formátů. Po výběru je fotografie je zmenšena na podporovaný formát a uložena. Pokud není foto vybráno, je použite implicitní ikona.
+						</p>							
                     <img src="img/scr_addContact05.png" /><br />
+						<p>
+							Po uložení kontaktu dojde k jeho přídání do hlavní skupiny "My contacts" a zobrazení nového kontaktu v detailu napravo.
+						</p>						
                     <img src="img/scr_addContact06.png" /><br />
-                    <img src="img/scr_addContact07.png" /><br />
                     <h4 id="editContact">Editace kontaktu</h4>
+						<p>
+							Editace kontaktu se provádí ve stejném okně jako přidání nového kontaktu. Toto okno je možno vyvolat dvojitým kliknutím na kontakt nebo pomocí kontextové menu stistknutím pravého tlačitka myši a zvolením editace.
+						</p>						
                     <img src="img/scr_editContact01.png" /><br />
+                    <h4 id="deleteContact">Smazání kontaktu</h4>
+						<p>
+							Mazání kontaktu se provádí výběrem jednoho či více kontaktů z tabulky kontaktů. Kontakty lze smazat stiskem klávesy DEL nebo opět výběrem možnosti smazat z kontextové nabídky po kliknutí pravým tlačítkem myši. Před samotným smazáním je uživatel vyzván k potvrzení své volby, a poté dojde k nenávratnému smázání zvolených kontaktů.
+						</p>						
                     <h3 id="cgroupManagement">Správa skupin</h3>
-                    <h4 id="addGroup">Přídání skupiny</h4>
+						<p>
+							Uživatel má kromě správy kontaktů také možnost své kontakty členit do skupin s vlastním názvem. Nad skupinami lze provádět pak skupinové operace jako je Import/Export apod.
+						</p>						
+                    <h4 id="addGroup">Přidání skupiny</h4>
+						<p>
+							Novou skupinu lze přidat třemi různými způsoby. Prvním je použití globální klávesové zkratky, která je uvedena v závěru této dokumentace. Dále lze použít tlačítko pro přidání nové skupiny v levém dolním rohu aplikace, nebo lze použít kontextové menu stiskem pravého tlačítka nad seznamem skupin. Nová skupina musí mít unikátní název v rámci celé aplikace, pokud tomu tak není, není přidání nové skupiny úspěšné.
+						</p>						
                     <img src="img/scr_addGroup01.png" /><br />
-                    <img src="img/scr_addGroup02.png" /><br />
+						<p>
+							Po úspěšném přidání nové skupiny se nová skupina zobrazí v seznamu skupin a neobsahuje žádný kontakt, což signalizuje číslo 0 v závorce u této skupiny a také prázdný seznam kontaktů.
+						</p>		
+                    <img src="img/scr_addGroup02.png" /><br />						
+                   <h4 id="editGroup">Editace skupiny</h4>
+						<p>
+							U skupiny lze také měnit její jméno, tuto akci lze provést dvojklikem na název skupiny nebo prostřednictvím kontextového menu. Stejně jako u přidávání skupiny platí, že jméno musí být unikátní.
+						</p>	
+				   <h4 id="deleteGroup">Smazání skupiny</h4>
+						<p>
+							Mazání skupiny lze provést stiskem tlačítka DEL, které provede smazání skupiny. Stejnou akci lze provést také prostřednictvím kontextového menu.
+						</p>	
                     <h4 id="addContactToGroup">Přídání kontaktů do skupiny</h4>
-                    <img src="img/scr_addContactToGroup01.png" /><br />
-                    <img src="img/scr_addContactToGroup02.png" /><br />
-                    <img src="img/scr_addContactToGroup03.png" /><br />
-                    <img src="img/scr_addContactToGroup04.png" /><br />
+						<p>
+							Přidání kontaktů do skupiny lze provést dvěma různými způsoby. Prvním způsobem je přidání na úrovni skupiny, kdy po stisku pravého tlačítka nad nějakou skupinou se zobrazí kontextové menu, kde zvolíme položku Spravovat skupinu a zobrazí se nám stejné jako níže. Okno obsahuje seznam všech kontaktů v dané skupině. Označením či odznačením lze provést přiřazení do dané skupiny.
+						</p>						
                     <img src="img/scr_addContactToGroup05.png" /><br />
-                    <h3 id="notifications">Notifikace</h3>
-                    <img src="img/scr_notifications01.png" /><br />
+						<p>
+							Druhou možností, jak přiřadit kontakt do skupiny, je vyvolání kontextového menu nad kontaktem, kde se nachází položka Spravovat skupiny kontaktu. Po zvolení této položky je zobrazen seznam všech skupin v a označením či odznačením lze spravovat skupiny, v nichž se nachází daný kontakt.
+						</p>	
+                    <img src="img/scr_addContactToGroup02.png" /><br />
+						<p>
+							Obě možnosti přidávání kontaktů do skupiny jsou navzájem ekvivalentní a jejich provedením lze dosáhnout stejného výsledku jako je například uvedeno na obrázku níže.
+						</p>						
+                    <img src="img/scr_addContactToGroup03.png" /><br />
+                    <h3 id="notifications">Notifikace událostí</h3>
+						<p>
+							Program zobrazuje také upozornění na blížící se narozeniny, výročí a svátky uživatelů, u nichž je tento ůdaj zadán, abyste na žádnou z těchto údálostí nezapomněli.
+						</p>
+						<p>
+							Interval zobrazení upozornění si lze zvolit v nastavení aplikace, které je popsáno dále v tomto manuálu. Při zobrazení okna s upozorněním lze zvolit možnost "Dále nezobrazovat", která způsobí, že zobrazená upozornění nebudou již dále zobrazována. V opačném případě budou blížící se události zobrazovány vždy při spuštění aplikace až do odmítnutí nebo vypršení.
+						</p>
                     <img src="img/scr_notifications02.png" /><br />
                     <h3 id="importExport">Import a Export</h3>
+						<p>
+							Aplikace umožňuje importovat či exportovat vaše kontaktu z a do několika různých formátů. Obě akce lze vyvolat jednak prostřednictvím globální nabídky, ale také z kontextového menu nad skupinou či nad seznamem kontaktů.
+						</p>					
                     <h4 id="import">Import</h4>
+						<p>
+							Při importu lze zvolit z několika možností. Především je nutné zvolit importovaný formát, aby program věděl, jak má importovaný soubor interpretovat. Dále je třeba zvolit skupinu, do níž se mají kontakty importovat. V případě nezvolení skupiny budou automaticky importovány do hlavní skupiny. Stiskem tlačítko import budete vyzvání ke zvolení souboru s daty. Pokud je akce importu vyvolána nad skupinou, dojde přednastavení aktuálně vybrané skupiny.
+						</p>					
                     <img src="img/scr_import01.png" /><br />
-                    <img src="img/scr_import02.png" /><br />
+						<p>
+							Pokud importujeme data z Facebooku, je nutné nastavit účet prostřednictvím nastavení aplikace před samotným importem a následně potvrdit spuštění importu. Pokud máme tyto ůdaje již přednastaveny, není tato výzva zobrazována.
+						</p>						
                     <img src="img/scr_import03.png" /><br />
-                    <img src="img/scr_import04.png" /><br />
+						<p>
+							Samotný průběh importu kontaktů lze sledovat v levé dolní části aplikace, kde se zobrazuje progress bar s aktuálním stavem právě probíhající akce. Tuto akci lze zrušit stiskem tlačítka Cancel, které zastaví prováděnou akci po naimportování právě zpracovávaného kontaktu. Doposud nahrané kontakty jsou uloženy.
+						</p>					
                     <img src="img/scr_import05.png" /><br />
+						<p>
+							O výsledku importu kontaktů je uživatel informován dialogem, který zobrazuje informace o právě proběhlé akci společně s počtem nahraných kontaktů.
+						</p>						
                     <img src="img/scr_import06.png" /><br />
-                    <img src="img/scr_import07.png" /><br />
+						<p>
+							Po úspěšném importu lze najít nahrané kontakty ve zvolené skupině. Výsledek importu z Facebooku vypadá například takto.
+						</p>		
                     <img src="img/scr_import08.png" /><br />
                     <h4 id="export">Export</h4>
-                    <img src="img/scr_export01.png" /><br />
-                    <img src="img/scr_export02.png" /><br />
-                    <img src="img/scr_export03.png" /><br />
-                    <h3 id="preferences">Preferences</h3>
+						<p>
+							Aplikace rovněž umožňuje export kontaktů do některého z podporovanách formátů. Export lze vyvolat prostřednictvím tlačítka v globální nabídce, nebo přes kontextovou nabídku. Export je stejně jako import variabilní a umožňuje exportovat jak vybrané kontakty, tak také celé skupiny kontaktů.
+						</p>					
+                      <img src="img/scr_export03.png" /><br />
+						<p>
+							Po stisku tlačítka Export je uživatel vyzván ke zvolení názvu souboru a následně dojde k vyexportování požadovaných kontaktů.
+						</p>						  
+                    <h3 id="preferences">Nastavení</h3>
+						<p>
+							Nastavení aplikace je pro větší přehlednost rozděleno do několika záložek a seskupeno podle logického významu. První záložka obsahuje nastavení účtu na Facebooku a Googlu, kdy je uživatel po stisku jednoho z tlačítek vyzván k zadání svýj přihlašovacích údajů. Získaná data jsou následně zašifrována.
+						</p>					
                     <img src="img/scr_preferences01.png" /><br />
+						<p>
+							Další záložka slouží pro nastavení frekvence připomínek blížících se událostí. Na základě zvolené frekvence je pak zobrazeno při spuštění aplikace okno s notifikací.
+						</p>						
                     <img src="img/scr_preferences02.png" /><br />
+						<p>
+							Uživatel má dále také možnost zvolit si pořadí zobrazování pořadí jméno-příjmení napříč aplikací. Jedná se o seznam kontaktů, detail apod. Při změně tohoto nastavení dojde k okamžitému použití na všech místech.
+						</p>						
                     <img src="img/scr_preferences03.png" /><br />
+						<p>
+							Způsob uložení dat lze změnit v předposlední záložce. Implicitně je používáno uložené do binárního formátu, které je podstatně rychlejší, uživatelé však možná uvítají možnost uložení do lépe čitelného formátu XML. Tento formát je především při spuštění aplikace pomalejší, ale lze jej ručně editovat či dále zpracovávat.
+						</p>						
                     <img src="img/scr_preferences04.png" /><br />
+						<p>
+							Jako poslední si lze zvolit umístění souborů aplikace, implicitně je používám domovský adresář.
+						</p>						
                     <img src="img/scr_preferences05.png" /><br />
-                    <img src="img/scr_preferences06.png" /><br />
-                    <img src="img/scr_preferences07.png" /><br />
+                    <h4 id="shortcuts">Seznam klávesových zkratek</h4>
+						<p>
+							<table>
+								<tr><th>Zkratka</th><th>Akce</th></tr>
+								<tr><td>F1</td><td>Nápověda</td></tr>
+								<tr><td>Ctrl + A</td><td>O programu</td></tr>									
+								<tr><td>Ctrl + P</td><td>Nastavení</td></tr>								
+								<tr><td>Ctrl + Q</td><td>Ukončení programu program</td></tr>
+								<tr><td>Alt + I</td><td>Import kontaktů</td></tr>
+								<tr><td>Alt + E</td><td>Export kontaktů</td></tr>
+								<tr><td>Ctrl + N</td><td>Nový kontakt</td></tr>
+								<tr><td>Ctrl + E</td><td>Upravit kontakt</td></tr>
+								<tr><td>Ctrl + M</td><td>Správa skupin/kontaktů</td></tr>
+								<tr><td>Ctrl + G</td><td>Nová skupina</td></tr>
+								<tr><td>Ctrl + R</td><td>Přejmenování skupiny</td></tr>
+								<tr><td>Del</td><td>Smazání vybrané skupiny nebo kontaktu</td></tr>
+							</table>	
+						</p>							
 				</div>
 			</div>
 			<hr>
