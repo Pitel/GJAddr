@@ -36,7 +36,7 @@ public class Persistance {
    */
   public void saveData(String filename, List dataToSave) {
 
-    if (dataToSave == null || dataToSave.isEmpty()) {
+    if (dataToSave == null) {
       return;
     }
 

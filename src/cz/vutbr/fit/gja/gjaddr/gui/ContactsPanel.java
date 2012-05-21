@@ -74,6 +74,10 @@ public class ContactsPanel extends JPanel implements KeyListener {
       selRows = table.getSelectedRows();
     }
 
+    if (newContact) {
+      GroupsPanel.selectRootGroup();
+    }
+
     Group[] groups = GroupsPanel.getSelectedGroups();
     List<Group> selectedGroups = Arrays.asList(groups);
     final List<Contact> contacts = db.getAllContactsFromGroups(selectedGroups);

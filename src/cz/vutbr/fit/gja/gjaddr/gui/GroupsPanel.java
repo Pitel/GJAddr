@@ -165,6 +165,13 @@ class GroupsPanel extends JPanel implements KeyListener {
   static Group getSelectedGroup() {
     return getSelectedGroups()[0];
   }
+  
+  /**
+   * Select root group.
+   */
+  static void selectRootGroup() {
+    list.setSelectedIndex(0);
+  }  
 
   /**
    * Get selected groups.
