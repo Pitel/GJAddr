@@ -103,7 +103,7 @@ public class FacebookImport {
             urls.add(new Url(TypesEnum.HOME, user.getLink()));
         }
         if (user.getWebsite() != null && !user.getWebsite().isEmpty() && !user.getWebsite().equalsIgnoreCase("null")) {
-            urls.add(new Url(TypesEnum.HOME, user.getWebsite()));
+            urls.add(new Url(TypesEnum.OTHER, user.getWebsite()));
         }
         if (!urls.isEmpty()) {
             contact.setUrls(urls);

@@ -10,6 +10,8 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.text.DateFormat;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import javax.swing.*;
 
 /**
@@ -22,6 +24,8 @@ class DetailPanel extends JPanel {
 
     private static final String styleStart = "<font face=\"arial\" color=\"#999999\">";
     private static final String styleEnd = "</font>";
+    private static final String wrapperStart = "<html><body width='180px'><p>";
+    private static final String wrapperEnd = "</p></body></html>";
     static final long serialVersionUID = 0;
     private final Database db = Database.getInstance();
     private final JLabel name = new JLabel();
@@ -64,10 +68,12 @@ class DetailPanel extends JPanel {
      */
     public DetailPanel() {
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-        setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 10));
+        setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
 
         final JPanel namePanel = new JPanel();
-        namePanel.setLayout(new GridBagLayout());
+        GridBagLayout gridBagLayout = new GridBagLayout();
+        gridBagLayout.preferredLayoutSize(namePanel);
+        namePanel.setLayout(gridBagLayout);
         GridBagConstraints gbc = new GridBagConstraints();
 
         // photo
@@ -78,7 +84,7 @@ class DetailPanel extends JPanel {
         gbc.gridheight = 2;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         JPanel photoWrapper = new JPanel();
-        photoWrapper.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
+        photoWrapper.setBorder(BorderFactory.createEmptyBorder(5, 0, 10, 0));
         photo.setVisible(false);
         photo.setToolTipText("Change user photo");
         photo.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
@@ -314,7 +320,11 @@ class DetailPanel extends JPanel {
         gbc.gridy++;
         gbc.weighty = 1;
         namePanel.add(Box.createVerticalGlue(), gbc);
-        add(namePanel);
+        this.detailScrollPane = new JScrollPane(namePanel);
+        this.detailScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        this.detailScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        this.detailScrollPane.setPreferredSize(namePanel.getPreferredSize());
+        add(this.detailScrollPane);
     }
 
     /**
@@ -342,7 +352,7 @@ class DetailPanel extends JPanel {
             photo.setContact(contact);
             photo.setVisible(true);
             name.setVisible(true);
-            name.setText(String.format("<html><h2>" + contact.getFullNameForDetail() + "</h2></html>"));
+            name.setText(String.format("<html><h2>" + contact.getFullNameForDetail() + "</h2><html>"));
             if (contact.getNickName() != null && !contact.getNickName().isEmpty()) {
                 nicknameLabel.setVisible(true);
                 nickname.setVisible(true);
@@ -359,7 +369,7 @@ class DetailPanel extends JPanel {
                 if (!a.getAddress().isEmpty()) {
                     addressLabel.setVisible(true);
                     address.setVisible(true);
-                    address.setText("<html><p>" + a.getAddress() + "</p></html>");
+                    address.setText(DetailPanel.wrapperStart + a.getAddress() + DetailPanel.wrapperEnd);
                     address.setCursor(new Cursor(Cursor.HAND_CURSOR));
                     address.setToolTipText("Show location at Google Maps");
                     address.addActionListener(new MapListener());
@@ -374,11 +384,12 @@ class DetailPanel extends JPanel {
                 if (!e.getEmail().isEmpty()) {
                     emailLabel.setVisible(true);
                     emails.setVisible(true);
-                    JLabelButton lb = new JLabelButton(e.getEmail());
+                    JLabelButton lb = new JLabelButton(DetailPanel.wrapperStart + e.getEmail() + DetailPanel.wrapperEnd);
                     lb.setCursor(new Cursor(Cursor.HAND_CURSOR));
                     lb.setForeground(Color.BLUE);
                     lb.setToolTipText("Write an email");
                     lb.addActionListener(new EmailListener());
+                    lb.setHorizontalAlignment(SwingConstants.LEFT);
                     emails.add(lb);
                 }
             }
@@ -390,11 +401,12 @@ class DetailPanel extends JPanel {
                 if (u.getValue() != null) {
                     websLabel.setVisible(true);
                     webs.setVisible(true);
-                    JLabelButton lb = new JLabelButton(u.getValue().toString());
+                    JLabelButton lb = new JLabelButton(DetailPanel.wrapperStart + u.getValue().toString() + DetailPanel.wrapperEnd);
                     lb.setCursor(new Cursor(Cursor.HAND_CURSOR));
                     lb.setToolTipText("Go to the website");
                     lb.setForeground(Color.BLUE);
                     lb.addActionListener(new WebListener());
+                    lb.setHorizontalAlignment(SwingConstants.LEFT);
                     webs.add(lb);
                 }
             }
@@ -430,7 +442,7 @@ class DetailPanel extends JPanel {
             if (!contact.getPhoneNumbers().isEmpty()) {
                 phoneLabel.setVisible(true);
                 phones.setVisible(true);
-                phones.setText("<html>" + contact.getAllPhones().replaceAll(", ", "<br>") + "</html>");
+                phones.setText(DetailPanel.wrapperStart + contact.getAllPhones().replaceAll(", ", "<br>") + DetailPanel.wrapperEnd);
             } else {
                 phoneLabel.setVisible(false);
                 phones.setVisible(false);
@@ -445,10 +457,11 @@ class DetailPanel extends JPanel {
                 birthdayLabel.setVisible(false);
             }
 
+            Format formatter = new SimpleDateFormat("d. M.");
             if (contact.getNameDay() != null && contact.getNameDay().getDate() != null) {
                 nameday.setVisible(true);
                 namedayLabel.setVisible(true);
-                nameday.setText(DateFormat.getDateInstance().format(contact.getNameDay().getDate()));
+                nameday.setText(formatter.format(contact.getNameDay().getDate()));
             } else {
                 nameday.setVisible(false);
                 namedayLabel.setVisible(false);
@@ -466,14 +479,14 @@ class DetailPanel extends JPanel {
             if (contact.getNote() != null && !contact.getNote().isEmpty()) {
                 note.setVisible(true);
                 noteLabel.setVisible(true);
-                note.setText("<html>" + contact.getNote().replaceAll("\n", "<br>") + "</html>");
+                note.setText(DetailPanel.wrapperStart + contact.getNote().replaceAll("\n", "<br>") + DetailPanel.wrapperEnd);
             } else {
                 note.setVisible(false);
                 noteLabel.setVisible(false);
             }
 
             String separator = "";
-            final StringBuilder groupstring = new StringBuilder();
+            final StringBuilder groupstring = new StringBuilder(DetailPanel.wrapperStart);
             groups.setVisible(false);
             groupsLabel.setVisible(false);
             for (Group g : db.getAllGroupsForContact(contact)) {
@@ -481,8 +494,9 @@ class DetailPanel extends JPanel {
                 groupsLabel.setVisible(true);
                 groupstring.append(separator);
                 groupstring.append(g.getName());
-                separator = ", ";
+                separator = "<br>";
             }
+            groupstring.append(DetailPanel.wrapperEnd);
             groups.setText(groupstring.toString());
 
             this.maps.removeAll();
@@ -505,7 +519,7 @@ class DetailPanel extends JPanel {
                 }
             }
 
-            //detailScrollPane.setVisible(true);
+            detailScrollPane.setVisible(true);
         }
     }
     
@@ -591,7 +605,7 @@ class DetailPanel extends JPanel {
         public void actionPerformed(ActionEvent ev) {
             final JButton b = (JButton) ev.getSource();
             try {
-                Desktop.getDesktop().browse(new URI(b.getText()));
+                Desktop.getDesktop().browse(new URI(b.getText().replaceAll("\\<.*?>", "")));
             } catch (URISyntaxException ex) {
                 System.err.println(ex);
             } catch (IOException ex) {
