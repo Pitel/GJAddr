@@ -358,6 +358,9 @@ class ContactWindow extends JDialog {
         cDetails.gridx = 1;
         cDetails.weightx = 1;
         formContact.add(skypeField, cDetails);
+        cDetails.gridy++;
+        cDetails.weighty = 1.0;
+        formContact.add(Box.createHorizontalGlue(), c);
 
         // note
         cNote.fill = GridBagConstraints.HORIZONTAL;
@@ -394,6 +397,12 @@ class ContactWindow extends JDialog {
         cPhoto.gridx = 1;
         cPhoto.weightx = 1;
         formPhoto.add(photo, cPhoto);
+        cPhoto.gridy++;
+        JButton photoButton = new JButton("Change Photo");
+        // FUJ!
+        ActionListener[] actionListeners = this.photo.getActionListeners();
+        photoButton.addActionListener(actionListeners[0]);
+        formPhoto.add(photoButton);
         cPhoto.weighty = 1.0;
         cPhoto.gridy++;
         formPhoto.add(Box.createHorizontalGlue(), cPhoto);
