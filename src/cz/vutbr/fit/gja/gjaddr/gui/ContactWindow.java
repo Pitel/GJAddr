@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import javax.swing.*;
+import javax.swing.border.CompoundBorder;
 import org.jdesktop.swingx.JXDatePicker;
 import org.slf4j.LoggerFactory;
 
@@ -396,13 +397,17 @@ class ContactWindow extends JDialog {
         formPhoto.add(pl, cPhoto);
         cPhoto.gridx = 1;
         cPhoto.weightx = 1;
+        photo.setBorder(new CompoundBorder(BorderFactory.createEmptyBorder(0, 6, 5, 0), photo.getBorder()));
         formPhoto.add(photo, cPhoto);
         cPhoto.gridy++;
-        JButton photoButton = new JButton("Change Photo");
+        JButton photoButton = new JButton("Change");
         // FUJ!
         ActionListener[] actionListeners = this.photo.getActionListeners();
         photoButton.addActionListener(actionListeners[0]);
-        formPhoto.add(photoButton);
+        photoButton.setHorizontalAlignment(SwingConstants.LEFT);
+        photoButton.setSelected(false);
+        photoButton.setFocusPainted(false);
+        formPhoto.add(photoButton, cPhoto);
         cPhoto.weighty = 1.0;
         cPhoto.gridy++;
         formPhoto.add(Box.createHorizontalGlue(), cPhoto);
