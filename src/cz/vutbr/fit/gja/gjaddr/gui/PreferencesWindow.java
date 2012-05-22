@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author Bc. Drahomira Herrmannova <xherrm01@stud.fit.vutbr.cz>
  */
-public class PreferencesWindow extends JFrame implements ActionListener {
+public class PreferencesWindow extends JDialog implements ActionListener {
 
     static final long serialVersionUID = 0;
 
@@ -95,7 +95,9 @@ public class PreferencesWindow extends JFrame implements ActionListener {
      * Constructor. Initializes the window.
      */
     public PreferencesWindow() {
-        super("Preferences");
+        super();
+        super.setTitle("Preferences");
+        super.setModal(true);
         super.setLayout(new BorderLayout());
         this.setPreferredSize(new Dimension(800, 250));
         this.setResizable(true);
@@ -124,9 +126,6 @@ public class PreferencesWindow extends JFrame implements ActionListener {
         // enable scrolling tabs
         tabs.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
-        // make window escapable
-        EscapeKeyHandler.setEscapeAction(this);
-
         // make window visible
         this.setResizable(false);
         this.setLocationRelativeTo(null);
@@ -134,6 +133,28 @@ public class PreferencesWindow extends JFrame implements ActionListener {
         this.setVisible(true);
 
         LoggerFactory.getLogger(this.getClass()).info("Opening preferences window.");
+    }
+    
+    /**
+     * Make window escapable.
+     *
+     * @return
+     */
+    @Override
+    protected JRootPane createRootPane() {
+        JRootPane rp = new JRootPane();
+        KeyStroke stroke = KeyStroke.getKeyStroke("ESCAPE");
+        Action actionListener = new AbstractAction() {
+
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                dispose();
+            }
+        };
+        InputMap inputMap = rp.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        inputMap.put(stroke, "ESCAPE");
+        rp.getActionMap().put("ESCAPE", actionListener);
+        return rp;
     }
 
     /**
